@@ -1,0 +1,1 @@
+Slack & Github connection test

@@ -27,7 +27,9 @@ jobs:
     # gradlew 권한 부여
     - name: Grant execute premission to gradlew
       run: chmod +x ./gradlew # gradlew를 사용하기 위한 실행권한 획득
+      working-directory: ./Back
       
     # gradle 빌드
     - name: Build with Gradle
       run: ./gradlew build
+      working-directory: ./Back

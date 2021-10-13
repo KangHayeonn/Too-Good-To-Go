@@ -1,0 +1,53 @@
+# workflow의 이름
+name: CD
+
+# workflow가 언제 실행될건지
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Github action 스크립트가 작동될 OS 환경
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2 # 프로젝트 코드로 checkout
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1 # Github action이 실행될 OS에 Java 설치
+      with:
+        java-version: 11 # JDK 11 버전 사용
+        
+    # gradlew 권한 부여
+    - name: Grant execute premission to gradlew
+      run: chmod +x ./gradlew # gradlew를 사용하기 위한 실행권한 획득
+      
+    # gradle 빌드
+    - name: Build with Gradle
+      run: ./gradlew build
+    
+    # 버전마다 이름을 다르게 하기 위해서 GITHUB_SHA라고 하는 해시이름을 활용하여 zip 파일을 만든다.
+    # CodeDeploy를 사용하기 위해서는 S3를 거쳐야 한다. 따라서 압축된 파일을 만들어주고 이를 옮긴다.
+    - name: Make zip file
+      run: zip -qq -r ./$GITHUB_SHA.zip .
+      shell: bash
+    
+    # AWS 설정
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    # S3 업로드
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://{저장할 폴더}/$GITHUB_SHA.zip
+      
+    # 실제로 코드를 배포한다
+    - name: Code Deploy
+      run: aws deploy create-deployment --application-name {애플리케이션 이름}
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name {배포 그룹}
+          --s3-location bucket={저장할 폴더},bundleType=zip,key=$GITHUB_SHA.zip

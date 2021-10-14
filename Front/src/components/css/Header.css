@@ -1,0 +1,115 @@
+@media only screen and (min-width: 641px) {
+    nav {
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 50px;
+        border-bottom:  1px solid #d6d6d6;
+        background-color: #fff;
+    }
+
+    nav div.wrap {
+        margin: 0 auto;
+        width: 1180px;
+        height: 100%;
+    }
+
+    nav div.wrap div.home {
+        float: left;
+        margin-left: 24px;
+        height: 100%;
+    }
+
+    nav div.wrap div.account {
+        float: right;
+        margin-right: 24px;
+        height: 100%;
+    }
+
+    .home {
+        float: left;
+        margin-right: 20px;
+        height: 100%;
+    }
+
+    .account {
+        float: right;
+        margin-right: 20px;
+        height: 100%;
+    }
+
+    .title {
+        margin-top: 25px;
+        margin-bottom: 80px;
+        padding:15px;
+        font-size : 20px;
+        height : 80px; 
+        color :#fff;
+    }
+}
+
+.home a {
+    float: left;
+    display: block;
+    margin: 10px 16px 20px 0;
+    width: 90px;
+    height: 30px;
+    color: #444444;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    text-decoration:none;
+}
+
+.home a img {
+    width: 100%;
+    height: 100%;
+}
+
+.home a.icon {
+    width: 40px;
+    color: transparent;
+    font-size: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+/*
+.home a.icon.message {
+    background-image: url(../../image/mongmong.png);
+    background-size: 16px 11px;
+}*/
+
+.account {
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-size: 0;
+}
+
+.account a {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 4px;
+    height: 30px;
+    width: 90px;
+    line-height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    vertical-align: top;
+    color: #444444;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+.title {
+    border-bottom: 1px solid #d6d6d6;
+    background-color: #3CB371;
+}
+

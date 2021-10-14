@@ -9,7 +9,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  backend:
+    name: CI with Gradle
     # Github action 스크립트가 작동될 OS 환경
     runs-on: ubuntu-latest
     env:
@@ -33,3 +34,31 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ./Back
+  
+#   frontend:
+#     name: CI with Node.js
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: client
+
+#     strategy:
+#       matrix:
+#         node-version: [12.16.x]
+
+#     steps:
+#       - name: 체크아웃 Github-Action
+#         uses: actions/checkout@v2
+
+#       - name: node.js 12 설치 ${{ matrix.node-version }}
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
+
+#       - name: npm 설치
+#         run: npm install
+
+#       - name: npm 빌드
+#         run: npm run build
+# https://www.sunny-son.space/AWS/Github%20Action%20CICD/

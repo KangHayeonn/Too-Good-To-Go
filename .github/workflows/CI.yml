@@ -1,0 +1,64 @@
+# workflow의 이름
+name: CI
+
+# workflow가 언제 실행될건지
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  backend:
+    name: CI with Gradle
+    # Github action 스크립트가 작동될 OS 환경
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./Back
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2 # 프로젝트 코드로 checkout
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1 # Github action이 실행될 OS에 Java 설치
+      with:
+        java-version: 11 # JDK 11 버전 사용
+        
+    # gradlew 권한 부여
+    - name: Grant execute premission to gradlew
+      run: chmod +x ./gradlew # gradlew를 사용하기 위한 실행권한 획득
+      working-directory: ./Back
+      
+    # gradle 빌드
+    - name: Build with Gradle
+      run: ./gradlew build
+      working-directory: ./Back
+  
+#   frontend:
+#     name: CI with Node.js
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: client
+
+#     strategy:
+#       matrix:
+#         node-version: [12.16.x]
+
+#     steps:
+#       - name: 체크아웃 Github-Action
+#         uses: actions/checkout@v2
+
+#       - name: node.js 12 설치 ${{ matrix.node-version }}
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
+
+#       - name: npm 설치
+#         run: npm install
+
+#       - name: npm 빌드
+#         run: npm run build
+# https://www.sunny-son.space/AWS/Github%20Action%20CICD/

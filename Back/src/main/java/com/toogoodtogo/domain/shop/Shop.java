@@ -11,7 +11,8 @@ import javax.persistence.Id;
 @Setter
 @Entity
 public class Shop {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;

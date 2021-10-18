@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService implements ShopUseCase{
+public class ShopService implements ShopUseCase {
     private final ShopRepository shopRepository;
 
     @Override

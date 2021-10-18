@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.shop;
+package com.toogoodtogo.web.shops;
 
 import com.toogoodtogo.application.shop.ShopUseCase;
 import com.toogoodtogo.domain.shop.Shop;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("shops")
 @RequiredArgsConstructor
-public class ShopController {
+public class ShopsController {
     private final ShopUseCase shopUseCase;
 
     @GetMapping

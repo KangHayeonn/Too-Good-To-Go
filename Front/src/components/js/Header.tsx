@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/Header.css";
 
-function Header() {
+const Header: React.FC = () => {
   return (
     <div>
       <nav>
@@ -20,6 +20,6 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
 export default Header;

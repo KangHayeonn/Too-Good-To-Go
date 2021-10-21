@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync ./build s3://too-good-to-go --profile=ksone02",
+    "deploy": "aws s3 sync ./build s3://too-good-to-go --profile=frontend-deploy",
     "eslint": "eslint src/**/*.ts",
     "eslint:fix": "eslint --fix src/**/*.ts"
   },

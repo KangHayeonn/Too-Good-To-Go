@@ -5,6 +5,7 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -15,5 +16,14 @@ public class ShopService implements ShopUseCase {
     @Override
     public List<Shop> findAllShops() {
         return shopRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Shop addShop(String name) {
+        Shop shop = new Shop();
+        shop.setName(name);
+        shopRepository.save(shop);
+        return shop;
     }
 }

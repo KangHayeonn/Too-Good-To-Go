@@ -1,0 +1,41 @@
+name: Frontend Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  frontend:
+    name: CI with Node
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./Front
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+    
+      - name: Check Node V #virtual 환경에 node 이미 설치되어 있음. yarn, npm, AWS CLI도 마찬가지
+        run: node -v
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }} 
+          restore-keys: #일치하는 캐시 key가 없을 때 차선택으로 캐싱폴더를 찾는다.
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: &{{ secrets.AWS_ACCESS_KEY_FRONT }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_FRONT }}
+        run:
+          aws s3 cp --recursive --region ap-northeast-2 build s3://too-good-to-go

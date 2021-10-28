@@ -17,16 +17,15 @@ class ShopRepositoryTest {
     ShopRepository shopRepository;
 
     @Test
-    public void shopAddTest() throws Exception {
+    public void shopAddTest() {
         //given
         Shop shopA = new Shop();
         shopA.setId(123L);
         shopA.setName("shopA");
-        shopRepository.save(shopA);
+        Shop savedShop = shopRepository.save(shopA);
         //when
-        Shop findShop1 = shopRepository.findById(shopA.getId()).get();
+        //Shop findShop = shopRepository.findById(shopA.getId()).get(); //get()?
         //then
-        Assertions.assertThat(findShop1).isEqualTo(shopA);
-
+        //Assertions.assertThat(findShop).isEqualTo(savedShop);
     }
 }

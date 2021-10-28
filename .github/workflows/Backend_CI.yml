@@ -23,6 +23,7 @@ jobs:
       uses: actions/setup-java@v1 # Github action이 실행될 OS에 Java 설치
       with:
         java-version: 11 # JDK 11 버전 사용
+
     # 캐싱
     - name: Cache Gradle packages
       uses: actions/cache@v2
@@ -43,6 +44,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ./Back
+
     # 결과 저장
     - name: If failure then upload test reports
       if: failure() // 테스트나 빌드가 실패시 실행
@@ -64,7 +66,7 @@ jobs:
         curl -F "file=@$TARBALL.gz" 'https://file.io/'
         echo
         echo 'Download the test reports from the URL above.'
-	
+
     # 캐싱
     - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.

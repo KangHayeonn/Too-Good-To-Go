@@ -47,7 +47,7 @@ jobs:
 
     # 결과 저장
     - name: If failure then upload test reports
-      if: failure() // 테스트나 빌드가 실패시 실행
+      if: failure() # 테스트나 빌드가 실패시 실행
       run: |
         TARBALL_BASENAME="r6-stats-report"
         TARBALL="$TARBALL_BASENAME.tar"

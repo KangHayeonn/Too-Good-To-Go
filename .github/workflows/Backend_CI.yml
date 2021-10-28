@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest # Github action 스크립트가 작동될 OS 환경
     env:
       working-directory: ./Back
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2 # 프로젝트 코드로 checkout
@@ -25,9 +24,6 @@ jobs:
         java-version: 11 # JDK 11 버전 사용
 		
 		# 캐싱
-		# https://heowc.dev/2020/02/20/improve-spring-boot-example-2/
-		# https://github.com/actions/cache
-		# https://devs0n.tistory.com/25
     - name: Cache Gradle packages
 			uses: actions/cache@v2
 		  with:
@@ -69,7 +65,7 @@ jobs:
         curl -F "file=@$TARBALL.gz" 'https://file.io/'
         echo
         echo 'Download the test reports from the URL above.'
-	
+
 		# 캐싱
     - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
@@ -82,8 +78,7 @@ jobs:
         rm -f ~/.gradle/caches/*/*.lock || true
         rm -f ~/.gradle/caches/*/gc.properties || true
       shell: bash
-
-
+		
 		# Slack 알림
 		- name: CI notification to Slack
       uses: 8398a7/action-slack@v3

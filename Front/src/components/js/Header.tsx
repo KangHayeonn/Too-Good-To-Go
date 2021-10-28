@@ -17,7 +17,7 @@ const Header: React.FC = () => {
         <div className="wrap">
           <div className="home">
             <a href="/">
-              <img alt="logo" src="img/Logo.png" />
+              <img alt="logo" src="image/Logo.png" />
             </a>
           </div>
           <div className="searchBar">

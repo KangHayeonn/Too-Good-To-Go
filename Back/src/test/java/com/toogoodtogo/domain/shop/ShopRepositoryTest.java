@@ -21,11 +21,10 @@ class ShopRepositoryTest {
     public void shopAddTest() {
         //given
         Shop shopA = new Shop();
-        shopA.setId(123L);
         shopA.setName("shopA");
         Shop savedShop = shopRepository.save(shopA);
         //when
-        Optional<Shop> findShop = shopRepository.findById(shopA.getId()); //get()?
+        Shop findShop = shopRepository.findById(shopA.getId()).orElseThrow(IllegalArgumentException::new);
         //then
         Assertions.assertThat(findShop).isEqualTo(savedShop);
     }

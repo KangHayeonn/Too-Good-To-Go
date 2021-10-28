@@ -8,4 +8,6 @@ public interface ShopUseCase {
 
     List<Shop> findAllShops();
 
+    Shop addShop(String name);
+
 }

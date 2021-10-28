@@ -1,0 +1,13 @@
+@media only screen and (min-width: 641px) {
+    .address {
+        margin: 0 auto 25px auto;
+        width: 900px;
+        height: 40px;
+        background-color: #3c3c3c;
+        color : #fff;
+    }
+}
+
+.address {
+    text-align: center;
+}

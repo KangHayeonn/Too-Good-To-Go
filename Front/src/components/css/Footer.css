@@ -1,0 +1,29 @@
+@media only screen and (min-width: 641px) {
+    .bottom {
+        margin: 0 auto 25px auto;
+        width: 100%;
+        height: 40px;
+        background-color: #dcdcdc;
+    }
+}
+
+.bottom {
+    text-align: center;
+}
+
+.bottom ul.links li {
+    display: inline-block;
+}
+
+.bottom > ul.links > li > a {
+    display: inline-block;
+    margin: 0 4px 4px 4px;
+    line-height: 40px;
+    color: #737373;
+    font-size: 12px;
+    text-decoration : none;
+}
+
+.bottom > ul.links > li.copyright > a, .bottom > ul.links > li.privacy > a {
+    font-weight: bold;
+}

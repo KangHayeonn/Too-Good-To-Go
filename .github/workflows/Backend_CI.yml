@@ -24,7 +24,7 @@ jobs:
       with:
         java-version: 11 # JDK 11 버전 사용
 
-	# 캐싱
+    # 캐싱
     - name: Cache Gradle packages
       uses: actions/cache@v2
       with:
@@ -80,8 +80,7 @@ jobs:
         rm -f ~/.gradle/caches/*/gc.properties || true
       shell: bash
 
-
-	# Slack 알림
+    # Slack 알림
     - name: CI notification to Slack
       uses: 8398a7/action-slack@v3
       with:

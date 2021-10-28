@@ -2,7 +2,9 @@ name: Frontend Deploy
 
 on:
   push:
-    branches: [ master ] #master로 push되었을 때 실행
+    paths:
+      - 'Front/**'
+    # branches: [ master ] #master로 push되었을 때 실행
 
 jobs:
   frontend:

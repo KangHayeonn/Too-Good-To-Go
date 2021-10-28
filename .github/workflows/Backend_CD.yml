@@ -1,5 +1,5 @@
 # workflow의 이름
-name: CD
+name: Backend_CD
 
 # workflow가 언제 실행될건지
 on:
@@ -47,14 +47,23 @@ jobs:
     name: Deploy
     runs-on: [ self-hosted, label-development ]
     steps:
-      - name: Login to ghcr
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }}
-      - name: Docker run
-        run: |
-          docker ps -q --filter "name={your image name}" | grep -q . && docker stop {your image name} && docker rm -fv {your image name}
-          docker run -d -p 8080:8080 --name cicd --restart always ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+    - name: Login to ghcr
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.CR_PAT }}
+    - name: Docker run
+      run: |
+        docker ps -q --filter "name={your image name}" | grep -q . && docker stop {your image name} && docker rm -fv {your image name}
+        docker run -d -p 8080:8080 --name cicd --restart always ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
 
+    # Slack 알림
+    - name: CD notification to Slack
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{job.status}}
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        author_name: Backend CD
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BACKEND_WEBHOOK_URL }}

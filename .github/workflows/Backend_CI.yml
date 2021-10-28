@@ -19,23 +19,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2 # 프로젝트 코드로 checkout
-		
     - name: Set up JDK 11
       uses: actions/setup-java@v1 # Github action이 실행될 OS에 Java 설치
       with:
         java-version: 11 # JDK 11 버전 사용
-		
 		# 캐싱
     - name: Cache Gradle packages
       uses: actions/cache@v2
       with:
       path: |
         ~/.gradle/caches
-		    ~/.gradle/wrapper
+				~/.gradle/wrapper
 
       key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-		  restore-keys: |
-		      ${{ runner.os }}-gradle-
+			restore-keys: |
+			${{ runner.os }}-gradle-
 
     # gradlew 권한 부여
     - name: Grant execute premission to gradlew
@@ -70,7 +68,7 @@ jobs:
         echo 'Download the test reports from the URL above.'
 	
 		# 캐싱
-    - name: Cleanup Gradle Cache
+		- name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
       # Restoring these files from a GitHub Actions cache might cause problems for future builds.
       if: ${{ always() }}

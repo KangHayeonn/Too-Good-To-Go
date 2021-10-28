@@ -23,17 +23,17 @@ jobs:
       uses: actions/setup-java@v1 # Github action이 실행될 OS에 Java 설치
       with:
         java-version: 11 # JDK 11 버전 사용
-		# 캐싱
+
+	# 캐싱
     - name: Cache Gradle packages
       uses: actions/cache@v2
       with:
-      path: |
-        ~/.gradle/caches
-				~/.gradle/wrapper
-
-      key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-			restore-keys: |
-			${{ runner.os }}-gradle-
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
 
     # gradlew 권한 부여
     - name: Grant execute premission to gradlew
@@ -44,9 +44,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ./Back
-
-		# 결과 저장
-		- name: If failure then upload test reports
+	
+    # 결과 저장
+    - name: If failure then upload test reports
       if: failure() // 테스트나 빌드가 실패시 실행
       run: |
         TARBALL_BASENAME="r6-stats-report"
@@ -67,8 +67,8 @@ jobs:
         echo
         echo 'Download the test reports from the URL above.'
 	
-		# 캐싱
-		- name: Cleanup Gradle Cache
+    # 캐싱
+    - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
       # Restoring these files from a GitHub Actions cache might cause problems for future builds.
       if: ${{ always() }}
@@ -81,8 +81,8 @@ jobs:
       shell: bash
 
 
-		# Slack 알림
-		- name: CI notification to Slack
+	# Slack 알림
+    - name: CI notification to Slack
       uses: 8398a7/action-slack@v3
       with:
         status: ${{job.status}}

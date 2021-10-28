@@ -1,23 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Header.css";
+import { css } from "@emotion/react";
+import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
+const navBar = css`
+  background-color: #54b689;
+`;
 
 const Header: React.FC = () => {
+  const [logged, setLogged] = useState(false);
   return (
     <div>
-      <nav>
+      <nav css={navBar}>
         <div className="wrap">
           <div className="home">
-            <a href="/">HOME</a>
+            <a href="/">
+              <img alt="logo" src="img/Logo.png" />
+            </a>
+          </div>
+          <div className="searchBar">
+            <form>
+              <input
+                className="searchText"
+                type="text"
+                placeholder="원하시는 메뉴를 입력해주세요!"
+              />
+              <a className="searchBtn" href="/">
+                <SearchIcon id="searchIcon" />
+              </a>
+            </form>
           </div>
           <div className="account">
-            <a href="/my">마이페이지</a>
-            <a href="/login">로그인</a>
+            {logged === false ? (
+              <div className="loginState">
+                <a href="/login">로그인</a>
+                <a href="/register">회원가입</a>
+              </div>
+            ) : (
+              <div className="logoutState">
+                <div className="navIcon">
+                  <a href="/my">
+                    <AccountCircleIcon id="accountIcon" />
+                  </a>
+                  <a href="/cart">
+                    <ShoppingCartIcon id="cartIcon" />
+                  </a>
+                </div>
+                <a href="/logout">로그아웃</a>
+              </div>
+            )}
           </div>
         </div>
       </nav>
-      <div className="title">
-        <h1>Too Good To Go</h1>
-      </div>
     </div>
   );
 };

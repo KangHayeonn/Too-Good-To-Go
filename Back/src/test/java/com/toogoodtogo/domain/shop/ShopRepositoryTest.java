@@ -7,11 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class ShopRepositoryTest {
     @Autowired
     ShopRepository shopRepository;
@@ -24,8 +25,8 @@ class ShopRepositoryTest {
         shopA.setName("shopA");
         Shop savedShop = shopRepository.save(shopA);
         //when
-        //Shop findShop = shopRepository.findById(shopA.getId()).get(); //get()?
+        Optional<Shop> findShop = shopRepository.findById(shopA.getId()); //get()?
         //then
-        //Assertions.assertThat(findShop).isEqualTo(savedShop);
+        Assertions.assertThat(findShop).isEqualTo(savedShop);
     }
 }

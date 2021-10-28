@@ -6,11 +6,9 @@ on:
   push:
     paths-ignore:
       - 'Front/**'
-    #branches: [ master ]
   pull_request:
     paths-ignore:
       - 'Front/**'
-    #branches: [ master ]
 
 jobs:
   backend:

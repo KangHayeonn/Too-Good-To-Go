@@ -10,7 +10,7 @@ const navBar = css`
 `;
 
 const Header: React.FC = () => {
-  const [logged, setLogged] = useState(false);
+  const [logged] = useState(false);
   return (
     <div>
       <nav css={navBar}>

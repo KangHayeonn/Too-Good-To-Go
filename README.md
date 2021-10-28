@@ -1,6 +1,6 @@
 # Too-Good-To-Go Web Project
 [![Backend_CI](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CI.yml/badge.svg?branch=master)](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CI.yml)
-[![Backend_CI](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CI.yml/badge.svg?branch=master)](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CI.yml)
+[![Backend_CD](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CD.yml/badge.svg?branch=master)](https://github.com/grand7070/Too-Good-To-Go/actions/workflows/Backend_CD.yml)
 -------------------
 ### 아이디어 주제
 ##### 💙 음식물 폐기문제를 해결하기 위해 지역 식당, 빵집, 식료품점의 남은 식품을 정가 대비 저렴하게 소비자에게 판매하는 웹사이트

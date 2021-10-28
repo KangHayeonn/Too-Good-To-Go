@@ -55,9 +55,7 @@ jobs:
         echo 'Compressing the test reports .. '
         gzip "$TARBALL"
         echo 'Uploading the test reports .. '
-        curl -F "file=@$TARBALL.gz" '
-https://file.io/
-'
+        curl -F "file=@$TARBALL.gz" 'https://file.io/'
         echo
         echo 'Download the test reports from the URL above.'
     # 캐싱

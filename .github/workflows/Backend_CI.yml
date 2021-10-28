@@ -2,7 +2,6 @@
 name: Backend_CI
 # workflow가 언제 실행될건지
 on:
-  workflow_dispatch:
   push:
     paths-ignore:
       - 'Front/**'

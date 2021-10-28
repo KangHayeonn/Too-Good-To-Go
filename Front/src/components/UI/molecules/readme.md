@@ -1,0 +1,1 @@
+#### atom끼리 합친 컴포넌트 (Label + Text창)

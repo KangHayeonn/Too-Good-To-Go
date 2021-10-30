@@ -16,4 +16,8 @@ public class Shop {
     private Long id;
 
     private String name;
+
+    private String image;
+
+    private String category;
 }

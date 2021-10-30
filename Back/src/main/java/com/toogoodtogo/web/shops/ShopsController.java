@@ -27,7 +27,11 @@ public class ShopsController {
     @PostMapping
     public ApiResponse<ShopDto> addShop(@RequestBody AddShopRequest body) {
         return new ApiResponse<>(
-                new ShopDto(shopUseCase.addShop(body.getName()))
+                new ShopDto(shopUseCase.addShop(
+                        body.getName(),
+                        body.getCategory(),
+                        body.getImage()
+                ))
         );
     }
 

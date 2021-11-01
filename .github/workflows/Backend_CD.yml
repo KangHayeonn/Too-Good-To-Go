@@ -50,7 +50,7 @@ jobs:
       with:
         directory: ./Back
         builder: ${{ steps.buildx.outputs.name }}
-        # file: ./Back/Dockerfile
+        file: ./Back/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
         tags: ghcr.io/kanghayeonn/too-good-to-go:latest
 

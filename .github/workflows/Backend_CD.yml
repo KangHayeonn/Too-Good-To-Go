@@ -17,6 +17,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2 # 프로젝트 코드로 checkout
+    
+    # gradle 빌드 (build+test)
+    - name: Build with Gradle
+      working-directory: ./Back
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build
 
     - name: Set up docker buildx
       id: buildx
@@ -37,11 +44,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
     
-    - name: Build and Push
+    - name: Build and push
       working-directory: ./Back
       run: |
-        chmod +x ./gradlew
-        ./gradlew build
         docker build . -t ghcr.io/kanghayeonn/too-good-to-go:latest
         docker push ghcr.io/kanghayeonn/too-good-to-go:latest
 

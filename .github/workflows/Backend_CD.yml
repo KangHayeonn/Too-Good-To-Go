@@ -4,9 +4,10 @@ name: Backend_CD
 # workflow가 언제 실행될건지
 on:
   push:
+    branches:
+      - master
     paths:
       - 'Back/**'
-
 jobs:
   build:
     # Github action 스크립트가 작동될 OS 환경

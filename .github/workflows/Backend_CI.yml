@@ -3,9 +3,13 @@ name: Backend_CI
 # workflow가 언제 실행될건지
 on:
   push:
+    branches:
+      - master
     paths:
       - 'Back/**'
   pull_request:
+    branches:
+      - master
     paths:
       - 'Back/**'
 jobs:

@@ -3,7 +3,8 @@ name: Backend_CD
 
 # workflow가 언제 실행될건지
 on:
-  push:
+  # push:
+  pull_request:
     branches:
       - master
     paths:
@@ -36,6 +37,13 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
+
+    # gradle 빌드 (build+test)
+    - name: Build with Gradle
+      working-directory: ./Back
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build
 
     - name: Build and push
       id: docker_build

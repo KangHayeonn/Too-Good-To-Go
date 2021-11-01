@@ -47,7 +47,7 @@ jobs:
     - name: Build and push
       working-directory: ./Back
       run: |
-        docker build . -t ghcr.io/kanghayeonn/too-good-to-go:latest
+        docker build -t ghcr.io/kanghayeonn/too-good-to-go:latest .
         docker push ghcr.io/kanghayeonn/too-good-to-go:latest
 
     # - name: Build and push

@@ -2,11 +2,6 @@
 name: Backend_CI
 # workflow가 언제 실행될건지
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'Back/**'
   pull_request:
     branches:
       - master
@@ -28,10 +23,10 @@ jobs:
         java-version: 11 # JDK 11 버전 사용
     # gradle 빌드 (build+test)
     - name: Build with Gradle
+      working-directory: ./Back
       run: |
         chmod +x ./gradlew
         ./gradlew build
-      working-directory: ./Back
     # 결과 저장
     - name: If failure then upload test reports
       if: failure() # 테스트나 빌드가 실패시 실행

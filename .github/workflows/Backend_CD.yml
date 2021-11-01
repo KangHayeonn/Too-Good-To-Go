@@ -3,8 +3,7 @@ name: Backend_CD
 
 # workflow가 언제 실행될건지
 on:
-  # push:
-  pull_request:
+  push:
     branches:
       - master
     paths:
@@ -43,12 +42,6 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
-    
-    # - name: Build and push
-    #   working-directory: ./Back
-    #   run: |
-    #     docker build -t ghcr.io/kanghayeonn/too-good-to-go:latest .
-    #     docker push ghcr.io/kanghayeonn/too-good-to-go:latest
 
     - name: Build and push
       id: docker_build
@@ -56,7 +49,6 @@ jobs:
       with:
         context: ./Back
         builder: ${{ steps.buildx.outputs.name }}
-        # file: ./Back/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
         tags: ghcr.io/kanghayeonn/too-good-to-go:latest
 

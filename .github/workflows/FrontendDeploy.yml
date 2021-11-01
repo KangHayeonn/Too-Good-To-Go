@@ -2,8 +2,8 @@ name: Frontend Deploy
 
 on:
   push:
-    paths-ignore:
-      - 'Back/**'
+    paths:
+      - 'Front/**'
 
 jobs:
   frontend:

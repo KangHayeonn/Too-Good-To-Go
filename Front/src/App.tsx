@@ -10,7 +10,6 @@ const App: React.FC = () => {
       <Header />
       <MainBoard />
       <Footer />
-      <h1>수정 되는지 테스트</h1>
     </div>
   );
 };

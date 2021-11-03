@@ -10,7 +10,7 @@ const navBar = css`
 `;
 
 const Header: React.FC = () => {
-  const [logged] = useState(false);
+  const [logged] = useState(true);
   return (
     <div>
       <nav css={navBar}>
@@ -48,7 +48,9 @@ const Header: React.FC = () => {
                     <ShoppingCartIcon id="cartIcon" />
                   </a>
                 </div>
-                <a href="/logout">로그아웃</a>
+                <div className="logoutBtn">
+                  <a href="/logout">로그아웃</a>
+                </div>
               </div>
             )}
           </div>

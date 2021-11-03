@@ -70,6 +70,10 @@
   font-family: "Noto Sans KR", sans-serif;
 }
 
+input:focus::placeholder {
+  color: transparent;
+}
+
 * {
   margin: 0;
 }

@@ -10,6 +10,7 @@ const App: React.FC = () => {
       <Header />
       <MainBoard />
       <Footer />
+      <h1>test</h1>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import React from 'react';
-import '../css/Login.css';
-import styled from '@emotion/styled';
+import React from "react";
+import "../Login/Login.css";
+import styled from "@emotion/styled";
 
 function Register() {
 	return (
@@ -13,14 +13,14 @@ function Register() {
 				</div>
 				<InputContainer className="input-ctn">
 					<div className="input-row">
-						{' '}
+						{" "}
 						<input
 							className="id input"
 							type="text"
 							name=""
 							id=""
 							placeholder="아이디를 입력하세요."
-						/>{' '}
+						/>{" "}
 						<Confirm type="button" className="confirm-btn">
 							확인
 						</Confirm>

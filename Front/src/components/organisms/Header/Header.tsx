@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import '../css/Header.css';
-import { css } from '@emotion/react';
-import SearchIcon from '@mui/icons-material/Search';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Login from './Login';
-import Register from './Register';
+import "./Header.css";
+import { css } from "@emotion/react";
+import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Login from "../../../pages/Login/Login";
+import Register from "../../../pages/Register/Register";
 
 const navBar = css`
 	background-color: #54b689;
@@ -40,8 +40,6 @@ const Header: React.FC = () => {
 						{logged === false ? (
 							<div className="loginState">
 								<Router>
-									{/* <a href="/login">로그인</a>
-									<a href="/register">회원가입</a> */}
 									<Link to="/login">Login</Link>
 									<Link to="/register">Register</Link>
 									<Switch>

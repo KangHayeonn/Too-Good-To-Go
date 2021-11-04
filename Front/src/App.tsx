@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import React from 'react';
-import './App.css';
-import Header from './components/js/Header';
-import MainBoard from './components/js/MainBoard';
-import Footer from './components/js/Footer';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React from "react";
+import "./App.css";
+import Header from "./components/organisms/Header/Header";
+import MainBoard from "./components";
+import Footer from "./components/organisms/Footer/Footer";
 
 const App: React.FC = () => {
 	return (

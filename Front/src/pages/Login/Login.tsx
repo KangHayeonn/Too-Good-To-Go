@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.css";
 
-function Login() {
+const Login: React.FC = () => {
 	return (
 		<div className="wrapper">
 			<div className="container">
@@ -37,6 +37,6 @@ function Login() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Login;

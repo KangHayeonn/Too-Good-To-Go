@@ -65,6 +65,7 @@ jobs:
         password: ${{ secrets.CR_PAT }}
     - name: Docker run
       run: |
+        docker pull ghcr.io/kanghayeonn/too-good-to-go:latest
         docker ps -q --filter "name=too-good-to-go" | grep -q . && docker stop too-good-to-go && docker rm -fv too-good-to-go
         docker run -d -p 80:8080 --name too-good-to-go --restart always ghcr.io/kanghayeonn/too-good-to-go:latest
 

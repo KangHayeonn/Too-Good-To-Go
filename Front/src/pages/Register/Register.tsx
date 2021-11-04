@@ -2,7 +2,7 @@ import React from "react";
 import "../Login/Login.css";
 import styled from "@emotion/styled";
 
-function Register() {
+const Register: React.FC = () => {
 	return (
 		<Wrapper className="wrapper">
 			<div className="container">
@@ -82,7 +82,7 @@ function Register() {
 			</div>
 		</Wrapper>
 	);
-}
+};
 
 const Wrapper = styled.div`
 	width: 613px;

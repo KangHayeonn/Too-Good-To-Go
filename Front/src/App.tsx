@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import React from "react";
 import "./App.css";
 import Header from "./components/organisms/Header/Header";

@@ -37,10 +37,8 @@ const Header: React.FC = () => {
 					<div className="account">
 						{logged === false ? (
 							<div className="loginState">
-								<Router>
-									<Link to="/login">로그인</Link>
-									<Link to="/register">회원가입</Link>
-								</Router>
+								<Link to="/login">로그인</Link>
+								<Link to="/register">회원가입</Link>
 							</div>
 						) : (
 							<div className="logoutState">

@@ -35,7 +35,7 @@ const arrayDiv = css`
 `;
 
 type shopMenuType = {
-	children: any;
+	children: React.ReactNode;
 };
 
 const ShopMenuHeader: React.FC<shopMenuType> = ({ children }) => {

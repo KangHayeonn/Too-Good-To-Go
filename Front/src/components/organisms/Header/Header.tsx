@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 import "./Header.css";
 import { css } from "@emotion/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Login from "../../../pages/Login/Login";
-import Register from "../../../pages/Register/Register";
 
 const navBar = css`
 	background-color: #54b689;
@@ -42,16 +40,6 @@ const Header: React.FC = () => {
 								<Router>
 									<Link to="/login">로그인</Link>
 									<Link to="/register">회원가입</Link>
-									<Switch>
-										<Route exact path="/login">
-											<Login />
-										</Route>
-									</Switch>
-									<Switch>
-										<Route exact path="/register">
-											<Register />
-										</Route>
-									</Switch>
 								</Router>
 							</div>
 						) : (

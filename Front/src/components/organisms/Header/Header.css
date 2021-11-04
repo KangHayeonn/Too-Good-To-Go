@@ -103,7 +103,7 @@
 
 .navIcon a {
   border: 0;
-  margin-left: 4;
+  margin: 0 10px;
   width: auto;
   height: 100%;
   display: flex;
@@ -114,15 +114,17 @@
 #cartIcon {
   width: 1.4em;
   height: 1.4em;
+  transition: 0.2s ease-out;
 }
 
 #accountIcon:hover,
 #cartIcon:hover {
-  background-color: #54b689;
-  color: #fff;
+  width: 1.5em;
+  height: 1.5em;
 }
 
-.account a:hover {
+.account .loginstatus a:hover,
+.account .logoutState .logoutBtn a:hover {
   background-color: #fff;
   color: #54b689;
 }

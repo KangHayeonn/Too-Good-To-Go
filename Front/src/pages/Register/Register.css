@@ -1,13 +1,12 @@
 .wrapper {
 	position: absolute;
 	left: 50%;
-	top: 100%;
+	top: 50%;
 	transform: translate(-50%, -50%);
 	border: 1px solid #c4c4c4;
 	border-radius: 2px;
 	padding: 10px;
 	background-color: white;
-	margin-top: 350px;
 	width: 400px;
 	height: 467px;
 }

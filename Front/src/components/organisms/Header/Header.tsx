@@ -40,8 +40,8 @@ const Header: React.FC = () => {
 						{logged === false ? (
 							<div className="loginState">
 								<Router>
-									<Link to="/login">Login</Link>
-									<Link to="/register">Register</Link>
+									<Link to="/login">로그인</Link>
+									<Link to="/register">회원가입</Link>
 									<Switch>
 										<Route exact path="/login">
 											<Login />

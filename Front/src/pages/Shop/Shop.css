@@ -1,20 +1,14 @@
 @media only screen and (min-width: 641px) {
-<<<<<<< HEAD:Front/src/components/css/MainBoard.css
-  .main {
-    padding-top: 52px;
-  }
-=======
-    .address {
-        margin: 0 auto 25px auto;
-        padding-top: 52px;
-        width: 900px;
-        height: 40px;
-        background-color: #3c3c3c;
-        color : #fff;
-    }
->>>>>>> frontend_HY:Front/src/pages/Shop/Shop.css
+	.address {
+		margin: 0 auto 25px auto;
+		padding-top: 52px;
+		width: 900px;
+		height: 40px;
+		background-color: #3c3c3c;
+		color: #fff;
+	}
 }
 
 .main {
-  text-align: center;
+	text-align: center;
 }

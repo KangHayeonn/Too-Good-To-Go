@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ProductsController {
     private final ProductUseCase productUseCase;
 
-    @GetMapping("shops/{shopId}/products")
+    @GetMapping("/api/shops/{shopId}/products")
     public ApiResponse<List<ProductDto>> findProducts(
             @PathVariable("shopId") Long shopId) {
         return new ApiResponse<>(

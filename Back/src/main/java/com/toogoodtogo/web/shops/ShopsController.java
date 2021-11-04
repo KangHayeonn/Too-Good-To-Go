@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("shops")
+@RequestMapping("/api/shops")
 @RequiredArgsConstructor
 public class ShopsController {
     private final ShopUseCase shopUseCase;

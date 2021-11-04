@@ -9,12 +9,12 @@ public class ShopDto {
     private final Long id;
     private final String name;
     private final String image;
-    private final String shopCategory;
+    private final String category;
 
     public ShopDto(Shop shop) {
         this.id = shop.getId();
         this.name = shop.getName();
         this.image = shop.getImage();
-        this.shopCategory = shop.getCategory();
+        this.category = shop.getCategory();
     }
 }

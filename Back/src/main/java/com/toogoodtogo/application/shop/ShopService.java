@@ -20,9 +20,12 @@ public class ShopService implements ShopUseCase {
 
     @Override
     @Transactional
-    public Shop addShop(String name) {
-        Shop shop = new Shop();
-        shop.setName(name);
+    public Shop addShop(String name, String category, String image) {
+        Shop shop = Shop.builder()
+                .name(name)
+                .image(image)
+                .category(category)
+                .build();
         shopRepository.save(shop);
         return shop;
     }

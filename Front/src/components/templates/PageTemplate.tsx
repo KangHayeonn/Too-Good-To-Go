@@ -5,13 +5,15 @@ import styled from "@emotion/styled";
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 1200px;
+	width: 1180px;
 	margin: 0 auto;
-	padding-top: 90px;
+	padding-top: 92px;
 `;
 
 const Header = styled.header`
 	display: flex;
+	justify-content: center;
+	width: 100%;
 `;
 
 const Content = styled.section`

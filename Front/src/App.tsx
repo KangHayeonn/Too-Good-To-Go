@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/js/Header";
-import Footer from "./components/js/Footer";
-import ShopMenuPage from "./components/pages/ShopMenuPage";
+import Header from "./components/organisms/Header/Header";
+import Footer from "./components/organisms/Footer/Footer";
+import Router from "./Router";
 
 const App: React.FC = () => {
 	return (
 		<div className="App">
 			<Header />
-			<ShopMenuPage />
+			<Router />
 			<Footer />
 		</div>
 	);

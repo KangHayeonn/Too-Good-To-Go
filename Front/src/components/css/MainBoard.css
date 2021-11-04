@@ -7,3 +7,7 @@
 .main {
   text-align: center;
 }
+
+.main > h4 {
+  font-weight: 500;
+}

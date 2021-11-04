@@ -2,16 +2,16 @@ import React from "react";
 import "./App.css";
 import Header from "./components/js/Header";
 import Footer from "./components/js/Footer";
-import MainBoard from "./components/js/MainBoard";
+import ShopMenuPage from "./components/pages/ShopMenuPage";
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <Header />
-      <MainBoard />
-      <Footer />
-    </div>
-  );
+	return (
+		<div className="App">
+			<Header />
+			<ShopMenuPage />
+			<Footer />
+		</div>
+	);
 };
 
 export default App;

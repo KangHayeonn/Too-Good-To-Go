@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("shops")
+@RequestMapping("/api/shops")
 @RequiredArgsConstructor
 public class ShopsController {
     private final ShopUseCase shopUseCase;
@@ -27,7 +27,11 @@ public class ShopsController {
     @PostMapping
     public ApiResponse<ShopDto> addShop(@RequestBody AddShopRequest body) {
         return new ApiResponse<>(
-                new ShopDto(shopUseCase.addShop(body.getName()))
+                new ShopDto(shopUseCase.addShop(
+                        body.getName(),
+                        body.getCategory(),
+                        body.getImage()
+                ))
         );
     }
 

@@ -27,9 +27,9 @@ const Footer = styled.footer`
 `;
 
 type Props = {
-	header: any;
-	children: any;
-	footer: any;
+	header: React.ReactNode;
+	children: React.ReactNode;
+	footer: React.ReactNode;
 };
 
 const PageTemplate: React.FC<Props> = ({

@@ -7,7 +7,7 @@ on:
     branches:
       - master
     paths:
-      - .github/Backend_CD.yml
+      - .github/workflows/Backend_CD.yml
       - 'Back/**'
 jobs:
   build:

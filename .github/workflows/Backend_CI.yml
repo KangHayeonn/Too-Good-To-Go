@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - .github/Backend_CI.yml
+      - .github/workflows/Backend_CI.yml
       - 'Back/**'
 jobs:
   backend:

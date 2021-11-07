@@ -12,10 +12,11 @@ const Router: React.FC = () => {
 		<BrowserRouter>
 			<Header />
 			<Switch>
-				<Route path="/shopmenu" component={ShopMenuPage} />
+				<Route exact path="/shopmenu" component={ShopMenuPage} />
+				<Route path="/shopmenu/:menuName" component={ShopMenuPage} />
 				<Route path="/shop" component={Shop} />
-				<Route path="/login" component={Login} />
-				<Route path="/register" component={Register} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/register" component={Register} />
 				<Route render={() => <div>에러페이지</div>} />
 			</Switch>
 			<Footer />

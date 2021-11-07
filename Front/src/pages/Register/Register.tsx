@@ -85,8 +85,8 @@ const Register: React.FC = () => {
 };
 
 const Wrapper = styled.div`
-	width: 613px;
-	height: 689px;
+	width: 525px;
+	height: 650px;
 `;
 
 const Button = styled.button`

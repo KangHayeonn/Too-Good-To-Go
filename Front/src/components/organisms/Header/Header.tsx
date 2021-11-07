@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./Header.css";
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const navBar = css`
+const NavBar = styled.nav`
 	background-color: #54b689;
+	position: fixed;
+	z-index: 100;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 52px;
+	border-bottom: 1px solid #d6d6d6;
 `;
 
 const Header: React.FC = () => {
 	const [logged] = useState(false);
 	return (
 		<div>
-			<nav css={navBar}>
+			<NavBar>
 				<div className="wrap">
 					<div className="home">
 						<a href="/">
@@ -55,7 +62,7 @@ const Header: React.FC = () => {
 						)}
 					</div>
 				</div>
-			</nav>
+			</NavBar>
 		</div>
 	);
 };

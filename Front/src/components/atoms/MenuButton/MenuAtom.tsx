@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@emotion/react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const menuAtomBtn = css`
 	width: calc(11.111%);
@@ -15,12 +15,16 @@ const menuAtomBtn = css`
 	&:first-of-type {
 		border-left: 2px solid #999;
 	}
-
-	p {
-		color: #333;
-		font-size: 15px;
-		font-weight: 400;
+	&:hover {
+		background-color: #54b689;
+		color: #fff;
+		font-weight: 700;
+		font-size: 17px;
 	}
+
+	color: #333;
+	font-size: 16px;
+	font-weight: 500;
 `;
 
 type menuType = {
@@ -30,9 +34,18 @@ type menuType = {
 
 const MenuAtom: React.FC<menuType> = ({ to, menuName }) => {
 	return (
-		<Link to={`shopmenu/${to}`} css={menuAtomBtn}>
-			<p>{menuName}</p>
-		</Link>
+		<NavLink
+			activeStyle={{
+				background: "#54b689",
+				fontWeight: "bold",
+				fontSize: "17px",
+				color: "#fff",
+			}}
+			to={`/shopmenu/${to}`}
+			css={menuAtomBtn}
+		>
+			{menuName}
+		</NavLink>
 	);
 };
 

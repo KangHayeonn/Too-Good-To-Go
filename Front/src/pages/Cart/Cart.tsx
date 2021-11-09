@@ -2,11 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 import PageTemplate from "../../components/templates/PageTemplate";
 import ShopHeaderMenu from "../../components/organisms/ShopMenu/ShopHeaderMenu";
+import CartTitle from "../../components/molecules/CartTitle";
 
 const Cart = () => {
 	return (
 		<PageTemplate header={<ShopHeaderMenu />} isFooter>
-			<Wrapper>d</Wrapper>
+			<Wrapper>
+				<CartTitle />
+			</Wrapper>
 		</PageTemplate>
 	);
 };
@@ -14,6 +17,6 @@ const Cart = () => {
 export default Cart;
 
 const Wrapper = styled.div`
-	width: 100vw;
-	height: 100vh;
+	margin: 0;
+	padding: 0;
 `;

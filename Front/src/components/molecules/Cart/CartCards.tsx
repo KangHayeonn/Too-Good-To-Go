@@ -47,14 +47,15 @@ export default CartCards;
 const Wrapper = styled.div`
 	width: 680px;
 	height: 579px;
-	border: 1px solid blue;
+	/* border: 1px solid blue; */
+	border-top: 1px solid #d3d3d3;
 	overflow: scroll;
 	padding: 30px 10px;
 	margin-right: 25px;
 `;
 
 const CartCard = styled.div`
-	width: 671px;
+	width: 640px;
 	height: 181px;
 	border: 1px solid #d3d3d3;
 	padding: 10px 10px 10px 0;

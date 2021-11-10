@@ -26,7 +26,8 @@ const Wrapper = styled.div`
 	display: flex;
 	width: 670px;
 	height: 50px;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	justify-content: space-between;
 	margin-top: 13px;
+	margin-bottom: 8px;
 `;

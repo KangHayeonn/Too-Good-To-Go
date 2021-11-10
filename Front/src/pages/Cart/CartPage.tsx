@@ -39,7 +39,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: whitesmoke;
+	/* background-color: whitesmoke; */
 `;
 
 const CartContentContainer = styled.div`
@@ -47,5 +47,5 @@ const CartContentContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 `;

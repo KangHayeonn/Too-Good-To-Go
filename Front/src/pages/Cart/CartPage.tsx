@@ -16,9 +16,13 @@ const CartPage = () => {
 			<ShopHeaderMenu />
 			<CartTitle />
 			<Stripebar />
-			<CartSelectionButtons />
-			<CartCards />
-			<PaymentContainer />
+			<CartContentContainer>
+				<div>
+					<CartSelectionButtons />
+					<CartCards />
+				</div>
+				<PaymentContainer />
+			</CartContentContainer>
 			{/* // </PageTemplate> */}
 		</Wrapper>
 	);
@@ -36,4 +40,12 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	background-color: whitesmoke;
+`;
+
+const CartContentContainer = styled.div`
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	border: 1px solid red;
 `;

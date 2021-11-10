@@ -1,8 +1,13 @@
+/* eslint-disable no-param-reassign */
 import React from "react";
 import styled from "@emotion/styled";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
 import { shopData } from "../ShopDummyData";
+import { actionCreators, State } from "../../../CartReducer/state";
 
-interface Ishops {
+export type ShopsType = {
 	shopId: number;
 	shopFoodImg: string;
 	shopName: string;
@@ -10,12 +15,37 @@ interface Ishops {
 	shopFoodSale: number;
 	shopFoodCost: number;
 	shopBeforeCost: number;
-}
+};
+
+const newShopData: NewShopsType[] = shopData.map((data) => {
+	return { ...data, isChecked: false };
+});
 
 const CartCards = () => {
+	const dispatch = useDispatch();
+
+	const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
+	// useSelector returns the modifiedState from reducer.
+	const isCheckedArr = useSelector((state: State) => {
+		return state.cart.filter((e) => {
+			// console.log(e);
+			return e.isChecked;
+		});
+	});
+	console.log("isChecked: ", isCheckedArr);
+
+	const accumulatedAmount = isCheckedArr.reduce(
+		(accu, curr) => {
+			accu.cost += curr.shopFoodCost;
+			return accu;
+		},
+		{ cost: 0 }
+	);
+	console.log(accumulatedAmount);
+
 	return (
 		<Wrapper>
-			{shopData.map((data: Ishops) => {
+			{newShopData.map((data: NewShopsType) => {
 				return (
 					<CartCard key={data.shopId}>
 						<div className="card-img-ctn">
@@ -29,10 +59,26 @@ const CartCards = () => {
 						<div className="right-wrapper">
 							<div className="price-ctn">
 								<p className="price">{data.shopFoodCost}원</p>
+								{/* checking isChecked */}
+								<p>
+									{isCheckedArr.find((e) => {
+										return e.shopId === data.shopId;
+									})
+										? "checked"
+										: "false"}
+								</p>
 							</div>
 							<div className="btn-ctn">
 								<button type="button">수정</button>
-								<button type="button">선택</button>
+								<button
+									type="button"
+									onClick={() => {
+										console.log(data.shopId);
+										checkCartItem(data.shopId);
+									}}
+								>
+									선택
+								</button>
 							</div>
 						</div>
 					</CartCard>
@@ -63,6 +109,11 @@ const CartCard = styled.div`
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	:hover {
+		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	}
 
 	.card-img-ctn {
 		width: 134px;

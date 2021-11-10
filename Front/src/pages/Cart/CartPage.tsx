@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
-import PageTemplate from "../../components/templates/PageTemplate";
 import ShopHeaderMenu from "../../components/organisms/ShopMenu/ShopHeaderMenu";
 import CartTitle from "../../components/molecules/Cart/CartTitle";
-import CartContentWrapper from "../../components/organisms/CartContentWrapper/CartContentWrapper";
 import CartSelectionButtons from "../../components/molecules/Cart/CartSelectionButtons";
 import PaymentContainer from "../../components/molecules/Cart/PaymentContainer";
 import CartCards from "../../components/molecules/Cart/CartCards";
 import Stripebar from "../../components/atoms/Stripebar/Stripebar";
 
-const CartPage = () => {
+const CartPage: React.FC = () => {
 	return (
 		// <PageTemplate header={<ShopHeaderMenu />} isFooter={false}>
 		<Wrapper>

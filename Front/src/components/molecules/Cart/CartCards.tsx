@@ -34,15 +34,6 @@ const CartCards = () => {
 	});
 	console.log("isChecked: ", isCheckedArr);
 
-	const accumulatedAmount = isCheckedArr.reduce(
-		(accu, curr) => {
-			accu.cost += curr.shopFoodCost;
-			return accu;
-		},
-		{ cost: 0 }
-	);
-	console.log(accumulatedAmount);
-
 	return (
 		<Wrapper>
 			{newShopData.map((data: NewShopsType) => {

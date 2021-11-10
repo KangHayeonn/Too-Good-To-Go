@@ -1,7 +1,25 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
+import { State } from "../../../CartReducer/state";
 
 const PaymentContainer = () => {
+	const isCheckedArr = useSelector((state: State) => {
+		return state.cart.filter((e) => {
+			return e.isChecked;
+		});
+	});
+
+	const accumulatedAmount = isCheckedArr.reduce(
+		(accu, curr) => {
+			// eslint-disable-next-line no-param-reassign
+			accu.cost += curr.shopFoodCost;
+			return accu;
+		},
+		{ cost: 0 }
+	);
+	console.log(accumulatedAmount);
+
 	return (
 		<Wrapper>
 			<div className="first-section">
@@ -15,7 +33,7 @@ const PaymentContainer = () => {
 				<p hidden>1</p>
 			</div>
 			<div className="fourth-section">
-				<p>총 29,000원</p>
+				<p>총 {accumulatedAmount.cost}원</p>
 			</div>
 			<div className="fifth-section">
 				<button type="button">선택 결제하기</button>

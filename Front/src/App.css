@@ -7,6 +7,10 @@
 	align-items: center;
 }
 
+body {
+	box-sizing: border-box;
+}
+
 input:focus::placeholder {
 	color: transparent;
 }
@@ -34,8 +38,3 @@ a {
 		Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
 		"Noto Sans KR", "Malgun Gothic", sans-serif;
 }
-
-/* html,
-body {
-	height: 100%;
-} */

@@ -15,6 +15,9 @@ const TitleAndBreadcrumb = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
+	margin: 42px 0 0 0;
+	padding: 0 15px 0 15px;
 `;
 
 const CartText = styled.div`

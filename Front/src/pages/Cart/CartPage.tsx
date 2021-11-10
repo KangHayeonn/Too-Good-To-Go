@@ -28,11 +28,10 @@ const Wrapper = styled.div`
 	margin: 0;
 	padding: 0;
 	padding-top: 92px;
-	width: 1180px;
-	height: 100vh;
+	width: 998px;
+	height: calc(100vh - 92px);
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	background-color: #ff1;
+	background-color: whitesmoke;
 `;

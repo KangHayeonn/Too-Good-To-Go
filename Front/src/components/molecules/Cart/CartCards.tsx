@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import React from "react";
 import styled from "@emotion/styled";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
@@ -70,6 +72,13 @@ const CartCards = () => {
 								>
 									선택
 								</button>
+								{isCheckedArr.find((e) => {
+									return e.shopId === data.shopId;
+								}) ? (
+									<CheckBoxIcon />
+								) : (
+									<CheckBoxOutlineBlankIcon />
+								)}
 							</div>
 						</div>
 					</CartCard>
@@ -144,7 +153,10 @@ const CartCard = styled.div`
 	.btn-ctn {
 		/* display: border-box; */
 		flex-direction: row;
-		width: 200px;
+		width: 250px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	Button {

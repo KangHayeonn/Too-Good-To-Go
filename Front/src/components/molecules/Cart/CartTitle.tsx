@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import CartBreadcrumb from "../atoms/Breadcrumb/CartBreadcrumb";
+import CartBreadcrumb from "../../atoms/Breadcrumb/CartBreadcrumb";
 
 const CartTitle = () => {
 	return (

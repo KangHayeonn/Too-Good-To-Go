@@ -6,7 +6,7 @@ import Register from "./pages/Register/Register";
 import Shop from "./pages/Shop/Shop";
 import ShopMenuPage from "./pages/ShopMenu/ShopMenuPage";
 import Footer from "./components/organisms/Footer/Footer";
-import Cart from "./pages/Cart/Cart";
+import CartPage from "./pages/Cart/CartPage";
 
 const Router: React.FC = () => {
 	return (
@@ -17,7 +17,7 @@ const Router: React.FC = () => {
 				<Route path="/shop" component={Shop} />
 				<Route path="/login" component={Login} />
 				<Route path="/register" component={Register} />
-				<Route path="/cart" component={Cart} />
+				<Route path="/cart" component={CartPage} />
 				<Route render={() => <div>에러페이지</div>} />
 			</Switch>
 			<Footer />

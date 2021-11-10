@@ -7,6 +7,7 @@ import CartContentWrapper from "../../components/organisms/CartContentWrapper/Ca
 import CartSelectionButtons from "../../components/molecules/Cart/CartSelectionButtons";
 import PaymentContainer from "../../components/molecules/Cart/PaymentContainer";
 import CartCards from "../../components/molecules/Cart/CartCards";
+import Stripebar from "../../components/atoms/Stripebar/Stripebar";
 
 const CartPage = () => {
 	return (
@@ -14,6 +15,7 @@ const CartPage = () => {
 		<Wrapper>
 			<ShopHeaderMenu />
 			<CartTitle />
+			<Stripebar />
 			<CartSelectionButtons />
 			<CartCards />
 			<PaymentContainer />

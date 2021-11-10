@@ -1,4 +1,4 @@
-export const shops = [
+export const shopData = [
 	{
 		shopId: 0,
 		shopFoodImg: "image/food2.jpg",

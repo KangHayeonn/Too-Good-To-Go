@@ -13,7 +13,9 @@ const CartSelectionButtons = () => {
 			<FormGroup>
 				<FormControlLabel control={<Checkbox />} label="전체 선택" />
 			</FormGroup>
-			<Button variant="contained">삭제하기</Button>
+			<Button variant="contained" size="small">
+				삭제하기
+			</Button>
 		</Wrapper>
 	);
 };

@@ -39,7 +39,7 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			isFooter
 		>
 			<ShopMenuHeader>{match.params.menuName}</ShopMenuHeader>
-			<ShopCards />
+			<ShopCards menuMatchName={match.params.menuName} />
 		</PageTemplate>
 	);
 };

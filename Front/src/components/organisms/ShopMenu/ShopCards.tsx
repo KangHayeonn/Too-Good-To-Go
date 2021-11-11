@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "@emotion/styled";
 import ShopCard from "../../molecules/ShopMenu/ShopCard";
 
@@ -21,117 +22,63 @@ const ShopListLi = styled.li`
 	}
 `;
 
-const shops = [
-	{
-		shopId: 0,
-		shopFoodImg: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		shopFoodName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		shopFoodCost: 9000,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 1,
-		shopFoodImg: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		shopFoodName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		shopFoodCost: 9500,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 2,
-		shopFoodImg: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		shopFoodName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		shopFoodCost: 9000,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 3,
-		shopFoodImg: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		shopFoodName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		shopFoodCost: 9500,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 4,
-		shopFoodImg: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		shopFoodName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		shopFoodCost: 9000,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 5,
-		shopFoodImg: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		shopFoodName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		shopFoodCost: 9500,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 6,
-		shopFoodImg: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		shopFoodName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		shopFoodCost: 9000,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 7,
-		shopFoodImg: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		shopFoodName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		shopFoodCost: 9500,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 8,
-		shopFoodImg: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		shopFoodName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		shopFoodCost: 9000,
-		shopBeforeCost: 10000,
-	},
-	{
-		shopId: 9,
-		shopFoodImg: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		shopFoodName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		shopFoodCost: 9500,
-		shopBeforeCost: 10000,
-	},
-];
+type shopsDataType = {
+	id: number;
+	image: string;
+	shopName: string;
+	productName: string;
+	shopFoodSale: number;
+	discountPrice: number;
+	price: number;
+	category: string;
+	data: Array<string | number>;
+};
 
-const ShopCards: React.FC = () => {
+const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboards";
+const BoardService = () => {
+	return axios.get(SHOP_BOARD_API_BASE_URL);
+};
+
+const calculatedDiscount = (price: number, discountPrice: number): number => {
+	return Math.ceil((1 - discountPrice / price) * 100);
+};
+
+interface menuMatchType {
+	menuMatchName?: string;
+}
+
+const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
+	const [shop, setShops] = useState<shopsDataType[]>([]);
+	useEffect(() => {
+		BoardService().then((res) => {
+			setShops(res.data.data);
+		});
+	}, []);
 	return (
 		<ShopList>
-			{shops.map((row) => (
-				<ShopListLi>
-					<ShopCard
-						key={row.shopId}
-						shopName={row.shopName}
-						shopFoodImg={row.shopFoodImg}
-						shopFoodName={row.shopFoodName}
-						shopFoodSale={row.shopFoodSale}
-						shopFoodCost={row.shopFoodCost}
-						shopBeforeCost={row.shopBeforeCost}
-					/>
-				</ShopListLi>
-			))}
+			{shop.map((row) =>
+				row.category === menuMatchName ? (
+					<ShopListLi key={row.id}>
+						<ShopCard
+							shopName={row.shopName}
+							shopFoodImg={row.image}
+							shopFoodName={row.productName}
+							shopFoodSale={calculatedDiscount(
+								row.price,
+								row.discountPrice
+							)}
+							shopFoodCost={row.discountPrice}
+							shopBeforeCost={row.price}
+						/>
+					</ShopListLi>
+				) : null
+			)}
 		</ShopList>
 	);
+};
+
+ShopCards.defaultProps = {
+	menuMatchName: "한식",
 };
 
 export default ShopCards;

@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 	padding: 0;
 	padding-top: 92px;
 	width: 998px;
-	height: calc(100vh - 92px);
+	height: calc(100vh - 500px);
 	display: flex;
 	flex-direction: column;
 	align-items: center;

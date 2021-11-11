@@ -3,6 +3,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
@@ -51,7 +52,11 @@ const CartCards = () => {
 						</div>
 						<div className="right-wrapper">
 							<div className="price-ctn">
-								<p className="price">{data.shopFoodCost}원</p>
+								<p className="price">
+									<s>({data.shopBeforeCost}원)</s>
+									<ArrowRightAltRoundedIcon className="right-arrow" />
+									<strong>{data.shopFoodCost}원</strong>
+								</p>
 								{/* checking isChecked */}
 								<p>
 									{isCheckedArr.find((e) => {
@@ -66,7 +71,7 @@ const CartCards = () => {
 								<button
 									type="button"
 									onClick={() => {
-										console.log(data.shopId);
+										// console.log(data.shopId);
 										checkCartItem(data.shopId);
 									}}
 								>
@@ -167,5 +172,21 @@ const CartCard = styled.div`
 		color: black;
 		font-weight: 500;
 		font-size: 13px;
+	}
+
+	.price {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.price > s {
+		color: black;
+	}
+
+	.right-arrow {
+		/* margin-top: 20px; */
+		/* padding-top */
 	}
 `;

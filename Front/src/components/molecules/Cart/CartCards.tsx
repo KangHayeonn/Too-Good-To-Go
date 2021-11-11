@@ -28,6 +28,7 @@ const CartCards = () => {
 	const dispatch = useDispatch();
 
 	const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
+
 	// useSelector returns the modifiedState from reducer.
 	const isCheckedArr = useSelector((state: State) => {
 		return state.cart.filter((e) => {

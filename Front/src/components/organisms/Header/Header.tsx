@@ -26,7 +26,10 @@ const Header: React.FC = () => {
 				<div className="wrap">
 					<div className="home">
 						<a href="/">
-							<img alt="logo" src="image/Logo.png" />
+							<img
+								alt="logo"
+								src={`${process.env.PUBLIC_URL}/image/Logo.png`} // public폴더 절대경로 사용시 환경변수에 접근해서 써야함.
+							/>
 						</a>
 					</div>
 					<div className="searchBar">

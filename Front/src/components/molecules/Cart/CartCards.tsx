@@ -24,7 +24,7 @@ const newShopData: NewShopsType[] = shopData.map((data) => {
 	return { ...data, isChecked: false };
 });
 
-const CartCards = () => {
+const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
@@ -36,7 +36,7 @@ const CartCards = () => {
 			return e.isChecked;
 		});
 	});
-	console.log("isChecked: ", isCheckedArr);
+	// console.log("isChecked: ", isCheckedArr);
 
 	return (
 		<Wrapper>

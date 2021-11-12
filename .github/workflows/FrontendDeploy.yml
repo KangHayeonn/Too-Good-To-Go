@@ -31,11 +31,11 @@ jobs:
                  ${{ runner.OS }}-build- ${{ runner.OS }}-
 
          - name: Install Dependencies
-           run: yarn install
+           run: npm install
            working-directory: ${{ env.working-directory }}
 
          - name: Build
-           run: yarn build
+           run: npm run build
            working-directory: ${{ env.working-directory }} #Front 폴더 하위에 생성
 
          - name: Configure AWS credentials #사용자 인증

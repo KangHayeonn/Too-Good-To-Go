@@ -19,7 +19,7 @@ const PaymentContainer: React.FC = () => {
 		accu += curr.shopFoodCost;
 		return accu;
 	}, 0);
-	console.log(accumulatedAmount);
+	// console.log(accumulatedAmount);
 
 	return (
 		<Wrapper>

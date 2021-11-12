@@ -5,9 +5,9 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+// const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const CartSelectionButtons = () => {
+const CartSelectionButtons: React.FC = () => {
 	return (
 		<Wrapper>
 			<FormGroup>

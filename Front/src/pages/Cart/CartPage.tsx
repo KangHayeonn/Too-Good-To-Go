@@ -4,8 +4,9 @@ import ShopHeaderMenu from "../../components/organisms/ShopMenu/ShopHeaderMenu";
 import CartTitle from "../../components/molecules/Cart/CartTitle";
 import CartSelectionButtons from "../../components/molecules/Cart/CartSelectionButtons";
 import PaymentContainer from "../../components/molecules/Cart/PaymentContainer";
-import CartCards from "../../components/molecules/Cart/CartCards";
 import Stripebar from "../../components/atoms/Stripebar/Stripebar";
+import CartCards from "../../components/molecules/Cart/CartCards";
+
 
 const CartPage: React.FC = () => {
 	return (

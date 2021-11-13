@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
-import { State } from "../../../CartReducer/state";
+import { RootState } from "../../../app/store";
 
 // type accumulatedAmountType = {
 // 	cost: number;
 // };
 
 const PaymentContainer: React.FC = () => {
-	const isCheckedArr = useSelector((state: State) => {
-		return state.cart.filter((e) => {
+	const isCheckedArr = useSelector((state: RootState) => {
+		return state.selectCartCards.filter((e) => {
 			return e.isChecked;
 		});
 	});

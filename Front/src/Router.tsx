@@ -12,7 +12,7 @@ const Router: React.FC = () => {
 		<BrowserRouter>
 			<Header />
 			<Switch>
-				<Route exact path="/shopmenu" component={ShopMenuPage} />
+				<Route exact path="/shopmenu/" component={ShopMenuPage} />
 				<Route path="/shopmenu/:menuName" component={ShopMenuPage} />
 				<Route path="/shop" component={Shop} />
 				<Route exact path="/login" component={Login} />

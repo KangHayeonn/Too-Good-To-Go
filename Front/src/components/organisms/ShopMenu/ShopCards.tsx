@@ -31,7 +31,7 @@ const shopExam = [
 		shopFoodSale: 10,
 		discountPrice: 9000,
 		price: 10000,
-		category: "한식",
+		category: ["한식"],
 	},
 	{
 		id: 1,
@@ -41,7 +41,7 @@ const shopExam = [
 		shopFoodSale: 5,
 		discountPrice: 9500,
 		price: 10000,
-		category: "한식",
+		category: ["한식"],
 	},
 	{
 		id: 2,
@@ -51,7 +51,7 @@ const shopExam = [
 		shopFoodSale: 10,
 		discountPrice: 9000,
 		price: 10000,
-		category: "1인분",
+		category: ["한식"],
 	},
 	{
 		id: 3,
@@ -61,17 +61,17 @@ const shopExam = [
 		shopFoodSale: 5,
 		discountPrice: 9500,
 		price: 10000,
-		category: "카페디저트",
+		category: ["디저트"],
 	},
 	{
 		id: 4,
-		image: "https://lh3.googleusercontent.com/proxy/EAaKjOmk6wI8U__JS4jC2Ncr0_1jFB97BLxCByhKLr2qAYsG1owCNfGP9oAlJUbQRWs_wnR94Z5xeoU9LeJrPWNScXvStYzWKRsjJfW5l64cT-KisepgsGzPA6qTjRXkJT_YgHxgXWaCMNqF6YFf6Aq7i7b5pjlQ-IEj",
+		image: "https://lh3.googleusercontent.com/proxy/iBaYy9iJfq23IRywlEwhDU_Vb4pw5cAbk5WKycD1Bo1RO6EjG37JYGnAWs7xo9r25NtwBQZHMuCZyR6P1D4FbtdqyHJxt4QzGDjl-w",
 		shopName: "그냥치킨집",
 		productName: "그냥맛있는치킨",
 		shopFoodSale: 10,
 		discountPrice: 9000,
 		price: 10000,
-		category: "치킨",
+		category: ["치킨", "패스트푸드", "야식"],
 	},
 	{
 		id: 5,
@@ -81,7 +81,7 @@ const shopExam = [
 		shopFoodSale: 5,
 		discountPrice: 9500,
 		price: 10000,
-		category: "피자양식",
+		category: ["패스트푸드", "피자"],
 	},
 	{
 		id: 6,
@@ -91,7 +91,7 @@ const shopExam = [
 		shopFoodSale: 10,
 		discountPrice: 9000,
 		price: 10000,
-		category: "중국집",
+		category: ["중식"],
 	},
 	{
 		id: 7,
@@ -101,7 +101,7 @@ const shopExam = [
 		shopFoodSale: 5,
 		discountPrice: 9500,
 		price: 10000,
-		category: "일식돈까스",
+		category: ["일식"],
 	},
 	{
 		id: 8,
@@ -111,7 +111,7 @@ const shopExam = [
 		shopFoodSale: 10,
 		discountPrice: 9000,
 		price: 10000,
-		category: "야식",
+		category: ["야식"],
 	},
 	{
 		id: 9,
@@ -121,7 +121,7 @@ const shopExam = [
 		shopFoodSale: 5,
 		discountPrice: 9500,
 		price: 10000,
-		category: "족발보쌈",
+		category: ["야식"],
 	},
 ];
 
@@ -133,11 +133,11 @@ type shopsDataType = {
 	shopFoodSale: number;
 	discountPrice: number;
 	price: number;
-	category: string;
+	category: Array<string>;
 	data?: Array<string | number>;
 };
 
-const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboard";
+const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboards";
 const BoardService = () => {
 	return axios.get(SHOP_BOARD_API_BASE_URL);
 };
@@ -165,7 +165,8 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 	return (
 		<ShopList>
 			{shop.map((row) =>
-				row.category === menuMatchName ? (
+				row.category.includes(`${menuMatchName}`) ||
+				menuMatchName === "전체보기" ? (
 					<ShopListLi key={row.id}>
 						<ShopCard
 							shopName={row.shopName}

@@ -38,8 +38,10 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			}
 			isFooter
 		>
-			<ShopMenuHeader>{match.params.menuName}</ShopMenuHeader>
-			<ShopCards menuMatchName={match.params.menuName} />
+			<ShopMenuHeader>
+				{match.params.menuName || "전체보기"}
+			</ShopMenuHeader>
+			<ShopCards menuMatchName={match.params.menuName || "전체보기"} />
 		</PageTemplate>
 	);
 };

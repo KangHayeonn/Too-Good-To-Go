@@ -1,14 +1,23 @@
-/* eslint-disable no-param-reassign */
 import React from "react";
+// Styles
 import styled from "@emotion/styled";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
+// redux
 import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
-import { shopData } from "../ShopDummyData";
-import { actionCreators, State } from "../../../CartReducer/state";
+// rtk
+import {
+	CartCardType,
+	initialCards,
+	selectCartCardByID,
+} from "../../../features/cartFeatures/selectCartCardsSlice";
+import { RootState } from "../../../app/store";
+
+// import { bindActionCreators } from "redux";
+// import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
+// import { shopData } from "../ShopDummyData";
+// import { actionCreators, State } from "../../../CartReducer/state";
 
 export type ShopsType = {
 	shopId: number;
@@ -20,48 +29,48 @@ export type ShopsType = {
 	shopBeforeCost: number;
 };
 
-const newShopData: NewShopsType[] = shopData.map((data) => {
-	return { ...data, isChecked: false };
-});
+// const newShopData: NewShopsType[] = shopData.map((data) => {
+// 	return { ...data, isChecked: false };
+// });
 
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
+	// const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
 
 	// useSelector returns the modifiedState from reducer.
-	const isCheckedArr = useSelector((state: State) => {
-		return state.cart.filter((e) => {
-			// console.log(e);
+	const isCheckedArr = useSelector((state: RootState) => {
+		return state.selectCartCards.filter((e) => {
 			return e.isChecked;
 		});
 	});
-	// console.log("isChecked: ", isCheckedArr);
+
+	console.log(`intialCards: `, initialCards);
 
 	return (
 		<Wrapper>
-			{newShopData.map((data: NewShopsType) => {
+			{initialCards.map((card: CartCardType) => {
 				return (
-					<CartCard key={data.shopId}>
+					<CartCard key={card.shopId}>
 						<div className="card-img-ctn">
-							<img src={data.shopFoodImg} alt="Food" />
+							<img src={card.shopFoodImg} alt="Food" />
 						</div>
 						<div className="cardInfo">
-							<p>{data.shopName}</p>
+							<p>{card.shopName}</p>
 							<strong>shopType, Pipe, foodType</strong>
-							<p>{data.shopFoodName}</p>
+							<p>{card.shopFoodName}</p>
 						</div>
 						<div className="right-wrapper">
 							<div className="price-ctn">
 								<p className="price">
-									<s>({data.shopBeforeCost}원)</s>
+									<s>({card.shopBeforeCost}원)</s>
 									<ArrowRightAltRoundedIcon className="right-arrow" />
-									<strong>{data.shopFoodCost}원</strong>
+									<strong>{card.shopFoodCost}원</strong>
 								</p>
 								{/* checking isChecked */}
 								<p>
 									{isCheckedArr.find((e) => {
-										return e.shopId === data.shopId;
+										return e.shopId === card.shopId;
 									})
 										? "checked"
 										: "false"}
@@ -73,13 +82,15 @@ const CartCards: React.FC = () => {
 									type="button"
 									onClick={() => {
 										// console.log(data.shopId);
-										checkCartItem(data.shopId);
+										dispatch(
+											selectCartCardByID(card.shopId)
+										);
 									}}
 								>
 									선택
 								</button>
 								{isCheckedArr.find((e) => {
-									return e.shopId === data.shopId;
+									return e.shopId === card.shopId;
 								}) ? (
 									<CheckBoxIcon />
 								) : (

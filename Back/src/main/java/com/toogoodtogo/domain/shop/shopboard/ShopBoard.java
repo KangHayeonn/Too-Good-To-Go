@@ -23,10 +23,10 @@ public class ShopBoard {
     private String productName;
     private Long price;
     private Long discountPrice;
-    private String category;
+    private String[] category;
 
     @Builder
-    public ShopBoard(String shopName, String image, String productName, Long price, Long discountPrice, String category) {
+    public ShopBoard(String shopName, String image, String productName, Long price, Long discountPrice, String[] category) {
         this.shopName = shopName;
         this.image = image;
         this.productName = productName;

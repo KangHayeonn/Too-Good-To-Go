@@ -13,7 +13,7 @@ public class ShopBoardDto {
     private final String productName;
     private final Long price;
     private final Long discountPrice;
-    private final String category;
+    private final String[] category;
 
     public ShopBoardDto(ShopBoard shopBoard) {
         this.id = shopBoard.getId();

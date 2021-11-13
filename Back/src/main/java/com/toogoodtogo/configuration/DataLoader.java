@@ -79,7 +79,7 @@ public class DataLoader implements ApplicationRunner {
         shopBoard1.setProductName("돼지고기 듬뿍 김치찌개");
         shopBoard1.setPrice(15000L);
         shopBoard1.setDiscountPrice(13400L);
-        shopBoard1.setCategory("한식");
+        shopBoard1.setCategory(new String[]{"한식"});
         shopBoardRepository.save(shopBoard1);
 
         ShopBoard shopBoard2 = new ShopBoard();
@@ -88,7 +88,7 @@ public class DataLoader implements ApplicationRunner {
         shopBoard2.setProductName("기본 감자탕");
         shopBoard2.setPrice(25000L);
         shopBoard2.setDiscountPrice(19900L);
-        shopBoard2.setCategory("한식");
+        shopBoard2.setCategory(new String[]{"한식", "찜탕"});
         shopBoardRepository.save(shopBoard2);
 
         ShopBoard shopBoard3 = new ShopBoard();
@@ -97,7 +97,7 @@ public class DataLoader implements ApplicationRunner {
         shopBoard3.setProductName("전주비빔밥");
         shopBoard3.setPrice(7000L);
         shopBoard3.setDiscountPrice(5000L);
-        shopBoard3.setCategory("한식");
+        shopBoard3.setCategory(new String[]{"한식"});
         shopBoardRepository.save(shopBoard3);
 
         ShopBoard shopBoard4 = new ShopBoard();
@@ -106,7 +106,7 @@ public class DataLoader implements ApplicationRunner {
         shopBoard4.setProductName("고등어구이정식");
         shopBoard4.setPrice(8000L);
         shopBoard4.setDiscountPrice(4000L);
-        shopBoard4.setCategory("한식");
+        shopBoard4.setCategory(new String[]{"한식"});
         shopBoardRepository.save(shopBoard4);
 
         ShopBoard shopBoard5 = new ShopBoard();
@@ -115,7 +115,7 @@ public class DataLoader implements ApplicationRunner {
         shopBoard5.setProductName("황금올리브치킨");
         shopBoard5.setPrice(19000L);
         shopBoard5.setDiscountPrice(13900L);
-        shopBoard5.setCategory("치킨");
+        shopBoard5.setCategory(new String[]{"치킨", "패스트푸드"});
         shopBoardRepository.save(shopBoard5);
     }
 }

@@ -45,8 +45,6 @@ const CartCards: React.FC = () => {
 		});
 	});
 
-	console.log(`intialCards: `, initialCards);
-
 	return (
 		<Wrapper>
 			{initialCards.map((card: CartCardType) => {

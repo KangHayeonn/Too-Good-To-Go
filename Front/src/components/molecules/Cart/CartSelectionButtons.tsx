@@ -1,17 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
-
-// const label = { inputProps: { "aria-label": "Checkbox demo" } };
+// rtk
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import { selectAllCartCards } from "../../../features/cartFeatures/selectCartCardsSlice";
 
 const CartSelectionButtons: React.FC = () => {
+	const [selectAll, setSelectAll] = useState<boolean>(false);
+
+	// const isCheckedArr = useSelector((state: RootState) => {
+	// 	return state.selectCartCards.
+	// })
+
+	function handleSelectAll(e: React.MouseEvent<HTMLButtonElement>) {
+		e.target as HTMLButtonElement;
+		dispatch(selectAllCartCards(selectAll));
+		setSelectAll(!selectAll);
+	}
+
+	const isCardsChecked = useSelector((state: RootState) => {
+		return state.selectCartCards.some((e) => {
+			return e.isChecked === false;
+		});
+	});
+
+	useEffect(() => {
+		if (!isCardsChecked) {
+			setSelectAll(!selectAll);
+		}
+	}, [isCardsChecked]);
+
+	const dispatch = useDispatch();
+
 	return (
 		<Wrapper>
 			<FormGroup>
-				<FormControlLabel control={<Checkbox />} label="전체 선택" />
+				<FormControlLabel
+					control={
+						<Checkbox
+							onClick={(e) => handleSelectAll(e)}
+							value={selectAll}
+						/>
+					}
+					label="전체 선택"
+				/>
 			</FormGroup>
 			<Button variant="contained" size="small">
 				삭제하기

@@ -10,9 +10,11 @@ on:
       - .github/workflows/Backend_CD.yml
       - 'Back/**'
 jobs:
-  build:
+  build-and-push:
     # Github action 스크립트가 작동될 OS 환경
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./Back
 
     steps:
     - name: Checkout
@@ -53,23 +55,20 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ghcr.io/kanghayeonn/too-good-to-go:latest
 
-  deploy:
-    needs: build
-    name: Deploy
-    runs-on: [ self-hosted, prod ]
-    steps:
-    - name: Login to ghcr
-      uses: docker/login-action@v1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.CR_PAT }}
-    - name: Docker run
-      run: |
-        docker pull ghcr.io/kanghayeonn/too-good-to-go:latest
-        docker ps -q --filter "name=too-good-to-go" | grep -q . && docker stop too-good-to-go && docker rm -fv too-good-to-go
-        docker run -d -p 80:8080 --name too-good-to-go --restart always ghcr.io/kanghayeonn/too-good-to-go:latest
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
 
+    - name: Force new deploy ECS service
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ${{ env.working-directory }}
+      run: aws ecs update-service --cluster main --service api-server --force-new-deployment
+    
     # Slack 알림
     - name: CD notification to Slack
       uses: 8398a7/action-slack@v3

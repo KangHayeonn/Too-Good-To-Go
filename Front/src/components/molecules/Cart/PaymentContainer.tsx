@@ -14,16 +14,17 @@ const PaymentContainer: React.FC = () => {
 		});
 	});
 
+	// Accumulate money for display
 	const accumulatedAmount: number = isCheckedArr.reduce((accu, curr) => {
 		// eslint-disable-next-line no-param-reassign
 		accu += curr.shopFoodCost;
 		return accu;
 	}, 0);
 
-	// variable containing menu names to display on payment second section
-	// const menuNames: string[] = isCheckedArr.map((e) => {
-	// 	return {e.shopMenu, }
-	// });
+	// Insert thousand comma separator from accumulatedAmount, IIFE used.
+	const numberWithCommas = ((x: number) => {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	})(accumulatedAmount);
 
 	return (
 		<Wrapper>
@@ -42,7 +43,7 @@ const PaymentContainer: React.FC = () => {
 				<p hidden>1</p>
 			</div>
 			<div className="fourth-section">
-				<p>총 {accumulatedAmount}원</p>
+				<p>총 {numberWithCommas}원</p>
 			</div>
 			<div className="fifth-section">
 				<button type="button">선택 결제하기</button>

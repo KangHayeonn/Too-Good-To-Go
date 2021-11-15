@@ -41,9 +41,9 @@ const CartSelectionButtons: React.FC = () => {
 		dispatch(deleteSelectedCards());
 	}
 
-	const state = useSelector((state: RootState) => {
-		return state.selectCartCards;
-	});
+	// const state = useSelector((state: RootState) => {
+	// 	return state.selectCartCards;
+	// });
 
 	// If no cards to display, turn off 전체선택 button off
 
@@ -51,10 +51,7 @@ const CartSelectionButtons: React.FC = () => {
 		return state.selectCartCards;
 	});
 
-	console.log(isCardsPresent);
-
 	useEffect(() => {
-		console.log(`isCardsPresent.length: ${isCardsPresent.length}`);
 		if (!isCardsPresent.length) {
 			setSelectAll(false);
 		}
@@ -79,7 +76,6 @@ const CartSelectionButtons: React.FC = () => {
 				variant="outlined"
 				size="small"
 				onClick={() => {
-					console.log("handleDeleteCards");
 					handleDeleteCards();
 				}}
 			>

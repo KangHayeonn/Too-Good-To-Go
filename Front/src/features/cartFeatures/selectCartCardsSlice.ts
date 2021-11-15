@@ -50,12 +50,9 @@ export const selectCartCardsSlice = createSlice({
 		},
 		deleteSelectedCards: (state) => {
 			let filteredArrOfState: initialCartCardType[] = [];
-			console.log("before filter ", state);
 			filteredArrOfState = state.filter((e) => {
 				return e.isChecked === false;
 			});
-
-			console.log("after filter ", filteredArrOfState);
 
 			return filteredArrOfState;
 		},

@@ -19,11 +19,11 @@ const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
 	// useSelector returns the modifiedState from reducer.
-	const isCheckedArr = useSelector((state: RootState) => {
-		return state.selectCartCards.filter((e) => {
-			return e.isChecked;
-		});
-	});
+	// const isCheckedArr = useSelector((state: RootState) => {
+	// 	return state.selectCartCards.filter((e) => {
+	// 		return e.isChecked;
+	// 	});
+	// });
 
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {

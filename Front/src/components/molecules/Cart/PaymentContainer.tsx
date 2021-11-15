@@ -19,7 +19,11 @@ const PaymentContainer: React.FC = () => {
 		accu += curr.shopFoodCost;
 		return accu;
 	}, 0);
-	// console.log(accumulatedAmount);
+
+	// variable containing menu names to display on payment second section
+	// const menuNames: string[] = isCheckedArr.map((e) => {
+	// 	return {e.shopMenu, }
+	// });
 
 	return (
 		<Wrapper>
@@ -27,7 +31,11 @@ const PaymentContainer: React.FC = () => {
 				<p hidden>1</p>
 			</div>
 			<div className="second-section">
-				<p className="menu">떡볶이</p>
+				<p className="menu">
+					{isCheckedArr.map((e) => {
+						return <li key={e.shopId}>{e.shopFoodName}</li>;
+					})}
+				</p>
 				<p className="menuPriceAndDiscount">상품가격(할인가): </p>
 			</div>
 			<div className="third-section">
@@ -47,7 +55,8 @@ export default PaymentContainer;
 
 const Wrapper = styled.div`
 	width: 251px;
-	height: 349px;
+	min-height: 349px;
+	height: auto;
 	border: 1px solid lightgrey;
 	display: flex;
 	flex-direction: column;
@@ -59,7 +68,8 @@ const Wrapper = styled.div`
 	}
 
 	.second-section {
-		height: 99px;
+		min-height: 99px;
+		height: auto;
 		border-bottom: 2px solid grey;
 		display: flex;
 		justify-content: center;
@@ -68,6 +78,10 @@ const Wrapper = styled.div`
 		p {
 			margin-left: 20px;
 			margin: 10px;
+			li {
+				margin: 5px;
+				list-style: none;
+			}
 		}
 		.menu {
 			font-size: 20px;

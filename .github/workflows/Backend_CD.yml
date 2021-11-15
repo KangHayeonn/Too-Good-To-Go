@@ -64,7 +64,7 @@ jobs:
 
     - name: Force new deploy ECS service
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: ${{ env.working-directory }}
       run: aws ecs update-service --cluster main --service api-server --force-new-deployment

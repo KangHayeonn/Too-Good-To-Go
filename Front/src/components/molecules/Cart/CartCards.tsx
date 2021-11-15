@@ -83,9 +83,25 @@ const Wrapper = styled.div`
 	height: 579px;
 	/* border: 1px solid blue; */
 	border-top: 1px solid #d3d3d3;
-	overflow: scroll;
+	overflow: visible;
+	overflow-x: hidden;
 	padding: 30px 10px;
 	margin-right: 25px;
+
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #e7e4e4;
+		border-radius: 12px;
+		background-clip: padding-box;
+		border: 2px solid transparent;
+	}
+	::-webkit-scrollbar-track {
+		background-color: white;
+		border-radius: 10px;
+		box-shadow: inset 0px 0px 5px white;
+	}
 `;
 
 const CartCard = styled.div`

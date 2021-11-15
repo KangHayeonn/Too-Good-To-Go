@@ -8,35 +8,13 @@ import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { useDispatch, useSelector } from "react-redux";
 // rtk
 import {
-	CartCardType,
-	initialCards,
 	selectCartCardByID,
+	initialCartCardType,
 } from "../../../features/cartFeatures/selectCartCardsSlice";
 import { RootState } from "../../../app/store";
 
-// import { bindActionCreators } from "redux";
-// import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
-// import { shopData } from "../ShopDummyData";
-// import { actionCreators, State } from "../../../CartReducer/state";
-
-export type ShopsType = {
-	shopId: number;
-	shopFoodImg: string;
-	shopName: string;
-	shopFoodName: string;
-	shopFoodSale: number;
-	shopFoodCost: number;
-	shopBeforeCost: number;
-};
-
-// const newShopData: NewShopsType[] = shopData.map((data) => {
-// 	return { ...data, isChecked: false };
-// });
-
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
-
-	// const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
 
 	// useSelector returns the modifiedState from reducer.
 	const isCheckedArr = useSelector((state: RootState) => {
@@ -45,9 +23,14 @@ const CartCards: React.FC = () => {
 		});
 	});
 
+	// logic to display cards
+	const displayCardArr = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	});
+
 	return (
 		<Wrapper>
-			{initialCards.map((card: CartCardType) => {
+			{displayCardArr.map((card: initialCartCardType) => {
 				return (
 					<CartCard key={card.shopId}>
 						<div className="card-img-ctn">
@@ -79,9 +62,7 @@ const CartCards: React.FC = () => {
 								>
 									선택
 								</button>
-								{isCheckedArr.find((e) => {
-									return e.shopId === card.shopId;
-								}) ? (
+								{card.isChecked ? (
 									<CheckBoxIcon />
 								) : (
 									<CheckBoxOutlineBlankIcon />

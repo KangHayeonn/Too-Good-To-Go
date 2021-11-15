@@ -48,11 +48,22 @@ export const selectCartCardsSlice = createSlice({
 				return state;
 			}
 		},
+		deleteSelectedCards: (state) => {
+			let filteredArrOfState: initialCartCardType[] = [];
+			console.log("before filter ", state);
+			filteredArrOfState = state.filter((e) => {
+				return e.isChecked === false;
+			});
+
+			console.log("after filter ", filteredArrOfState);
+
+			return filteredArrOfState;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { selectCartCardByID, selectAllCartCards } =
+export const { selectCartCardByID, selectAllCartCards, deleteSelectedCards } =
 	selectCartCardsSlice.actions;
 
 export default selectCartCardsSlice.reducer;

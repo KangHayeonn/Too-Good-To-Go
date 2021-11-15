@@ -7,22 +7,22 @@ import Button from "@mui/material/Button";
 // rtk
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { selectAllCartCards } from "../../../features/cartFeatures/selectCartCardsSlice";
+import {
+	deleteSelectedCards,
+	selectAllCartCards,
+} from "../../../features/cartFeatures/selectCartCardsSlice";
 
 const CartSelectionButtons: React.FC = () => {
 	const [selectAll, setSelectAll] = useState<boolean>(false);
+	const dispatch = useDispatch();
 
-	// const isCheckedArr = useSelector((state: RootState) => {
-	// 	return state.selectCartCards.
-	// })
-
+	// Select All button logic.
 	function handleSelectAll(e: React.MouseEvent<HTMLButtonElement>) {
 		e.target as HTMLButtonElement;
 		dispatch(selectAllCartCards(selectAll));
 		setSelectAll(!selectAll);
 	}
 
-	// Select All button logic.
 	const isCardsChecked: boolean = useSelector((state: RootState) => {
 		return state.selectCartCards.some((e) => {
 			return e.isChecked === false;
@@ -36,7 +36,29 @@ const CartSelectionButtons: React.FC = () => {
 		return setSelectAll(false);
 	}, [isCardsChecked]);
 
-	const dispatch = useDispatch();
+	// Delete selected cards
+	function handleDeleteCards() {
+		dispatch(deleteSelectedCards());
+	}
+
+	const state = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	});
+
+	// If no cards to display, turn off 전체선택 button off
+
+	const isCardsPresent = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	});
+
+	console.log(isCardsPresent);
+
+	useEffect(() => {
+		console.log(`isCardsPresent.length: ${isCardsPresent.length}`);
+		if (!isCardsPresent.length) {
+			setSelectAll(false);
+		}
+	}, [isCardsPresent]);
 
 	return (
 		<Wrapper>
@@ -53,7 +75,14 @@ const CartSelectionButtons: React.FC = () => {
 					label="전체 선택"
 				/>
 			</FormGroup>
-			<Button variant="contained" size="small">
+			<Button
+				variant="outlined"
+				size="small"
+				onClick={() => {
+					console.log("handleDeleteCards");
+					handleDeleteCards();
+				}}
+			>
 				삭제하기
 			</Button>
 		</Wrapper>

@@ -12,6 +12,8 @@ import {
 	initialCartCardType,
 } from "../../../features/cartFeatures/selectCartCardsSlice";
 import { RootState } from "../../../app/store";
+// images
+import fighting from "../../../../public/image/화이팅도치.jpg";
 
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
@@ -28,50 +30,57 @@ const CartCards: React.FC = () => {
 		return state.selectCartCards;
 	});
 
+	if (displayCardArr.length) {
+		return (
+			<Wrapper>
+				{displayCardArr.map((card: initialCartCardType) => {
+					return (
+						<CartCard key={card.shopId}>
+							<div className="card-img-ctn">
+								<img src={card.shopFoodImg} alt="Food" />
+							</div>
+							<div className="cardInfo">
+								<p>{card.shopName}</p>
+								<strong>shopType, Pipe, foodType</strong>
+								<p>{card.shopFoodName}</p>
+							</div>
+							<div className="right-wrapper">
+								<div className="price-ctn">
+									<p className="price">
+										<s>({card.shopBeforeCost}원)</s>
+										<ArrowRightAltRoundedIcon className="right-arrow" />
+										<strong>{card.shopFoodCost}원</strong>
+									</p>
+								</div>
+								<div className="btn-ctn">
+									<button type="button">수정</button>
+									<button
+										type="button"
+										onClick={() => {
+											// console.log(data.shopId);
+											dispatch(
+												selectCartCardByID(card.shopId)
+											);
+										}}
+									>
+										선택
+									</button>
+									{card.isChecked ? (
+										<CheckBoxIcon />
+									) : (
+										<CheckBoxOutlineBlankIcon />
+									)}
+								</div>
+							</div>
+						</CartCard>
+					);
+				})}
+			</Wrapper>
+		);
+	}
 	return (
 		<Wrapper>
-			{displayCardArr.map((card: initialCartCardType) => {
-				return (
-					<CartCard key={card.shopId}>
-						<div className="card-img-ctn">
-							<img src={card.shopFoodImg} alt="Food" />
-						</div>
-						<div className="cardInfo">
-							<p>{card.shopName}</p>
-							<strong>shopType, Pipe, foodType</strong>
-							<p>{card.shopFoodName}</p>
-						</div>
-						<div className="right-wrapper">
-							<div className="price-ctn">
-								<p className="price">
-									<s>({card.shopBeforeCost}원)</s>
-									<ArrowRightAltRoundedIcon className="right-arrow" />
-									<strong>{card.shopFoodCost}원</strong>
-								</p>
-							</div>
-							<div className="btn-ctn">
-								<button type="button">수정</button>
-								<button
-									type="button"
-									onClick={() => {
-										// console.log(data.shopId);
-										dispatch(
-											selectCartCardByID(card.shopId)
-										);
-									}}
-								>
-									선택
-								</button>
-								{card.isChecked ? (
-									<CheckBoxIcon />
-								) : (
-									<CheckBoxOutlineBlankIcon />
-								)}
-							</div>
-						</div>
-					</CartCard>
-				);
-			})}
+			<img src={fighting} alt="화이팅도치의 존재" />
 		</Wrapper>
 	);
 };

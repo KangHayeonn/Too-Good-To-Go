@@ -22,7 +22,8 @@ const CartSelectionButtons: React.FC = () => {
 		setSelectAll(!selectAll);
 	}
 
-	const isCardsChecked = useSelector((state: RootState) => {
+	// Select All button logic.
+	const isCardsChecked: boolean = useSelector((state: RootState) => {
 		return state.selectCartCards.some((e) => {
 			return e.isChecked === false;
 		});
@@ -30,8 +31,9 @@ const CartSelectionButtons: React.FC = () => {
 
 	useEffect(() => {
 		if (!isCardsChecked) {
-			setSelectAll(!selectAll);
+			return setSelectAll(true);
 		}
+		return setSelectAll(false);
 	}, [isCardsChecked]);
 
 	const dispatch = useDispatch();
@@ -42,8 +44,10 @@ const CartSelectionButtons: React.FC = () => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							onClick={(e) => handleSelectAll(e)}
-							value={selectAll}
+							onClick={(e) => {
+								handleSelectAll(e);
+							}}
+							checked={selectAll}
 						/>
 					}
 					label="전체 선택"

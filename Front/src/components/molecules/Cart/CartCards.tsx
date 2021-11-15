@@ -65,14 +65,6 @@ const CartCards: React.FC = () => {
 									<ArrowRightAltRoundedIcon className="right-arrow" />
 									<strong>{card.shopFoodCost}원</strong>
 								</p>
-								{/* checking isChecked */}
-								<p>
-									{isCheckedArr.find((e) => {
-										return e.shopId === card.shopId;
-									})
-										? "checked"
-										: "false"}
-								</p>
 							</div>
 							<div className="btn-ctn">
 								<button type="button">수정</button>

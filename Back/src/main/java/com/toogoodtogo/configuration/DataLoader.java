@@ -7,9 +7,11 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!prod")
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
     private final ShopRepository shopRepository;

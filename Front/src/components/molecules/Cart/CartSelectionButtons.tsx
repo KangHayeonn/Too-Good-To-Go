@@ -7,22 +7,23 @@ import Button from "@mui/material/Button";
 // rtk
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { selectAllCartCards } from "../../../features/cartFeatures/selectCartCardsSlice";
+import {
+	deleteSelectedCards,
+	selectAllCartCards,
+} from "../../../features/cartFeatures/selectCartCardsSlice";
 
 const CartSelectionButtons: React.FC = () => {
 	const [selectAll, setSelectAll] = useState<boolean>(false);
+	const dispatch = useDispatch();
 
-	// const isCheckedArr = useSelector((state: RootState) => {
-	// 	return state.selectCartCards.
-	// })
-
+	// Select All button logic.
 	function handleSelectAll(e: React.MouseEvent<HTMLButtonElement>) {
 		e.target as HTMLButtonElement;
 		dispatch(selectAllCartCards(selectAll));
 		setSelectAll(!selectAll);
 	}
 
-	const isCardsChecked = useSelector((state: RootState) => {
+	const isCardsChecked: boolean = useSelector((state: RootState) => {
 		return state.selectCartCards.some((e) => {
 			return e.isChecked === false;
 		});
@@ -30,11 +31,31 @@ const CartSelectionButtons: React.FC = () => {
 
 	useEffect(() => {
 		if (!isCardsChecked) {
-			setSelectAll(!selectAll);
+			return setSelectAll(true);
 		}
+		return setSelectAll(false);
 	}, [isCardsChecked]);
 
-	const dispatch = useDispatch();
+	// Delete selected cards
+	function handleDeleteCards() {
+		dispatch(deleteSelectedCards());
+	}
+
+	// const state = useSelector((state: RootState) => {
+	// 	return state.selectCartCards;
+	// });
+
+	// If no cards to display, turn off 전체선택 button off
+
+	const isCardsPresent = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	});
+
+	useEffect(() => {
+		if (!isCardsPresent.length) {
+			setSelectAll(false);
+		}
+	}, [isCardsPresent]);
 
 	return (
 		<Wrapper>
@@ -42,14 +63,22 @@ const CartSelectionButtons: React.FC = () => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							onClick={(e) => handleSelectAll(e)}
-							value={selectAll}
+							onClick={(e) => {
+								handleSelectAll(e);
+							}}
+							checked={selectAll}
 						/>
 					}
 					label="전체 선택"
 				/>
 			</FormGroup>
-			<Button variant="contained" size="small">
+			<Button
+				variant="outlined"
+				size="small"
+				onClick={() => {
+					handleDeleteCards();
+				}}
+			>
 				삭제하기
 			</Button>
 		</Wrapper>

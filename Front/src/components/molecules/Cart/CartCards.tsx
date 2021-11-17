@@ -8,97 +8,79 @@ import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 import { useDispatch, useSelector } from "react-redux";
 // rtk
 import {
-	CartCardType,
-	initialCards,
 	selectCartCardByID,
+	initialCartCardType,
 } from "../../../features/cartFeatures/selectCartCardsSlice";
 import { RootState } from "../../../app/store";
-
-// import { bindActionCreators } from "redux";
-// import { NewShopsType } from "../../../CartReducer/state/reducers/cartReducer";
-// import { shopData } from "../ShopDummyData";
-// import { actionCreators, State } from "../../../CartReducer/state";
-
-export type ShopsType = {
-	shopId: number;
-	shopFoodImg: string;
-	shopName: string;
-	shopFoodName: string;
-	shopFoodSale: number;
-	shopFoodCost: number;
-	shopBeforeCost: number;
-};
-
-// const newShopData: NewShopsType[] = shopData.map((data) => {
-// 	return { ...data, isChecked: false };
-// });
+// images
+import fighting from "../../../../public/image/화이팅도치.jpg";
 
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
-	// const { checkCartItem } = bindActionCreators(actionCreators, dispatch);
-
 	// useSelector returns the modifiedState from reducer.
-	const isCheckedArr = useSelector((state: RootState) => {
-		return state.selectCartCards.filter((e) => {
-			return e.isChecked;
-		});
+	// const isCheckedArr = useSelector((state: RootState) => {
+	// 	return state.selectCartCards.filter((e) => {
+	// 		return e.isChecked;
+	// 	});
+	// });
+
+	// logic to display cards
+	const displayCardArr = useSelector((state: RootState) => {
+		return state.selectCartCards;
 	});
 
+	if (displayCardArr.length) {
+		return (
+			<Wrapper>
+				{displayCardArr.map((card: initialCartCardType) => {
+					return (
+						<CartCard key={card.shopId}>
+							<div className="card-img-ctn">
+								<img src={card.shopFoodImg} alt="Food" />
+							</div>
+							<div className="cardInfo">
+								<p>{card.shopName}</p>
+								<strong>shopType, Pipe, foodType</strong>
+								<p>{card.shopFoodName}</p>
+							</div>
+							<div className="right-wrapper">
+								<div className="price-ctn">
+									<p className="price">
+										<s>({card.shopBeforeCost}원)</s>
+										<ArrowRightAltRoundedIcon className="right-arrow" />
+										<strong>{card.shopFoodCost}원</strong>
+									</p>
+								</div>
+								<div className="btn-ctn">
+									<button type="button">수정</button>
+									<button
+										type="button"
+										onClick={() => {
+											// console.log(data.shopId);
+											dispatch(
+												selectCartCardByID(card.shopId)
+											);
+										}}
+									>
+										선택
+									</button>
+									{card.isChecked ? (
+										<CheckBoxIcon />
+									) : (
+										<CheckBoxOutlineBlankIcon />
+									)}
+								</div>
+							</div>
+						</CartCard>
+					);
+				})}
+			</Wrapper>
+		);
+	}
 	return (
 		<Wrapper>
-			{initialCards.map((card: CartCardType) => {
-				return (
-					<CartCard key={card.shopId}>
-						<div className="card-img-ctn">
-							<img src={card.shopFoodImg} alt="Food" />
-						</div>
-						<div className="cardInfo">
-							<p>{card.shopName}</p>
-							<strong>shopType, Pipe, foodType</strong>
-							<p>{card.shopFoodName}</p>
-						</div>
-						<div className="right-wrapper">
-							<div className="price-ctn">
-								<p className="price">
-									<s>({card.shopBeforeCost}원)</s>
-									<ArrowRightAltRoundedIcon className="right-arrow" />
-									<strong>{card.shopFoodCost}원</strong>
-								</p>
-								{/* checking isChecked */}
-								<p>
-									{isCheckedArr.find((e) => {
-										return e.shopId === card.shopId;
-									})
-										? "checked"
-										: "false"}
-								</p>
-							</div>
-							<div className="btn-ctn">
-								<button type="button">수정</button>
-								<button
-									type="button"
-									onClick={() => {
-										// console.log(data.shopId);
-										dispatch(
-											selectCartCardByID(card.shopId)
-										);
-									}}
-								>
-									선택
-								</button>
-								{isCheckedArr.find((e) => {
-									return e.shopId === card.shopId;
-								}) ? (
-									<CheckBoxIcon />
-								) : (
-									<CheckBoxOutlineBlankIcon />
-								)}
-							</div>
-						</div>
-					</CartCard>
-				);
-			})}
+			<img src={fighting} alt="화이팅도치의 존재" />
 		</Wrapper>
 	);
 };
@@ -110,9 +92,25 @@ const Wrapper = styled.div`
 	height: 579px;
 	/* border: 1px solid blue; */
 	border-top: 1px solid #d3d3d3;
-	overflow: scroll;
+	overflow: visible;
+	overflow-x: hidden;
 	padding: 30px 10px;
 	margin-right: 25px;
+
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #e7e4e4;
+		border-radius: 12px;
+		background-clip: padding-box;
+		border: 2px solid transparent;
+	}
+	::-webkit-scrollbar-track {
+		background-color: white;
+		border-radius: 10px;
+		box-shadow: inset 0px 0px 5px white;
+	}
 `;
 
 const CartCard = styled.div`

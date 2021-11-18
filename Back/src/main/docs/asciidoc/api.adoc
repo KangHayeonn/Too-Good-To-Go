@@ -83,3 +83,5 @@ operation::users/findByEmail[snippets='curl-request,http-request,http-response,r
 
 === User 삭제 [DELETE]
 operation::users/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']
+=======
+operation::shops/find[snippets='curl-request,http-request,http-response,response-body,response-fields']

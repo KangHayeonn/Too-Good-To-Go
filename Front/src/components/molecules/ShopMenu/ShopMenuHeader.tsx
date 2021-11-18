@@ -5,7 +5,11 @@ const header = css`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding-bottom: 30px;
+	margin-top: 20px;
+	margin-left: 5px;
+	padding-top: 60px;
+	padding-bottom: 35px;
+	border-top: 1px solid #eee;
 `;
 
 const headerText = css`
@@ -22,7 +26,6 @@ const arrayText = css`
 	cursor: pointer;
 	padding: 0 10px;
 	border-left: 1px solid #999;
-
 	&:first-of-type {
 		border: none;
 		color: #333;

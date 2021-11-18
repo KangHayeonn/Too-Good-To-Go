@@ -1,6 +1,7 @@
 @media only screen and (min-width: 641px) {
 	nav {
-		position: fixed;
+		/*position: fixed;*/
+		position: relative; /* 이렇게 설정해줘야 header가 스크롤할 때 사라짐 */
 		z-index: 100;
 		left: 0;
 		top: 0;

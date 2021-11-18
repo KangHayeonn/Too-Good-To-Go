@@ -22,9 +22,11 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.hibernate.validator:hibernate-validator:6.1.2.Final'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -46,8 +48,14 @@ ext {
 }
 
 test {
+    outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
     useJUnitPlatform()
     outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
+}
+
+asciidoctor { //asciidoctor task 설정
+    inputs.dir snippetsDir // Snippets 디렉토리를 Input 디렉토리로 설정
+    dependsOn test // 문서 생성 전 테스트가 실행되도록 test가 실행되도록 설정, gradle build 시 test → asciidoctor 순으로 수행
 }
 
 asciidoctor { //asciidoctor task 설정

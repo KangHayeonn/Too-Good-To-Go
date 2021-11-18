@@ -4,6 +4,10 @@
 	text-align: center;
 }
 
+body {
+	box-sizing: border-box;
+}
+
 input:focus::placeholder {
 	color: transparent;
 }

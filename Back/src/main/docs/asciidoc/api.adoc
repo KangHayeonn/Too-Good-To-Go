@@ -57,3 +57,29 @@ The Shop provides the entry point into the service.
 
 === Shop 전체 조회 [GET]
 operation::shops/find[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+== User API
+
+=== User 회원가입 성공 [POST]
+operation::users/signup/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 회원가입 실패 [POST]
+operation::users/signup/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 로그인 성공 [POST]
+operation::users/login/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 로그인 실패 [POST]
+operation::users/login/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 전체 조회 [GET]
+operation::users/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 조회_id [GET]
+operation::users/findById[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 조회_email [GET]
+operation::users/findByEmail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 삭제 [DELETE]
+operation::users/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']

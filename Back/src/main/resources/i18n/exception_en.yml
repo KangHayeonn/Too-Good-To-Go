@@ -1,0 +1,34 @@
+# exception_en.yml
+unKnown:
+  code: "-9999"
+  msg: "An unknown error has occurred."
+userNotFound:
+  code: "-1000"
+  msg: "This member not exist"
+emailLoginFailed:
+  code: "-1001"
+  msg: "It's an ID you didn't sign up for, or it's an incorrect password."
+emailSignupFailed:
+  code: "-1002"
+  msg: "This email is already subscribed."
+authenticationEntrypoint:
+  code: "-1003"
+  msg: "You do not have permission to access that resource."
+accessDenied:
+  code: "-1004"
+  msg: "Permission not accessible to this resource."
+refreshTokenInValid:
+  code: "-1005"
+  msg: "Refresh Token is Wrong."
+expiredAccessToken:
+  code: "-1006"
+  msg: "AccessToken is Expired"
+communicationException:
+  code: "-1007"
+  msg: "An error occurred during the social authentication process."
+userExistException:
+  code: "-1008"
+  msg: "Already signed account, please login."
+agreementException:
+  code: "-1009"
+  msg: "A consent is required for the required consent item."

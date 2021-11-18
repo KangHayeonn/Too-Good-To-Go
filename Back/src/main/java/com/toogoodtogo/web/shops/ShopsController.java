@@ -1,7 +1,9 @@
 package com.toogoodtogo.web.shops;
 
+import com.toogoodtogo.application.response.ResponseService;
 import com.toogoodtogo.application.shop.ShopUseCase;
 import com.toogoodtogo.web.common.ApiResponse;
+import com.toogoodtogo.web.common.ApiResponseList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,15 +15,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ShopsController {
     private final ShopUseCase shopUseCase;
+    private final ResponseService responseService;
 
     @GetMapping
-    public ApiResponse<List<ShopDto>> findShops() {
-        return new ApiResponse<>(
-                shopUseCase.findAllShops()
-                        .stream()
-                        .map(ShopDto::new)
-                        .collect(Collectors.toList())
-        );
+    public ApiResponseList<ShopDto> findShops() {
+        return responseService.getListResult(shopUseCase.findAllShops());
     }
 
     @PostMapping

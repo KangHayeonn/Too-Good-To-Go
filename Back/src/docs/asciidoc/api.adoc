@@ -50,7 +50,7 @@ endif::[]
 |===
 
 == APIs
-URL은 `/api/`로 시작한다.
+URL은 /api/ 로 시작한다.
 
 == Shop API
 The Shop provides the entry point into the service.

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.9.2' // Asciidoctor 플러그인 적용
+    //id "org.asciidoctor.jvm.convert" version "3.3.2"
     id 'java'
 }
 
@@ -46,8 +47,8 @@ ext {
 }
 
 test {
-    useJUnitPlatform()
     outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
+    useJUnitPlatform()
 }
 
 asciidoctor { //asciidoctor task 설정
@@ -66,3 +67,14 @@ bootJar {
         into 'static/docs'
     }
 }
+
+//task copyDocument(type: Copy) {
+//    dependsOn asciidoctor
+//
+//    from file("build/asciidoc/html5/")
+//    into file("src/main/resources/static/docs")
+//}
+//
+//build {
+//    dependsOn copyDocument
+//}

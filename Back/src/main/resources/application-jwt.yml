@@ -1,3 +1,3 @@
 spring:
   jwt:
-    secret: dqwdf3q
+    secret: ${{secrets.JWT_KEY}}

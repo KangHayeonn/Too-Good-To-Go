@@ -48,14 +48,8 @@ ext {
 }
 
 test {
-    outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
     useJUnitPlatform()
     outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
-}
-
-asciidoctor { //asciidoctor task 설정
-    inputs.dir snippetsDir // Snippets 디렉토리를 Input 디렉토리로 설정
-    dependsOn test // 문서 생성 전 테스트가 실행되도록 test가 실행되도록 설정, gradle build 시 test → asciidoctor 순으로 수행
 }
 
 asciidoctor { //asciidoctor task 설정

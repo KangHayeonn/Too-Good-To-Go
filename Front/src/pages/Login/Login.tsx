@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 	padding: 10px;
 	background-color: white;
 	width: 400px;
-	height: 467px;
+	height: 490px;
 `;
 
 const Container = styled.div`

@@ -8,6 +8,7 @@ const Wrapper = styled.div`
 	width: 1180px;
 	margin: 0 auto;
 	padding-top: 92px;
+	justify-content: center;
 `;
 
 const Header = styled.header`

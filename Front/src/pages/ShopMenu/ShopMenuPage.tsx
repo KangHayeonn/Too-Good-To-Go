@@ -8,6 +8,8 @@ import ShopMenuHeader from "../../components/molecules/ShopMenu/ShopMenuHeader";
 import Categories from "../../components/organisms/Categories/Categories";
 
 const paginationStyle = css`
+	display:flex;
+	justify-content: center;
 	.css-1pi9rcw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected:hover {
 		background-color: #54b689;
 	}

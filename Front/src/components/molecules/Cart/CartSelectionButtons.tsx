@@ -89,10 +89,11 @@ export default CartSelectionButtons;
 
 const Wrapper = styled.div`
 	display: flex;
-	width: 670px;
+	width: 700px;
 	height: 50px;
 	/* border: 1px solid black; */
 	justify-content: space-between;
 	margin-top: 13px;
-	margin-bottom: 8px;
+	margin-bottom: 9px;
+	margin-left: 11px;
 `;

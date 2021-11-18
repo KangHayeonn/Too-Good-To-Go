@@ -6,8 +6,11 @@ import { RootState } from "../../../app/store";
 // type accumulatedAmountType = {
 // 	cost: number;
 // };
+type buttonType = {
+	children: React.ReactNode;
+};
 
-const PaymentContainer: React.FC = () => {
+const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 	const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectCartCards.filter((e) => {
 			return e.isChecked;
@@ -46,7 +49,7 @@ const PaymentContainer: React.FC = () => {
 				<p>총 {numberWithCommas}원</p>
 			</div>
 			<div className="fifth-section">
-				<button type="button">선택 결제하기</button>
+				<button type="button">{children}</button>
 			</div>
 		</Wrapper>
 	);
@@ -55,7 +58,7 @@ const PaymentContainer: React.FC = () => {
 export default PaymentContainer;
 
 const Wrapper = styled.div`
-	width: 251px;
+	width: 271px;
 	min-height: 349px;
 	height: auto;
 	border: 1px solid lightgrey;
@@ -110,18 +113,18 @@ const Wrapper = styled.div`
 		margin-right: 15px;
 	}
 	.fifth-section {
-		height: 67px;
+		height: 81px;
 	}
 
 	button {
 		width: 152px;
-		height: 40px;
+		height: 45px;
 		background-color: #54b689;
 		color: white;
-		font-size: 13px;
+		font-size: 15px;
 		font-weight: 700;
 		border-radius: 12px;
-		margin-top: 14px;
+		margin-top: 18px;
 	}
 
 	h1 {

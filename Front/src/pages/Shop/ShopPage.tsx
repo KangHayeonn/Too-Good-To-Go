@@ -1,21 +1,23 @@
 import React from "react";
 import PageTemplate from "../../components/templates/PageTemplate";
 import ShopTemplate from "../../components/templates/ShopTemplate";
+import Categories from "../../components/organisms/Categories/Categories";
+import ShopMenuHeader from "../../components/molecules/Shop/ShopMenuHeader";
+import ShopTitles from "../../components/organisms/Shop/ShopTitles";
 import CartSelectionButtons from "../../components/molecules/Cart/CartSelectionButtons";
 import PaymentContainer from "../../components/molecules/Cart/PaymentContainer";
 import CartCards from "../../components/molecules/Cart/CartCards";
-import Categories from "../../components/organisms/Categories/Categories";
-import CartTitle from "../../components/molecules/Cart/CartTitle";
 
-const CartPage: React.FC = () => {
+const Shop: React.FC = () => {
 	return (
 		<PageTemplate
 			header={<Categories />}
 			isHeader
-			isSection={false}
+			section={<ShopTitles />}
+			isSection
 			isFooter={false}
 		>
-			<CartTitle>장바구니</CartTitle>
+			<ShopMenuHeader>메뉴</ShopMenuHeader>
 			<ShopTemplate
 				menu={
 					<div>
@@ -23,10 +25,10 @@ const CartPage: React.FC = () => {
 						<CartCards />
 					</div>
 				}
-				sidebar={<PaymentContainer>선택 결제하기</PaymentContainer>}
+				sidebar={<PaymentContainer>장바구니에 담기</PaymentContainer>}
 			/>
 		</PageTemplate>
 	);
 };
 
-export default CartPage;
+export default Shop;

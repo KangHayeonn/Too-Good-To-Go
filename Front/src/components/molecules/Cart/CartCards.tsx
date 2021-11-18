@@ -88,7 +88,7 @@ const CartCards: React.FC = () => {
 export default CartCards;
 
 const Wrapper = styled.div`
-	width: 680px;
+	width: 700px;
 	height: 579px;
 	/* border: 1px solid blue; */
 	border-top: 1px solid #d3d3d3;
@@ -96,7 +96,6 @@ const Wrapper = styled.div`
 	overflow-x: hidden;
 	padding: 30px 10px;
 	margin-right: 25px;
-
 	::-webkit-scrollbar {
 		width: 10px;
 	}
@@ -114,7 +113,7 @@ const Wrapper = styled.div`
 `;
 
 const CartCard = styled.div`
-	width: 640px;
+	width: 660px;
 	height: 181px;
 	border: 1px solid #d3d3d3;
 	padding: 10px 10px 10px 0;
@@ -170,6 +169,7 @@ const CartCard = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		margin: 10px;
 	}
 
 	Button {
@@ -180,6 +180,7 @@ const CartCard = styled.div`
 		color: black;
 		font-weight: 500;
 		font-size: 13px;
+		margin: 3px;
 	}
 
 	.price {

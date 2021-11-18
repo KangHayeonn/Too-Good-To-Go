@@ -8,6 +8,8 @@ const ShopCardStyle = styled.div`
 	border-bottom-right-radius: 1px;
 	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 	height: 100%;
+	display: flex;
+	flex-direction: row; // 세로방향
 `;
 
 const ShopImg = styled.img`
@@ -39,14 +41,6 @@ const ShopCardInfoHead = styled.div`
 	align-items: flex-start;
 `;
 
-const ShopCardInfoCenter = styled.div`
-	display: flex;
-	align-items: flex-start;
-	p {
-		margin-right: 5px;
-	}
-`;
-
 const shopNameStyle = css`
 	color: #333;
 	font-size: 12px;
@@ -59,39 +53,16 @@ const shopFoodNameStyle = css`
 	font-weight: 700;
 `;
 
-const saleValueStyle = css`
-	font-size: 15px;
-	color: #54b689;
-	font-weight: 600;
-`;
-
-const costValueStyle = css`
-	font-size: 16px;
-	color: #333;
-	font-weight: 600;
-`;
-
-const beforeSaleValueStyle = css`
-	text-decoration: line-through;
-	color: #999;
-`;
-
 type shopCardType = {
 	shopName: string;
 	shopFoodImg: string;
 	shopFoodName: string;
-	shopFoodSale: number;
-	shopFoodCost: number;
-	shopBeforeCost: number;
 };
 
 const ShopCard: React.FC<shopCardType> = ({
 	shopName,
 	shopFoodImg,
 	shopFoodName,
-	shopFoodSale,
-	shopFoodCost,
-	shopBeforeCost,
 }) => {
 	return (
 		<ShopCardStyle>
@@ -103,11 +74,6 @@ const ShopCard: React.FC<shopCardType> = ({
 					<p css={shopNameStyle}>{shopName}</p>
 					<p css={shopFoodNameStyle}>{shopFoodName}</p>
 				</ShopCardInfoHead>
-				<ShopCardInfoCenter>
-					<p css={saleValueStyle}>{shopFoodSale}%</p>
-					<p css={costValueStyle}>{shopFoodCost}원</p>
-					<p css={beforeSaleValueStyle}>{shopBeforeCost}원</p>
-				</ShopCardInfoCenter>
 			</ShopCardInfo>
 		</ShopCardStyle>
 	);

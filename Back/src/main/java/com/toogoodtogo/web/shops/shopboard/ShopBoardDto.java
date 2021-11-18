@@ -1,28 +1,25 @@
 package com.toogoodtogo.web.shops.shopboard;
 
-import com.toogoodtogo.domain.shop.shopboard.ShopBoard;
+import com.toogoodtogo.domain.shop.Shop;
+import com.toogoodtogo.domain.shop.product.Product;
 import lombok.Getter;
 
 @Getter
 public class ShopBoardDto {
 
     private final Long id;
-    private final String shopName;
+    private final Shop shop;
+    private final String name;
+    private final Long price;
+    private final Long discountedPrice;
     private final String image;
 
-    private final String productName;
-    private final Long price;
-    private final Long discountPrice;
-    private final String[] category;
-
-    public ShopBoardDto(ShopBoard shopBoard) {
-        this.id = shopBoard.getId();
-        this.shopName = shopBoard.getShopName();
-        this.image = shopBoard.getImage();
-
-        this.productName = shopBoard.getProductName();
-        this.price = shopBoard.getPrice();
-        this.discountPrice = shopBoard.getDiscountPrice();
-        this.category = shopBoard.getCategory();
+    public ShopBoardDto(Product product) {
+        this.id = product.getId();
+        this.shop = product.getShop();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.discountedPrice = product.getDiscountedPrice();
+        this.image = product.getImage();
     }
 }

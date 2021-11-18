@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/shops")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class ShopsController {
     private final ShopUseCase shopUseCase;
 

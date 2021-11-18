@@ -4,8 +4,6 @@ import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.domain.shop.shopboard.ShopBoard;
-import com.toogoodtogo.domain.shop.shopboard.ShopBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,13 +14,12 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements ApplicationRunner {
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
-    private final ShopBoardRepository shopBoardRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         addShops();
         addProducts();
-        addShopBoards();
+        //addShopBoards();
     }
 
     private void addShops() {
@@ -72,7 +69,7 @@ public class DataLoader implements ApplicationRunner {
         productRepository.save(product3);
     }
 
-    private void addShopBoards() {
+    /**private void addShopBoards() {
         ShopBoard shopBoard1 = new ShopBoard();
         shopBoard1.setShopName("김치찌개전문점");
         shopBoard1.setImage("https://t1.daumcdn.net/cfile/tistory/997B7F415AC1F5343F");
@@ -117,5 +114,5 @@ public class DataLoader implements ApplicationRunner {
         shopBoard5.setDiscountPrice(13900L);
         shopBoard5.setCategory(new String[]{"치킨", "패스트푸드"});
         shopBoardRepository.save(shopBoard5);
-    }
+    } **/
 }

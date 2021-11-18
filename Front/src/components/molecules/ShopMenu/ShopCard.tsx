@@ -4,8 +4,8 @@ import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
 const ShopCardStyle = styled.div`
-	border-bottom-left-radius: 20px;
-	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 1px;
 	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 	height: 100%;
 `;
@@ -42,7 +42,6 @@ const ShopCardInfoHead = styled.div`
 const ShopCardInfoCenter = styled.div`
 	display: flex;
 	align-items: flex-start;
-
 	p {
 		margin-right: 5px;
 	}

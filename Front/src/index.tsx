@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+// import { composeWithDevTools } from "redux-devtools-extension";
+// import rootReducer from "./modules";
 import { Provider } from "react-redux";
-import rootReducer from "./modules";
 import App from "./App";
 
-const store = createStore(rootReducer, composeWithDevTools());
+// rtk import
+import { store } from "./app/store";
+
+// const store = createStore(rootReducer, composeWithDevTools());
 
 ReactDOM.render(
 	<Provider store={store}>

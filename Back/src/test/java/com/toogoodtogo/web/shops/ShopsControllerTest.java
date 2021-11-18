@@ -59,7 +59,6 @@ class ShopsControllerTest {
     @Autowired
     private ShopRepository shopRepository;
 
-
     @BeforeEach
     public void setUp() {
         shopRepository.save(Shop.builder().name("shop1").image("test1").category("한식").build());

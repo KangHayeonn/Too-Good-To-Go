@@ -181,7 +181,8 @@ class SignControllerTest {
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("msg").description("msg"),
+                                fieldWithPath("data").description("data")
                         )
                 ))
                 .andExpect(status().isOk())

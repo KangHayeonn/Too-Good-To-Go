@@ -177,6 +177,11 @@ class SignControllerTest {
                                 fieldWithPath("password").description("user password"),
                                 fieldWithPath("name").description("user name"),
                                 fieldWithPath("phoneNumber").description("user phoneNumber")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("success"),
+                                fieldWithPath("code").description("code"),
+                                fieldWithPath("msg").description("msg")
                         )
                 ))
                 .andExpect(status().isOk())

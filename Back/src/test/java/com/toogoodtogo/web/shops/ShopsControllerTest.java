@@ -14,6 +14,7 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,11 @@ class ShopsControllerTest {
     public void setUp() {
         shopRepository.save(Shop.builder().name("shop1").image("test1").category("한식").build());
         shopRepository.save(Shop.builder().name("shop2").image("test2").category("중식").build());
+    }
+
+    @AfterEach
+    public void setDown() {
+        shopRepository.deleteAll();
     }
 
     @Test

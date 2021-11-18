@@ -15,6 +15,7 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.UsersController;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,6 +76,11 @@ class SignControllerTest {
                 .phoneNumber("010-0000-0000")
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
+    }
+
+    @AfterEach
+    public void setDown() {
+        userRepository.deleteAll();
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.toogoodtogo.application.user.UserService;
 import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,11 @@ class UsersControllerTest {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
         id = Math.toIntExact(save.getId());
+    }
+
+    @AfterEach
+    public void setDown() {
+        userRepository.deleteAll();
     }
 
     @Test

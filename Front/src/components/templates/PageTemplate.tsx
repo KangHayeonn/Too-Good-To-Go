@@ -7,7 +7,8 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	width: 1180px;
 	margin: 0 auto;
-	padding-top: 92px;
+	padding-top: 50px;
+	justify-content: center;
 `;
 
 const Header = styled.header`
@@ -37,7 +38,7 @@ const Footer = styled.footer`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	padding-bottom: 80px;
+	padding-bottom: 2rem;
 `;
 
 type Props = {

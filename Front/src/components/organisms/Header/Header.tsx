@@ -9,6 +9,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const navBar = css`
 	background-color: #54b689;
+	border-bottom: 1px solid #d6d6d6;
 `;
 
 const Header: React.FC = () => {

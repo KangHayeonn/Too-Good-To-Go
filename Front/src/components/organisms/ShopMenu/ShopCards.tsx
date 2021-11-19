@@ -26,114 +26,116 @@ const shopExam = [
 	{
 		id: 0,
 		image: "http://www.kns.tv/news/photo/201808/462315_343258_317.jpg",
-		shopName: "전주비빔밥",
-		productName: "전통 전주비빔밥",
-		shopFoodSale: 10,
-		discountPrice: 9000,
+		shop: { id: 0, name: "전주비빔밥", image: "", category: ["한식"] },
+		name: "전통 전주비빔밥",
+		discountedPrice: 9000,
 		price: 10000,
-		category: ["한식"],
 	},
 	{
 		id: 1,
 		image: "http://thingool.hgodo.com/gd5replace/thingotr4652/data/editor/goods/210617/285f14f889d5eb44a9e691f9f0ac985f_174805.jpg",
-		shopName: "전통 부대찌개 맛집",
-		productName: "맛있는 부대찌개",
-		shopFoodSale: 5,
-		discountPrice: 9500,
+		shop: {
+			id: 1,
+			name: "전통 부대찌개 맛집",
+			image: "",
+			category: ["한식"],
+		},
+		name: "맛있는 부대찌개",
+		discountedPrice: 9500,
 		price: 10000,
-		category: ["한식"],
 	},
 	{
 		id: 2,
 		image: "https://www.hsd.co.kr/assets/images/main/main_img_01.jpg",
-		shopName: "그냥도시락",
-		productName: "그냥맛있는치킨마요덮밥",
+		shop: { id: 2, name: "그냥도시락", image: "", category: ["한식"] },
+		name: "그냥맛있는치킨마요덮밥",
 		shopFoodSale: 10,
-		discountPrice: 9000,
+		discountedPrice: 9000,
 		price: 10000,
-		category: ["한식"],
 	},
 	{
 		id: 3,
 		image: "https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/2AuX/image/B9-0Ny9Bc9a9VcaH3w22h2bubRQ.png",
-		shopName: "그냥카페디저트",
-		productName: "그냥맛있는케이크",
-		shopFoodSale: 5,
-		discountPrice: 9500,
+		shop: {
+			id: 3,
+			name: "그냥카페디저트",
+			image: "",
+			category: ["디저트"],
+		},
+		name: "그냥맛있는케이크",
+		discountedPrice: 9500,
 		price: 10000,
-		category: ["디저트"],
 	},
 	{
 		id: 4,
 		image: "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20211005_84%2F1633427100547JYF19_PNG%2F1u1r0WjPhZou6UMzRjVqb6us.png&type=a340",
-		shopName: "그냥치킨집",
-		productName: "그냥맛있는치킨",
+		shop: {
+			id: 4,
+			name: "그냥치킨집",
+			image: "",
+			category: ["치킨", "패스트푸드", "야식"],
+		},
+		name: "그냥맛있는치킨",
 		shopFoodSale: 10,
-		discountPrice: 9000,
+		discountedPrice: 9000,
 		price: 10000,
-		category: ["치킨", "패스트푸드", "야식"],
 	},
 	{
 		id: 5,
 		image: "https://img.hankyung.com/photo/202108/99.26501439.1-1200x.jpg",
-		shopName: "그냥피자",
-		productName: "그냥맛있는피자",
-		shopFoodSale: 5,
-		discountPrice: 9500,
+		shop: {
+			id: 5,
+			name: "그냥피자",
+			image: "",
+			category: ["패스트푸드", "피자"],
+		},
+		name: "그냥맛있는피자",
+		discountedPrice: 9500,
 		price: 10000,
-		category: ["패스트푸드", "피자"],
 	},
 	{
 		id: 6,
 		image: "https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/1200px-Jjajangmyeon.jpg",
-		shopName: "그냥중국집",
-		productName: "그냥짜장면",
+		shop: { id: 6, name: "그냥중국집", image: "", category: ["중식"] },
+		name: "그냥짜장면",
 		shopFoodSale: 10,
-		discountPrice: 9000,
+		discountedPrice: 9000,
 		price: 10000,
-		category: ["중식"],
 	},
 	{
 		id: 7,
 		image: "http://mbcmall.imbc.com/store/__icsFiles/afieldfile/2018/12/27/001_1.jpg",
-		shopName: "그냥돈까스",
-		productName: "그냥맛있는돈까스",
-		shopFoodSale: 5,
-		discountPrice: 9500,
+		shop: { id: 7, name: "그냥돈까스", image: "", category: ["일식"] },
+		name: "그냥맛있는돈까스",
+		discountedPrice: 9500,
 		price: 10000,
-		category: ["일식"],
 	},
 	{
 		id: 8,
 		image: "https://mblogthumb-phinf.pstatic.net/20160908_177/dew36_1473339333121cJG9V_JPEG/1.jpg?type=w2",
-		shopName: "그냥닭발집",
-		productName: "그냥맛있는닭발",
+		shop: { id: 8, name: "그냥닭발집", image: "", category: ["야식"] },
+		name: "그냥맛있는닭발",
 		shopFoodSale: 10,
-		discountPrice: 9000,
+		discountedPrice: 9000,
 		price: 10000,
-		category: ["야식"],
 	},
 	{
 		id: 9,
 		image: "http://th1.tmon.kr/thumbs/image/949/93e/82a/c7abc881a_700x700_95_FIT.jpg",
-		shopName: "그냥족발집",
-		productName: "그냥맛있는족발",
-		shopFoodSale: 5,
-		discountPrice: 9500,
+		shop: { id: 9, name: "그냥족발집", image: "", category: ["야식"] },
+		name: "그냥맛있는족발",
+		discountedPrice: 9500,
 		price: 10000,
-		category: ["야식"],
 	},
 ];
 
 type shopsDataType = {
 	id: number;
 	image: string;
-	shopName: string;
-	productName: string;
-	shopFoodSale: number;
-	discountPrice: number;
+	name: string;
+	discountedPrice: number;
 	price: number;
-	category: Array<string>; // 중복 카테고리를 받는 메뉴를 위해
+	shop: { id: number; name: string; image: string; category: Array<string> };
 	data?: Array<string | number>;
 };
 
@@ -142,8 +144,8 @@ const BoardService = () => {
 	return axios.get(SHOP_BOARD_API_BASE_URL);
 };
 
-const calculatedDiscount = (price: number, discountPrice: number): number => {
-	return Math.ceil((1 - discountPrice / price) * 100);
+const calculatedDiscount = (price: number, discountedPrice: number): number => {
+	return Math.ceil((1 - discountedPrice / price) * 100);
 };
 
 interface menuMatchType {
@@ -165,18 +167,18 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 	return (
 		<ShopList>
 			{shop.map((row) =>
-				row.category.includes(`${menuMatchName}`) ||
+				row.shop.category.includes(`${menuMatchName}`) ||
 				menuMatchName === "전체보기" ? (
 					<ShopListLi key={row.id}>
 						<ShopCard
-							shopName={row.shopName}
+							shopName={row.shop.name}
 							shopFoodImg={row.image}
-							shopFoodName={row.productName}
+							shopFoodName={row.name}
 							shopFoodSale={calculatedDiscount(
 								row.price,
-								row.discountPrice
+								row.discountedPrice
 							)}
-							shopFoodCost={row.discountPrice}
+							shopFoodCost={row.discountedPrice}
 							shopBeforeCost={row.price}
 						/>
 					</ShopListLi>

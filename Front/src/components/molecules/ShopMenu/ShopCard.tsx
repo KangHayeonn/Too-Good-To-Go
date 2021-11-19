@@ -57,6 +57,11 @@ const shopFoodNameStyle = css`
 	color: #333;
 	font-size: 19px;
 	font-weight: 700;
+	overflow: hidden;
+	width: 100%;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 const saleValueStyle = css`

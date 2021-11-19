@@ -29,10 +29,18 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation "javax.xml.bind:jaxb-api"
     // 프로젝트에서 .adoc파일들을 읽어 build/generated-snippets 에 파일읽어 HTML문서로 export
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     // Maven 과 같이 test Scope 에 대한 mockMvc 의존성을 추가 (WebClient, Assured 사용가능)
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    // 언어 요청에 맞게 다국어 처리 위한 i18n 세팅. yml에서 다국화 하기 위해
+    implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+    // Json을 결과로 매핑하기 위한 의존성
+    implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 ext {
@@ -40,8 +48,8 @@ ext {
 }
 
 test {
-    outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
     useJUnitPlatform()
+    outputs.dir snippetsDir // 테스트 실행 시 snippet들이 해당 위치에 생성되도록
 }
 
 asciidoctor { //asciidoctor task 설정

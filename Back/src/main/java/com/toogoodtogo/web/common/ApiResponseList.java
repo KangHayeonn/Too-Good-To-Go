@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
-public final class ApiResponse<T> extends CommonResult{
-    private final T data;
+public final class ApiResponseList<T> extends CommonResult {
+    private final List<T> data;
 }

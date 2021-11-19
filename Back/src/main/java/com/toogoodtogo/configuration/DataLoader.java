@@ -27,13 +27,13 @@ public class DataLoader implements ApplicationRunner {
         Shop shop1 = new Shop();
         shop1.setName("백채김치찌개 봉천점");
         shop1.setImage("image1");
-        shop1.setCategory("한식");
+        shop1.setCategory(new String[]{"한식"});
         shopRepository.save(shop1);
 
         Shop shop2 = new Shop();
         shop2.setName("노란통닭 방배점");
         shop2.setImage("image2");
-        shop2.setCategory("치킨");
+        shop2.setCategory(new String[]{"치킨", "패스트푸드"});
         shopRepository.save(shop2);
     }
 

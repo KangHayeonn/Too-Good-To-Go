@@ -173,6 +173,7 @@ const CartCard = styled.div<theme>`
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
+	background-color: ${({ checked }) => checked && `#c2f8b421`};
 	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
 	box-shadow: ${({ checked }) =>
 		checked

@@ -14,11 +14,12 @@ export type CartCardType = {
 
 export type initialCartCardType = CartCardType & {
 	isChecked: boolean;
+	cartItemQuantity: number;
 };
 
 export const initialCards: initialCartCardType[] = shopData.map(
 	(e: CartCardType) => {
-		return { ...e, isChecked: false };
+		return { ...e, isChecked: false, cartItemQuantity: 1 };
 	}
 );
 
@@ -56,11 +57,40 @@ export const selectCartCardsSlice = createSlice({
 
 			return filteredArrOfState;
 		},
+		incrementSelectedCards: (state, action: PayloadAction<number>) => {
+			return state.map((e) => {
+				if (e.shopId === action.payload) {
+					return { ...e, cartItemQuantity: e.cartItemQuantity + 1 };
+				}
+				return e;
+			});
+		},
+		decrementSelectedCards: (state, action: PayloadAction<number>) => {
+			// Deletes card which has cartItemQuantity <= 0
+			return state
+				.map((e) => {
+					if (e.shopId === action.payload) {
+						return {
+							...e,
+							cartItemQuantity: e.cartItemQuantity - 1,
+						};
+					}
+					return e;
+				})
+				.filter((e) => {
+					return e.cartItemQuantity;
+				});
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { selectCartCardByID, selectAllCartCards, deleteSelectedCards } =
-	selectCartCardsSlice.actions;
+export const {
+	selectCartCardByID,
+	selectAllCartCards,
+	deleteSelectedCards,
+	incrementSelectedCards,
+	decrementSelectedCards,
+} = selectCartCardsSlice.actions;
 
 export default selectCartCardsSlice.reducer;

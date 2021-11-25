@@ -10,24 +10,27 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	selectCartCardByID,
 	initialCartCardType,
+	incrementSelectedCards,
+	decrementSelectedCards,
 } from "../../../features/cartFeatures/selectCartCardsSlice";
 import { RootState } from "../../../app/store";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
 
+// Emotion theme
+type theme = {
+	checked: boolean;
+};
+
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
-	// useSelector returns the modifiedState from reducer.
-	// const isCheckedArr = useSelector((state: RootState) => {
-	// 	return state.selectCartCards.filter((e) => {
-	// 		return e.isChecked;
-	// 	});
-	// });
-
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
-		return state.selectCartCards;
+		// Will return cards only with cartItemQuantity >= 1
+		return state.selectCartCards.filter((e) => {
+			return e.cartItemQuantity;
+		});
 	});
 
 	if (displayCardArr.length) {
@@ -35,7 +38,7 @@ const CartCards: React.FC = () => {
 			<Wrapper>
 				{displayCardArr.map((card: initialCartCardType) => {
 					return (
-						<CartCard key={card.shopId}>
+						<CartCard key={card.shopId} checked={card.isChecked}>
 							<div className="card-img-ctn">
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
@@ -53,7 +56,35 @@ const CartCards: React.FC = () => {
 									</p>
 								</div>
 								<div className="btn-ctn">
-									<button type="button">수정</button>
+									{/* <button type="button">수정</button> */}
+									{/* Card quantity button component */}
+									<QuantityButton>
+										<button
+											type="button"
+											onClick={() => {
+												dispatch(
+													decrementSelectedCards(
+														card.shopId
+													)
+												);
+											}}
+										>
+											-
+										</button>
+										<p>{card.cartItemQuantity}</p>
+										<button
+											type="button"
+											onClick={() => {
+												dispatch(
+													incrementSelectedCards(
+														card.shopId
+													)
+												);
+											}}
+										>
+											+
+										</button>
+									</QuantityButton>
 									<button
 										type="button"
 										onClick={() => {
@@ -87,6 +118,24 @@ const CartCards: React.FC = () => {
 
 export default CartCards;
 
+const QuantityButton = styled.div`
+	width: 142px;
+	height: 27px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	overflow: hidden;
+	border-radius: 13px;
+	background-color: #e7e4e4;
+
+	button {
+		background-color: #e7e4e4;
+		font-size: 20px;
+		/* width: 30px; */
+	}
+`;
+
 const Wrapper = styled.div`
 	width: 700px;
 	height: 579px;
@@ -112,7 +161,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-const CartCard = styled.div`
+const CartCard = styled.div<theme>`
 	width: 660px;
 	height: 181px;
 	border: 1px solid #d3d3d3;
@@ -121,10 +170,17 @@ const CartCard = styled.div`
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+	box-shadow: ${({ checked }) =>
+		checked
+			? `0 4px 8px 1px rgba(84, 182, 137, 0.5)`
+			: `0 4px 8px 0 rgba(0, 0, 0, 0.1)`};
 	transition: 0.3s;
 	:hover {
-		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+		box-shadow: ${({ checked }) =>
+			checked
+				? `0 8px 16px 1px rgba(84, 182, 137, 0.8)`
+				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.2)`};
 	}
 
 	.card-img-ctn {

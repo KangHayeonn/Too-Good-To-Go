@@ -86,6 +86,7 @@ const CartCards: React.FC = () => {
 										</button>
 									</QuantityButton>
 									<button
+										className="select-btn"
 										type="button"
 										onClick={() => {
 											// console.log(data.shopId);
@@ -122,7 +123,7 @@ const QuantityButton = styled.div`
 	width: 142px;
 	height: 27px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	flex-direction: row;
 	overflow: hidden;
@@ -130,9 +131,9 @@ const QuantityButton = styled.div`
 	background-color: #e7e4e4;
 
 	button {
-		background-color: #e7e4e4;
 		font-size: 20px;
-		/* width: 30px; */
+		width: 55px;
+		background-color: #e7e4e4;
 	}
 `;
 
@@ -226,17 +227,17 @@ const CartCard = styled.div<theme>`
 		align-items: center;
 		justify-content: center;
 		margin: 10px;
-	}
 
-	Button {
-		width: 74px;
-		height: 27px;
-		border-radius: 8px;
-		background-color: #cfcfcf;
-		color: black;
-		font-weight: 500;
-		font-size: 13px;
-		margin: 3px;
+		.select-btn {
+			width: 74px;
+			height: 27px;
+			border-radius: 8px;
+			background-color: #cfcfcf;
+			color: black;
+			font-weight: 500;
+			font-size: 13px;
+			margin: 3px;
+		}
 	}
 
 	.price {

@@ -3,97 +3,124 @@ import React from "react";
 import styled from "@emotion/styled";
 
 const Bar = styled.div`
-    background-color: blue;
-    margin-bottom: 3px;
-	padding: 0.7em;
-    padding-left : 2.7em;
-	display: flex;
-	flex-direction: column;
-    align-items: flex-start;
-    color: blue;
-    color: #fff;
-    font-size: 19px;
-    font-weight: 600;
-    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+	padding: 2em;
 `;
 
 const CustomerName = styled.div`
+	display: flex;
 `;
 
+const Text = styled.div`
+	width: 13%;
+	padding: 5px;
+	padding-left: 29px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #646464;
+	display: flex;
+`;
+
+const Input = styled.input`
+	width: 23%;
+	height: 27px;
+	padding-left: 15px;
+	margin-bottom: 19px;
+	border: solid 1px #c4c4c4;
+`;
+
+const Sign = styled.h4`
+	margin: 5px 1em 1em;
+`;
+
+const Address = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
+const Input1 = styled.input`
+	width: 150px;
+	height: 27px;
+	padding-left: 15px;
+	margin-bottom: 19px;
+	border: solid 1px #c4c4c4;
+`;
+
+const Input2 = styled.input`
+	width: 500px;
+	height: 27px;
+	padding-left: 15px;
+	margin-bottom: 19px;
+	border: solid 1px #c4c4c4;
+`;
+
+const Button = styled.button`
+	width: 111px;
+	font-size: 13px;
+	font-weight: 500;
+	height: 31px;
+	color: #646464;
+	border: none;
+	border: 1px solid #c4c4c4;
+	margin-left: 11px;
+
+	&:hover {
+		background-color: #54b689;
+		color: #fff;
+		border: 1px solid #54b689;
+	}
+`;
+
+const PostCode = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
 const OrderInfo: React.FC = () => {
-    return (
-        <div>
-        <CustomerName>
-            <h4>주문자 *</h4>
-            <input
-                placeholder = "이름을 입력하세요."
-                type = "text"
-            />
-        </CustomerName>
-        <CustomerName>
-            <h4>휴대전화 *</h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-            <h4> - </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-            <h4> - </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-        </CustomerName>
-        <CustomerName>
-            <h4>일반전화 </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-            <h4> - </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-            <h4> - </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-        </CustomerName>
-        <CustomerName>
-            <h4>이메일 </h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-            <h4>@</h4>
-            <input
-                placeholder = ""
-                type = "text"
-            />
-        </CustomerName>
-        <CustomerName>
-            <h4>주소 *</h4>
-            <input
-                placeholder = "우편번호"
-                type = "text"
-            />
-            <input
-                placeholder = "기본주소"
-                type = "text"
-            />
-            <input
-                placeholder = "나머지 주소"
-                type = "text"
-            />
-        </CustomerName>
-        <Bar/>
-        </div>
-    );
+	return (
+		<div>
+			<CustomerName>
+				<Text>주문자 *</Text>
+				<Input placeholder="이름을 입력하세요." type="text" />
+			</CustomerName>
+			<CustomerName>
+				<Text>휴대전화 *</Text>
+				<Input placeholder="" type="text" className="phone" />
+				<Sign> - </Sign>
+				<Input placeholder="" type="text" />
+				<Sign> - </Sign>
+				<Input placeholder="" type="text" />
+			</CustomerName>
+			<CustomerName>
+				<Text>일반전화 </Text>
+				<Input placeholder="" type="text" />
+				<Sign> - </Sign>
+				<Input placeholder="" type="text" />
+				<Sign> - </Sign>
+				<Input placeholder="" type="text" />
+			</CustomerName>
+			<CustomerName>
+				<Text>이메일 </Text>
+				<Input placeholder="" type="text" />
+				<Sign>@</Sign>
+				<Input placeholder="" type="text" />
+			</CustomerName>
+			<CustomerName>
+				<Text>주소 *</Text>
+				<Address>
+					<PostCode>
+						<Input1 placeholder="우편번호" type="text" />
+						<Button
+							type="button"
+							className="btn register-confirm-btn"
+						>
+							주소검색
+						</Button>
+					</PostCode>
+					<Input2 placeholder="기본주소" type="text" />
+					<Input2 placeholder="나머지 주소" type="text" />
+				</Address>
+			</CustomerName>
+			<Bar />
+		</div>
+	);
 };
 export default OrderInfo;

@@ -3,24 +3,26 @@ import React from "react";
 import styled from "@emotion/styled/macro";
 
 const Select = [
-	{ name: "주문자 정보와 동일", hex: "#ffb598" },
-	{ name: "새로운 배송지", hex: "#c2dbff" },
+	{ name: "일회용 수저, 포크 안주셔도 돼요. 🌱", hex: "#54b689" },
+	{ name: "일회용 수저, 포크 넣어주세요.", hex: "#646464" },
 ];
 
 const ColorSelectorContainer = styled.div`
 	display: flex;
-	justify-content: flex-start;
+	flex-direction: column;
+	align-items: flex-start;
 	width: 95%;
-	margin: 2em 1em 29px 1em;
+	margin: 1em 1em 29px 1em;
+	border-top: 1px solid #eee;
 	border-bottom: 1px solid #eee;
-	padding-bottom: 1em;
+	padding: 1em;
 `;
 
 const Label = styled.label`
 	display: inline-block;
 	margin-top: 4px;
-	margin-right: 13px;
 	padding: 7px;
+	color: ${(props) => props.color};
 `;
 
 const RadioButton = styled.input`
@@ -33,7 +35,7 @@ const RadioButton = styled.input`
 	}
 `;
 
-const SelectInfo: React.FC = () => {
+const SelectPlastic: React.FC = () => {
 	return (
 		<>
 			<ColorSelectorContainer>
@@ -54,4 +56,4 @@ const SelectInfo: React.FC = () => {
 		</>
 	);
 };
-export default SelectInfo;
+export default SelectPlastic;

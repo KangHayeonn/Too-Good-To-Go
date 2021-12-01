@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/user/**").hasRole("USER")
+                .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -63,8 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 관련 url 예외처리 손봐야 함!!
-        web.ignoring().antMatchers("/api.adoc");
+        web.ignoring().antMatchers("/docs/**");
         // static 경로
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }

@@ -45,6 +45,8 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -100,6 +102,8 @@ class SignControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/login/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("login email"),
                                 fieldWithPath("password").description("user password")
@@ -136,6 +140,8 @@ class SignControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/login/fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("login email"),
                                 fieldWithPath("password").description("user password")
@@ -172,6 +178,8 @@ class SignControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/signup/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("user email"),
                                 fieldWithPath("password").description("user password"),
@@ -211,6 +219,8 @@ class SignControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/signup/fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("user email"),
                                 fieldWithPath("password").description("user password"),
@@ -229,7 +239,7 @@ class SignControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"GUEST"})
+    @WithMockUser(roles = {"GUEST"})
     public void 접근실패() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
@@ -240,7 +250,7 @@ class SignControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"GUEST", "USER"})
+    @WithMockUser(roles = {"GUEST", "USER"})
     public void 접근성공() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))

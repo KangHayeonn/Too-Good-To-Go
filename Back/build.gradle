@@ -3,7 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     //id 'org.asciidoctor.convert' version '1.5.9.2' // Asciidoctor 플러그인 적용
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    //id("org.asciidoctor.jvm.pdf") version "3.2.0"
+    //id 'org.asciidoctor.jvm.pdf' version "3.2.0"
     //id 'org.asciidoctor.jvm.gems' version "3.2.0"
     id 'java'
 }
@@ -64,15 +64,15 @@ asciidoctor.doFirst {
     delete file('src/main/resources/static/docs') //기존에 존재하는 docs를 삭제
 }
 
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-
-    from file("build/asciidoc/html5/")
-    into file("src/main/resources/static/docs")
-}
-build {
-    dependsOn copyDocument
-}
+//task copyDocument(type: Copy) {
+//    dependsOn asciidoctor
+//
+//    from file("build/asciidoc/html5/")
+//    into file("src/main/resources/static/docs")
+//}
+//build {
+//    dependsOn copyDocument
+//}
 
 bootJar {
     dependsOn asciidoctor //jar 생성전에 asciidoctor 테스크가 실행되도록 설정, gradle build 시 asciidoctor → bootJar 순으로 수행

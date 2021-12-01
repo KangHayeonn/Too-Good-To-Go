@@ -30,6 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -87,6 +88,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/findById",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -119,6 +122,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/findByEmail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -146,6 +151,8 @@ class UsersControllerTest {
         mockMvc.perform(get("/api/users"))
                 .andDo(print())
                 .andDo(document("users/findAll",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -174,6 +181,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),

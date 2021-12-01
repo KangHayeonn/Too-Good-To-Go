@@ -102,7 +102,9 @@ class SignControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/login/success",
-                        preprocessRequest(prettyPrint()),
+                        preprocessRequest(
+//                                modifyUris().scheme("https").host("www.tgtg.com").removePort(),
+                                prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("login email"),

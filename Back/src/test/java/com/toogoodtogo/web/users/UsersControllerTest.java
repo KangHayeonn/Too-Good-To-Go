@@ -172,7 +172,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
+    @WithMockUser(roles = {"USER"})
     public void 회원삭제() throws Exception {
         //given
         //when

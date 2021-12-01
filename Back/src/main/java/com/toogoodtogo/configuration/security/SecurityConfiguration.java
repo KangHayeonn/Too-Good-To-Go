@@ -45,12 +45,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 메인 화면, 로그인 및 가입 접근은 누구나 가능
                         // 더 손봐야 함!!
                 .antMatchers("/api/signup", "/api/login", "/index").permitAll()
+                // 위에 "/", "" 추가시 에러뜸
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
-                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
+//                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
-//                        .antMatchers("/admin/**").hasRole("ADMIN")
-//                        .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**").hasRole("USER")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)

@@ -76,7 +76,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
+    @WithMockUser(roles = {"USER"})
     public void 회원조회_userId() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
@@ -96,7 +96,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.email").description("user email"),
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))
@@ -107,7 +108,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
+    @WithMockUser(roles = {"USER"})
     public void 회원조회_email() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
@@ -127,7 +128,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.email").description("user email"),
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))
@@ -138,7 +140,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
+    @WithMockUser(roles = {"USER"})
     public void 전체회원조회() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
@@ -153,7 +155,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.[].email").description("user email"),
                                 fieldWithPath("data.[].password").description("user password"),
                                 fieldWithPath("data.[].name").description("user name"),
-                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.[].roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))

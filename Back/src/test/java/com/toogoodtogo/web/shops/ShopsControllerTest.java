@@ -77,6 +77,8 @@ class ShopsControllerTest {
         mvc.perform(get("/api/shops"))
                 .andDo(print())
                 .andDo(document("shops/find",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("shop data"),
                                 fieldWithPath("code").description("shop data"),

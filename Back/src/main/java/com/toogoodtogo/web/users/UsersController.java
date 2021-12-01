@@ -17,17 +17,17 @@ public class UsersController {
     private final UserUseCase userUseCase;
     private final ResponseService responseService;
 
-    @GetMapping("/user/id/{userId}")
+    @GetMapping("/common/user/id/{userId}")
     public ApiResponse<UserResponseDto> findUserById (@PathVariable Long userId, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findById(userId));
     }
 
-    @GetMapping("/user/email/{email}")
+    @GetMapping("/common/user/email/{email}")
     public ApiResponse<UserResponseDto> findUserByEmail (@PathVariable String email, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findByEmail(email));
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ApiResponseList<UserResponseDto> findAllUser() {
         return responseService.getListResult(userUseCase.findAllUser());
     }
@@ -38,7 +38,7 @@ public class UsersController {
 //        return responseService.getSingleResult(userService.update(userId, userRequestDto));
 //    }
 
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/admin/user/{userId}")
     public CommonResult delete(@PathVariable Long userId) {
         userUseCase.delete(userId);
         return responseService.getSuccessResult();

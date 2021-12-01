@@ -52,6 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .anyRequest().permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
+                .antMatchers("/api/common/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/ceo/**").hasRole("CEO")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)

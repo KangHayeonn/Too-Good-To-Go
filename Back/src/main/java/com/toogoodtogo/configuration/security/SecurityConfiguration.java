@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 권한 관리 대상 지정 옵션
                         // 메인 화면, 로그인 및 가입 접근은 누구나 가능
                         // 더 손봐야 함!!
-                .antMatchers("/api/signup", "/api/login", "/index").permitAll()
+                .antMatchers("/api/signup", "/api/login", "/").permitAll()
                 // 위에 "/", "" 추가시 에러뜸
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()

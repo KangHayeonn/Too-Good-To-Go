@@ -38,6 +38,7 @@ const CartCards: React.FC = () => {
 			<Wrapper>
 				{displayCardArr.map((card: initialCartCardType) => {
 					return (
+						// emotion conditional css
 						<CartCard key={card.shopId} checked={card.isChecked}>
 							<div className="card-img-ctn">
 								<img src={card.shopFoodImg} alt="Food" />
@@ -179,6 +180,7 @@ const CartCard = styled.div<theme>`
 		checked
 			? `0 4px 8px 1px rgba(84, 182, 137, 0.5)`
 			: `0 4px 8px 0 rgba(0, 0, 0, 0.1)`};
+
 	transition: 0.3s;
 	:hover {
 		box-shadow: ${({ checked }) =>

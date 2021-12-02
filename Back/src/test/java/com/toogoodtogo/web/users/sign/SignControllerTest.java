@@ -216,7 +216,7 @@ class SignControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("signup/" + role + "/success",
+                .andDo(document("signup/" + role + "/fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(

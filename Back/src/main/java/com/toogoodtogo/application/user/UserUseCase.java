@@ -7,7 +7,7 @@ import com.toogoodtogo.web.users.UserResponseDto;
 import java.util.List;
 
 public interface UserUseCase {
-    Long save(UserRequestDto userDto);
+    //Long save(UserRequestDto userDto);
     UserResponseDto findById(Long id);
     UserResponseDto findByEmail(String email);
     List<UserResponseDto> findAllUser();

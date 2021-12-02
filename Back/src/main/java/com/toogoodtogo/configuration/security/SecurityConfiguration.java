@@ -44,13 +44,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 권한 관리 대상 지정 옵션
                         // 메인 화면, 로그인 및 가입 접근은 누구나 가능
                         // 더 손봐야 함!!
-                .antMatchers("/api/signup", "/api/login", "/index").permitAll()
+                .antMatchers("/api/signup", "/api/login", "/").permitAll()
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
-                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
+//                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
-//                        .antMatchers("/admin/**").hasRole("ADMIN")
-//                        .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
+                .antMatchers("/api/ceo/**").hasRole("CEO")
+                .antMatchers("/api/common/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/exception/**").permitAll()
+
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -62,8 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 관련 url 예외처리 손봐야 함!!
-        web.ignoring().antMatchers("/api.adoc");
+        web.ignoring().antMatchers("/docs/**");
         // static 경로
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }

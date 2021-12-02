@@ -37,7 +37,13 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 			<div className="second-section">
 				<p className="menu">
 					{isCheckedArr.map((e) => {
-						return <li key={e.shopId}>{e.shopFoodName}</li>;
+						return (
+							<li key={e.shopId}>
+								{e.shopFoodName}
+								{e.cartItemQuantity > 1 &&
+									` x ${e.cartItemQuantity}`}
+							</li>
+						);
 					})}
 				</p>
 				<p className="menuPriceAndDiscount">상품가격(할인가): </p>
@@ -85,6 +91,7 @@ const Wrapper = styled.div`
 			li {
 				margin: 5px;
 				list-style: none;
+				text-align: left;
 			}
 		}
 		.menu {

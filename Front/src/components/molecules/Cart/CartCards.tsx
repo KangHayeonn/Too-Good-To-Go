@@ -1,8 +1,6 @@
 import React from "react";
 // Styles
 import styled from "@emotion/styled";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -10,24 +8,27 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	selectCartCardByID,
 	initialCartCardType,
+	incrementSelectedCards,
+	decrementSelectedCards,
 } from "../../../features/cartFeatures/selectCartCardsSlice";
 import { RootState } from "../../../app/store";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
 
+// Emotion theme
+type theme = {
+	checked: boolean;
+};
+
 const CartCards: React.FC = () => {
 	const dispatch = useDispatch();
 
-	// useSelector returns the modifiedState from reducer.
-	// const isCheckedArr = useSelector((state: RootState) => {
-	// 	return state.selectCartCards.filter((e) => {
-	// 		return e.isChecked;
-	// 	});
-	// });
-
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
-		return state.selectCartCards;
+		// Will return cards only with cartItemQuantity >= 1
+		return state.selectCartCards.filter((e) => {
+			return e.cartItemQuantity;
+		});
 	});
 
 	if (displayCardArr.length) {
@@ -35,7 +36,8 @@ const CartCards: React.FC = () => {
 			<Wrapper>
 				{displayCardArr.map((card: initialCartCardType) => {
 					return (
-						<CartCard key={card.shopId}>
+						// emotion conditional css
+						<CartCard key={card.shopId} checked={card.isChecked}>
 							<div className="card-img-ctn">
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
@@ -53,8 +55,37 @@ const CartCards: React.FC = () => {
 									</p>
 								</div>
 								<div className="btn-ctn">
-									<button type="button">수정</button>
+									{/* <button type="button">수정</button> */}
+									{/* Card quantity button component */}
+									<QuantityButton>
+										<button
+											type="button"
+											onClick={() => {
+												dispatch(
+													decrementSelectedCards(
+														card.shopId
+													)
+												);
+											}}
+										>
+											-
+										</button>
+										<p>{card.cartItemQuantity}</p>
+										<button
+											type="button"
+											onClick={() => {
+												dispatch(
+													incrementSelectedCards(
+														card.shopId
+													)
+												);
+											}}
+										>
+											+
+										</button>
+									</QuantityButton>
 									<button
+										className="select-btn"
 										type="button"
 										onClick={() => {
 											// console.log(data.shopId);
@@ -65,11 +96,13 @@ const CartCards: React.FC = () => {
 									>
 										선택
 									</button>
-									{card.isChecked ? (
+
+									{/* removed checkbox icon with shadow rgba */}
+									{/* {card.isChecked ? (
 										<CheckBoxIcon />
 									) : (
 										<CheckBoxOutlineBlankIcon />
-									)}
+									)} */}
 								</div>
 							</div>
 						</CartCard>
@@ -86,6 +119,24 @@ const CartCards: React.FC = () => {
 };
 
 export default CartCards;
+
+const QuantityButton = styled.div`
+	width: 142px;
+	height: 27px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+	overflow: hidden;
+	border-radius: 13px;
+	background-color: #e7e4e4;
+
+	button {
+		font-size: 20px;
+		width: 55px;
+		background-color: #e7e4e4;
+	}
+`;
 
 const Wrapper = styled.div`
 	width: 700px;
@@ -112,7 +163,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-const CartCard = styled.div`
+const CartCard = styled.div<theme>`
 	width: 660px;
 	height: 181px;
 	border: 1px solid #d3d3d3;
@@ -121,10 +172,19 @@ const CartCard = styled.div`
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	background-color: ${({ checked }) => checked && `#c2f8b421`};
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+	box-shadow: ${({ checked }) =>
+		checked
+			? `0 4px 8px 1px rgba(84, 182, 137, 0.5)`
+			: `0 4px 8px 0 rgba(0, 0, 0, 0.1)`};
+
 	transition: 0.3s;
 	:hover {
-		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+		box-shadow: ${({ checked }) =>
+			checked
+				? `0 8px 16px 1px rgba(84, 182, 137, 0.8)`
+				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.2)`};
 	}
 
 	.card-img-ctn {
@@ -170,17 +230,17 @@ const CartCard = styled.div`
 		align-items: center;
 		justify-content: center;
 		margin: 10px;
-	}
 
-	Button {
-		width: 74px;
-		height: 27px;
-		border-radius: 8px;
-		background-color: #cfcfcf;
-		color: black;
-		font-weight: 500;
-		font-size: 13px;
-		margin: 3px;
+		.select-btn {
+			width: 74px;
+			height: 27px;
+			border-radius: 8px;
+			background-color: #cfcfcf;
+			color: black;
+			font-weight: 500;
+			font-size: 13px;
+			margin: 3px;
+		}
 	}
 
 	.price {

@@ -9,6 +9,7 @@ import Footer from "./components/organisms/Footer/Footer";
 import CartPage from "./pages/Cart/CartPage";
 import OrderPage from "./pages/Order/OrderPage";
 import PayPage from "./pages/Pay/PayPage";
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 const Router: React.FC = () => {
 	return (
@@ -23,6 +24,7 @@ const Router: React.FC = () => {
 				<Route exact path="/cart" component={CartPage} />
 				<Route exact path="/order" component={OrderPage} />
 				<Route exact path="/pay" component={PayPage} />
+				<Route exact path="/profile" component={ProfilePage} />
 				<Route render={() => <div>에러페이지</div>} />
 			</Switch>
 			<Footer />

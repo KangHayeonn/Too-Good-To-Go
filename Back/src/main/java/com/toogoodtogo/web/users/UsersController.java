@@ -26,7 +26,7 @@ public class UsersController {
         return responseService.getSingleResult(userUseCase.findByEmail(email));
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping("/users")
     public ApiResponseList<UserResponse> findAllUser() {
         return responseService.getListResult(userUseCase.findAllUser());
     }
@@ -37,7 +37,7 @@ public class UsersController {
 //        return responseService.getSingleResult(userService.update(userId, userRequestDto));
 //    }
 
-    @DeleteMapping("/admin/user/{userId}")
+    @DeleteMapping("/user/{userId}")
     public CommonResult delete(@PathVariable Long userId) {
         userUseCase.delete(userId);
         return responseService.getSuccessResult();

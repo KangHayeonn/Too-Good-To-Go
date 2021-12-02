@@ -1,48 +1,28 @@
 package com.toogoodtogo.web.users.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.TooGoodToGoApplication;
-import com.toogoodtogo.application.response.ResponseService;
-import com.toogoodtogo.application.security.SignService;
-import com.toogoodtogo.application.shop.product.ProductService;
-import com.toogoodtogo.application.user.UserService;
-import com.toogoodtogo.configuration.security.CustomAccessDeniedHandler;
-import com.toogoodtogo.configuration.security.CustomAuthenticationEntryPoint;
-import com.toogoodtogo.configuration.security.JwtTokenProvider;
-import com.toogoodtogo.domain.security.RefreshTokenRepository;
-import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.UsersController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -102,7 +82,7 @@ class SignControllerTest {
     @Test
     public void user_login_success() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("user@email.com")
                 .password("user_pw")
                 .build());
@@ -143,7 +123,7 @@ class SignControllerTest {
     @Test
     public void user_login_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("user@email.com")
                 .password("wrongPassword")
                 .build());
@@ -176,7 +156,7 @@ class SignControllerTest {
     @Test
     public void admin_login_success() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("admin@email.com")
                 .password("admin_pw")
                 .build());
@@ -217,7 +197,7 @@ class SignControllerTest {
     @Test
     public void admin_login_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("admin@email.com")
                 .password("wrongPassword")
                 .build());
@@ -250,7 +230,7 @@ class SignControllerTest {
     @Test
     public void ceo_login_success() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("ceo@email.com")
                 .password("ceo_pw")
                 .build());
@@ -291,7 +271,7 @@ class SignControllerTest {
     @Test
     public void ceo_login_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
                 .email("ceo@email.com")
                 .password("wrongPassword")
                 .build());
@@ -325,7 +305,7 @@ class SignControllerTest {
     public void user_signUp_success() throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("userB@email.com" + time)
                 .password("userB_pw")
                 .name("userB")
@@ -368,7 +348,7 @@ class SignControllerTest {
     @Test
     public void user_signUp_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("user@email.com")
                 .password("userB_pw")
                 .name("userB")
@@ -410,7 +390,7 @@ class SignControllerTest {
     public void admin_signUp_success() throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("adminB@email.com" + time)
                 .password("adminB_pw")
                 .name("adminB")
@@ -453,7 +433,7 @@ class SignControllerTest {
     @Test
     public void admin_signUp_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("admin@email.com")
                 .password("adminB_pw")
                 .name("adminB")
@@ -495,7 +475,7 @@ class SignControllerTest {
     public void ceo_signUp_success() throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("ceoB@email.com" + time)
                 .password("ceoB_pw")
                 .name("ceoB")
@@ -538,7 +518,7 @@ class SignControllerTest {
     @Test
     public void ceo_signUp_fail() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
                 .email("ceo@email.com")
                 .password("ceoB_pw")
                 .name("ceoB")

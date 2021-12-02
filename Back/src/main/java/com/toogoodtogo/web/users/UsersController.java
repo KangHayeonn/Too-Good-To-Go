@@ -1,7 +1,6 @@
 package com.toogoodtogo.web.users;
 
 import com.toogoodtogo.application.response.ResponseService;
-import com.toogoodtogo.application.user.UserService;
 import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.common.ApiResponseList;
@@ -18,17 +17,17 @@ public class UsersController {
     private final ResponseService responseService;
 
     @GetMapping("/common/user/id/{userId}")
-    public ApiResponse<UserResponseDto> findUserById (@PathVariable Long userId, @RequestParam String lang) {
+    public ApiResponse<UserResponse> findUserById (@PathVariable Long userId, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findById(userId));
     }
 
     @GetMapping("/common/user/email/{email}")
-    public ApiResponse<UserResponseDto> findUserByEmail (@PathVariable String email, @RequestParam String lang) {
+    public ApiResponse<UserResponse> findUserByEmail (@PathVariable String email, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findByEmail(email));
     }
 
     @GetMapping("/admin/users")
-    public ApiResponseList<UserResponseDto> findAllUser() {
+    public ApiResponseList<UserResponse> findAllUser() {
         return responseService.getListResult(userUseCase.findAllUser());
     }
 

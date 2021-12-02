@@ -16,12 +16,12 @@ public class UsersController {
     private final UserUseCase userUseCase;
     private final ResponseService responseService;
 
-    @GetMapping("/common/user/id/{userId}")
+    @GetMapping("/user/id/{userId}")
     public ApiResponse<UserResponse> findUserById (@PathVariable Long userId, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findById(userId));
     }
 
-    @GetMapping("/common/user/email/{email}")
+    @GetMapping("/user/email/{email}")
     public ApiResponse<UserResponse> findUserByEmail (@PathVariable String email, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findByEmail(email));
     }

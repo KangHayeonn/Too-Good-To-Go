@@ -1,8 +1,6 @@
 import React from "react";
 // Styles
 import styled from "@emotion/styled";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import { useDispatch, useSelector } from "react-redux";

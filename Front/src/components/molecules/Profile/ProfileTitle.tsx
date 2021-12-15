@@ -15,7 +15,7 @@ const ProfileTitle: React.FC = () => {
 export default ProfileTitle;
 
 const Title = styled.div`
-	width: 1120px;
+	width: 907px;
 	height: 127px;
 	background: #ffffff;
 	border: 1px solid #646464;

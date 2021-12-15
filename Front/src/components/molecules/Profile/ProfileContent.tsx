@@ -10,7 +10,6 @@ const ProfileContent: React.FC = () => {
 	function handleShowProfileEdit(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) {
-		event.preventDefault();
 		setShowProfileEdit(true);
 		setShowOrderList(false);
 	}
@@ -57,10 +56,10 @@ const ProfileEditContainer = styled.div`
 	border-left: 1px solid black;
 	display: flex;
 	flex-direction: column;
-	width: 1120px;
+	/* width: 907px; */
 	min-height: 650px;
 	max-height: auto;
-	background: #ffffff;
+	/* background: #ffffff; */
 	/* border: 1px solid red; */
 `;
 
@@ -73,8 +72,8 @@ const Content = styled.div`
 	max-height: auto;
 	display: flex;
 	flex-direction: row;
-	width: 1120px;
-	min-height: 887px;
+	width: 907px;
+	min-height: 660px;
 	background: #ffffff;
 	/* border: 1px solid #646464; */
 `;
@@ -85,7 +84,7 @@ const SelectionContainer = styled.div`
 	/* border: 1px solid black; */
 	display: flex;
 	flex-direction: column;
-	width: 300px;
+	width: 229px;
 	min-height: 650px;
 	max-height: auto;
 	background: #ffffff;

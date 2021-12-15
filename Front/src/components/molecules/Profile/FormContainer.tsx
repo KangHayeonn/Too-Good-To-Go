@@ -6,12 +6,10 @@ import Button from "@mui/material/Button";
 
 type User = {
 	id: string;
-	email: string;
 };
 
 const initialState = {
-	id: "Jihoon",
-	email: "akdlsz21@gmail.com",
+	id: "akdlsz21@gmail.com",
 };
 
 const FormContainer: React.FC = () => {
@@ -20,6 +18,7 @@ const FormContainer: React.FC = () => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
 			...state,
+			// Dynamic state changing.
 			[event.target.name]: event.target.value,
 		});
 	};
@@ -27,7 +26,7 @@ const FormContainer: React.FC = () => {
 	const handleSubmit = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		// eslint-disable-next-line no-alert
-		alert(`변경된 패스워드: ${state.email}, 변경된 이름: ${state.id}`);
+		alert(`변경된 이름: ${state.id}`);
 	};
 
 	return (
@@ -37,23 +36,14 @@ const FormContainer: React.FC = () => {
 				<form onSubmit={handleSubmit}>
 					<TextField
 						id="outlined-helperText"
-						label="이름"
+						label="아이디 ( 이메일 )"
 						name="id"
 						defaultValue={state.id}
-						helperText="변경할 이름을 입력하세요"
+						helperText="변경할 이메일을 입력하세요"
 						onChange={handleChange}
 						margin="normal"
 					/>
-					<TextField
-						className="email-input input"
-						id="outlined-helperText"
-						type="email"
-						name="email"
-						defaultValue={state.email}
-						value={state.email}
-						onChange={handleChange}
-						margin="normal"
-					/>
+
 					<Button variant="outlined" type="submit">
 						변경하기
 					</Button>
@@ -77,21 +67,24 @@ const EditTitle = styled.div`
 const Wrapper = styled.div`
 	margin: 0;
 	padding: 0;
-	width: 800px;
-	min-height: 600px;
+	/* width: 800px; */
+	/* min-height: 290px; */
+	height: auto;
 	/* border: 1px dashed black; */
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	justify-content: center;
+	justify-content: space-between;
 	padding-left: 38px;
 
 	form {
+		margin-top: 30px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		justify-content: center;
+		justify-content: space-between;
+		min-height: 489px;
 	}
 
 	.input {
@@ -101,8 +94,8 @@ const Wrapper = styled.div`
 	}
 
 	button {
-		position: relative;
-		top: 90px;
-		width: 795px;
+		/* position: relative; */
+		/* top: 289px; */
+		width: 550px;
 	}
 `;

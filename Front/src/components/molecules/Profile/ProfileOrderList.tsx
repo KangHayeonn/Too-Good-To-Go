@@ -1,27 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { shopData } from "../ShopDummyData";
+import api from "./api/posts";
 
 const ProfileOrderList: React.FC = () => {
+	// Axios data cannot be added in order list.
+	// product's image attribute missing.
+	const initialState: any[] | (() => any[]) = [];
+	const [orderData, setOrderData] = useState(initialState);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await api.get("");
+				setOrderData(response.data);
+			} catch (err) {
+				// Not in the 200 response range
+			}
+		};
+
+		fetchData();
+	}, []);
+	console.log(orderData);
+
 	return (
 		<>
 			<EditTitle className="edit-title">주문목록</EditTitle>
 			<OrderListContainer>
 				{shopData.map((card) => {
 					return (
-						<ProfileCard>
+						<ProfileCard key={card.shopId}>
 							<div className="card-img-ctn">
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
 							<div className="cardInfo">
-								<p className="cardInfo-flex">
+								<div className="cardInfo-flex">
 									<strong>픽업 완료</strong>
 									<p> - today&apos;s date</p>
 									<p className="food-cost">
 										{card.shopFoodCost}원
 									</p>
-								</p>
+								</div>
 								<p className="card-info-text">
 									<strong>{card.shopName}</strong>
 									<span className="grey-text">|</span>
@@ -55,11 +75,11 @@ const EditTitle = styled.div`
 
 const OrderListContainer = styled.div`
 	/* border: 1px dotted red; */
-	width: 800px;
+	/* width: 800px; */
 	min-height: 700px;
 	max-height: auto;
 
-	margin-left: 36px;
+	/* margin-left: 36px; */
 	margin-top: 80px;
 	display: flex;
 	flex-direction: column;
@@ -68,7 +88,7 @@ const OrderListContainer = styled.div`
 `;
 
 const ProfileCard = styled.div`
-	width: 730px;
+	width: 626px;
 	height: 161px;
 	border: 1px solid #d3d3d3;
 	/* padding: 0px 10px 0px 0; */

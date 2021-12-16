@@ -13,7 +13,7 @@ import java.util.Collections;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSignupRequestDto {
+public class UserSignupRequest {
     private String email;
     private String password;
     private String name;

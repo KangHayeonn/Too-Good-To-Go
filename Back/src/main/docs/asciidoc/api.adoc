@@ -66,17 +66,11 @@ operation::signup/user/success[snippets='curl-request,http-request,http-response
 === User 회원가입 실패 [POST]
 operation::signup/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== ADMIN 회원가입 성공 [POST]
-operation::signup/admin/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+=== MANAGER 회원가입 성공 [POST]
+operation::signup/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== ADMIN 회원가입 실패 [POST]
-operation::signup/admin/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-=== CEO 회원가입 성공 [POST]
-operation::signup/ceo/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-=== CEO 회원가입 실패 [POST]
-operation::signup/ceo/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+=== MANAGER 회원가입 실패 [POST]
+operation::signup/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 == Login Api
 
@@ -86,17 +80,11 @@ operation::login/user/success[snippets='curl-request,http-request,http-response,
 === USER 로그인 실패 [POST]
 operation::login/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== ADMIN 로그인 성공 [POST]
-operation::login/admin/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+=== MANAGER 로그인 성공 [POST]
+operation::login/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== ADMIN 로그인 실패 [POST]
-operation::login/admin/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-=== CEO 로그인 성공 [POST]
-operation::login/ceo/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-=== CEO 로그인 실패 [POST]
-operation::login/ceo/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+=== MANAGER 로그인 실패 [POST]
+operation::login/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 == User Api
 

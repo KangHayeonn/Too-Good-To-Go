@@ -89,36 +89,6 @@ const OrderInfo: React.FC = () => {
 				<Sign> - </Sign>
 				<Input placeholder="" type="text" />
 			</CustomerName>
-			<CustomerName>
-				<Text>일반전화 </Text>
-				<Input placeholder="" type="text" />
-				<Sign> - </Sign>
-				<Input placeholder="" type="text" />
-				<Sign> - </Sign>
-				<Input placeholder="" type="text" />
-			</CustomerName>
-			<CustomerName>
-				<Text>이메일 </Text>
-				<Input placeholder="" type="text" />
-				<Sign>@</Sign>
-				<Input placeholder="" type="text" />
-			</CustomerName>
-			<CustomerName>
-				<Text>주소 *</Text>
-				<Address>
-					<PostCode>
-						<Input1 placeholder="우편번호" type="text" />
-						<Button
-							type="button"
-							className="btn register-confirm-btn"
-						>
-							주소검색
-						</Button>
-					</PostCode>
-					<Input2 placeholder="기본주소" type="text" />
-					<Input2 placeholder="나머지 주소" type="text" />
-				</Address>
-			</CustomerName>
 			<Bar />
 		</div>
 	);

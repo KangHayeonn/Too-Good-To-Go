@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import PageTemplate from "../../components/templates/PageTemplate";
 import OrderForm from "../../components/organisms/Order/OrderForm";
 import RequestForm from "../../components/organisms/Order/RequestForm";
+import OrderList from "../../components/organisms/Order/OrderList";
+import PaymentForm from "../../components/organisms/Order/PaymentForm";
+import DiscountForm from "../../components/organisms/Order/DiscountForm";
+import PayForm from "../../components/organisms/Order/PayForm";
 
 const Button = styled.div`
 	width: 100%;
@@ -40,6 +44,10 @@ const OrderPage: React.FC = () => {
 		<PageTemplate isHeader={false} isSection={false} isFooter={false}>
 			<OrderForm />
 			<RequestForm />
+			<OrderList />
+			<PaymentForm />
+			<DiscountForm />
+			<PayForm />
 			<Button>
 				<OrderButton type="button">
 					<Link to="/pay" css={pay}>

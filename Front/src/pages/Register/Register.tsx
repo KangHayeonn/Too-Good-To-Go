@@ -11,6 +11,7 @@ const Register: React.FC = () => {
 					<h4>SIGN UP</h4>
 				</TitleCtn>
 				<InputCtn>
+					<div className="input-row"> 라디오 버튼 이후 추가 </div>
 					<div className="input-row">
 						{" "}
 						<input
@@ -21,7 +22,7 @@ const Register: React.FC = () => {
 							placeholder="아이디를 입력하세요."
 						/>{" "}
 						<Confirm type="button" className="confirm-btn">
-							확인
+							중복확인
 						</Confirm>
 					</div>
 					<div className="input-row">
@@ -46,30 +47,6 @@ const Register: React.FC = () => {
 						/>
 						<Confirm type="button" className="confirm-btn">
 							확인
-						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="email input"
-							type="email"
-							name=""
-							id=""
-							placeholder="이메일을 입력하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
-							확인
-						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="address-input input"
-							type="text"
-							name=""
-							id=""
-							placeholder="주소를 입력하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
-							검색
 						</Confirm>
 					</div>
 				</InputCtn>

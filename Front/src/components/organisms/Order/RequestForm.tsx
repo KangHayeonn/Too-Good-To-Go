@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import Titlebar from "../../atoms/Titlebar/Titlebar";
 import RequestInfoShop from "../../molecules/Order/RequestInfoShop";
 import SelectPlastic from "../../molecules/Order/SelectPlastic";
-import RequestInfoDelivery from "../../molecules/Order/RequestInfoDelivery";
 
 const OrderForm: React.FC = () => {
 	return (
@@ -11,7 +10,6 @@ const OrderForm: React.FC = () => {
 			<Titlebar>요청사항</Titlebar>
 			<RequestInfoShop />
 			<SelectPlastic />
-			<RequestInfoDelivery />
 		</Wrapper>
 	);
 };

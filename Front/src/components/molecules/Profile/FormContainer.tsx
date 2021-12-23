@@ -3,13 +3,20 @@ import styled from "@emotion/styled";
 // MUI
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Line13 from "../../../../public/image/Line 13.png";
 
 type User = {
-	id: string;
+	name: string;
+	email: string;
+	password: number;
+	phoneNumber: string;
 };
 
 const initialState = {
-	id: "akdlsz21@gmail.com",
+	name: "최지훈",
+	email: "akdlsz21@gmail.com",
+	password: 555132574,
+	phoneNumber: "01055453287",
 };
 
 const FormContainer: React.FC = () => {
@@ -26,22 +33,27 @@ const FormContainer: React.FC = () => {
 	const handleSubmit = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		// eslint-disable-next-line no-alert
-		alert(`변경된 이름: ${state.id}`);
+		alert(
+			`이름: ${state.name}, 이메일: ${state.email}, 비번M: ${state.password}, 전번M: ${state.phoneNumber}`
+		);
 	};
 
 	return (
-		<>
-			<EditTitle className="edit-title">개인정보 수정</EditTitle>
+		<FormWrapper>
+			<EditTitle className="edit-title">
+				<p>개인정보</p>
+				<img src={Line13} alt="line13" />
+				<p>MY PAGE</p>
+			</EditTitle>
 			<Wrapper>
 				<form onSubmit={handleSubmit}>
 					<div className="section-wrapper">
 						<div className="profile-info">이름</div>
 						<TextField
 							id="outlined-helperText"
-							label="아이디 ( 이메일 )"
-							name="id"
-							defaultValue={state.id}
-							helperText="변경할 이메일을 입력하세요"
+							name="name"
+							disabled
+							defaultValue={state.name}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -50,10 +62,9 @@ const FormContainer: React.FC = () => {
 						<div className="profile-info">이메일(ID)</div>
 						<TextField
 							id="outlined-helperText"
-							label="아이디 ( 이메일 )"
-							name="id"
-							defaultValue={state.id}
-							helperText="변경할 이메일을 입력하세요"
+							name="email"
+							disabled
+							defaultValue={state.email}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -62,11 +73,8 @@ const FormContainer: React.FC = () => {
 					<div className="section-wrapper">
 						<div className="profile-info">비밀번호</div>
 						<TextField
-							id="outlined-helperText"
-							label="아이디 ( 이메일 )"
-							name="id"
-							defaultValue={state.id}
-							helperText="변경할 이메일을 입력하세요"
+							name="password"
+							defaultValue={state.password}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -76,10 +84,8 @@ const FormContainer: React.FC = () => {
 						<div className="profile-info">핸드폰번호</div>
 						<TextField
 							id="outlined-helperText"
-							label="아이디 ( 이메일 )"
-							name="id"
-							defaultValue={state.id}
-							helperText="변경할 이메일을 입력하세요"
+							name="phoneNumber"
+							defaultValue={state.phoneNumber}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -90,19 +96,37 @@ const FormContainer: React.FC = () => {
 					</Button>
 				</form>
 			</Wrapper>
-		</>
+		</FormWrapper>
 	);
 };
 
 export default FormContainer;
 
-const EditTitle = styled.div`
+const FormWrapper = styled.div`
 	position: relative;
-	width: 120px;
+	left: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+
+const EditTitle = styled.div`
 	top: 26px;
 	left: 37px;
 	font-size: 20px;
+	width: 350px;
 	/* border: 1px solid purple; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 45px;
+
+	p {
+		font-size: 20px;
+		font-weight: 700;
+		color: #646464;
+	}
 `;
 
 const Wrapper = styled.div`
@@ -111,8 +135,8 @@ const Wrapper = styled.div`
 	/* width: 800px; */
 	/* min-height: 290px; */
 	height: auto;
-	border: 1px dashed black;
-	margin-top: 30px;
+	/* border: 1px dashed black; */
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -127,6 +151,11 @@ const Wrapper = styled.div`
 		justify-content: center;
 		min-height: 489px;
 		.section-wrapper {
+			/* border: 1px dashed green; */
+			width: 400px;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 18px;
 			display: flex;
 			flex-direction: row;
 		}
@@ -141,6 +170,7 @@ const Wrapper = styled.div`
 	button {
 		/* position: relative; */
 		/* top: 289px; */
-		width: 550px;
+		margin-top: 35px;
+		width: 150px;
 	}
 `;

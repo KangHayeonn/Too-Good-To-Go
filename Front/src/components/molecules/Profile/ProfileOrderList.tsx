@@ -2,6 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { shopData } from "../ShopDummyData";
+import Line13 from "../../../../public/image/Line 13.png";
+
 // import api from "./api/posts";
 import useGetData from "../../atoms/useGetData";
 
@@ -9,6 +11,7 @@ const ProfileOrderList: React.FC = () => {
 	// Axios data cannot be added in order list.
 	// product's image attribute missing.
 	const initialState: unknown[] | (() => unknown[]) = [];
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
 		"https://5ff74192-2f70-4c8f-86d8-89f9e56ff281.mock.pstmn.io/api/orders",
@@ -42,8 +45,13 @@ const ProfileOrderList: React.FC = () => {
 	console.log(orderData);
 
 	return (
-		<>
-			<EditTitle className="edit-title">주문목록</EditTitle>
+		<Wrapper>
+			<EditTitle className="edit-title">
+				{" "}
+				<p>개인정보</p>
+				<img src={Line13} alt="line13" />
+				<p>MY PAGE</p>
+			</EditTitle>
 			<OrderListContainer>
 				{shopData.map((card) => {
 					return (
@@ -75,19 +83,36 @@ const ProfileOrderList: React.FC = () => {
 					);
 				})}
 			</OrderListContainer>
-		</>
+		</Wrapper>
 	);
 };
 
 export default ProfileOrderList;
 
+const Wrapper = styled.div`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+
 const EditTitle = styled.div`
 	position: relative;
-	width: 120px;
-	top: 26px;
-	left: 37px;
+	right: 17px;
 	font-size: 20px;
+	width: 350px;
 	/* border: 1px solid purple; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 45px;
+
+	p {
+		font-size: 20px;
+		font-weight: 700;
+		color: #646464;
+	}
 `;
 
 const OrderListContainer = styled.div`
@@ -147,7 +172,7 @@ const ProfileCard = styled.div`
 
 			.food-cost {
 				position: relative;
-				left: 90px;
+				left: 70px;
 				font-size: 13px;
 				color: #736e6e;
 				width: 50px;
@@ -157,7 +182,7 @@ const ProfileCard = styled.div`
 
 	.cardInfo > * {
 		margin: 6px;
-		margin-left: 15px;
+		margin-left: 25px;
 	}
 
 	p:last-child {
@@ -179,7 +204,7 @@ const ProfileCard = styled.div`
 	.button-wrapper {
 		border-left: 1px solid #d6d6d6;
 		height: 100%;
-		width: 217px;
+		width: 171px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

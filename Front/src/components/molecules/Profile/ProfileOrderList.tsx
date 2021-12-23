@@ -1,27 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { shopData } from "../ShopDummyData";
-import api from "./api/posts";
+// import api from "./api/posts";
+import useGetData from "../../atoms/useGetData";
 
 const ProfileOrderList: React.FC = () => {
 	// Axios data cannot be added in order list.
 	// product's image attribute missing.
-	const initialState: any[] | (() => any[]) = [];
-	const [orderData, setOrderData] = useState(initialState);
+	const initialState: unknown[] | (() => unknown[]) = [];
+	const [orderData, setOrderData] = useGetData(
+		initialState,
+		"https://5ff74192-2f70-4c8f-86d8-89f9e56ff281.mock.pstmn.io/api/orders",
+		(er: unknown) => {
+			console.log(er);
+		}
+	);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await api.get("");
-				setOrderData(response.data);
-			} catch (err) {
-				// Not in the 200 response range
-			}
-		};
+	// useEffect(() => {
+	// 	let isCancelled = false;
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const response = await api.get("");
+	// 			if (!isCancelled) {
+	// 				setOrderData(response.data);
+	// 				console.log("sadf");
+	// 			}
+	// 		} catch (err) {
+	// 			// Not in the 200 response range
+	// 		}
+	// 	};
 
-		fetchData();
-	}, []);
+	// 	fetchData().then(() => {
+	// 		console.log("promise");
+	// 	});
+	// 	return () => {
+	// 		isCancelled = true;
+	// 	};
+	// }, []);
+
 	console.log(orderData);
 
 	return (

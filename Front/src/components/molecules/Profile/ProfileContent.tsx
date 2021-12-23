@@ -10,6 +10,7 @@ const ProfileContent: React.FC = () => {
 	function handleShowProfileEdit(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) {
+		event.preventDefault();
 		setShowProfileEdit(true);
 		setShowOrderList(false);
 	}

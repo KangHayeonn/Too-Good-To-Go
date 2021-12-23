@@ -34,15 +34,56 @@ const FormContainer: React.FC = () => {
 			<EditTitle className="edit-title">개인정보 수정</EditTitle>
 			<Wrapper>
 				<form onSubmit={handleSubmit}>
-					<TextField
-						id="outlined-helperText"
-						label="아이디 ( 이메일 )"
-						name="id"
-						defaultValue={state.id}
-						helperText="변경할 이메일을 입력하세요"
-						onChange={handleChange}
-						margin="normal"
-					/>
+					<div className="section-wrapper">
+						<div className="profile-info">이름</div>
+						<TextField
+							id="outlined-helperText"
+							label="아이디 ( 이메일 )"
+							name="id"
+							defaultValue={state.id}
+							helperText="변경할 이메일을 입력하세요"
+							onChange={handleChange}
+							margin="normal"
+						/>
+					</div>
+					<div className="section-wrapper">
+						<div className="profile-info">이메일(ID)</div>
+						<TextField
+							id="outlined-helperText"
+							label="아이디 ( 이메일 )"
+							name="id"
+							defaultValue={state.id}
+							helperText="변경할 이메일을 입력하세요"
+							onChange={handleChange}
+							margin="normal"
+						/>
+					</div>
+
+					<div className="section-wrapper">
+						<div className="profile-info">비밀번호</div>
+						<TextField
+							id="outlined-helperText"
+							label="아이디 ( 이메일 )"
+							name="id"
+							defaultValue={state.id}
+							helperText="변경할 이메일을 입력하세요"
+							onChange={handleChange}
+							margin="normal"
+						/>
+					</div>
+
+					<div className="section-wrapper">
+						<div className="profile-info">핸드폰번호</div>
+						<TextField
+							id="outlined-helperText"
+							label="아이디 ( 이메일 )"
+							name="id"
+							defaultValue={state.id}
+							helperText="변경할 이메일을 입력하세요"
+							onChange={handleChange}
+							margin="normal"
+						/>
+					</div>
 
 					<Button variant="outlined" type="submit">
 						변경하기
@@ -70,7 +111,7 @@ const Wrapper = styled.div`
 	/* width: 800px; */
 	/* min-height: 290px; */
 	height: auto;
-	/* border: 1px dashed black; */
+	border: 1px dashed black;
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
@@ -82,9 +123,13 @@ const Wrapper = styled.div`
 		margin-top: 30px;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
-		justify-content: space-between;
+		align-items: center;
+		justify-content: center;
 		min-height: 489px;
+		.section-wrapper {
+			display: flex;
+			flex-direction: row;
+		}
 	}
 
 	.input {

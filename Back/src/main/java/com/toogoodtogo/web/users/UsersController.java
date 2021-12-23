@@ -2,9 +2,7 @@ package com.toogoodtogo.web.users;
 
 import com.toogoodtogo.application.response.ResponseService;
 import com.toogoodtogo.application.user.UserUseCase;
-import com.toogoodtogo.web.common.ApiResponse;
-import com.toogoodtogo.web.common.ApiResponseList;
-import com.toogoodtogo.web.common.CommonResult;
+import com.toogoodtogo.web.common.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +15,12 @@ public class UsersController {
     private final ResponseService responseService;
 
     @GetMapping("/user/id/{userId}")
-    public ApiResponse<UserResponse> findUserById (@PathVariable Long userId, @RequestParam String lang) {
-        return responseService.getSingleResult(userUseCase.findById(userId));
+    public ApiResponse2<UserResponse> findUserById(@PathVariable Long userId, @RequestParam String lang) {
+        return ApiResponse2.success(userUseCase.findById(userId));
     }
 
     @GetMapping("/user/email/{email}")
-    public ApiResponse<UserResponse> findUserByEmail (@PathVariable String email, @RequestParam String lang) {
+    public ApiResponse<UserResponse> findUserByEmail(@PathVariable String email, @RequestParam String lang) {
         return responseService.getSingleResult(userUseCase.findByEmail(email));
     }
 

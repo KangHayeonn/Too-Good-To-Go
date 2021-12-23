@@ -26,12 +26,24 @@ const Label = styled.label`
 `;
 
 const RadioButton = styled.input`
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 	vertical-align: middle;
 	width: 1.27em;
 	height: 1.27em;
-	background: red;
+	border: 2px solid #cfcfcf;
+	border-radius: 50%;
+	transition: 0.3s all linear;
 	&:checked + ${Label} {
 		color: no-repeat ${(props) => props.color};
+	}
+	&:checked {
+		width: 1.24em;
+		height: 1.24em;
+		border: 3px solid #ffffff;
+		background: #4f4f4f;
+		box-shadow: 0 0 0 1px #4f4f4f;
 	}
 `;
 

@@ -7,7 +7,7 @@ import OrderInfo from "../../molecules/Order/OrderInfo";
 const PaymentForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar>결제수단</Titlebar>
+			<Titlebar color="#6EC19B">결제수단</Titlebar>
 			<SelectInfo />
 			<OrderInfo />
 		</Wrapper>

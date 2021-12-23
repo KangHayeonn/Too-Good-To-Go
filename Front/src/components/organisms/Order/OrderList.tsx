@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Titlebar from "../../atoms/Titlebar/Titlebar";
-import SelectInfo from "../../molecules/Order/SelectInfo";
-import OrderInfo from "../../molecules/Order/OrderInfo";
+import OrderListInfo from "../../molecules/Order/OrderList";
 
 const OrderList: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar>주문내역</Titlebar>
-			<SelectInfo />
-			<OrderInfo />
+			<Titlebar color="#D6E3DD">주문내역</Titlebar>
+			<OrderListInfo />
 		</Wrapper>
 	);
 };

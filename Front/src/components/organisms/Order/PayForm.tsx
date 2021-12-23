@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Titlebar from "../../atoms/Titlebar/Titlebar";
-import SelectInfo from "../../molecules/Order/SelectInfo";
-import OrderInfo from "../../molecules/Order/OrderInfo";
+import PayInfo from "../../molecules/Order/PayInfo";
 
 const PayForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar>결제정보</Titlebar>
-			<SelectInfo />
-			<OrderInfo />
+			<Titlebar color="#6EC19B">결제정보</Titlebar>
+			<PayInfo />
 		</Wrapper>
 	);
 };

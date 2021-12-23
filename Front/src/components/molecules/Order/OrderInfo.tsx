@@ -26,54 +26,16 @@ const Input = styled.input`
 	padding-left: 15px;
 	margin-bottom: 19px;
 	border: solid 1px #c4c4c4;
+
+	&:focus {
+		outline: 1px solid #dfdfdf;
+	}
 `;
 
 const Sign = styled.h4`
 	margin: 5px 1em 1em;
 `;
 
-const Address = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-const Input1 = styled.input`
-	width: 150px;
-	height: 27px;
-	padding-left: 15px;
-	margin-bottom: 19px;
-	border: solid 1px #c4c4c4;
-`;
-
-const Input2 = styled.input`
-	width: 500px;
-	height: 27px;
-	padding-left: 15px;
-	margin-bottom: 19px;
-	border: solid 1px #c4c4c4;
-`;
-
-const Button = styled.button`
-	width: 111px;
-	font-size: 13px;
-	font-weight: 500;
-	height: 31px;
-	color: #646464;
-	border: none;
-	border: 1px solid #c4c4c4;
-	margin-left: 11px;
-
-	&:hover {
-		background-color: #54b689;
-		color: #fff;
-		border: 1px solid #54b689;
-	}
-`;
-
-const PostCode = styled.div`
-	display: flex;
-	flex-direction: row;
-`;
 const OrderInfo: React.FC = () => {
 	return (
 		<div>

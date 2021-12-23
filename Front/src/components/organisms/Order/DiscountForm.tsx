@@ -7,7 +7,7 @@ import OrderInfo from "../../molecules/Order/OrderInfo";
 const DiscountForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar>포인트 및 할인쿠폰</Titlebar>
+			<Titlebar color="#D6E3DD">포인트 및 할인쿠폰</Titlebar>
 			<SelectInfo />
 			<OrderInfo />
 		</Wrapper>

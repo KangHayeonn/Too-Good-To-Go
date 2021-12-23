@@ -5,17 +5,15 @@ import SelectInfo from "../../molecules/Order/SelectInfo";
 import OrderInfo from "../../molecules/Order/OrderInfo";
 
 const OrderForm: React.FC = () => {
-    return (
-        <Wrapper>
-            <Titlebar>주문정보</Titlebar>
-            <SelectInfo/>
-            <OrderInfo/>
-        </Wrapper>
-    );
+	return (
+		<Wrapper>
+			<Titlebar color="#D6E3DD">주문정보</Titlebar>
+			<SelectInfo />
+			<OrderInfo />
+		</Wrapper>
+	);
 };
 
 export default OrderForm;
 
-const Wrapper = styled.div`
-
-`;
+const Wrapper = styled.div``;

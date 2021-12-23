@@ -7,7 +7,7 @@ import SelectPlastic from "../../molecules/Order/SelectPlastic";
 const OrderForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar>요청사항</Titlebar>
+			<Titlebar color="#6EC19B">요청사항</Titlebar>
 			<RequestInfoShop />
 			<SelectPlastic />
 		</Wrapper>

@@ -6,6 +6,7 @@ import { RootState } from "../../../app/store";
 // type accumulatedAmountType = {
 // 	cost: number;
 // };
+
 type buttonType = {
 	children: React.ReactNode;
 };

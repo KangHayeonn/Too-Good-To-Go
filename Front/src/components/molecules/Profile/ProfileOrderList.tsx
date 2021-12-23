@@ -2,26 +2,71 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { shopData } from "../ShopDummyData";
+import Line13 from "../../../../public/image/Line 13.png";
+
+// import api from "./api/posts";
+import useGetData from "../../atoms/useGetData";
 
 const ProfileOrderList: React.FC = () => {
+	// Axios data cannot be added in order list.
+	// product's image attribute missing.
+	const initialState: unknown[] | (() => unknown[]) = [];
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [orderData, setOrderData] = useGetData(
+		initialState,
+		"https://5ff74192-2f70-4c8f-86d8-89f9e56ff281.mock.pstmn.io/api/orders",
+		(er: unknown) => {
+			console.log(er);
+		}
+	);
+
+	// useEffect(() => {
+	// 	let isCancelled = false;
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const response = await api.get("");
+	// 			if (!isCancelled) {
+	// 				setOrderData(response.data);
+	// 				console.log("sadf");
+	// 			}
+	// 		} catch (err) {
+	// 			// Not in the 200 response range
+	// 		}
+	// 	};
+
+	// 	fetchData().then(() => {
+	// 		console.log("promise");
+	// 	});
+	// 	return () => {
+	// 		isCancelled = true;
+	// 	};
+	// }, []);
+
+	console.log(orderData);
+
 	return (
-		<>
-			<EditTitle className="edit-title">주문목록</EditTitle>
+		<Wrapper>
+			<EditTitle className="edit-title">
+				{" "}
+				<p>개인정보</p>
+				<img src={Line13} alt="line13" />
+				<p>MY PAGE</p>
+			</EditTitle>
 			<OrderListContainer>
 				{shopData.map((card) => {
 					return (
-						<ProfileCard>
+						<ProfileCard key={card.shopId}>
 							<div className="card-img-ctn">
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
 							<div className="cardInfo">
-								<p className="cardInfo-flex">
+								<div className="cardInfo-flex">
 									<strong>픽업 완료</strong>
 									<p> - today&apos;s date</p>
 									<p className="food-cost">
 										{card.shopFoodCost}원
 									</p>
-								</p>
+								</div>
 								<p className="card-info-text">
 									<strong>{card.shopName}</strong>
 									<span className="grey-text">|</span>
@@ -38,28 +83,45 @@ const ProfileOrderList: React.FC = () => {
 					);
 				})}
 			</OrderListContainer>
-		</>
+		</Wrapper>
 	);
 };
 
 export default ProfileOrderList;
 
+const Wrapper = styled.div`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+
 const EditTitle = styled.div`
 	position: relative;
-	width: 120px;
-	top: 26px;
-	left: 37px;
+	right: 17px;
 	font-size: 20px;
+	width: 350px;
 	/* border: 1px solid purple; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 45px;
+
+	p {
+		font-size: 20px;
+		font-weight: 700;
+		color: #646464;
+	}
 `;
 
 const OrderListContainer = styled.div`
 	/* border: 1px dotted red; */
-	width: 800px;
+	/* width: 800px; */
 	min-height: 700px;
 	max-height: auto;
 
-	margin-left: 36px;
+	/* margin-left: 36px; */
 	margin-top: 80px;
 	display: flex;
 	flex-direction: column;
@@ -68,7 +130,7 @@ const OrderListContainer = styled.div`
 `;
 
 const ProfileCard = styled.div`
-	width: 730px;
+	width: 626px;
 	height: 161px;
 	border: 1px solid #d3d3d3;
 	/* padding: 0px 10px 0px 0; */
@@ -110,7 +172,7 @@ const ProfileCard = styled.div`
 
 			.food-cost {
 				position: relative;
-				left: 90px;
+				left: 70px;
 				font-size: 13px;
 				color: #736e6e;
 				width: 50px;
@@ -120,7 +182,7 @@ const ProfileCard = styled.div`
 
 	.cardInfo > * {
 		margin: 6px;
-		margin-left: 15px;
+		margin-left: 25px;
 	}
 
 	p:last-child {
@@ -142,7 +204,7 @@ const ProfileCard = styled.div`
 	.button-wrapper {
 		border-left: 1px solid #d6d6d6;
 		height: 100%;
-		width: 217px;
+		width: 171px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

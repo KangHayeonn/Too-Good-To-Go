@@ -4,16 +4,16 @@ import Titlebar from "../../atoms/Titlebar/Titlebar";
 import SelectInfo from "../../molecules/Order/SelectInfo";
 import OrderInfo from "../../molecules/Order/OrderInfo";
 
-const OrderForm: React.FC = () => {
+const DiscountForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar color="#D6E3DD">주문정보</Titlebar>
+			<Titlebar color="#D6E3DD">포인트 및 할인쿠폰</Titlebar>
 			<SelectInfo />
 			<OrderInfo />
 		</Wrapper>
 	);
 };
 
-export default OrderForm;
+export default DiscountForm;
 
 const Wrapper = styled.div``;

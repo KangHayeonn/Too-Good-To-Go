@@ -25,6 +25,9 @@ const Input = styled.input`
 	padding-left: 15px;
 	margin: 1em 0 19px 1.7em;
 	border: solid 1px #c4c4c4;
+	&:focus {
+		outline: 1px solid #dfdfdf;
+	}
 `;
 const Button = styled.div`
 	width: 200px;
@@ -36,10 +39,15 @@ const Button = styled.div`
 `;
 
 const Input1 = styled.input`
+	position: relative;
 	vertical-align: middle;
 	width: 1.27em;
 	height: 1.27em;
-	color: #c4c4c4;
+	cursor: pointer;
+	outline: none !important;
+	border: 2px solid #cfcfcf;
+	background: #ffffff;
+	border-radius: 3px;
 `;
 
 const Label = styled.label`

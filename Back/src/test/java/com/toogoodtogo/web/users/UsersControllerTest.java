@@ -70,18 +70,11 @@ class UsersControllerTest {
                 .build());
         id = Math.toIntExact(save.getId());
         userRepository.save(User.builder()
-                .email("admin@email.com")
-                .password(passwordEncoder.encode("admin_pw"))
-                .name("adminA")
+                .email("manager@email.com")
+                .password(passwordEncoder.encode("manager_pw"))
+                .name("managerA")
                 .phoneNumber("010-1111-1111")
-                .roles(Collections.singletonList("ROLE_ADMIN"))
-                .build());
-        userRepository.save(User.builder()
-                .email("ceo@email.com")
-                .password(passwordEncoder.encode("ceo_pw"))
-                .name("ceoA")
-                .phoneNumber("010-2222-2222")
-                .roles(Collections.singletonList("ROLE_CEO"))
+                .roles(Collections.singletonList("ROLE_MANAGER"))
                 .build());
     }
 
@@ -91,11 +84,11 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER", "ADMIN"})
+    @WithMockUser(roles = {"USER"})
     public void findUser_userId() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
-                get("/api/common/user/id/{id}", id)
+                get("/api/user/id/{id}", id)
                 .param("lang", "ko"));
         //then
         //when
@@ -125,11 +118,11 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER", "ADMIN"})
+    @WithMockUser(roles = {"USER"})
     public void findUser_email() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
-                        get("/api/common/user/email/{email}", "email@email.com")
+                        get("/api/user/email/{email}", "email@email.com")
                         .param("lang", "ko"));
         //then
         //when
@@ -159,10 +152,10 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = {"USER"})
     public void findUsers() throws Exception {
         //then
-        mockMvc.perform(get("/api/admin/users"))
+        mockMvc.perform(get("/api/users"))
                 .andDo(print())
                 .andDo(document("users/findAll",
                         preprocessRequest(prettyPrint()),
@@ -186,11 +179,11 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
-    public void 회원삭제() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void deleteUser() throws Exception {
         //given
         //when
-        ResultActions actions = mockMvc.perform(delete("/api/admin/user/{id}", id));
+        ResultActions actions = mockMvc.perform(delete("/api/user/{id}", id));
         //then
         actions
                 .andDo(print())

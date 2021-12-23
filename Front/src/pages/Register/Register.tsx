@@ -41,6 +41,7 @@ const Register: React.FC = () => {
 					</RadioGroup>
 				</FormControl>
 				<InputCtn>
+					<div className="input-row"> 라디오 버튼 이후 추가 </div>
 					<div className="input-row">
 						{" "}
 						<input
@@ -51,7 +52,7 @@ const Register: React.FC = () => {
 							placeholder="아이디를 입력하세요."
 						/>{" "}
 						<Confirm type="button" className="confirm-btn">
-							확인
+							중복확인
 						</Confirm>
 					</div>
 					<div className="input-row">
@@ -102,6 +103,7 @@ const Register: React.FC = () => {
 							확인
 						</Confirm>
 					</div>
+
 				</InputCtn>
 				<BtnCtn>
 					<Button type="button" className="btn register-confirm-btn">

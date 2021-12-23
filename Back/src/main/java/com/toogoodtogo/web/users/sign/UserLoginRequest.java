@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLoginRequestDto {
+public class UserLoginRequest {
     private String email;
     private String password;
 

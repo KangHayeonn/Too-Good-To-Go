@@ -61,25 +61,6 @@ const DropTitle = styled.div`
 	}
 `;
 
-const DropBox = styled.div`
-	display: none;
-	position: absolute;
-	background: #f9f9f9;
-	min-width: 160px;
-	padding: 8px;
-	box-shadow: 0px 8px 16px 9px rgba(0, 0, 0, 0.2);
-`;
-
-const ToggleBtn = styled.button`
-	color: #4f4f4f;
-	font-size: 15px;
-	background: #ffffff;
-
-	&:hover .DropBox {
-		display: block;
-	}
-`;
-
 const OrderList: React.FC = () => {
 	return (
 		<DropButton>

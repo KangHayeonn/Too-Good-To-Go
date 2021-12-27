@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class UserResponse {
+public class UserDetailResponse {
     private final Long id;
     private final String email;
     private final String password;
@@ -14,7 +14,7 @@ public class UserResponse {
     private final String phoneNumber;
     private final List<String> roles;
 
-    public UserResponse(User user) {
+    public UserDetailResponse(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();

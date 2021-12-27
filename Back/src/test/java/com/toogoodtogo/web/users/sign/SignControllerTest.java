@@ -101,19 +101,13 @@ class SignControllerTest {
                                 fieldWithPath("password").description("login password")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data.grantType").description("grantType"),
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
                                 fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @ParameterizedTest
@@ -140,14 +134,11 @@ class SignControllerTest {
                                 fieldWithPath("password").description("login password")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("reason").description("reason"),
+                                fieldWithPath("message").description("message")
                         )
                 ))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(-1001));
+                .andExpect(status().is4xxClientError());
     }
 
     @ParameterizedTest
@@ -183,16 +174,10 @@ class SignControllerTest {
                                 fieldWithPath("roles").description(role + "role")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @ParameterizedTest
@@ -227,14 +212,11 @@ class SignControllerTest {
                                 fieldWithPath("roles").description(role + "role")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("reason").description("reason"),
+                                fieldWithPath("message").description("message")
                         )
                 ))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(-1002));
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

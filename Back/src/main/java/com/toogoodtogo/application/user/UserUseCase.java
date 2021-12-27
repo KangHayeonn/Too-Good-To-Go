@@ -1,13 +1,14 @@
 package com.toogoodtogo.application.user;
 
-import com.toogoodtogo.web.users.UserResponse;
+import com.toogoodtogo.web.users.UserDetailResponse;
+import com.toogoodtogo.web.users.UserPasswordResponse;
 
 import java.util.List;
 
 public interface UserUseCase {
-    UserResponse findById(Long id);
-    UserResponse findByEmail(String email);
-    List<UserResponse> findAllUser();
+    UserDetailResponse findUser(Long id);
+    UserPasswordResponse findPasswordByEmail(String email);
+    List<UserDetailResponse> findAllUser();
     //Long update(Long id, UserRequestDto userRequestDto);
     void delete(Long id);
 }

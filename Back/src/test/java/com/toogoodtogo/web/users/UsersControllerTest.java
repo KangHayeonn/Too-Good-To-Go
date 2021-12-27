@@ -5,6 +5,7 @@ import com.toogoodtogo.application.user.UserService;
 import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.UserLoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -85,7 +86,7 @@ class UsersControllerTest {
 
     @Test
     @WithMockUser(roles = {"USER"})
-    public void findUser_userId() throws Exception {
+    public void findUserInfo() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
                 get("/api/user/id/{id}", id)
@@ -94,13 +95,10 @@ class UsersControllerTest {
         //when
         actions
                 .andDo(print())
-                .andDo(document("users/findById",
+                .andDo(document("users/userInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.id").description("user id"),
                                 fieldWithPath("data.email").description("user email"),
@@ -110,45 +108,36 @@ class UsersControllerTest {
                                 fieldWithPath("data.roles").description("user roles")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data.email").value("email@email.com"))
                 .andExpect(jsonPath("$.data.name").value("name"));
     }
 
     @Test
     @WithMockUser(roles = {"USER"})
-    public void findUser_email() throws Exception {
+    public void findPasswordByEmail() throws Exception {
         //given
-        ResultActions actions = mockMvc.perform(
-                        get("/api/user/email/{email}", "email@email.com")
-                        .param("lang", "ko"));
-        //then
+        String object = objectMapper.writeValueAsString(UserEmailRequest.builder()
+                .email("email@email.com")
+                .build());
+
         //when
+        ResultActions actions = mockMvc.perform(post("/api/user/email")
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
         actions
                 .andDo(print())
-                .andDo(document("users/findByEmail",
+                .andDo(document("users/findPasswordByEmail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
-                                fieldWithPath("data.id").description("user id"),
-                                fieldWithPath("data.email").description("user email"),
-                                fieldWithPath("data.password").description("user password"),
-                                fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.roles").description("user roles")
+                                fieldWithPath("data.password").description("user password")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.data.email").value("email@email.com"))
-                .andExpect(jsonPath("$.data.name").value("name"));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -161,9 +150,6 @@ class UsersControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.[].id").description("user id"),
                                 fieldWithPath("data.[].email").description("user email"),
@@ -173,9 +159,7 @@ class UsersControllerTest {
                                 fieldWithPath("data.[].roles").description("user roles")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -191,14 +175,9 @@ class UsersControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("data").description("data")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 }

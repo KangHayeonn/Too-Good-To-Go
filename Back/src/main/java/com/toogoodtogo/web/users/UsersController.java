@@ -1,6 +1,5 @@
 package com.toogoodtogo.web.users;
 
-import com.toogoodtogo.application.response.ResponseService;
 import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.web.common.*;
 import lombok.RequiredArgsConstructor;
@@ -12,21 +11,20 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UsersController {
     private final UserUseCase userUseCase;
-    private final ResponseService responseService;
 
     @GetMapping("/user/id/{userId}")
-    public ApiResponse2<UserResponse> findUserById(@PathVariable Long userId, @RequestParam String lang) {
-        return ApiResponse2.success(userUseCase.findById(userId));
+    public ApiResponse<UserDetailResponse> userInfo(@PathVariable Long userId, @RequestParam String lang) {
+        return new ApiResponse(userUseCase.findUser(userId));
     }
 
-    @GetMapping("/user/email/{email}")
-    public ApiResponse<UserResponse> findUserByEmail(@PathVariable String email, @RequestParam String lang) {
-        return responseService.getSingleResult(userUseCase.findByEmail(email));
+    @PostMapping("/user/email")
+    public ApiResponse<UserPasswordResponse> findPasswordByEmail(@RequestBody UserEmailRequest userEmailRequest) {
+        return new ApiResponse(userUseCase.findPasswordByEmail(userEmailRequest.getEmail()));
     }
 
     @GetMapping("/users")
-    public ApiResponseList<UserResponse> findAllUser() {
-        return responseService.getListResult(userUseCase.findAllUser());
+    public ApiResponse<UserDetailResponse> findAllUser() {
+        return new ApiResponse(userUseCase.findAllUser());
     }
 
 //    @PutMapping("/user")
@@ -36,9 +34,11 @@ public class UsersController {
 //    }
 
     @DeleteMapping("/user/{userId}")
-    public CommonResult delete(@PathVariable Long userId) {
+    public ApiResponse delete(@PathVariable Long userId) {
         userUseCase.delete(userId);
-        return responseService.getSuccessResult();
+        return new ApiResponse(0);
     }
+
+
 
 }

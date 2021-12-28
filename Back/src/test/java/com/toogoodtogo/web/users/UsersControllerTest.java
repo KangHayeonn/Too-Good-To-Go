@@ -34,8 +34,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -160,6 +159,43 @@ class UsersControllerTest {
                         )
                 ))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = {"USER"})
+    public void updateUser() throws Exception {
+        //given
+        String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
+                .password("new_password")
+                .name("new_name")
+                .phoneNumber("010-1234-5678")
+                .build());
+
+        //when
+        ResultActions actions = mockMvc.perform(put("/api/user/{id}", id)
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("users/update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("data"),
+                                fieldWithPath("data.id").description("user id"),
+                                fieldWithPath("data.email").description("user email"),
+                                fieldWithPath("data.password").description("user password"),
+                                fieldWithPath("data.name").description("user name"),
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.roles").description("user roles")
+                        )
+                ))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.name").value("new_name"))
+                .andExpect(jsonPath("$.data.phoneNumber").value("010-1234-5678"));
     }
 
     @Test

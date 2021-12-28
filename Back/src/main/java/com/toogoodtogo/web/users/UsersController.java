@@ -27,11 +27,10 @@ public class UsersController {
         return new ApiResponse(userUseCase.findAllUser());
     }
 
-//    @PutMapping("/user")
-//    public ApiResponse<Long> update (@RequestParam Long userId, @RequestParam String nickName) {
-//        UserRequestDto userRequestDto = UserRequestDto.builder().build();
-//        return responseService.getSingleResult(userService.update(userId, userRequestDto));
-//    }
+    @PutMapping("/user/{userId}")
+    public ApiResponse<Long> update (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return new ApiResponse(userUseCase.update(userId, userUpdateRequest));
+    }
 
     @DeleteMapping("/user/{userId}")
     public ApiResponse delete(@PathVariable Long userId) {

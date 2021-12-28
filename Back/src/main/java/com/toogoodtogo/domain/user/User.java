@@ -84,4 +84,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() { // 계정 사용가능 여부
         return true;
     }
+
+    public void update(String password, String name, String phoneNumber) {
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
 }

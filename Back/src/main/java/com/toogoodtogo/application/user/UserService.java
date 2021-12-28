@@ -5,7 +5,9 @@ import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.advice.exception.CUserNotFoundException;
 import com.toogoodtogo.web.users.UserDetailResponse;
 import com.toogoodtogo.web.users.UserPasswordResponse;
+import com.toogoodtogo.web.users.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserUseCase{
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public UserDetailResponse findUser(Long id) {
@@ -39,13 +42,13 @@ public class UserService implements UserUseCase{
                 .collect(Collectors.toList());
     }
 
-//    @Transactional
-//    public Long update(Long id, UserRequestDto userRequestDto) {
-//        User modifiedUser = userRepository
-//                .findById(id).orElseThrow(CUserNotFoundException::new);
-//        modifiedUser.updateNickName(userRequestDto.getNickName());
-//        return id;
-//    }
+    @Transactional
+    public UserDetailResponse update(Long id, UserUpdateRequest userUpdateRequest) {
+        User modifiedUser = userRepository
+                .findById(id).orElseThrow(CUserNotFoundException::new);
+        modifiedUser.update(passwordEncoder.encode(userUpdateRequest.getPassword()), userUpdateRequest.getName(), userUpdateRequest.getPhoneNumber());
+        return new UserDetailResponse(modifiedUser);
+    }
 
     @Transactional
     public void delete(Long id) {

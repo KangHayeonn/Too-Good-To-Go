@@ -97,5 +97,8 @@ operation::users/userInfo[snippets='curl-request,http-request,http-response,resp
 === USER 비밀번호 조회 [POST]
 operation::users/findPasswordByEmail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
+=== USER 업데이트 [PUT]
+operation::users/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
 === USER 삭제 [DELETE]
 operation::users/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']

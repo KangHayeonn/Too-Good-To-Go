@@ -12,7 +12,7 @@ public class UserDetailResponse {
     private final String password;
     private final String name;
     private final String phoneNumber;
-    private final List<String> roles;
+    private final String role;
 
     public UserDetailResponse(User user) {
         this.id = user.getId();
@@ -20,6 +20,6 @@ public class UserDetailResponse {
         this.password = user.getPassword();
         this.name = user.getName();
         this.phoneNumber = user.getPhoneNumber();
-        this.roles = user.getRoles();
+        this.role = user.getRole();
     }
 }

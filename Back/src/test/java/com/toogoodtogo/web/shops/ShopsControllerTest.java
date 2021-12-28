@@ -70,7 +70,7 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     void findShops() throws Exception {
         //then
         mvc.perform(get("/api/shops"))

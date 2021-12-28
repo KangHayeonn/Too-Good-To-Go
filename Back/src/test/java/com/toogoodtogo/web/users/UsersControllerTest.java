@@ -66,7 +66,7 @@ class UsersControllerTest {
                 .password(passwordEncoder.encode("password"))
                 .name("name")
                 .phoneNumber("010-0000-0000")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .role("ROLE_USER")
                 .build());
         id = Math.toIntExact(save.getId());
         userRepository.save(User.builder()
@@ -74,7 +74,7 @@ class UsersControllerTest {
                 .password(passwordEncoder.encode("manager_pw"))
                 .name("managerA")
                 .phoneNumber("010-1111-1111")
-                .roles(Collections.singletonList("ROLE_MANAGER"))
+                .role("ROLE_MANAGER")
                 .build());
     }
 
@@ -84,7 +84,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void findUserInfo() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
@@ -104,7 +104,7 @@ class UsersControllerTest {
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
                                 fieldWithPath("data.phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.roles").description("user roles")
+                                fieldWithPath("data.role").description("user role")
                         )
                 ))
                 .andExpect(jsonPath("$.data.email").value("email@email.com"))
@@ -112,7 +112,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void findPasswordByEmail() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UserEmailRequest.builder()
@@ -140,7 +140,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void findUsers() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
@@ -155,14 +155,14 @@ class UsersControllerTest {
                                 fieldWithPath("data.[].password").description("user password"),
                                 fieldWithPath("data.[].name").description("user name"),
                                 fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.[].roles").description("user roles")
+                                fieldWithPath("data.[].role").description("user role")
                         )
                 ))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void updateUser() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
@@ -190,7 +190,7 @@ class UsersControllerTest {
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
                                 fieldWithPath("data.phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.roles").description("user roles")
+                                fieldWithPath("data.role").description("user role")
                         )
                 ))
                 .andExpect(status().isOk())
@@ -199,7 +199,7 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void deleteUser() throws Exception {
         //given
         //when

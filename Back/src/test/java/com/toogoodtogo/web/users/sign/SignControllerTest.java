@@ -58,14 +58,14 @@ class SignControllerTest {
                 .password(passwordEncoder.encode("user_pw"))
                 .name("userA")
                 .phoneNumber("010-0000-0000")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .role("ROLE_USER")
                 .build());
         userRepository.save(User.builder()
                 .email("manager@email.com")
                 .password(passwordEncoder.encode("manager_pw"))
                 .name("managerA")
                 .phoneNumber("010-1111-1111")
-                .roles(Collections.singletonList("ROLE_MANAGER"))
+                .role("ROLE_MANAGER")
                 .build());
     }
 
@@ -151,7 +151,7 @@ class SignControllerTest {
                 .password(role + "_pw")
                 .name(role + "B")
                 .phoneNumber("010-4444-4444")
-                .roles(role.toUpperCase())
+                .role(role.toUpperCase())
                 .build());
 
         //then
@@ -167,11 +167,11 @@ class SignControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + "email"),
-                                fieldWithPath("password").description(role + "password"),
-                                fieldWithPath("name").description(role + "name"),
-                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
-                                fieldWithPath("roles").description(role + "role")
+                                fieldWithPath("email").description(role + " email"),
+                                fieldWithPath("password").description(role + " password"),
+                                fieldWithPath("name").description(role + " name"),
+                                fieldWithPath("phoneNumber").description(role + " phoneNumber"),
+                                fieldWithPath("role").description(role + " role")
                         ),
                         responseFields(
                                 fieldWithPath("data").description("data")
@@ -189,7 +189,7 @@ class SignControllerTest {
                 .password(role + "_pw")
                 .name(role + "B")
                 .phoneNumber("010-4444-4444")
-                .roles(role.toUpperCase())
+                .role(role.toUpperCase())
                 .build());
 
         //when
@@ -205,11 +205,11 @@ class SignControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + "email"),
-                                fieldWithPath("password").description(role + "password"),
-                                fieldWithPath("name").description(role + "name"),
-                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
-                                fieldWithPath("roles").description(role + "role")
+                                fieldWithPath("email").description(role + " email"),
+                                fieldWithPath("password").description(role + " password"),
+                                fieldWithPath("name").description(role + " name"),
+                                fieldWithPath("phoneNumber").description(role + " phoneNumber"),
+                                fieldWithPath("role").description(role + " role")
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
@@ -220,7 +220,7 @@ class SignControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void access_success() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))

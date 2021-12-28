@@ -14,10 +14,4 @@ import java.util.Collections;
 @Builder
 public class UserEmailRequest {
     private String email;
-
-    public User toEntity() {
-        return User.builder()
-                .email(email)
-                .build();
-    }
 }

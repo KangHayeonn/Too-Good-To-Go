@@ -44,11 +44,11 @@ public class JwtTokenProvider {
     // Jwt 생성. 토큰에 저장할 유저 pk와 리스트를 매개변수
     // pk는 setsubject로 저장하고 roles들은 key-value 형태로 넣어준다. ("roles : {"권한1", "권한2", ...})
     // access, refresh 토큰을 각각 만들어서 tokenDto 로 만든 후 반환
-    public TokenDto createTokenDto(Long userPk, List<String> roles) {
+    public TokenDto createTokenDto(Long userPk, String role) {
         // Claims 에 user 구분을 위한 User pk 및 authorities 목록 삽입
         // Claims에 회원 구분할 수 있는 값 세팅하고 토큰 들어오면 해당 값으로 회원 구분해서 리소스 제공
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-        claims.put(ROLES, roles);
+        claims.put(ROLES, role);
 
         // 생성날짜, 만료날짜를 위한 Date
         Date now = new Date();

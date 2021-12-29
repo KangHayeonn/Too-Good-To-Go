@@ -49,7 +49,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CEmailLoginFailedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ErrorResponse emailLoginFailedException(HttpServletRequest request, CEmailLoginFailedException e) {
-        return new ErrorResponse("emailLoginFailed.code", getMessage("emailLoginFailed.msg"));
+        return new ErrorResponse("Email Login Failed", getMessage("emailLoginFailed.msg"));
     }
 
     /***
@@ -59,7 +59,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CEmailSignupFailedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse emailSignupFailedException(HttpServletRequest request, CEmailSignupFailedException e) {
-        return new ErrorResponse("emailSignupFailed.code", getMessage("emailSignupFailed.msg"));
+        return new ErrorResponse("Email Sign up Failed", getMessage("emailSignupFailed.msg"));
     }
 
     /**
@@ -69,7 +69,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ErrorResponse authenticationEntrypointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        return new ErrorResponse("authenticationEntrypoint.code", getMessage("authenticationEntrypoint.msg"));
+        return new ErrorResponse("Authentication Entrypoint", getMessage("authenticationEntrypoint.msg"));
     }
 
     /**
@@ -79,7 +79,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CAccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ErrorResponse accessDeniedException(HttpServletRequest request, CAccessDeniedException e) {
-        return new ErrorResponse("accessDenied.code", getMessage("accessDenied.msg"));
+        return new ErrorResponse("Access Denied", getMessage("accessDenied.msg"));
     }
 
     /**
@@ -89,7 +89,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CRefreshTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ErrorResponse refreshTokenException(HttpServletRequest request, CRefreshTokenException e) {
-        return new ErrorResponse("refreshTokenInValid.code", getMessage("refreshTokenInValid.msg"));
+        return new ErrorResponse("Refresh Token InValid", getMessage("refreshTokenInValid.msg"));
     }
 
     /**
@@ -99,7 +99,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CExpiredAccessTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ErrorResponse expiredAccessTokenException(HttpServletRequest request, CExpiredAccessTokenException e) {
-        return new ErrorResponse("expiredAccessToken.code", getMessage("expiredAccessToken.msg"));
+        return new ErrorResponse("Expired Access Token", getMessage("expiredAccessToken.msg"));
     }
 
 //    /***
@@ -121,7 +121,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CUserExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ErrorResponse existUserException(HttpServletRequest request, CUserExistException e) {
-        return new ErrorResponse("userExistException.code", getMessage("userExistException.msg"));
+        return new ErrorResponse("User Exist Exception", getMessage("userExistException.msg"));
     }
 
 //    /***

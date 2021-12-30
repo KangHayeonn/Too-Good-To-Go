@@ -19,12 +19,12 @@ const Header: React.FC = () => {
 			<nav css={navBar}>
 				<div className="wrap">
 					<div className="home">
-						<a href="/">
+						<Link to="/">
 							<img
 								alt="logo"
 								src={`${process.env.PUBLIC_URL}/image/Logo.png`} // public폴더 절대경로 사용시 환경변수에 접근해서 써야함.
 							/>
-						</a>
+						</Link>
 					</div>
 					<div className="searchBar">
 						<form>

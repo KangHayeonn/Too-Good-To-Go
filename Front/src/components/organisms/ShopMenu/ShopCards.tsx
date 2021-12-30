@@ -172,7 +172,11 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 					<ShopListLi key={row.id}>
 						<ShopCard
 							shopName={row.shop.name}
-							shopFoodImg={row.image}
+							shopFoodImg={
+								row.image
+									? row.image
+									: "http://cdn.onlinewebfonts.com/svg/img_305436.png"
+							}
 							shopFoodName={row.name}
 							shopFoodSale={calculatedDiscount(
 								row.price,
@@ -189,7 +193,7 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 };
 
 ShopCards.defaultProps = {
-	menuMatchName: "한식",
+	menuMatchName: "전체보기",
 };
 
 export default ShopCards;

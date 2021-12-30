@@ -15,6 +15,8 @@ const Header = styled.header`
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	flex-wrap: wrap;
+	position: relative;
 `;
 
 const Section = styled.article`

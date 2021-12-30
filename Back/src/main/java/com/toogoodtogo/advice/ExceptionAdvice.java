@@ -1,8 +1,8 @@
 package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
-import com.toogoodtogo.application.response.ResponseService;
-import com.toogoodtogo.web.common.CommonResult;
+import com.toogoodtogo.web.common.ApiResponse;
+import com.toogoodtogo.web.common.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-    private final ResponseService responseService;
     private final MessageSource messageSource;
 
     /***
@@ -28,10 +27,9 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
-       // log.info(String.valueOf(e));
-        return responseService.getFailResult
-                (Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg"));
+    protected ErrorResponse defaultException(HttpServletRequest request, Exception e) {
+        log.info(String.valueOf(e));
+        return new ErrorResponse("Unknown error", getMessage("unKnown.msg"));
     }
 
     /***
@@ -40,10 +38,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected CommonResult userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("userNotFound.code")), getMessage("userNotFound.msg")
-        );
+    protected ErrorResponse userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
+        return new ErrorResponse("User Not Found", getMessage("userNotFound.msg"));
     }
 
     /***
@@ -52,10 +48,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CEmailLoginFailedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected CommonResult emailLoginFailedException(HttpServletRequest request, CEmailLoginFailedException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("emailLoginFailed.code")), getMessage("emailLoginFailed.msg")
-        );
+    protected ErrorResponse emailLoginFailedException(HttpServletRequest request, CEmailLoginFailedException e) {
+        return new ErrorResponse("Email Login Failed", getMessage("emailLoginFailed.msg"));
     }
 
     /***
@@ -64,10 +58,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CEmailSignupFailedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected CommonResult emailSignupFailedException(HttpServletRequest request, CEmailSignupFailedException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("emailSignupFailed.code")), getMessage("emailSignupFailed.msg")
-        );
+    protected ErrorResponse emailSignupFailedException(HttpServletRequest request, CEmailSignupFailedException e) {
+        return new ErrorResponse("Email Sign up Failed", getMessage("emailSignupFailed.msg"));
     }
 
     /**
@@ -76,10 +68,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult authenticationEntrypointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("authenticationEntrypoint.code")), getMessage("authenticationEntrypoint.msg")
-        );
+    protected ErrorResponse authenticationEntrypointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
+        return new ErrorResponse("Authentication Entrypoint", getMessage("authenticationEntrypoint.msg"));
     }
 
     /**
@@ -88,10 +78,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CAccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult accessDeniedException(HttpServletRequest request, CAccessDeniedException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg")
-        );
+    protected ErrorResponse accessDeniedException(HttpServletRequest request, CAccessDeniedException e) {
+        return new ErrorResponse("Access Denied", getMessage("accessDenied.msg"));
     }
 
     /**
@@ -100,10 +88,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CRefreshTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult refreshTokenException(HttpServletRequest request, CRefreshTokenException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("refreshTokenInValid.code")), getMessage("refreshTokenInValid.msg")
-        );
+    protected ErrorResponse refreshTokenException(HttpServletRequest request, CRefreshTokenException e) {
+        return new ErrorResponse("Refresh Token InValid", getMessage("refreshTokenInValid.msg"));
     }
 
     /**
@@ -112,10 +98,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CExpiredAccessTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult expiredAccessTokenException(HttpServletRequest request, CExpiredAccessTokenException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("expiredAccessToken.code")), getMessage("expiredAccessToken.msg")
-        );
+    protected ErrorResponse expiredAccessTokenException(HttpServletRequest request, CExpiredAccessTokenException e) {
+        return new ErrorResponse("Expired Access Token", getMessage("expiredAccessToken.msg"));
     }
 
 //    /***
@@ -136,10 +120,8 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CUserExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected CommonResult existUserException(HttpServletRequest request, CUserExistException e) {
-        return responseService.getFailResult(
-                Integer.parseInt(getMessage("userExistException.code")), getMessage("userExistException.msg")
-        );
+    protected ErrorResponse existUserException(HttpServletRequest request, CUserExistException e) {
+        return new ErrorResponse("User Exist Exception", getMessage("userExistException.msg"));
     }
 
 //    /***

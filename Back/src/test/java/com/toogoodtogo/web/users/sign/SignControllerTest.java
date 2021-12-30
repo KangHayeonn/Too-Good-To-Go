@@ -67,6 +67,13 @@ class SignControllerTest {
                 .phoneNumber("010-1111-1111")
                 .role("ROLE_MANAGER")
                 .build());
+        userRepository.save(User.builder()
+                .email("manager@email.com")
+                .password(passwordEncoder.encode("manager_pw"))
+                .name("managerA")
+                .phoneNumber("010-1111-1111")
+                .role("ROLE_MANAGER")
+                .build());
     }
 
     @AfterEach

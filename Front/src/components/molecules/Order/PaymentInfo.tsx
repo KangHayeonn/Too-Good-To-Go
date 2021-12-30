@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import React, {useState, useCallback, useRef, useEffect} from "react";
 import styled from "@emotion/styled";
 import Modal from '../../atoms/Modal/PaymentModal';
 
+=======
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import styled from "@emotion/styled";
+import Modal from "../../atoms/Modal/PaymentModal";
+>>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 
 const RequestShop = styled.div`
 	display: flex;
@@ -65,14 +71,20 @@ const PaymentInfo: React.FC = () => {
 	const popRef = useRef<HTMLDivElement>(null);
 
 	const onClickOutside = useCallback(
+<<<<<<< HEAD
 		({target}) => {
 			if(popRef.current && !popRef.current.contains(target)) {
+=======
+		({ target }) => {
+			if (popRef.current && !popRef.current.contains(target)) {
+>>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 				setShow(false);
 			}
 		},
 		[setShow]
 	);
 	useEffect(() => {
+<<<<<<< HEAD
 		document.addEventListener('click', onClickOutside);
 		return() => {
 			document.removeEventListener('click', onClickOutside);
@@ -80,6 +92,15 @@ const PaymentInfo: React.FC = () => {
 	}, []);
 	const onClickToggleModal = useCallback(() => {
 		setShow(prev => !prev);
+=======
+		document.addEventListener("click", onClickOutside);
+		return () => {
+			document.removeEventListener("click", onClickOutside);
+		};
+	}, []);
+	const onClickToggleModal = useCallback(() => {
+		setShow((prev) => !prev);
+>>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 	}, [setShow]);
 	return (
 		<div>
@@ -94,7 +115,13 @@ const PaymentInfo: React.FC = () => {
 					<Label htmlFor="nextusepayment">다음에도 사용</Label>
 				</Button>
 				<div ref={popRef}>
+<<<<<<< HEAD
 					<button type="button" onClick={onClickToggleModal}>버튼</button>
+=======
+					<button type="button" onClick={onClickToggleModal}>
+						버튼
+					</button>
+>>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 					<Modal show={show} />
 				</div>
 			</RequestShop>

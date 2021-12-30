@@ -26,7 +26,7 @@ public class ShopService implements ShopUseCase {
 
     @Override
     @Transactional
-    public Shop addShop(String name, String category, String image) {
+    public Shop addShop(String name, String[] category, String image) {
         Shop shop = Shop.builder()
                 .name(name)
                 .image(image)

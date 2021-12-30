@@ -5,10 +5,8 @@ const header = css`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 20px;
-	margin-left: 5px;
-	padding-top: 60px;
-	padding-bottom: 35px;
+	padding-top: 40px;
+	padding-bottom: 40px;
 	border-top: 1px solid #eee;
 `;
 

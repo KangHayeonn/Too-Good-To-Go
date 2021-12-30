@@ -6,5 +6,5 @@ import lombok.Getter;
 public class AddShopRequest {
     private String name;
     private String image;
-    private String category;
+    private String[] category;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { shopData } from "../ShopDummyData";
@@ -6,11 +6,21 @@ import Line13 from "../../../../public/image/Line 13.png";
 
 // import api from "./api/posts";
 import useGetData from "../../atoms/useGetData";
+import Modal from "./Modal";
+import orderListUrl from "./api/posts";
+
+type ModalType = {
+	shopName: string;
+	shopFoodCost: number;
+};
 
 const ProfileOrderList: React.FC = () => {
 	// Axios data cannot be added in order list.
 	// product's image attribute missing.
 	const initialState: unknown[] | (() => unknown[]) = [];
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [cardNumber, setCardNumber] = useState<number>(0);
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
@@ -20,34 +30,29 @@ const ProfileOrderList: React.FC = () => {
 		}
 	);
 
-	// useEffect(() => {
-	// 	let isCancelled = false;
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const response = await api.get("");
-	// 			if (!isCancelled) {
-	// 				setOrderData(response.data);
-	// 				console.log("sadf");
-	// 			}
-	// 		} catch (err) {
-	// 			// Not in the 200 response range
-	// 		}
-	// 	};
+	function showModal(cardId: number) {
+		const { shopFoodName, shopFoodCost } = shopData.filter((e) => {
+			return e.shopId === cardId;
+		})[0];
 
-	// 	fetchData().then(() => {
-	// 		console.log("promise");
-	// 	});
-	// 	return () => {
-	// 		isCancelled = true;
-	// 	};
-	// }, []);
+		if (shopFoodName) {
+			return (
+				<Modal
+					setIsModalOpen={setIsModalOpen}
+					shopName={shopFoodName}
+					shopFoodCost={shopFoodCost}
+				/>
+			);
+		}
+		return null;
+	}
 
+	// console.log(JSON.parse(orderData));
 	console.log(orderData);
 
 	return (
 		<Wrapper>
 			<EditTitle className="edit-title">
-				{" "}
 				<p>개인정보</p>
 				<img src={Line13} alt="line13" />
 				<p>MY PAGE</p>
@@ -75,13 +80,21 @@ const ProfileOrderList: React.FC = () => {
 								<p>{card.shopFoodName}</p>
 							</div>
 							<div className="button-wrapper">
-								<Link to="/"> 주문 정보 </Link>
+								<button
+									type="button"
+									onClick={() => {
+										setIsModalOpen(true);
+										setCardNumber(card.shopId);
+									}}
+								>
+									주문 정보
+								</button>
 								<Link to="/"> 가게 정보 </Link>
-								<Link to="/"> 리뷰 쓰기 </Link>
 							</div>
 						</ProfileCard>
 					);
 				})}
+				{isModalOpen && showModal(cardNumber)}
 			</OrderListContainer>
 		</Wrapper>
 	);

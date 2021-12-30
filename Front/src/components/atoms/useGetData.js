@@ -16,7 +16,7 @@ export default function useGetData(state, url, errCallBack) {
 			try {
 				const response = await api.get("");
 				if (!isCancelled) {
-					setValue(response.data);
+					setValue(typeof response.data);
 				}
 			} catch (err) {
 				errCallBack(err);

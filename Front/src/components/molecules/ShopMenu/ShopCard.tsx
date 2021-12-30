@@ -11,11 +11,6 @@ const ShopCardStyle = styled.div`
 `;
 
 const imgWidth = document.querySelector("#shopCardDiv")?.clientWidth;
-const calcHeight = () => {
-	console.log(imgWidth);
-	if (typeof imgWidth === "number") return imgWidth;
-	return 0;
-};
 
 const ShopImg = styled.img`
 	width: 100%;

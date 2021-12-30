@@ -77,7 +77,6 @@ const ManagerOrderList: React.FC<orderType> = ({
 	const [isModal, setIsModal] = useState(false);
 	const handleModal = () => {
 		setIsModal(!isModal);
-		console.log(isModal);
 	};
 	return (
 		<List>

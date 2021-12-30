@@ -35,7 +35,7 @@ const PostTest: React.FC = () => {
 		category: [""],
 	});
 
-	const [shopId, setShopId] = useState();
+	const [shopId, setShopId] = useState("");
 
 	useEffect(() => {
 		ShopGet().then((res) => {
@@ -43,7 +43,7 @@ const PostTest: React.FC = () => {
 		});
 	});
 
-	const getValue = (e: any) => {
+	const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setShopInfo({
 			...shopInfo,
@@ -89,7 +89,7 @@ const PostTest: React.FC = () => {
 		console.log(shopInfo);
 	}, [shopInfo]);
 
-	const changeId = (e: any) => {
+	const changeId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setShopId(value);
 	};
@@ -101,7 +101,7 @@ const PostTest: React.FC = () => {
 		image: "",
 	});
 
-	const productPost = (e: any) => {
+	const productPost = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setProductInfo({
 			...productInfo,

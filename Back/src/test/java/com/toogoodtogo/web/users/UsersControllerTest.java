@@ -193,7 +193,6 @@ class UsersControllerTest {
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("new_name"))
                 .andExpect(jsonPath("$.data.phoneNumber").value("010-1234-5678"));
     }
 

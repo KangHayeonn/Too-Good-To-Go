@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import styled from '@emotion/styled';
 
@@ -105,6 +106,9 @@ const PaymentModal: React.FC<Props> = ({show}) => {
 export default PaymentModal;
 =======
 import React, { useState, useCallback, useRef, useEffect } from "react";
+=======
+import React from "react";
+>>>>>>> 0ff7b426b5606c6c1a487ef3c8f790f61f26c1f7
 import styled from "@emotion/styled";
 
 const Container = styled.div`

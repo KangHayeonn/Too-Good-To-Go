@@ -30,7 +30,7 @@ const Btn = styled.div`
 
 type TSBtnType = {
 	text: string;
-	onClick: any;
+	onClick: React.MouseEventHandler<HTMLElement>;
 };
 
 const TimeSelectBtnAtom: React.FC<TSBtnType> = ({ text, onClick }) => {

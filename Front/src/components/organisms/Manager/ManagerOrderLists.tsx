@@ -38,7 +38,7 @@ const checkStatus = (status: string) => {
 	}
 };
 
-const statusMatchFn = (status: any) => {
+const statusMatchFn = (status: string) => {
 	switch (status) {
 		case "접수대기":
 			return "ORDER_COMPLETED";
@@ -52,11 +52,11 @@ const statusMatchFn = (status: any) => {
 };
 
 interface statusMatchType {
-	statusMatchName?: string;
+	statusMatchName: string;
 }
 
 const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
-	const [orderList, setOrderList] = useState(orderData);
+	const [orderList] = useState(orderData);
 	return (
 		<Ul>
 			{orderList.map((row) =>
@@ -84,10 +84,6 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
 			)}
 		</Ul>
 	);
-};
-
-ManagerOrderLists.defaultProps = {
-	statusMatchName: "전체조회",
 };
 
 export default ManagerOrderLists;

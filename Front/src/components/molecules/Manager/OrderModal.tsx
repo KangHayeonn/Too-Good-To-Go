@@ -134,7 +134,7 @@ const InfoBox = styled.div`
 `;
 
 type modal = {
-	modal: any;
+	modal: () => void;
 	shopTell: string;
 	orderDetail: string;
 	payment: string;
@@ -148,9 +148,9 @@ const OrderModal: React.FC<modal> = ({
 	payment,
 	createdTime,
 }) => {
-	const [selectTime, setSelectTime] = useState();
+	const [selectTime, setSelectTime] = useState<string>();
 	console.log(selectTime);
-	const clickSelectTime = (numb: any) => {
+	const clickSelectTime = (numb: string) => {
 		setSelectTime(numb);
 		const btn = document.getElementsByClassName(
 			"css-rwveo4"
@@ -238,7 +238,7 @@ const OrderModal: React.FC<modal> = ({
 
 	const onchange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
-		setSelectTime(target.value as any);
+		setSelectTime(target.value);
 		const btn = document.getElementsByClassName(
 			"css-rwveo4"
 		) as HTMLCollectionOf<HTMLElement>;
@@ -326,11 +326,7 @@ const OrderModal: React.FC<modal> = ({
 						</ButtonWrap>
 					</InfoBox>
 					<RefuseWrap>
-						<RefuseBtn
-							onClick={() => alert("주문을 거부하시겠습니까?")}
-						>
-							주문 거부
-						</RefuseBtn>
+						<RefuseBtn>주문 거부</RefuseBtn>
 					</RefuseWrap>
 				</ModalInner>
 			</ModalWrap>

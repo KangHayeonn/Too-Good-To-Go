@@ -167,7 +167,6 @@ class UsersControllerTest {
         //given
         String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
                 .password("new_password")
-                .name("new_name")
                 .phoneNumber("010-1234-5678")
                 .build());
 

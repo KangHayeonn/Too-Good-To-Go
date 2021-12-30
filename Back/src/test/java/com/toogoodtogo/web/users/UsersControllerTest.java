@@ -5,6 +5,7 @@ import com.toogoodtogo.application.user.UserService;
 import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.UserLoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,8 +34,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,7 +66,7 @@ class UsersControllerTest {
                 .password(passwordEncoder.encode("password"))
                 .name("name")
                 .phoneNumber("010-0000-0000")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .role("ROLE_USER")
                 .build());
         id = Math.toIntExact(save.getId());
         userRepository.save(User.builder()
@@ -74,7 +74,7 @@ class UsersControllerTest {
                 .password(passwordEncoder.encode("manager_pw"))
                 .name("managerA")
                 .phoneNumber("010-1111-1111")
-                .roles(Collections.singletonList("ROLE_MANAGER"))
+                .role("ROLE_MANAGER")
                 .build());
     }
 
@@ -84,8 +84,8 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
-    public void findUser_userId() throws Exception {
+    @WithMockUser(roles = "USER")
+    public void findUserInfo() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
                 get("/api/user/id/{id}", id)
@@ -94,65 +94,53 @@ class UsersControllerTest {
         //when
         actions
                 .andDo(print())
-                .andDo(document("users/findById",
+                .andDo(document("users/userInfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.id").description("user id"),
                                 fieldWithPath("data.email").description("user email"),
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
                                 fieldWithPath("data.phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.roles").description("user roles")
+                                fieldWithPath("data.role").description("user role")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data.email").value("email@email.com"))
                 .andExpect(jsonPath("$.data.name").value("name"));
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
-    public void findUser_email() throws Exception {
+    @WithMockUser(roles = "USER")
+    public void findPasswordByEmail() throws Exception {
         //given
-        ResultActions actions = mockMvc.perform(
-                        get("/api/user/email/{email}", "email@email.com")
-                        .param("lang", "ko"));
-        //then
+        String object = objectMapper.writeValueAsString(UserEmailRequest.builder()
+                .email("email@email.com")
+                .build());
+
         //when
+        ResultActions actions = mockMvc.perform(post("/api/user/email")
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
         actions
                 .andDo(print())
-                .andDo(document("users/findByEmail",
+                .andDo(document("users/findPasswordByEmail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
-                                fieldWithPath("data.id").description("user id"),
-                                fieldWithPath("data.email").description("user email"),
-                                fieldWithPath("data.password").description("user password"),
-                                fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.roles").description("user roles")
+                                fieldWithPath("data.password").description("user password")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.data.email").value("email@email.com"))
-                .andExpect(jsonPath("$.data.name").value("name"));
+                .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void findUsers() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
@@ -161,25 +149,55 @@ class UsersControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.[].id").description("user id"),
                                 fieldWithPath("data.[].email").description("user email"),
                                 fieldWithPath("data.[].password").description("user password"),
                                 fieldWithPath("data.[].name").description("user name"),
                                 fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.[].roles").description("user roles")
+                                fieldWithPath("data.[].role").description("user role")
                         )
                 ))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
+    public void updateUser() throws Exception {
+        //given
+        String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
+                .password("new_password")
+                .phoneNumber("010-1234-5678")
+                .build());
+
+        //when
+        ResultActions actions = mockMvc.perform(put("/api/user/{id}", id)
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("users/update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("data"),
+                                fieldWithPath("data.id").description("user id"),
+                                fieldWithPath("data.email").description("user email"),
+                                fieldWithPath("data.password").description("user password"),
+                                fieldWithPath("data.name").description("user name"),
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.role").description("user role")
+                        )
+                ))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.phoneNumber").value("010-1234-5678"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
     public void deleteUser() throws Exception {
         //given
         //when
@@ -191,14 +209,9 @@ class UsersControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("data").description("data")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 }

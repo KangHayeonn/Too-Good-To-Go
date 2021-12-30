@@ -58,7 +58,14 @@ class SignControllerTest {
                 .password(passwordEncoder.encode("user_pw"))
                 .name("userA")
                 .phoneNumber("010-0000-0000")
-                .roles(Collections.singletonList("ROLE_USER"))
+                .role("ROLE_USER")
+                .build());
+        userRepository.save(User.builder()
+                .email("manager@email.com")
+                .password(passwordEncoder.encode("manager_pw"))
+                .name("managerA")
+                .phoneNumber("010-1111-1111")
+                .role("ROLE_MANAGER")
                 .build());
         userRepository.save(User.builder()
                 .email("manager@email.com")
@@ -101,19 +108,13 @@ class SignControllerTest {
                                 fieldWithPath("password").description("login password")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data.grantType").description("grantType"),
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
                                 fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @ParameterizedTest
@@ -140,14 +141,11 @@ class SignControllerTest {
                                 fieldWithPath("password").description("login password")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("reason").description("reason"),
+                                fieldWithPath("message").description("message")
                         )
                 ))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(-1001));
+                .andExpect(status().is4xxClientError());
     }
 
     @ParameterizedTest
@@ -160,7 +158,7 @@ class SignControllerTest {
                 .password(role + "_pw")
                 .name(role + "B")
                 .phoneNumber("010-4444-4444")
-                .roles(role.toUpperCase())
+                .role(role.toUpperCase())
                 .build());
 
         //then
@@ -176,23 +174,17 @@ class SignControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + "email"),
-                                fieldWithPath("password").description(role + "password"),
-                                fieldWithPath("name").description(role + "name"),
-                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
-                                fieldWithPath("roles").description(role + "role")
+                                fieldWithPath("email").description(role + " email"),
+                                fieldWithPath("password").description(role + " password"),
+                                fieldWithPath("name").description(role + " name"),
+                                fieldWithPath("phoneNumber").description(role + " phoneNumber"),
+                                fieldWithPath("role").description(role + " role")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg"),
                                 fieldWithPath("data").description("data")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists());
+                .andExpect(status().isOk());
     }
 
     @ParameterizedTest
@@ -204,7 +196,7 @@ class SignControllerTest {
                 .password(role + "_pw")
                 .name(role + "B")
                 .phoneNumber("010-4444-4444")
-                .roles(role.toUpperCase())
+                .role(role.toUpperCase())
                 .build());
 
         //when
@@ -220,25 +212,22 @@ class SignControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + "email"),
-                                fieldWithPath("password").description(role + "password"),
-                                fieldWithPath("name").description(role + "name"),
-                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
-                                fieldWithPath("roles").description(role + "role")
+                                fieldWithPath("email").description(role + " email"),
+                                fieldWithPath("password").description(role + " password"),
+                                fieldWithPath("name").description(role + " name"),
+                                fieldWithPath("phoneNumber").description(role + " phoneNumber"),
+                                fieldWithPath("role").description(role + " role")
                         ),
                         responseFields(
-                                fieldWithPath("success").description("success"),
-                                fieldWithPath("code").description("code"),
-                                fieldWithPath("msg").description("msg")
+                                fieldWithPath("reason").description("reason"),
+                                fieldWithPath("message").description("message")
                         )
                 ))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(-1002));
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     public void access_success() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))

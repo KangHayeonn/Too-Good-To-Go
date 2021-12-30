@@ -18,7 +18,7 @@ public class UserSignupRequest {
     private String password;
     private String name;
     private String phoneNumber;
-    private String roles;
+    private String role;
 
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()
@@ -26,7 +26,7 @@ public class UserSignupRequest {
                 .password(passwordEncoder.encode(password))
                 .name(name)
                 .phoneNumber(phoneNumber)
-                .roles(Collections.singletonList(roles))
+                .role(role)
                 .build();
     }
 
@@ -35,7 +35,7 @@ public class UserSignupRequest {
                 .email(email)
                 .name(name)
                 .phoneNumber(phoneNumber)
-                .roles(Collections.singletonList(roles))
+                .role(role)
                 .build();
     }
 }

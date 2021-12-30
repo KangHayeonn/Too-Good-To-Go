@@ -20,7 +20,7 @@ const Button = styled.div`
 
 const OrderButton = styled.button`
 	width: 21%;
-	background-color: #387358;
+	background: #387358;
 	margin-top: 3em;
 	padding: 0.7em;
 	display: flex;

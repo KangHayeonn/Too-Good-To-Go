@@ -10,6 +10,9 @@ import CartPage from "./pages/Cart/CartPage";
 import PostTest from "./pages/Test/PostTest";
 import MainPage from "./pages/Main/MainPage";
 import Manager from "./pages/Manager/Manager";
+import OrderPage from "./pages/Order/OrderPage";
+import PayPage from "./pages/Pay/PayPage";
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 const Router: React.FC = () => {
 	return (
@@ -26,6 +29,9 @@ const Router: React.FC = () => {
 				<Route exact path="/apitest" component={PostTest} />
 				<Route exact path="/manager" component={Manager} />
 				<Route path="/manager/:statusName" component={Manager} />
+				<Route exact path="/order" component={OrderPage} />
+				<Route exact path="/pay" component={PayPage} />
+				<Route exact path="/profile" component={ProfilePage} />
 				<Route render={() => <div>에러페이지</div>} />
 			</Switch>
 			<Footer />

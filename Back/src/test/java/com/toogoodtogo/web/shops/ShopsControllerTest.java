@@ -71,12 +71,14 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
-    void 가게목록조회() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    void findShops() throws Exception {
         //then
         mvc.perform(get("/api/shops"))
                 .andDo(print())
-                .andDo(document("shops/find",
+                .andDo(document("shops/findAll",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("shop data"),
                                 fieldWithPath("code").description("shop data"),

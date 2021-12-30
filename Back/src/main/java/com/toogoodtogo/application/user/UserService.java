@@ -46,7 +46,7 @@ public class UserService implements UserUseCase{
     public UserDetailResponse update(Long id, UserUpdateRequest userUpdateRequest) {
         User modifiedUser = userRepository
                 .findById(id).orElseThrow(CUserNotFoundException::new);
-        modifiedUser.update(passwordEncoder.encode(userUpdateRequest.getPassword()), userUpdateRequest.getName(), userUpdateRequest.getPhoneNumber());
+        modifiedUser.update(passwordEncoder.encode(userUpdateRequest.getPassword()), userUpdateRequest.getPhoneNumber());
         return new UserDetailResponse(modifiedUser);
     }
 

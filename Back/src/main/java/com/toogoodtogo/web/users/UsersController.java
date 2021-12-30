@@ -28,12 +28,12 @@ public class UsersController {
     }
 
     @PutMapping("/user/{userId}")
-    public ApiResponse<Long> update (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ApiResponse<Long> updateUser (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         return new ApiResponse(userUseCase.update(userId, userUpdateRequest));
     }
 
     @DeleteMapping("/user/{userId}")
-    public ApiResponse delete(@PathVariable Long userId) {
+    public ApiResponse deleteUser (@PathVariable Long userId) {
         userUseCase.delete(userId);
         return new ApiResponse(0);
     }

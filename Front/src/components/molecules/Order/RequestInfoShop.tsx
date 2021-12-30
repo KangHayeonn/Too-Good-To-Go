@@ -17,6 +17,7 @@ const Text = styled.div`
 	font-weight: 600;
 	color: #646464;
 	display: flex;
+	margin-top: 0.5em;
 `;
 
 const Input = styled.input`

@@ -36,7 +36,7 @@ public class SignService {
         if (!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword()))
             throw new CEmailLoginFailedException();
         // AccessToken, RefreshToken 발급
-        TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRoles());
+        TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(user.getId())
@@ -82,7 +82,7 @@ public class SignService {
             throw new CRefreshTokenException();
 
         // AccessToken, RefreshToken 토큰 재발급, 리프레쉬 토큰 저장
-        TokenDto newCreatedToken = jwtTokenProvider.createTokenDto(user.getId(), user.getRoles());
+        TokenDto newCreatedToken = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
         tokenRepository.save(updateRefreshToken);
 

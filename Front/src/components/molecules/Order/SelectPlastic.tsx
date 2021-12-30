@@ -12,7 +12,7 @@ const ColorSelectorContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	width: 95%;
-	margin: 1em 1em 29px 1em;
+	margin: 1em 1em 3em 1em;
 	border-top: 1px solid #eee;
 	border-bottom: 1px solid #eee;
 	padding: 1em;
@@ -56,7 +56,7 @@ const SelectPlastic: React.FC = () => {
 						<RadioButton
 							id={row.name}
 							type="radio"
-							name="select-info"
+							name="select-plastic-info"
 							value={row.name}
 						/>
 						<Label htmlFor={row.name} color={row.hex}>

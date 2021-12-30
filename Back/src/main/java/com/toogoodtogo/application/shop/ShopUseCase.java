@@ -9,6 +9,6 @@ public interface ShopUseCase {
 
     List<ShopDto> findAllShops();
 
-    Shop addShop(String name, String shopCategory, String image);
+    Shop addShop(String name, String[] shopCategory, String image);
 
 }

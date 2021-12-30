@@ -1,25 +1,25 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-const DropButton = styled.div`
+const DropButton = styled.div<{ display: boolean }>`
 	width: 95%;
 	position: relative;
 	display: inline-block;
-	&:hover .dropbox {
-		display: flex;
-	}
 
 	.dropbox {
-		display: none;
+		display: ${(props) => (props.display ? "none" : "block")};
 		position: relative; // 주문하기 버튼이 보임 (absolute : 안보임)
 		flex-direction: column;
 		background: #ffffff;
 		width: 95%;
 		padding-bottom: 10px;
+		margin: 15px;
+		margin-left: 9px;
+		border-bottom: 2px solid #eee;
 
 		&: nth-of-type(1) {
-			padding-left: 30px;
+			padding-left: 17px;
 		}
 		div:nth-of-type(2) {
 			padding-right: 30px;
@@ -27,8 +27,9 @@ const DropButton = styled.div`
 		& > li {
 			display: flex;
 			justify-content: space-between;
-			margin: 13px;
+			margin: 27px 13px 27px 19px; // 위 오 아래 왼
 			color: #646464;
+
 			&: nth-of-type(4) {
 				margin-top: 30px;
 				margin-left: -10px;
@@ -58,33 +59,45 @@ const DropTitle = styled.div`
 	div:nth-of-type(2) {
 		padding-right: 30px;
 	}
+	button {
+		color: #4f4f4f;
+		background: #ffffff;
+		font-weight: bold;
+		font-size: 16px;
+		padding-right: 1.7em;
+	}
 `;
 
-const DropBox = styled.div`
-	display: none;
-	position: absolute;
-	background: #f9f9f9;
-	min-width: 160px;
-	padding: 8px;
-	box-shadow: 0px 8px 16px 9px rgba(0, 0, 0, 0.2);
-`;
-
-const ToggleBtn = styled.button`
-	color: #4f4f4f;
-	font-size: 15px;
-	background: #ffffff;
-
-	&:hover .DropBox {
-		display: block;
+const Total = styled.div`
+	width: 92%;
+	height: 37px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 17px;
+	margin-left: 12px;
+	padding-left: 23px;
+	padding-right: 21px;
+	background: #efefef;
+	font-weight: bold;
+	color: #646464;
+	&: nth-of-type(2) {
+		padding-left: 17px;
+		padding-right: 25px;
 	}
 `;
 
 const PayInfo: React.FC = () => {
+	const [hidden, setHidden] = useState(true);
+	const show = () => setHidden((current) => !current);
+	console.log(hidden);
 	return (
-		<DropButton>
+		<DropButton display={hidden}>
 			<DropTitle>
 				<div>결제 정보</div>
-				<div>▼</div>
+				<button type="button" onClick={show}>
+					{hidden ? "▼" : "▲"}
+				</button>
 			</DropTitle>
 			<ul className="dropbox">
 				<li>
@@ -99,11 +112,11 @@ const PayInfo: React.FC = () => {
 					<div>배송비</div>
 					<div>2,500원</div>
 				</li>
-				<li>
-					<div>총 결제금액</div>
-					<div>61,500원</div>
-				</li>
 			</ul>
+			<Total>
+				<div>총 결제금액</div>
+				<div>61,500원</div>
+			</Total>
 		</DropButton>
 	);
 };

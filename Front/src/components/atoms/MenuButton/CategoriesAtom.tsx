@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 
 const menuAtomBtn = css`
-	width: 116px;
+	width: 118px; //상단 메뉴바 크기 안맞아서 수정
 	height: 40px;
 	display: flex;
 	align-items: center;

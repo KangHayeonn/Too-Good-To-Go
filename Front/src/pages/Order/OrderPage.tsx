@@ -7,7 +7,6 @@ import OrderForm from "../../components/organisms/Order/OrderForm";
 import RequestForm from "../../components/organisms/Order/RequestForm";
 import OrderList from "../../components/organisms/Order/OrderList";
 import PaymentForm from "../../components/organisms/Order/PaymentForm";
-import DiscountForm from "../../components/organisms/Order/DiscountForm";
 import PayForm from "../../components/organisms/Order/PayForm";
 
 const Button = styled.div`
@@ -47,7 +46,6 @@ const OrderPage: React.FC = () => {
 			<RequestForm />
 			<OrderList />
 			<PaymentForm />
-			<DiscountForm />
 			<PayForm />
 			<Button>
 				<OrderButton type="button">

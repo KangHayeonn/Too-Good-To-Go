@@ -6,7 +6,7 @@ import PayInfo from "../../molecules/Order/PayInfo";
 const PayForm: React.FC = () => {
 	return (
 		<Wrapper>
-			<Titlebar color="#6EC19B">결제정보</Titlebar>
+			<Titlebar color="#D6E3DD">결제정보</Titlebar>
 			<PayInfo />
 		</Wrapper>
 	);

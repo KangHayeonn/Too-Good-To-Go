@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
@@ -10,9 +10,16 @@ const ShopCardStyle = styled.div`
 	height: 100%;
 `;
 
+const imgWidth = document.querySelector("#shopCardDiv")?.clientWidth;
+const calcHeight = () => {
+	console.log(imgWidth);
+	if (typeof imgWidth === "number") return imgWidth;
+	return 0;
+};
+
 const ShopImg = styled.img`
 	width: 100%;
-	height: 222px;
+	height: 100%;
 	object-fit: cover;
 	transition: all 0.3s ease-in-out;
 	transform: scale(1);
@@ -20,13 +27,6 @@ const ShopImg = styled.img`
 		transform: scale(1.02);
 		transition: all 0.3s ease-in-out;
 	}
-`;
-
-const ShopCover = css`
-	height: 222px;
-	overflow: hidden;
-	display: block;
-	cursor: pointer;
 `;
 
 const ShopCardInfo = styled.div`
@@ -98,9 +98,21 @@ const ShopCard: React.FC<shopCardType> = ({
 	shopFoodCost,
 	shopBeforeCost,
 }) => {
+	const [width, setWidth] = useState(imgWidth);
+	useEffect(() => {
+		setWidth(document.querySelector("#shopCardDiv")?.clientWidth);
+		console.log(width);
+	}, []);
 	return (
-		<ShopCardStyle>
-			<Link to="/shop" css={ShopCover}>
+		<ShopCardStyle id="shopCardDiv">
+			<Link
+				to="/shop"
+				css={css`
+					height: ${width}px;
+					overflow: hidden;
+					display: block;
+				`}
+			>
 				<ShopImg src={shopFoodImg} alt="음식점 사진" />
 			</Link>
 			<ShopCardInfo>

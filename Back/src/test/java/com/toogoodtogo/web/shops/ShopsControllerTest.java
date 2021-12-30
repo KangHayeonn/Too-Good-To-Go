@@ -1,6 +1,5 @@
 package com.toogoodtogo.web.shops;
 
-import com.toogoodtogo.application.response.ResponseService;
 import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.application.shop.ShopUseCase;
 import com.toogoodtogo.application.shop.product.ProductService;
@@ -61,6 +60,7 @@ class ShopsControllerTest {
 
     @BeforeEach
     public void setUp() {
+        shopRepository.deleteAll();
         shopRepository.save(Shop.builder().name("shop1").image("test1").category("한식").build());
         shopRepository.save(Shop.builder().name("shop2").image("test2").category("중식").build());
     }
@@ -71,7 +71,7 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER"})
+    @WithMockUser(roles = "USER")
     void findShops() throws Exception {
         //then
         mvc.perform(get("/api/shops"))
@@ -80,9 +80,6 @@ class ShopsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("success").description("shop data"),
-                                fieldWithPath("code").description("shop data"),
-                                fieldWithPath("msg").description("shop data"),
                                 fieldWithPath("data").description("shop data"),
                                 fieldWithPath("data.[].id").description("shop id"),
                                 fieldWithPath("data.[].name").description("shop name"),
@@ -91,9 +88,6 @@ class ShopsControllerTest {
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data[0].name").value("shop1"))
                 .andExpect(jsonPath("$.data[1].name").value("shop2"));
     }

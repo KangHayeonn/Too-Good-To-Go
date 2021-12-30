@@ -71,6 +71,7 @@ const DiscountInfo: React.FC = () => {
 	const [hidden2, setHidden2] = useState(true);
 	const show = () => setHidden((current) => !current);
 	const show2 = () => setHidden2((current2) => !current2);
+	console.log(hidden);
 	return (
 		<div>
 			<DropPoint display={hidden}>

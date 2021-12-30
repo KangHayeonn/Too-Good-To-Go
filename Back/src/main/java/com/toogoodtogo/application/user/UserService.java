@@ -3,8 +3,7 @@ package com.toogoodtogo.application.user;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.advice.exception.CUserNotFoundException;
-import com.toogoodtogo.web.users.UserRequestDto;
-import com.toogoodtogo.web.users.UserResponseDto;
+import com.toogoodtogo.web.users.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,31 +16,25 @@ import java.util.stream.Collectors;
 public class UserService implements UserUseCase{
     private final UserRepository userRepository;
 
-    @Transactional
-    public Long save(UserRequestDto userDto) {
-        User saved = userRepository.save(userDto.toEntity());
-        return saved.getId();
-    }
-
     @Transactional(readOnly = true)
-    public UserResponseDto findById(Long id) {
+    public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(CUserNotFoundException::new);
-        return new UserResponseDto(user);
+        return new UserResponse(user);
     }
 
     @Transactional(readOnly = true)
-    public UserResponseDto findByEmail(String email) {
+    public UserResponse findByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(CUserNotFoundException::new);
-        return new UserResponseDto(user);
+        return new UserResponse(user);
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponseDto> findAllUser() {
+    public List<UserResponse> findAllUser() {
         return userRepository.findAll()
                 .stream()
-                .map(UserResponseDto::new)
+                .map(UserResponse::new)
                 .collect(Collectors.toList());
     }
 

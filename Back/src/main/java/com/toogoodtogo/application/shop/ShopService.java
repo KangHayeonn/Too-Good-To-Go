@@ -3,7 +3,6 @@ package com.toogoodtogo.application.shop;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.web.shops.ShopDto;
-import com.toogoodtogo.web.users.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

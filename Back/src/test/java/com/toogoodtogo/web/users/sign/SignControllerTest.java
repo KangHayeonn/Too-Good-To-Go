@@ -1,50 +1,34 @@
 package com.toogoodtogo.web.users.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.TooGoodToGoApplication;
-import com.toogoodtogo.application.response.ResponseService;
-import com.toogoodtogo.application.security.SignService;
-import com.toogoodtogo.application.shop.product.ProductService;
-import com.toogoodtogo.application.user.UserService;
-import com.toogoodtogo.configuration.security.CustomAccessDeniedHandler;
-import com.toogoodtogo.configuration.security.CustomAuthenticationEntryPoint;
-import com.toogoodtogo.configuration.security.JwtTokenProvider;
-import com.toogoodtogo.domain.security.RefreshTokenRepository;
-import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.UsersController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -70,11 +54,18 @@ class SignControllerTest {
     @BeforeEach
     public void setUp() {
         userRepository.save(User.builder()
-                .email("email@email.com")
-                .password(passwordEncoder.encode("password"))
-                .name("name")
+                .email("user@email.com")
+                .password(passwordEncoder.encode("user_pw"))
+                .name("userA")
                 .phoneNumber("010-0000-0000")
                 .roles(Collections.singletonList("ROLE_USER"))
+                .build());
+        userRepository.save(User.builder()
+                .email("manager@email.com")
+                .password(passwordEncoder.encode("manager_pw"))
+                .name("managerA")
+                .phoneNumber("010-1111-1111")
+                .roles(Collections.singletonList("ROLE_MANAGER"))
                 .build());
     }
 
@@ -83,12 +74,13 @@ class SignControllerTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    public void 로그인_성공() throws Exception {
+    @ParameterizedTest
+    @CsvSource({"user", "manager"})
+    public void login_success(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
-                .email("email@email.com")
-                .password("password")
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+                .email(role + "@email.com")
+                .password(role + "_pw")
                 .build());
 
         //when
@@ -99,10 +91,14 @@ class SignControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("users/login/success",
+                .andDo(document("login/"+ role + "/success",
+                        preprocessRequest(
+//                                modifyUris().scheme("https").host("www.tgtg.com").removePort(),
+                                prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("login email"),
-                                fieldWithPath("password").description("user password")
+                                fieldWithPath("password").description("login password")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("success"),
@@ -120,11 +116,12 @@ class SignControllerTest {
                 .andExpect(jsonPath("$.msg").exists());
     }
 
-    @Test
-    public void 로그인_실패() throws Exception {
+    @ParameterizedTest
+    @CsvSource({"user", "manager"})
+    public void login_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequestDto.builder()
-                .email("email@email.com")
+        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+                .email(role + "@email.com")
                 .password("wrongPassword")
                 .build());
         //when
@@ -135,10 +132,12 @@ class SignControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("users/login/fail",
+                .andDo(document("login/" + role + "/fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("login email"),
-                                fieldWithPath("password").description("user password")
+                                fieldWithPath("password").description("login password")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("success"),
@@ -151,15 +150,17 @@ class SignControllerTest {
                 .andExpect(jsonPath("$.code").value(-1001));
     }
 
-    @Test
-    public void 회원가입_성공() throws Exception {
+    @ParameterizedTest
+    @CsvSource({"user", "manager"})
+    public void signUp_success(String role) throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
-                .email("email@email.com" + time)
-                .password("myPassword")
-                .name("myName")
-                .phoneNumber("010-0000-0000")
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
+                .email(role + "B@email.com" + time)
+                .password(role + "_pw")
+                .name(role + "B")
+                .phoneNumber("010-4444-4444")
+                .roles(role.toUpperCase())
                 .build());
 
         //then
@@ -171,12 +172,15 @@ class SignControllerTest {
         //when
         actions
                 .andDo(print())
-                .andDo(document("users/signup/success",
+                .andDo(document("signup/" + role + "/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description("user email"),
-                                fieldWithPath("password").description("user password"),
-                                fieldWithPath("name").description("user name"),
-                                fieldWithPath("phoneNumber").description("user phoneNumber")
+                                fieldWithPath("email").description(role + "email"),
+                                fieldWithPath("password").description(role + "password"),
+                                fieldWithPath("name").description(role + "name"),
+                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
+                                fieldWithPath("roles").description(role + "role")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("success"),
@@ -191,14 +195,16 @@ class SignControllerTest {
                 .andExpect(jsonPath("$.msg").exists());
     }
 
-    @Test
-    public void 회원가입_실패() throws Exception {
+    @ParameterizedTest
+    @CsvSource({"user", "manager"})
+    public void signUp_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequestDto.builder()
-                .email("email@email.com")
-                .password("password")
-                .name("myName")
-                .phoneNumber("010-0000-0000")
+        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
+                .email(role + "@email.com")
+                .password(role + "_pw")
+                .name(role + "B")
+                .phoneNumber("010-4444-4444")
+                .roles(role.toUpperCase())
                 .build());
 
         //when
@@ -210,12 +216,15 @@ class SignControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("users/signup/fail",
+                .andDo(document("signup/" + role + "/fail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description("user email"),
-                                fieldWithPath("password").description("user password"),
-                                fieldWithPath("name").description("user name"),
-                                fieldWithPath("phoneNumber").description("user phoneNumber")
+                                fieldWithPath("email").description(role + "email"),
+                                fieldWithPath("password").description(role + "password"),
+                                fieldWithPath("name").description(role + "name"),
+                                fieldWithPath("phoneNumber").description(role + "phoneNumber"),
+                                fieldWithPath("roles").description(role + "role")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("success"),
@@ -229,22 +238,22 @@ class SignControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"GUEST"})
-    public void 접근실패() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void access_success() throws Exception {
+        //then
+        mockMvc.perform(get("/api/users"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = {"GUEST"})
+    public void access_denied() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/exception/accessDenied"));
         ;
-    }
-
-    @Test
-    @WithMockUser(username = "mockUser", roles = {"GUEST", "USER"})
-    public void 접근성공() throws Exception {
-        //then
-        mockMvc.perform(get("/api/users"))
-                .andDo(print())
-                .andExpect(status().isOk());
     }
 }

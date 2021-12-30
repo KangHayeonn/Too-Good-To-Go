@@ -30,6 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -68,6 +69,13 @@ class UsersControllerTest {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
         id = Math.toIntExact(save.getId());
+        userRepository.save(User.builder()
+                .email("manager@email.com")
+                .password(passwordEncoder.encode("manager_pw"))
+                .name("managerA")
+                .phoneNumber("010-1111-1111")
+                .roles(Collections.singletonList("ROLE_MANAGER"))
+                .build());
     }
 
     @AfterEach
@@ -76,8 +84,8 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
-    public void 회원조회_userId() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void findUser_userId() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
                 get("/api/user/id/{id}", id)
@@ -87,6 +95,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/findById",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -96,7 +106,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.email").description("user email"),
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))
@@ -107,8 +118,8 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
-    public void 회원조회_email() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void findUser_email() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(
                         get("/api/user/email/{email}", "email@email.com")
@@ -118,6 +129,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/findByEmail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -127,7 +140,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.email").description("user email"),
                                 fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))
@@ -138,12 +152,14 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
-    public void 전체회원조회() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void findUsers() throws Exception {
         //then
         mockMvc.perform(get("/api/users"))
                 .andDo(print())
                 .andDo(document("users/findAll",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),
@@ -153,7 +169,8 @@ class UsersControllerTest {
                                 fieldWithPath("data.[].email").description("user email"),
                                 fieldWithPath("data.[].password").description("user password"),
                                 fieldWithPath("data.[].name").description("user name"),
-                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber")
+                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.[].roles").description("user roles")
                         )
                 ))
                 .andExpect(jsonPath("$.success").value(true))
@@ -162,8 +179,8 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "mockUser", roles = {"USER"})
-    public void 회원삭제() throws Exception {
+    @WithMockUser(roles = {"USER"})
+    public void deleteUser() throws Exception {
         //given
         //when
         ResultActions actions = mockMvc.perform(delete("/api/user/{id}", id));
@@ -171,6 +188,8 @@ class UsersControllerTest {
         actions
                 .andDo(print())
                 .andDo(document("users/delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("success").description("success"),
                                 fieldWithPath("code").description("code"),

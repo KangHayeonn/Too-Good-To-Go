@@ -1,0 +1,101 @@
+= REST API Guide
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:site-url: /build/asciidoc/html5/
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+:roots: ./build/generated-snippets
+endif::[]
+
+== Verb
+|===
+| Verb | Usage
+| `GET`
+| Used to retrieve a resource
+| `POST`
+| Used to create a new resource
+| `PATCH`
+| Used to update an existing resource, including partial updates
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+== Status
+|===
+| Status code | Usage
+| `200 OK`
+| The request completed successfully
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+== Host
+|===
+|환경|Host
+|LOCAL|http://localhost:8080
+|===
+
+== APIs
+URL은 `/api/`로 시작한다.
+
+== Shop API
+The Shop provides the entry point into the service.
+
+=== Shop 전체 조회 [GET]
+operation::shops/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+== Sign Up API
+
+=== User 회원가입 성공 [POST]
+operation::signup/user/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== User 회원가입 실패 [POST]
+operation::signup/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== MANAGER 회원가입 성공 [POST]
+operation::signup/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== MANAGER 회원가입 실패 [POST]
+operation::signup/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+== Login Api
+
+=== USER 로그인 성공 [POST]
+operation::login/user/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== USER 로그인 실패 [POST]
+operation::login/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== MANAGER 로그인 성공 [POST]
+operation::login/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== MANAGER 로그인 실패 [POST]
+operation::login/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+== User Api
+
+=== USER 전체 조회 [GET]
+operation::users/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== USER 조회_id [GET]
+operation::users/findById[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== USER 조회_email [GET]
+operation::users/findByEmail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== USER 삭제 [DELETE]
+operation::users/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']

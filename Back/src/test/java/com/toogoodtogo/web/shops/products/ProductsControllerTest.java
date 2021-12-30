@@ -47,7 +47,7 @@ class ProductsControllerTest {
 
     @BeforeEach
     public void setUp() {
-        Shop shop = Shop.builder().name("shop1").image("test1").category("한식").build();
+        Shop shop = Shop.builder().name("shop1").image("test1").category(new String[]{"한식"}).build();
         shopRepository.save(shop);
         shopId = shop.getId();
         productRepository.save(Product.builder().shop(shop).name("김치찌개").price(6000L).discountedPrice(5000L).image("test1").build());

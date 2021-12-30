@@ -61,8 +61,8 @@ class ShopsControllerTest {
     @BeforeEach
     public void setUp() {
         shopRepository.deleteAll();
-        shopRepository.save(Shop.builder().name("shop1").image("test1").category("한식").build());
-        shopRepository.save(Shop.builder().name("shop2").image("test2").category("중식").build());
+        shopRepository.save(Shop.builder().name("shop1").image("test1").category(new String[]{"한식"}).build());
+        shopRepository.save(Shop.builder().name("shop2").image("test2").category(new String[]{"중식"}).build());
     }
 
     @AfterEach

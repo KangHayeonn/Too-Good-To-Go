@@ -18,9 +18,8 @@ public class SignController {
     }
 
     @PostMapping("/signup")
-    public ApiResponse<Long> signup(@RequestBody UserSignupRequest userSignupRequest) {
-        Long signupId = signService.signup(userSignupRequest);
-        return new ApiResponse(signupId);
+    public ApiResponse<UserSignupResponse> signup(@RequestBody UserSignupRequest userSignupRequest) {
+        return new ApiResponse(signService.signup(userSignupRequest));
     }
 
     @PostMapping("/reissue") //토큰 재발급 요청

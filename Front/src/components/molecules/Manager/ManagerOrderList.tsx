@@ -20,13 +20,13 @@ const Center = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: flex-start;
-	width: calc(100% - 540px);
+	width: calc(100% - 220px);
 	height: 100%;
 `;
 
 const TimeText = styled.div`
 	font-size: 30px;
-	width: 140px;
+	width: 160px;
 	height: 100%;
 	display: flex;
 	font-weight: bold;
@@ -36,7 +36,7 @@ const Confirm = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	width: 400px;
+	width: 60px;
 	& > button {
 		cursor: pointer;
 		background-color: #55b689;
@@ -47,6 +47,11 @@ const Confirm = styled.div`
 		align-items: center;
 		justify-content: center;
 		color: #fff;
+		transition: all 0.2s ease-in-out;
+		&:hover {
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+				0 3px 6px rgba(0, 0, 0, 0.23);
+		}
 	}
 `;
 
@@ -81,7 +86,7 @@ const ManagerOrderList: React.FC<orderType> = ({
 	return (
 		<List>
 			<TimeText>
-				<p>{orderTime.substring(14, 20)}</p>
+				<p>{orderTime.substring(14, 21)}</p>
 			</TimeText>
 			<Center>
 				<p>{status}</p>

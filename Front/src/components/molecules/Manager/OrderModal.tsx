@@ -149,7 +149,6 @@ const OrderModal: React.FC<modal> = ({
 	createdTime,
 }) => {
 	const [selectTime, setSelectTime] = useState<string>("");
-	console.log(selectTime);
 	const clickSelectTime = (numb: string) => {
 		setSelectTime(numb);
 		const btn = document.getElementsByClassName(

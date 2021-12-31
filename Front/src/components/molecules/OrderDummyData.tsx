@@ -236,3 +236,12 @@ export const orderData = [
 		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 ];
+
+export const orderDataCount = [
+	{
+		order_completed: 0,
+		preparing: 0,
+		completed: 0,
+		showAll: 0,
+	},
+];

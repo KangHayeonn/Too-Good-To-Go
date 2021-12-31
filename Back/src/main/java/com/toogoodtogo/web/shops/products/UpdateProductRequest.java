@@ -1,19 +1,17 @@
 package com.toogoodtogo.web.shops.products;
 
-import com.toogoodtogo.domain.shop.Shop;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddProductRequest {
+public class UpdateProductRequest {
     private String name;
     private Long price;
     private Long discountedPrice;
     private String image;
-
-//    public toServiceDto() {
-//
-//    }
 }

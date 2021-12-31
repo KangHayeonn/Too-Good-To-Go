@@ -25,7 +25,7 @@ public class UsersController {
 //    }
 
     @PatchMapping("/user/{userId}")
-    public ApiResponse<Long> updateUser (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ApiResponse<UserDetailResponse> updateUser (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         return new ApiResponse(userUseCase.update(userId, userUpdateRequest));
     }
 

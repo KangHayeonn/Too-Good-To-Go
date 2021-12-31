@@ -1,14 +1,12 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.toogoodtogo.application.shop.product.ProductUseCase;
-import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -19,33 +17,24 @@ public class ProductsController {
     private final ShopRepository shopRepository;
 
     @GetMapping("/shops/{shopId}/products")
-    public ApiResponse<ProductDto> findProducts(@PathVariable("shopId") Long shopId) {
+    public ApiResponse<List<ProductDto>> findProducts(@PathVariable Long shopId) {
         return new ApiResponse(productUseCase.findAllProducts(shopId));
     }
 
-    @GetMapping("/api/shopboards")
-    public ApiResponse<List<ProductDto>> findShopBoards() {
-        return new ApiResponse<>(
-                productUseCase.findAllShopBoards()
-                        .stream()
-                        .map(ProductDto::new)
-                        .collect(Collectors.toList())
-        );
+    @PostMapping("/manager/shops/{shopId}/products")
+    public ApiResponse<ProductDto> addProduct(@PathVariable Long shopId, @RequestBody AddProductRequest request) {
+        return new ApiResponse(productUseCase.addProduct(shopId, request/*.toServiceDto()*/));
     }
 
-    @PostMapping("/api/shops/{shopId}/products")
-    public ApiResponse<ProductDto> addProducts(
-            @PathVariable("shopId") Long shopId,
-            @RequestBody AddProductRequest body) {
-        Shop shop = shopRepository.findById(shopId).orElseThrow();
-        return new ApiResponse<>(
-                new ProductDto(productUseCase.addProduct(
-                        shop,
-                        body.getName(),
-                        body.getPrice(),
-                        body.getDiscountedPrice(),
-                        body.getImage()
-                ))
-        );
+    @PatchMapping("/manager/shop/{shopId}/products/{productId}")
+    public ApiResponse<ProductDto> updateProduct(
+            /*@PathVariable Long shopId,*/ @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
+        return new ApiResponse(productUseCase.updateProduct(productId, request));
+    }
+
+    @DeleteMapping("/manager/shop/{shopId}/products/{productId}")
+    public ApiResponse<Long> deleteProdcut(@PathVariable Long productId) {
+        productUseCase.deleteProduct(productId);
+        return new ApiResponse(0L);
     }
 }

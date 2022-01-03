@@ -33,7 +33,7 @@ public class ProductsController {
     }
 
     @DeleteMapping("/manager/shop/{shopId}/products/{productId}")
-    public ApiResponse<Long> deleteProdcut(@PathVariable Long productId) {
+    public ApiResponse<Long> deleteProduct(@PathVariable Long productId) {
         productUseCase.deleteProduct(productId);
         return new ApiResponse(0L);
     }

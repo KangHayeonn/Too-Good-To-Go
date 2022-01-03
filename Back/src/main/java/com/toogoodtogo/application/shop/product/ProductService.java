@@ -49,7 +49,7 @@ public class ProductService implements ProductUseCase {
 
     @Transactional
     public ProductDto updateProduct(Long productId, UpdateProductRequest request) {
-        Product modifiedProduct = productRepository.findById(productId).orElseThrow();
+        Product modifiedProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
         return new ProductDto(modifiedProduct);
     }

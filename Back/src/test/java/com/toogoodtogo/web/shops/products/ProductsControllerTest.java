@@ -5,8 +5,6 @@ import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.web.users.UserUpdateRequest;
-import com.toogoodtogo.web.users.sign.UserSignupRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -173,7 +170,7 @@ class ProductsControllerTest {
 
     @Test
     @WithMockUser(roles = "MANAGER")
-    public void deleteUser() throws Exception {
+    public void deleteProduct() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}/products/{productId}", shopId, productId))
                 .andDo(print())

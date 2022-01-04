@@ -18,6 +18,7 @@ public class Product {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     private String name;
@@ -31,6 +32,13 @@ public class Product {
     @Builder
     public Product(Shop shop, String name, Long price, Long discountedPrice, String image) {
         this.shop = shop;
+        this.name = name;
+        this.price = price;
+        this.discountedPrice = discountedPrice;
+        this.image = image;
+    }
+
+    public void update(String name, Long price, Long discountedPrice, String image) {
         this.name = name;
         this.price = price;
         this.discountedPrice = discountedPrice;

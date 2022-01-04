@@ -1,22 +1,23 @@
 package com.toogoodtogo.domain.shop;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.toogoodtogo.domain.user.User;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shop {
     @Id
     @GeneratedValue
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String name;
 
@@ -24,10 +25,19 @@ public class Shop {
 
     private String[] category;
 
-    @Builder
-    public Shop(String name, String image, String[] category) {
+    private String phone;
+
+    private String address;
+
+    @Embedded
+    private Hours hours;
+
+    public void update(String name, String image, String[] category, String phone, String address, Hours hours) {
         this.name = name;
         this.image = image;
         this.category = category;
+        this.phone = phone;
+        this.address = address;
+        this.hours = hours;
     }
 }

@@ -25,10 +25,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Collections;
-
-import static org.hamcrest.core.Is.is;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -65,7 +61,7 @@ class UsersControllerTest {
                 .email("email@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phoneNumber("010-0000-0000")
+                .phone("010-0000-0000")
                 .role("ROLE_USER")
                 .build());
         id = Math.toIntExact(save.getId());
@@ -73,7 +69,7 @@ class UsersControllerTest {
                 .email("manager@email.com")
                 .password(passwordEncoder.encode("manager_pw"))
                 .name("managerA")
-                .phoneNumber("010-1111-1111")
+                .phone("010-1111-1111")
                 .role("ROLE_MANAGER")
                 .build());
     }
@@ -101,9 +97,8 @@ class UsersControllerTest {
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.id").description("user id"),
                                 fieldWithPath("data.email").description("user email"),
-                                fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.phone").description("user phone"),
                                 fieldWithPath("data.role").description("user role")
                         )
                 ))
@@ -111,55 +106,26 @@ class UsersControllerTest {
                 .andExpect(jsonPath("$.data.name").value("name"));
     }
 
-    @Test
-    @WithMockUser(roles = "USER")
-    public void findPasswordByEmail() throws Exception {
-        //given
-        String object = objectMapper.writeValueAsString(UserEmailRequest.builder()
-                .email("email@email.com")
-                .build());
-
-        //when
-        ResultActions actions = mockMvc.perform(post("/api/user/email")
-                .content(object)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-
-        //then
-        actions
-                .andDo(print())
-                .andDo(document("users/findPasswordByEmail",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("data"),
-                                fieldWithPath("data.password").description("user password")
-                        )
-                ))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = "USER")
-    public void findUsers() throws Exception {
-        //then
-        mockMvc.perform(get("/api/users"))
-                .andDo(print())
-                .andDo(document("users/findAll",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("data"),
-                                fieldWithPath("data.[].id").description("user id"),
-                                fieldWithPath("data.[].email").description("user email"),
-                                fieldWithPath("data.[].password").description("user password"),
-                                fieldWithPath("data.[].name").description("user name"),
-                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
-                                fieldWithPath("data.[].role").description("user role")
-                        )
-                ))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(roles = "USER")
+//    public void findUsers() throws Exception {
+//        //then
+//        mockMvc.perform(get("/api/users"))
+//                .andDo(print())
+//                .andDo(document("users/findAll",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("data"),
+//                                fieldWithPath("data.[].id").description("user id"),
+//                                fieldWithPath("data.[].email").description("user email"),
+//                                fieldWithPath("data.[].name").description("user name"),
+//                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
+//                                fieldWithPath("data.[].role").description("user role")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @WithMockUser(roles = "USER")
@@ -167,11 +133,11 @@ class UsersControllerTest {
         //given
         String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
                 .password("new_password")
-                .phoneNumber("010-1234-5678")
+                .phone("010-1234-5678")
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(put("/api/user/{id}", id)
+        ResultActions actions = mockMvc.perform(patch("/api/user/{id}", id)
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -186,32 +152,31 @@ class UsersControllerTest {
                                 fieldWithPath("data").description("data"),
                                 fieldWithPath("data.id").description("user id"),
                                 fieldWithPath("data.email").description("user email"),
-                                fieldWithPath("data.password").description("user password"),
                                 fieldWithPath("data.name").description("user name"),
-                                fieldWithPath("data.phoneNumber").description("user phoneNumber"),
+                                fieldWithPath("data.phone").description("user phone"),
                                 fieldWithPath("data.role").description("user role")
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.phoneNumber").value("010-1234-5678"));
+                .andExpect(jsonPath("$.data.phone").value("010-1234-5678"));
     }
 
-    @Test
-    @WithMockUser(roles = "USER")
-    public void deleteUser() throws Exception {
-        //given
-        //when
-        ResultActions actions = mockMvc.perform(delete("/api/user/{id}", id));
-        //then
-        actions
-                .andDo(print())
-                .andDo(document("users/delete",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("data")
-                        )
-                ))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(roles = "USER")
+//    public void deleteUser() throws Exception {
+//        //given
+//        //when
+//        ResultActions actions = mockMvc.perform(delete("/api/user/{id}", id));
+//        //then
+//        actions
+//                .andDo(print())
+//                .andDo(document("users/delete",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("data")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
 }

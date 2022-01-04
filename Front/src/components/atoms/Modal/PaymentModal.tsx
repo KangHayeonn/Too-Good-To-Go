@@ -112,7 +112,7 @@ import React from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.3);
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -139,7 +139,7 @@ const Header = styled.div`
 	justify-content: center;
 	font-size: 19px;
 	font-weight: bold;
-	color: black;
+	color: #404040;
 `;
 const Body = styled.div`
 	width: 100%;

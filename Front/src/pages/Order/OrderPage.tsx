@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { Link } from "react-router-dom";
 import PageTemplate from "../../components/templates/PageTemplate";
 import OrderForm from "../../components/organisms/Order/OrderForm";
 import RequestForm from "../../components/organisms/Order/RequestForm";
 import OrderList from "../../components/organisms/Order/OrderList";
 import PaymentForm from "../../components/organisms/Order/PaymentForm";
-import DiscountForm from "../../components/organisms/Order/DiscountForm";
 import PayForm from "../../components/organisms/Order/PayForm";
+import Modal from "../../components/atoms/Modal/PaymentModal";
 
 const Button = styled.div`
 	width: 100%;
@@ -30,31 +28,48 @@ const OrderButton = styled.button`
 	font-weight: 600;
 	box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
+	color : #fff;
 
 	&:hover {
 		background-color: #a4a4a4;
 	}
 `;
 
-const pay = css`
-	color: #fff;
-`;
-
 const OrderPage: React.FC = () => {
+	const [show, setShow] = useState(false);
+	const popRef = useRef<HTMLDivElement>(null);
+
+	const onClickOutside = useCallback(
+		({ target }) => {
+			if (popRef.current && !popRef.current.contains(target)) {
+				setShow(false);
+			}
+		},
+		[setShow]
+	);
+	useEffect(() => {
+		document.addEventListener("click", onClickOutside);
+		return () => {
+			document.removeEventListener("click", onClickOutside);
+		};
+	}, []);
+	const onClickToggleModal = useCallback(() => {
+		setShow((prev) => !prev);
+	}, [setShow]);
 	return (
 		<PageTemplate isHeader={false} isSection={false} isFooter={false}>
 			<OrderForm />
 			<RequestForm />
 			<OrderList />
 			<PaymentForm />
-			<DiscountForm />
 			<PayForm />
-			<Button>
-				<OrderButton type="button">
-					<Link to="/pay" css={pay}>
-						주문하기
-					</Link>
-				</OrderButton>
+			<Button ref={popRef}>
+				
+					<OrderButton type="button" onClick={onClickToggleModal}>
+							주문하기
+					</OrderButton>
+					<Modal show={show} />
+				
 			</Button>
 		</PageTemplate>
 	);

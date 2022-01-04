@@ -10,6 +10,7 @@ type theme = {
 const ProfileContent: React.FC = () => {
 	const [showProfileEdit, setShowProfileEdit] = useState<boolean>(true);
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
+	const [showManager, setShowManager] = useState<boolean>(false);
 
 	function handleShowProfileEdit(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -17,6 +18,7 @@ const ProfileContent: React.FC = () => {
 		event.preventDefault();
 		setShowProfileEdit(true);
 		setShowOrderList(false);
+		setShowManager(false);
 	}
 
 	function handleShowOrderList(
@@ -25,6 +27,16 @@ const ProfileContent: React.FC = () => {
 		event.preventDefault();
 		setShowOrderList(true);
 		setShowProfileEdit(false);
+		setShowManager(false);
+	}
+
+	function handleShowManager(
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) {
+		event.preventDefault();
+		setShowProfileEdit(false);
+		setShowOrderList(false);
+		setShowManager(true);
 	}
 
 	return (
@@ -44,6 +56,13 @@ const ProfileContent: React.FC = () => {
 						checked={showOrderList}
 					>
 						주문 내역
+					</ProfileSelectButton>
+					<ProfileSelectButton
+						type="button"
+						onClick={(e) => handleShowManager(e)}
+						checked={showManager}
+					>
+						매점 관리
 					</ProfileSelectButton>
 				</div>
 			</SelectionContainer>

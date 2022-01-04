@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-const DropButton = styled.div<{ display: boolean }>`
+const DropButton = styled.div<{ displayType: boolean }>`
 	width: 95%;
 	position: relative;
 	display: inline-block;
 
 	.dropbox {
-		display: ${(props) => (props.display ? "none" : "block")};
+		display: ${(props) => (props.displayType ? "none" : "block")};
 		position: relative; // 주문하기 버튼이 보임 (absolute : 안보임)
 		flex-direction: column;
 		background: #ffffff;
@@ -92,7 +92,7 @@ const PayInfo: React.FC = () => {
 	const show = () => setHidden((current) => !current);
 	console.log(hidden);
 	return (
-		<DropButton display={hidden}>
+		<DropButton displayType={hidden}>
 			<DropTitle>
 				<div>결제 정보</div>
 				<button type="button" onClick={show}>

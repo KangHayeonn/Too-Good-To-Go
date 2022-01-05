@@ -12,6 +12,7 @@ const DropButton = styled.div<{ displayType: boolean }>`
 		display: block; // block으로 바꾸면 hover 에도 visible 가능
 	}
 	*/
+	padding-bottom: 5em;
 
 	.dropbox {
 		display: ${(props) => (props.displayType ? "none" : "block")};

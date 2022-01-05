@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
+import Dropdown from "../../atoms/DropDown/Dropdown";
 
 const RequestShop = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 1em;
 	margin-top: 0.5em;
+	margin-bottom: 5.5em;
 `;
 
 const Text = styled.div`
@@ -16,20 +18,9 @@ const Text = styled.div`
 	font-weight: 600;
 	color: #646464;
 	display: flex;
-	display: flex;
 	margin-top: 0.5em;
 `;
 
-const Input = styled.input`
-	width: 70%;
-	height: 29px;
-	padding-left: 15px;
-	margin: 1.5em 0 19px 1.7em;
-	border: solid 1px #c4c4c4;
-	&:focus {
-		outline: 1px solid #dfdfdf;
-	}
-`;
 const Button = styled.div`
 	width: 200px;
 	height: 31px;
@@ -60,19 +51,16 @@ const Label = styled.label`
 `;
 const PaymentInfo: React.FC = () => {
 	return (
-		<div>
+		<>
 			<RequestShop>
 				<Text>결제수단 선택</Text>
-				<Input
-					placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요."
-					type="text"
-				/>
+				<Dropdown>결제 수단을 선택해주세요.</Dropdown>
 				<Button>
 					<Input1 type="checkbox" id="nextusepayment" />
 					<Label htmlFor="nextusepayment">다음에도 사용</Label>
 				</Button>
 			</RequestShop>
-		</div>
+		</>
 	);
 };
 

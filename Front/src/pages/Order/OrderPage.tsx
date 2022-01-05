@@ -28,7 +28,7 @@ const OrderButton = styled.button`
 	font-weight: 600;
 	box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
-	color : #fff;
+	color: #fff;
 
 	&:hover {
 		background-color: #a4a4a4;
@@ -64,12 +64,10 @@ const OrderPage: React.FC = () => {
 			<PaymentForm />
 			<PayForm />
 			<Button ref={popRef}>
-				
-					<OrderButton type="button" onClick={onClickToggleModal}>
-							주문하기
-					</OrderButton>
-					<Modal show={show} />
-				
+				<OrderButton type="button" onClick={onClickToggleModal}>
+					주문하기
+				</OrderButton>
+				<Modal show={show} />
 			</Button>
 		</PageTemplate>
 	);

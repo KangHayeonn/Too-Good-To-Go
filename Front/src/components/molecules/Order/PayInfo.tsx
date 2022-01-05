@@ -81,6 +81,7 @@ const Total = styled.div`
 	background: #efefef;
 	font-weight: bold;
 	color: #646464;
+	margin-bottom: 1em;
 	&: nth-of-type(2) {
 		padding-left: 17px;
 		padding-right: 25px;

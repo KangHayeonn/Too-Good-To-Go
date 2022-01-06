@@ -21,8 +21,8 @@ export const orderData = [
 		],
 		requirement: "젓가락 3개 넣어주세요.",
 		payment: "카드",
-		status: "ORDER_COMPLETED", // ORDER_COMPLETED, CANCELED,  PREPARING, WAITING_PICKUP, PICKUP_COMPLETED
-		createdAt: "2021-12-36T11:00:00+09:00",
+		status: "CANCELED", // ORDER_COMPLETED, CANCELED,  PREPARING, WAITING_PICKUP, PICKUP_COMPLETED
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 2,
@@ -47,7 +47,7 @@ export const orderData = [
 		requirement: "무는 안주셔도 돼요",
 		payment: "현금",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 3,
@@ -78,7 +78,7 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 4,
@@ -109,7 +109,7 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 5,
@@ -140,7 +140,7 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 6,
@@ -171,7 +171,7 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 7,
@@ -202,7 +202,7 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
 		id: 8,
@@ -233,6 +233,6 @@ export const orderData = [
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
 		status: "ORDER_COMPLETED",
-		createdAt: "2021-12-36T11:00:00+09:00",
+		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 ];

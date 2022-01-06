@@ -18,10 +18,9 @@ const Btn = styled.div`
 	border-radius: 2px;
 	margin-right: 17.5px;
 	margin-bottom: 17.5px;
-	&:nth-child(3n) {
+	&:nth-of-type(3n) {
 		margin-right: 0;
 	}
-
 	&: hover {
 		background: #55b689;
 		color: #fff;

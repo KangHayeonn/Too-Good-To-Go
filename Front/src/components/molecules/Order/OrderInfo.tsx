@@ -3,7 +3,7 @@ import React from "react";
 import styled from "@emotion/styled";
 
 const Bar = styled.div`
-	padding: 2em;
+	padding: 3em;
 `;
 
 const CustomerName = styled.div`

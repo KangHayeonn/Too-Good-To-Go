@@ -36,7 +36,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String name;
 
     @Column(nullable = false)
-    private String phoneNumber;
+    private String phone;
 
     @Column(nullable = false)
     private String role;
@@ -84,8 +84,8 @@ public class User extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    public void update(String password, String phoneNumber) {
+    public void update(String password, String phone) {
         this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
     }
 }

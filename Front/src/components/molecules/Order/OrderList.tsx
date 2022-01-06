@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-const DropButton = styled.div<{ display: boolean }>`
+const DropButton = styled.div<{ displayType: boolean }>`
 	width: 95%;
 	position: relative;
 	display: inline-block;
@@ -12,9 +12,10 @@ const DropButton = styled.div<{ display: boolean }>`
 		display: block; // block으로 바꾸면 hover 에도 visible 가능
 	}
 	*/
+	padding-bottom: 5em;
 
 	.dropbox {
-		display: ${(props) => (props.display ? "none" : "block")};
+		display: ${(props) => (props.displayType ? "none" : "block")};
 		position: relative; // 주문하기 버튼이 보임 (absolute : 안보임)
 		flex-direction: column;
 		background: #ffffff;
@@ -78,7 +79,7 @@ const OrderList: React.FC = () => {
 	const show = () => setHidden((current) => !current);
 	console.log(hidden);
 	return (
-		<DropButton display={hidden}>
+		<DropButton displayType={hidden}>
 			<DropTitle>
 				<div>주문내역</div>
 				<button type="button" onClick={show}>

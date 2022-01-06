@@ -31,6 +31,14 @@ type orderType = {
 	createdAt: string;
 	accept: boolean;
 	pickupAt: string;
+	request: string;
+};
+
+type ProductT = {
+	id: number;
+	quantity: number;
+	name: string;
+	price: number;
 };
 
 type ModalType = {
@@ -48,7 +56,7 @@ const ProfileOrderList: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
-		"https://run.mocky.io/v3/5435c065-4e3f-4d92-85e1-7dc8342c3111",
+		"https://run.mocky.io/v3/9e42cdfb-6b6d-4436-8f65-fb391d64f669",
 		(er: unknown) => {
 			console.log(er);
 		}
@@ -72,17 +80,23 @@ const ProfileOrderList: React.FC = () => {
 	};
 
 	function showModal(cardId: number) {
-		const { shop } = orderData.filter((e: orderType) => {
+		const shop = orderData.find((e: orderType) => {
 			return e.shop.id === cardId;
-		})[0];
+		});
 		console.log("shop:", shop);
+
+		const orderedProduct = shop.products.map((e: ProductT) => {
+			return e.name;
+		});
 
 		if (shop) {
 			return (
 				<Modal
 					setIsModalOpen={setIsModalOpen}
-					shopName={shop.name}
-					shopPhone={shop.phone}
+					shopName={shop.shop.name}
+					shopPhone={shop.shop.phone}
+					createdAt={shop.createdAt}
+					orderedProduct={orderedProduct}
 				/>
 			);
 		}

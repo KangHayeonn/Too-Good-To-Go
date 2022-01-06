@@ -1,24 +1,44 @@
 import React from "react";
 import styled from "@emotion/styled";
+import moment from "moment";
 
 type ModalProps = {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	shopName: string | null;
-	shopPhone: number | null;
+	shopName: string;
+	shopPhone: number;
+	createdAt: string;
+	orderedProduct: string[];
 };
 
-function Modal({ setIsModalOpen, shopName, shopPhone }: ModalProps) {
+const Modal = ({
+	setIsModalOpen,
+	shopName,
+	shopPhone,
+	createdAt,
+	orderedProduct,
+}: ModalProps) => {
+	const orderCreatedTime = moment(createdAt)
+		.utc()
+		.format("YYYY-MM-DD HH시 MM분");
+
+	const orderedMenu = orderedProduct.join(", ");
+
 	return (
 		<Wrapper>
-			<p>가게 전화번호 : {shopName}</p>
-			<p>요청사항 : {shopPhone}</p>
-
+			<h3 className="modal-title">주문 상세정보</h3>
+			<hr />
+			<div className="modal-content-container">
+				<p>가게 전화번호 : {shopName}</p>
+				<p>요청사항 : {shopPhone}</p>
+				<p>Time of Order : {orderCreatedTime}</p>
+				<p>주문한 메뉴 : {orderedMenu}</p>
+			</div>
 			<CloseModalButton onClick={() => setIsModalOpen(false)}>
 				닫기
 			</CloseModalButton>
 		</Wrapper>
 	);
-}
+};
 
 export default Modal;
 
@@ -26,10 +46,39 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 370px;
-	height: 360px;
-	background-color: #fef5e9;
+	min-height: 410px;
+	height: auto;
+	background-color: white;
+	border: 1px solid black;
 	position: absolute;
 	align-items: center;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	justify-content: space-between;
+
+	.modal-title {
+		margin-top: 18px;
+		margin-bottom: -20px;
+	}
+
+	hr {
+		width: 84%;
+		margin-bottom: 12px;
+	}
+	.modal-content-container {
+		/* border: 1px dotted purple; */
+		width: 90%;
+		height: 190px;
+		padding-left: 35px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	p {
+		/* border: 1px solid red; */
+		margin-top: 15px;
+		text-align: left;
+	}
 `;
 
 const CloseModalButton = styled.button`
@@ -37,4 +86,5 @@ const CloseModalButton = styled.button`
 	height: 41px;
 	background-color: #f7f8f5;
 	border: 1px solid #d8d8d8;
+	margin-bottom: 18px;
 `;

@@ -1,16 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import CircularProgress from "@mui/material/CircularProgress";
-import LinearProgress from "@mui/material/LinearProgress";
 
-import { Divider } from "@mui/material";
 import Line13 from "../../../../public/image/Line 13.png";
 // import api from "./api/posts";
 import useGetData from "../../atoms/useGetData";
 import Modal from "./Modal";
-import orderListUrl from "./api/posts";
 
 type orderType = {
 	id: number;
@@ -39,11 +35,6 @@ type ProductT = {
 	quantity: number;
 	name: string;
 	price: number;
-};
-
-type ModalType = {
-	shopName: string;
-	shopFoodCost: number;
 };
 
 const ProfileOrderList: React.FC = () => {

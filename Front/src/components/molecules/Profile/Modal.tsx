@@ -11,7 +11,7 @@ type ModalProps = {
 	orderedProduct: string[];
 };
 
-const Modal = ({
+const Modal: React.FC<ModalProps> = ({
 	setIsModalOpen,
 	shopName,
 	shopPhone,

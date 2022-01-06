@@ -2,6 +2,7 @@ import { useEffect, RefObject } from "react";
 
 type Event = MouseEvent | TouchEvent;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
 	ref: RefObject<T>,
 	handler: (event: Event) => void

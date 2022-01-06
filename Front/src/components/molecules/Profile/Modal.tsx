@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import moment from "moment";
+import useOnClickOutside from "./hooks/use-onclick-outside";
 
 type ModalProps = {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,8 +24,16 @@ const Modal = ({
 
 	const orderedMenu = orderedProduct.join(", ");
 
+	// Logic to close modal when clicked outside of element
+	const squareBoxRef = useRef<HTMLDivElement>(null);
+
+	const clickOutsidehandler = () => {
+		setIsModalOpen(false);
+	};
+	useOnClickOutside(squareBoxRef, clickOutsidehandler);
+
 	return (
-		<Wrapper>
+		<Wrapper ref={squareBoxRef}>
 			<h3 className="modal-title">주문 상세정보</h3>
 			<hr />
 			<div className="modal-content-container">

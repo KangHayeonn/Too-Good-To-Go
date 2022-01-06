@@ -128,7 +128,7 @@ const ProfileOrderList: React.FC = () => {
 			<OrderListContainer>
 				{orderData.map((card: orderType) => {
 					return (
-						<>
+						<OrderContainer key={card.id}>
 							<DateDivider>
 								<hr />
 								<p className="dateDivider">
@@ -138,7 +138,7 @@ const ProfileOrderList: React.FC = () => {
 								</p>
 								<hr />
 							</DateDivider>
-							<ProfileCard key={card.id}>
+							<ProfileCard>
 								<div className="card-img-ctn">
 									<img src={card.shop.image} alt="Food" />
 								</div>
@@ -184,7 +184,7 @@ const ProfileOrderList: React.FC = () => {
 									<Link to="/"> 가게 정보 </Link>
 								</div>
 							</ProfileCard>
-						</>
+						</OrderContainer>
 					);
 				})}
 				{isModalOpen && showModal(cardNumber)}
@@ -194,6 +194,15 @@ const ProfileOrderList: React.FC = () => {
 };
 
 export default ProfileOrderList;
+
+const OrderContainer = styled.div`
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
 
 const DateDivider = styled.div`
 	display: flex;

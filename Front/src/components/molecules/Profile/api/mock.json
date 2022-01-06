@@ -1,0 +1,56 @@
+{
+	"data": [
+		{
+			"id": 0,
+			"shop": {
+				"id": 6651,
+				"name": "맛좋은 부침개",
+				"categories": ["분식"],
+				"phone": "010-5545-3287",
+				"image": "https://recipe1.ezmember.co.kr/cache/recipe/2015/08/06/bd3070e2cd18bb7caca0a64e768f72dd1.jpg"
+			},
+			"products": [
+				{
+					"id": 999,
+					"quantity": 3,
+					"name": "김치전",
+					"price": 18000
+				},
+				{
+					"id": 997,
+					"quantity": 3,
+					"name": "부추전",
+					"price": 12000
+				}
+			],
+			"status": "CANCELED",
+			"createdAt": "2018-03-27T11:00:00+09:00",
+			"accept": "true",
+			"pickupAt": "2018-03-27T11:00:00+09:27",
+			"request": "한밤중에 목이말라 냉장고를 열어보니"
+		},
+		{
+			"id": 1,
+			"shop": {
+				"id": 2567,
+				"name": "맛있는 가게",
+				"categories": ["생선구이"],
+				"phone": "010-2222-3333",
+				"image": "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/11/0622aaf6-e6c3-4abe-b165-08f1d5921e30.jpg"
+			},
+			"products": [
+				{
+					"id": 774,
+					"quantity": 5,
+					"name": "고등어 한마리",
+					"price": 9000
+				}
+			],
+			"status": "PICKUP_COMPLETED",
+			"createdAt": "2016-06-30T11:00:00+09:00",
+			"accept": "true",
+			"pickupAt": "2016-03-27T11:00:00+09:31",
+			"request": "한 귀퉁이에 고등어가 소금에 절여져 있네"
+		}
+	]
+}

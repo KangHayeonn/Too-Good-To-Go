@@ -148,12 +148,12 @@ const OrderModal: React.FC<modal> = ({
 	payment,
 	createdTime,
 }) => {
-	const [selectTime, setSelectTime] = useState<string>();
+	const [selectTime, setSelectTime] = useState<string>("");
 	console.log(selectTime);
 	const clickSelectTime = (numb: string) => {
 		setSelectTime(numb);
 		const btn = document.getElementsByClassName(
-			"css-rwveo4"
+			"css-8ku6p5"
 		) as HTMLCollectionOf<HTMLElement>;
 		if (numb === "20") {
 			btn[0].style.backgroundColor = "#55b689";
@@ -240,7 +240,7 @@ const OrderModal: React.FC<modal> = ({
 		const target = e.target as HTMLTextAreaElement;
 		setSelectTime(target.value);
 		const btn = document.getElementsByClassName(
-			"css-rwveo4"
+			"css-8ku6p5"
 		) as HTMLCollectionOf<HTMLElement>;
 
 		btn[1].style.backgroundColor = "#e0e0e0";

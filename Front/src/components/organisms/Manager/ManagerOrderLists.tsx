@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import moment from "moment";
 import ManagerOrderList from "../../molecules/Manager/ManagerOrderList";
 import { orderData } from "../../molecules/OrderDummyData";
 
@@ -10,16 +11,6 @@ const Ul = styled.ul`
 	align-items: center;
 	overflow: auto;
 `;
-
-const calcTime = (time: string) => {
-	const year = time.substring(0, 4);
-	const month = time.substring(5, 7);
-	const day = time.substring(8, 10);
-	const hour = time.substring(11, 12);
-	const minute = time.substring(14, 16);
-	const second = time.substring(17, 19);
-	return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분 ${second}초`;
-};
 
 const checkStatus = (status: string) => {
 	switch (status) {
@@ -64,7 +55,9 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
 				statusMatchName === "전체조회" ? (
 					<ManagerOrderList
 						key={row.id}
-						orderTime={calcTime(row.createdAt)}
+						orderTime={moment(row.createdAt).format(
+							"YYYY년 MM월 DD일 hh시 mm분 ss초"
+						)}
 						orderList={row.products.map(
 							(r) => `${r.name} ${r.quantity.toString()}개 / `
 						)}

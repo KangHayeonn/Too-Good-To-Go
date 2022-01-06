@@ -27,7 +27,7 @@ const Li = styled.li`
 	background-color: #ddd;
 	border-top: 1px solid #999;
 
-	&:first-child {
+	&:first-of-type {
 		border-top: 0;
 	}
 `;

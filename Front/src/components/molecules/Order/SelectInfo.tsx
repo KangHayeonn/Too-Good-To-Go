@@ -33,6 +33,7 @@ const RadioButton = styled.input`
 	border: 2px solid #cfcfcf;
 	border-radius: 50%;
 	&:checked + ${Label} {
+		// Label부분 때문에 macro 써야함
 		color: no-repeat ${(props) => props.color};
 	}
 	&:checked {

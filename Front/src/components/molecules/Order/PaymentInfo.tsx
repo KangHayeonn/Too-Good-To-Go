@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, {useState, useCallback, useRef, useEffect} from "react";
 import styled from "@emotion/styled";
 import Modal from '../../atoms/Modal/PaymentModal';
@@ -8,12 +9,18 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import Modal from "../../atoms/Modal/PaymentModal";
 >>>>>>> 42d13392b578288300887e87dec5e62484cde53e
+=======
+import React from "react";
+import styled from "@emotion/styled";
+import Dropdown from "../../atoms/DropDown/Dropdown";
+>>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
 
 const RequestShop = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 1em;
 	margin-top: 0.5em;
+	margin-bottom: 5.5em;
 `;
 
 const Text = styled.div`
@@ -24,20 +31,9 @@ const Text = styled.div`
 	font-weight: 600;
 	color: #646464;
 	display: flex;
-	display: flex;
 	margin-top: 0.5em;
 `;
 
-const Input = styled.input`
-	width: 70%;
-	height: 29px;
-	padding-left: 15px;
-	margin: 1.5em 0 19px 1.7em;
-	border: solid 1px #c4c4c4;
-	&:focus {
-		outline: 1px solid #dfdfdf;
-	}
-`;
 const Button = styled.div`
 	width: 200px;
 	height: 31px;
@@ -67,6 +63,7 @@ const Label = styled.label`
 	color: #525252;
 `;
 const PaymentInfo: React.FC = () => {
+<<<<<<< HEAD
 	const [show, setShow] = useState(false);
 	const popRef = useRef<HTMLDivElement>(null);
 
@@ -102,18 +99,18 @@ const PaymentInfo: React.FC = () => {
 		setShow((prev) => !prev);
 >>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 	}, [setShow]);
+=======
+>>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
 	return (
-		<div>
+		<>
 			<RequestShop>
 				<Text>결제수단 선택</Text>
-				<Input
-					placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요."
-					type="text"
-				/>
+				<Dropdown>결제 수단을 선택해주세요.</Dropdown>
 				<Button>
 					<Input1 type="checkbox" id="nextusepayment" />
 					<Label htmlFor="nextusepayment">다음에도 사용</Label>
 				</Button>
+<<<<<<< HEAD
 				<div ref={popRef}>
 <<<<<<< HEAD
 					<button type="button" onClick={onClickToggleModal}>버튼</button>
@@ -124,8 +121,10 @@ const PaymentInfo: React.FC = () => {
 >>>>>>> 42d13392b578288300887e87dec5e62484cde53e
 					<Modal show={show} />
 				</div>
+=======
+>>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
 			</RequestShop>
-		</div>
+		</>
 	);
 };
 

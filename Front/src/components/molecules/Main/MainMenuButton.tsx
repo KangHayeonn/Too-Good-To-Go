@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const Wrap = styled.li`
 	width: 258px;
 	height: 258px;
-	border: 1px solid #999;
 	overflow: hidden;
 	display: block;
 	position: relative;
@@ -16,6 +15,12 @@ const Wrap = styled.li`
 	background-color: #fff;
 	&:nth-of-type(4n) {
 		margin-right: 0;
+	}
+	transition: all 0.3s ease-in-out;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	&:hover {
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+			0 10px 10px rgba(0, 0, 0, 0.22);
 	}
 `;
 
@@ -30,6 +35,7 @@ const Text = styled.p`
 	top: 10%;
 	left: 10%;
 	font-size: 23px;
+	font-weight: 700;
 	color: #333;
 `;
 

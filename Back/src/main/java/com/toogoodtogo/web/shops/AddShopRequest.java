@@ -1,6 +1,5 @@
 package com.toogoodtogo.web.shops;
 
-import com.toogoodtogo.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

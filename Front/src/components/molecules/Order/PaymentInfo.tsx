@@ -1,24 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import React, {useState, useCallback, useRef, useEffect} from "react";
-import styled from "@emotion/styled";
-import Modal from '../../atoms/Modal/PaymentModal';
-
-=======
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import styled from "@emotion/styled";
-import Modal from "../../atoms/Modal/PaymentModal";
->>>>>>> 42d13392b578288300887e87dec5e62484cde53e
-=======
 import React from "react";
 import styled from "@emotion/styled";
 import Dropdown from "../../atoms/DropDown/Dropdown";
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
-=======
-import React from "react";
-import styled from "@emotion/styled";
->>>>>>> 5763daf147a825d1a1c82b4b4d6d52754631e71d
 
 const RequestShop = styled.div`
 	display: flex;
@@ -68,47 +50,6 @@ const Label = styled.label`
 	color: #525252;
 `;
 const PaymentInfo: React.FC = () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	const [show, setShow] = useState(false);
-	const popRef = useRef<HTMLDivElement>(null);
-
-	const onClickOutside = useCallback(
-<<<<<<< HEAD
-		({target}) => {
-			if(popRef.current && !popRef.current.contains(target)) {
-=======
-		({ target }) => {
-			if (popRef.current && !popRef.current.contains(target)) {
->>>>>>> 42d13392b578288300887e87dec5e62484cde53e
-				setShow(false);
-			}
-		},
-		[setShow]
-	);
-	useEffect(() => {
-<<<<<<< HEAD
-		document.addEventListener('click', onClickOutside);
-		return() => {
-			document.removeEventListener('click', onClickOutside);
-		};
-	}, []);
-	const onClickToggleModal = useCallback(() => {
-		setShow(prev => !prev);
-=======
-		document.addEventListener("click", onClickOutside);
-		return () => {
-			document.removeEventListener("click", onClickOutside);
-		};
-	}, []);
-	const onClickToggleModal = useCallback(() => {
-		setShow((prev) => !prev);
->>>>>>> 42d13392b578288300887e87dec5e62484cde53e
-	}, [setShow]);
-=======
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
-=======
->>>>>>> 5763daf147a825d1a1c82b4b4d6d52754631e71d
 	return (
 		<>
 			<RequestShop>
@@ -118,22 +59,6 @@ const PaymentInfo: React.FC = () => {
 					<Input1 type="checkbox" id="nextusepayment" />
 					<Label htmlFor="nextusepayment">다음에도 사용</Label>
 				</Button>
-<<<<<<< HEAD
-<<<<<<< HEAD
-				<div ref={popRef}>
-<<<<<<< HEAD
-					<button type="button" onClick={onClickToggleModal}>버튼</button>
-=======
-					<button type="button" onClick={onClickToggleModal}>
-						버튼
-					</button>
->>>>>>> 42d13392b578288300887e87dec5e62484cde53e
-					<Modal show={show} />
-				</div>
-=======
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
-=======
->>>>>>> 5763daf147a825d1a1c82b4b4d6d52754631e71d
 			</RequestShop>
 		</>
 	);

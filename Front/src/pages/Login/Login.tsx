@@ -1,7 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const LOGIN_URL = "https://2afbd7ad-e608-4067-ba51-6367a5d5cf96.mock.pstmn.io";
 
 const Login: React.FC = () => {
+	const [inputId, setInputId] = useState("");
+	const [inputPw, setInputPw] = useState("");
+
+	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setInputId(value);
+	};
+
+	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setInputPw(value);
+	};
+
+	const onClickLogin = () => {
+		console.log("click login");
+		console.log("ID : ", inputId);
+		console.log("Pw : ", inputPw);
+		useEffect(() => {
+			axios
+				.post(`${LOGIN_URL}/login`, {
+					user_id: inputId,
+					user_pw: inputPw,
+				})
+				.then((res) => {
+					console.log(res);
+					console.log("res.data.userId :: ", res.data.userId);
+					console.log("res.data.msg :: ", res.data.userPw);
+					if (res.data.userId === undefined) {
+						// id가 일치하지 않는 경우
+						console.log("-------------------", res.data.msg);
+						alert("입력하신 id가 일치하지 않습니다.");
+					} else if (res.data.userId === null) {
+						// id는 있지만, pw가 다른 경우 (userId = null, msg : undefined)
+						console.log(
+							"-------------------",
+							"입력하신 비밀번호가 일치하지 않습니다."
+						);
+						alert("입력하신 id가 일치하지 않습니다.");
+					} else if (res.data.userId === inputId) {
+						// id, pw 모두 일치 (userId = userId1, msg = undefined)
+						console.log("-------------------", "로그인 성공");
+						sessionStorage.setItem("user_id", inputId);
+					}
+					document.location.href = "/";
+				})
+				.catch();
+		});
+	};
+
+	useEffect(() => {
+		axios
+			.get(`${LOGIN_URL}/login`)
+			.then((res) => console.log(res))
+			.catch();
+	});
+
 	return (
 		<Wrapper>
 			<Container>
@@ -14,24 +75,34 @@ const Login: React.FC = () => {
 					<input
 						className="id input"
 						type="text"
-						name=""
-						id=""
+						name="input_id"
+						id="login_id"
+						value={inputId}
+						onChange={handleInputId}
 						placeholder="아이디를 입력하세요."
 					/>
 					<input
 						className="password input"
 						type="password"
-						name=""
-						id=""
+						name="input_pw"
+						id="login_pw"
+						value={inputPw}
+						onChange={handleInputPw}
 						placeholder="비밀번호를 입력하세요."
 					/>
 				</InputCtn>
 				<BtnCtn>
-					<button type="button" className="btn login-btn">
+					<button
+						type="button"
+						className="btn login-btn"
+						onClick={onClickLogin}
+					>
 						로그인
 					</button>
 					<button type="button" className="btn register-btn">
-						회원가입
+						<Link to="/register" css={register}>
+							회원가입
+						</Link>
 					</button>
 				</BtnCtn>
 			</Container>
@@ -123,6 +194,13 @@ const BtnCtn = styled.div`
 		background-color: #fff;
 		color: #54b689;
 		border: 2px solid #54b689;
+	}
+`;
+
+const register = css`
+	color: #fff;
+	&:hover {
+		color: #54b689;
 	}
 `;
 

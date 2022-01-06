@@ -51,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .anyRequest().permitAll()
                 .antMatchers("/api/user/**", "/api/users/**", "/api/shops/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
+                .antMatchers("/api/me").hasAnyRole("USER", "MANAGER")
                 .anyRequest().denyAll()
 
                 .and()

@@ -1,37 +1,28 @@
 package com.toogoodtogo.web.users;
 
 import com.toogoodtogo.application.user.UserUseCase;
+import com.toogoodtogo.configuration.security.CurrentUser;
+import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class UsersController {
     private final UserUseCase userUseCase;
 
-    @GetMapping("/user/id/{userId}")
-    public ApiResponse<UserDetailResponse> userInfo(@PathVariable Long userId, @RequestParam String lang) {
-        return new ApiResponse(userUseCase.findUser(userId));
+    @GetMapping("/me")
+    public ApiResponse<UserDetailResponse> userInfo(@CurrentUser User user, @RequestParam String lang) {
+        return new ApiResponse(userUseCase.findUser(user.getId()));
     }
 
-//    @GetMapping("/users")
-//    public ApiResponse<List<UserDetailResponse>> findAllUser() {
-//        return new ApiResponse(userUseCase.findAllUser());
-//    }
-
-    @PatchMapping("/user/{userId}")
-    public ApiResponse<UserDetailResponse> updateUser (@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return new ApiResponse(userUseCase.update(userId, userUpdateRequest));
+    @PatchMapping("/user")
+    public ApiResponse<UserDetailResponse> updateUser (@CurrentUser User user, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return new ApiResponse(userUseCase.update(user.getId(), userUpdateRequest));
     }
-
-//    @DeleteMapping("/user/{userId}")
-//    public ApiResponse deleteUser (@PathVariable Long userId) {
-//        userUseCase.delete(userId);
-//        return new ApiResponse(0);
-//    }
 }

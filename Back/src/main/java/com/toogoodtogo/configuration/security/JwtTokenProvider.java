@@ -1,6 +1,7 @@
 package com.toogoodtogo.configuration.security;
 
 import com.toogoodtogo.advice.exception.CAuthenticationEntryPointException;
+import com.toogoodtogo.domain.user.UserPrincipal;
 import com.toogoodtogo.web.users.sign.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
@@ -17,7 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -104,7 +104,7 @@ public class JwtTokenProvider {
     // HTTP Request header에서 세팅된 토큰값 가져와서 유효성 검사
     // 제한된 리소스에 접근할 때 Http header에 토큰 세팅하여 호출하면 유효성 검사 통해 사용자 인증 받을 수 있다.
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("Authorization"); //X-AUTH-TOKEN -> Authorization
     }
 
     // jwt 의 유효성 및 만료일자 확인

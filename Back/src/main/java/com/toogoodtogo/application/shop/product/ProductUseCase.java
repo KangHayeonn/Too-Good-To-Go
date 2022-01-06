@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductUseCase {
     List<ProductDto> findAllProducts(Long shopId);
-    ProductDto addProduct(Long shopId, AddProductRequest addProductRequest);
-    ProductDto updateProduct(Long productId, UpdateProductRequest updateProductRequest);
-    void deleteProduct(Long productId);
+    ProductDto addProduct(Long managerId, Long shopId, AddProductRequest addProductRequest);
+    ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest updateProductRequest);
+    void deleteProduct(Long managerId, Long productId);
 }

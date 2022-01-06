@@ -63,25 +63,25 @@ class ShopsControllerTest {
     @Autowired
     private static int shopId;
 
-    @Autowired
-    private static User manager;
+    private User manager;
 
     private TokenDto token;
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
+        shopRepository.deleteAll();
+        userRepository.deleteAllInBatch();
+
         manager = userRepository.save(User.builder()
-                .email("email@email.com")
+                .email("shopTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
                 .phone("010-0000-0000")
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("email@email.com").password("password").build());
+        token = signService.login(UserLoginRequest.builder().email("shopTest@email.com").password("password").build());
 
-        shopRepository.deleteAll();
         Shop shop1 = Shop.builder()
                 .user(manager).name("shop1").image("test1").category(new String[]{"한식"}).phone("010-1234-5678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
@@ -186,7 +186,7 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void updateShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
@@ -201,6 +201,7 @@ class ShopsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
+                .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -228,10 +229,11 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void deleteShop() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId))
+        mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)
+                .header("Authorization", token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",
                         preprocessRequest(prettyPrint()),

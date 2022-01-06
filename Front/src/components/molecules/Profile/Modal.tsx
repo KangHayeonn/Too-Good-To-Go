@@ -4,14 +4,14 @@ import styled from "@emotion/styled";
 type ModalProps = {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	shopName: string | null;
-	shopFoodCost: number | null;
+	shopPhone: number | null;
 };
 
-function Modal({ setIsModalOpen, shopName, shopFoodCost }: ModalProps) {
+function Modal({ setIsModalOpen, shopName, shopPhone }: ModalProps) {
 	return (
 		<Wrapper>
 			<p>가게 전화번호 : {shopName}</p>
-			<p>요청사항 : {shopFoodCost}</p>
+			<p>요청사항 : {shopPhone}</p>
 
 			<CloseModalButton onClick={() => setIsModalOpen(false)}>
 				닫기

@@ -29,7 +29,8 @@ public class ShopsController {
     @PostMapping("/manager/shop")
     public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody AddShopRequest request) {
         return new ApiResponse(shopUseCase.addShop(user.getId(), request));
-
+    }
+    
     @PatchMapping("/manager/shop/{shopId}")
     public ApiResponse<ShopDto> updateShop(@PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
         return new ApiResponse(shopUseCase.updateShop(shopId, request));

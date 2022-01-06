@@ -7,6 +7,7 @@ type ModalProps = {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	shopName: string;
 	shopPhone: number;
+	request: string;
 	createdAt: string;
 	orderedProduct: string[];
 };
@@ -15,6 +16,7 @@ const Modal: React.FC<ModalProps> = ({
 	setIsModalOpen,
 	shopName,
 	shopPhone,
+	request,
 	createdAt,
 	orderedProduct,
 }: ModalProps) => {
@@ -37,8 +39,9 @@ const Modal: React.FC<ModalProps> = ({
 			<h3 className="modal-title">주문 상세정보</h3>
 			<hr />
 			<div className="modal-content-container">
-				<p>가게 전화번호 : {shopName}</p>
-				<p>요청사항 : {shopPhone}</p>
+				<p>가게 이름 : {shopName}</p>
+				<p>가게 전화번호 : {shopPhone}</p>
+				<p>요청사항 : {request}</p>
 				<p>Time of Order : {orderCreatedTime}</p>
 				<p>주문한 메뉴 : {orderedMenu}</p>
 			</div>

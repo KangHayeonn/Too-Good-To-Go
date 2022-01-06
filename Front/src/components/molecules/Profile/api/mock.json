@@ -51,6 +51,58 @@
 			"accept": "true",
 			"pickupAt": "2016-03-27T11:00:00+09:31",
 			"request": "한 귀퉁이에 고등어가 소금에 절여져 있네"
+		},
+		{
+			"id": 2,
+			"shop": {
+				"id": 1114,
+				"name": "불량식품의 추억",
+				"categories": ["구멍가게"],
+				"phone": "010-5545-3287",
+				"image": "https://ww.namu.la/s/963fe25f6eceea5b9325f8ada824f5e6b2bc921741ea9dae9bccd84ff81c0dc5d88ca1d6749507c7b02085b9f8de4497954efddc28b6d679ff6277dae48629cbeb9ae795b5d47722178cadc756fb7ca6"
+			},
+			"products": [
+				{
+					"id": 9993,
+					"quantity": 3,
+					"name": "차카니",
+					"price": 300
+				},
+				{
+					"id": 9971,
+					"quantity": 3,
+					"name": "피카츄 돈까스",
+					"price": 800
+				}
+			],
+			"status": "CANCELED",
+			"createdAt": "2018-03-27T11:00:00+09:00",
+			"accept": "true",
+			"pickupAt": "2018-03-27T11:00:00+09:27",
+			"request": "차카니 오랜만에 먹으니까 좋아요"
+		},
+		{
+			"id": 3,
+			"shop": {
+				"id": 25675,
+				"name": "그게 그렇게 중요한가",
+				"categories": ["해산물"],
+				"phone": "010-2222-3333",
+				"image": "https://cdn.crowdpic.net/list-thumb/thumb_l_6D54E527B318522C35B3F36CAECEC294.jpg"
+			},
+			"products": [
+				{
+					"id": 7746,
+					"quantity": 2,
+					"name": "꼴뚜기와 함께 춤을",
+					"price": 55000
+				}
+			],
+			"status": "PICKUP_COMPLETED",
+			"createdAt": "2016-06-30T11:00:00+09:00",
+			"accept": "true",
+			"pickupAt": "2016-03-27T11:00:00+09:31",
+			"request": "공기반 초장반"
 		}
 	]
 }

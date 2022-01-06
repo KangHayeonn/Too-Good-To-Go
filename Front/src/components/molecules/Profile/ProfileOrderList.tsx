@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import Line13 from "../../../../public/image/Line 13.png";
 // import api from "./api/posts";
@@ -47,7 +48,7 @@ const ProfileOrderList: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
-		"https://run.mocky.io/v3/9e42cdfb-6b6d-4436-8f65-fb391d64f669",
+		"https://run.mocky.io/v3/913e714d-1fa7-4b4e-9129-495770a98865",
 		(er: unknown) => {
 			console.log(er);
 		}
@@ -86,6 +87,7 @@ const ProfileOrderList: React.FC = () => {
 					setIsModalOpen={setIsModalOpen}
 					shopName={shop.shop.name}
 					shopPhone={shop.shop.phone}
+					request={shop.request}
 					createdAt={shop.createdAt}
 					orderedProduct={orderedProduct}
 				/>
@@ -101,13 +103,6 @@ const ProfileOrderList: React.FC = () => {
 		return null;
 	};
 
-	console.log("orderData: ", orderData);
-
-	const orderDateDivider = orderData.map((e: orderType) => {
-		return moment(e.createdAt).utc().format("YYYY-MM-DD-HH-MM");
-	});
-	console.log("orderDateDivider: ", orderDateDivider);
-
 	return (
 		<Wrapper>
 			<EditTitle className="edit-title">
@@ -116,75 +111,90 @@ const ProfileOrderList: React.FC = () => {
 				<p>MY PAGE</p>
 			</EditTitle>
 
-			<OrderListContainer>
-				{orderData.map((card: orderType) => {
-					return (
-						<OrderContainer key={card.id}>
-							<DateDivider>
-								<hr />
-								<p className="dateDivider">
-									{moment(card.createdAt)
-										.utc()
-										.format("YYYY-MM-DD")}
-								</p>
-								<hr />
-							</DateDivider>
-							<ProfileCard>
-								<div className="card-img-ctn">
-									<img src={card.shop.image} alt="Food" />
-								</div>
-								<div className="cardInfo">
-									<div className="cardInfo-flex">
-										<strong>
-											{renderSwitch(card.status)}
-										</strong>
-										<p>
-											{moment(card.pickupAt)
-												.utc()
-												.format("HH시 mm분")}
+			{orderData ? (
+				<OrderListContainer>
+					{orderData.map((card: orderType) => {
+						return (
+							<OrderContainer key={card.id}>
+								<DateDivider>
+									<hr />
+									<p className="dateDivider">
+										{moment(card.createdAt)
+											.utc()
+											.format("YYYY-MM-DD")}
+									</p>
+									<hr />
+								</DateDivider>
+								<ProfileCard>
+									<div className="card-img-ctn">
+										<img src={card.shop.image} alt="Food" />
+									</div>
+									<div className="cardInfo">
+										<div className="cardInfo-flex">
+											<strong>
+												{renderSwitch(card.status)}
+											</strong>
+											<p>
+												{moment(card.pickupAt)
+													.utc()
+													.format("HH시 mm분")}
+											</p>
+											<p className="food-cost">
+												{card.products[0].price}원
+											</p>
+										</div>
+										<p className="card-info-text">
+											<strong>
+												{card.shop.categories}
+											</strong>
+											<span className="grey-text">|</span>
+											{card.shop.name}
 										</p>
-										<p className="food-cost">
-											{card.products[0].price}원
+
+										<p>
+											{card.products[0].name}
+											<span>
+												<></>
+											</span>
+											{productLengthChecker(
+												card.products.length
+											)}
 										</p>
 									</div>
-									<p className="card-info-text">
-										<strong>{card.shop.categories}</strong>
-										<span className="grey-text">|</span>
-										{card.shop.name}
-									</p>
-									<p>
-										{card.products[0].name}
-										<span>
-											<></>
-										</span>
-										{productLengthChecker(
-											card.products.length
-										)}
-									</p>
-								</div>
-								<div className="button-wrapper">
-									<button
-										type="button"
-										onClick={() => {
-											setCardNumber(card.shop.id);
-											setIsModalOpen(true);
-										}}
-									>
-										주문 정보
-									</button>
-									<Link to="/"> 가게 정보 </Link>
-								</div>
-							</ProfileCard>
-						</OrderContainer>
-					);
-				})}
-				{isModalOpen && showModal(cardNumber)}
-			</OrderListContainer>
+									<div className="button-wrapper">
+										<button
+											type="button"
+											onClick={() => {
+												setCardNumber(card.shop.id);
+												setIsModalOpen(true);
+											}}
+										>
+											<p>주문 정보</p>
+										</button>
+										<Link to="/"> 가게 정보 </Link>
+									</div>
+								</ProfileCard>
+							</OrderContainer>
+						);
+					})}
+					{isModalOpen && showModal(cardNumber)}
+				</OrderListContainer>
+			) : (
+				<LoadingContainer>
+					<CircularProgress />
+				</LoadingContainer>
+			)}
 		</Wrapper>
 	);
 };
 
 export default ProfileOrderList;
+
+const LoadingContainer = styled.div`
+	min-height: 700px;
+	max-height: auto;
+	min-width: 671px;
+`;
 
 const OrderContainer = styled.div`
 	margin: 0;
@@ -244,6 +254,7 @@ const OrderListContainer = styled.div`
 	/* width: 800px; */
 	min-height: 700px;
 	max-height: auto;
+	min-width: 671px;
 
 	/* margin-left: 36px; */
 	margin-top: 80px;
@@ -344,6 +355,11 @@ const ProfileCard = styled.div`
 			height: 25px;
 			padding-top: 2px;
 			margin: 8px;
+			background-color: white;
+			p {
+				font-size: 16px;
+				font-weight: 400;
+			}
 		}
 
 		a {

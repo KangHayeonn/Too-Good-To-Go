@@ -41,9 +41,7 @@ const Register: React.FC = () => {
 					</RadioGroup>
 				</FormControl>
 				<InputCtn>
-					<div className="input-row"> 라디오 버튼 이후 추가 </div>
 					<div className="input-row">
-						{" "}
 						<input
 							className="id input"
 							type="text"
@@ -103,7 +101,6 @@ const Register: React.FC = () => {
 							확인
 						</Confirm>
 					</div>
-
 				</InputCtn>
 				<BtnCtn>
 					<Button type="button" className="btn register-confirm-btn">

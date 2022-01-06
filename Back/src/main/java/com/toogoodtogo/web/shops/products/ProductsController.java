@@ -28,7 +28,7 @@ public class ProductsController {
 
     @PatchMapping("/manager/shop/{shopId}/products/{productId}")
     public ApiResponse<ProductDto> updateProduct(
-            /*@PathVariable Long shopId,*/ @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
+            @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
         return new ApiResponse(productUseCase.updateProduct(productId, request));
     }
 

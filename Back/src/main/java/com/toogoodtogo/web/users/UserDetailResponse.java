@@ -3,8 +3,6 @@ package com.toogoodtogo.web.users;
 import com.toogoodtogo.domain.user.User;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class UserDetailResponse {
     private final Long id;

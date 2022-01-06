@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-public class User extends BaseTimeEntity implements UserDetails {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -40,49 +40,6 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Column(nullable = false)
     private String role;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
-        return authorities;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isAccountNonExpired() { // 계정 만료 여부
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isAccountNonLocked() { // 계정 잠금 여부
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isCredentialsNonExpired() { // 계정 패스워드 만료 여부
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isEnabled() { // 계정 사용가능 여부
-        return true;
-    }
 
     public void update(String password, String phone) {
         this.password = password;

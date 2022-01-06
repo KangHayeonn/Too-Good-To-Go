@@ -1,22 +1,19 @@
 package com.toogoodtogo.web.users;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.application.user.UserService;
-import com.toogoodtogo.application.user.UserUseCase;
+import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.TokenDto;
 import com.toogoodtogo.web.users.sign.UserLoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,28 +47,24 @@ class UsersControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private SignService signService;
 
     @Autowired
-    private static int id;
+    PasswordEncoder passwordEncoder;
+
+    private TokenDto token;
 
     @BeforeEach
     public void setUp() {
-        User save = userRepository.save(User.builder()
+        userRepository.save(User.builder()
                 .email("email@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
                 .phone("010-0000-0000")
                 .role("ROLE_USER")
                 .build());
-        id = Math.toIntExact(save.getId());
-        userRepository.save(User.builder()
-                .email("manager@email.com")
-                .password(passwordEncoder.encode("manager_pw"))
-                .name("managerA")
-                .phone("010-1111-1111")
-                .role("ROLE_MANAGER")
-                .build());
+
+        token = signService.login(UserLoginRequest.builder().email("email@email.com").password("password").build());
     }
 
     @AfterEach
@@ -80,17 +73,16 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     public void findUserInfo() throws Exception {
         //given
-        ResultActions actions = mockMvc.perform(
-                get("/api/user/id/{id}", id)
+        ResultActions actions = mockMvc.perform(get("/api/me")
+                .header("Authorization", token.getAccessToken())
                 .param("lang", "ko"));
         //then
         //when
         actions
                 .andDo(print())
-                .andDo(document("users/userInfo",
+                .andDo(document("users/me",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -106,27 +98,6 @@ class UsersControllerTest {
                 .andExpect(jsonPath("$.data.name").value("name"));
     }
 
-//    @Test
-//    @WithMockUser(roles = "USER")
-//    public void findUsers() throws Exception {
-//        //then
-//        mockMvc.perform(get("/api/users"))
-//                .andDo(print())
-//                .andDo(document("users/findAll",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                                fieldWithPath("data").description("data"),
-//                                fieldWithPath("data.[].id").description("user id"),
-//                                fieldWithPath("data.[].email").description("user email"),
-//                                fieldWithPath("data.[].name").description("user name"),
-//                                fieldWithPath("data.[].phoneNumber").description("user phoneNumber"),
-//                                fieldWithPath("data.[].role").description("user role")
-//                        )
-//                ))
-//                .andExpect(status().isOk());
-//    }
-
     @Test
     @WithMockUser(roles = "USER")
     public void updateUser() throws Exception {
@@ -137,8 +108,9 @@ class UsersControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/user/{id}", id)
+        ResultActions actions = mockMvc.perform(patch("/api/user")
                 .content(object)
+                .header("Authorization", token.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -160,23 +132,4 @@ class UsersControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.phone").value("010-1234-5678"));
     }
-
-//    @Test
-//    @WithMockUser(roles = "USER")
-//    public void deleteUser() throws Exception {
-//        //given
-//        //when
-//        ResultActions actions = mockMvc.perform(delete("/api/user/{id}", id));
-//        //then
-//        actions
-//                .andDo(print())
-//                .andDo(document("users/delete",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                                fieldWithPath("data").description("data")
-//                        )
-//                ))
-//                .andExpect(status().isOk());
-//    }
 }

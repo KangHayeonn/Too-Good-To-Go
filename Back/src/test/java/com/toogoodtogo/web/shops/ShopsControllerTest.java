@@ -1,10 +1,7 @@
 package com.toogoodtogo.web.shops;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
 import com.toogoodtogo.application.security.SignService;
-=======
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
@@ -55,12 +52,9 @@ class ShopsControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-<<<<<<< HEAD
     private SignService signService;
 
     @Autowired
-=======
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -72,11 +66,8 @@ class ShopsControllerTest {
     @Autowired
     private static User manager;
 
-<<<<<<< HEAD
     private TokenDto token;
 
-=======
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
@@ -87,12 +78,8 @@ class ShopsControllerTest {
                 .phone("010-0000-0000")
                 .role("ROLE_MANAGER")
                 .build());
-<<<<<<< HEAD
 
         token = signService.login(UserLoginRequest.builder().email("email@email.com").password("password").build());
-=======
-        managerId = Math.toIntExact(manager.getId());
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
 
         shopRepository.deleteAll();
         Shop shop1 = Shop.builder()
@@ -138,17 +125,10 @@ class ShopsControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
     void findShops() throws Exception {
         //then
         mockMvc.perform(get("/api/manager/shops")
                 .header("Authorization", token.getAccessToken()))
-=======
-    @WithMockUser(roles = "MANAGER")
-    void findShops() throws Exception {
-        //then
-        mockMvc.perform(get("/api/manager/{managerId}/shops", managerId))
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
                 .andDo(print())
                 .andDo(document("shops/find",
                         preprocessRequest(prettyPrint()),
@@ -170,7 +150,6 @@ class ShopsControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
     void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
@@ -180,17 +159,6 @@ class ShopsControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/manager/shop")
                 .header("Authorization", token.getAccessToken())
-=======
-    @WithMockUser(roles = "MANAGER")
-    void addProduct() throws Exception {
-        //given
-        String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .user(manager).name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
-                .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
-
-        //when
-        ResultActions actions = mockMvc.perform(post("/api/manager/{managerId}/shop", managerId)
->>>>>>> 66b08e25f1233dbe2f3e1b1edab7c4d2469d8694
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));

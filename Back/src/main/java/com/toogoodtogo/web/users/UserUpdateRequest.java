@@ -13,5 +13,5 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Builder
 public class UserUpdateRequest {
     private String password;
-    private String phoneNumber;
+    private String phone;
 }

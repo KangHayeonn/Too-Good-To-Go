@@ -1,9 +1,9 @@
 import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
+import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import { css } from "@emotion/react";
-import "swiper/swiper-bundle.min.css";
-import "swiper/swiper.min.css";
+import "swiper/css/bundle";
+import "swiper/css";
 import MainSwiperContent from "./MainSwiperContent";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);

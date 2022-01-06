@@ -1,12 +1,13 @@
 package com.toogoodtogo.web.shops;
 
 import com.toogoodtogo.application.shop.ShopUseCase;
+import com.toogoodtogo.configuration.security.CurrentUser;
+import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -20,16 +21,16 @@ public class ShopsController {
         return new ApiResponse(shopUseCase.findAllShops());
     }
 
-    @GetMapping("/manager/{managerId}/shops")
-    public ApiResponse<List<ShopDto>> findShops(@PathVariable Long managerId) {
-        return new ApiResponse(shopUseCase.findShops(managerId));
+    @GetMapping("/manager/shops")
+    public ApiResponse<List<ShopDto>> findShops(@CurrentUser User user) {
+        return new ApiResponse(shopUseCase.findShops(user.getId()));
     }
 
-    @PostMapping("/manager/{managerId}/shop")  //@CurrentUser로 변경!!
-    public ApiResponse<ShopDto> addShop(@PathVariable Long managerId, @RequestBody AddShopRequest request) {
-        return new ApiResponse(shopUseCase.addShop(managerId, request));
+    @PostMapping("/manager/shop")
+    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody AddShopRequest request) {
+        return new ApiResponse(shopUseCase.addShop(user.getId(), request));
     }
-
+    
     @PatchMapping("/manager/shop/{shopId}")
     public ApiResponse<ShopDto> updateShop(@PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
         return new ApiResponse(shopUseCase.updateShop(shopId, request));

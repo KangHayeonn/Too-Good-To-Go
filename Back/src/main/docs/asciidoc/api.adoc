@@ -89,7 +89,7 @@ operation::login/manager/fail[snippets='curl-request,http-request,http-response,
 == User Api
 
 === USER 조회 [GET]
-operation::users/userInfo[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::users/me[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 === USER 업데이트 [PATCH]
 operation::users/update[snippets='curl-request,http-request,http-response,response-body,response-fields']

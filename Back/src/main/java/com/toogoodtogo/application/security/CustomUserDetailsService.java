@@ -1,5 +1,6 @@
 package com.toogoodtogo.application.security;
 
+import com.toogoodtogo.domain.user.UserPrincipal;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.advice.exception.CUserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        return new UserPrincipal(userRepository.findById(Long.valueOf(id)).orElseThrow(CUserNotFoundException::new));
     }
 }

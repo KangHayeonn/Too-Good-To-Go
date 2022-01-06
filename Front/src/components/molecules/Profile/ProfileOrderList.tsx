@@ -169,7 +169,7 @@ const ProfileOrderList: React.FC = () => {
 												setIsModalOpen(true);
 											}}
 										>
-											주문 정보
+											<p>주문 정보</p>
 										</button>
 										<Link to="/"> 가게 정보 </Link>
 									</div>
@@ -355,6 +355,11 @@ const ProfileCard = styled.div`
 			height: 25px;
 			padding-top: 2px;
 			margin: 8px;
+			background-color: white;
+			p {
+				font-size: 16px;
+				font-weight: 400;
+			}
 		}
 
 		a {

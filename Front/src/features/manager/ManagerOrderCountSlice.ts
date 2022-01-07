@@ -32,8 +32,7 @@ export const managerOrderCountSlice = createSlice({
 				(r) => r.status === "PREPARING" || r.status === "WAITING_PICKUP"
 			).length;
 			const completedCount = orderData.filter(
-				(r) =>
-					r.status === "CANCELED" || r.status === "PICKUP_COMPLETED"
+				(r) => r.status === "PICKUP_COMPLETED"
 			).length;
 			const allCount = orderData.length;
 			return state.map(() => {

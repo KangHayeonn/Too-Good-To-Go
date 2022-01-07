@@ -17,6 +17,7 @@ const Header = styled.header`
 	width: 100%;
 	flex-wrap: wrap;
 	position: relative;
+	margin-bottom: 20px;
 `;
 
 const Content = styled.section`

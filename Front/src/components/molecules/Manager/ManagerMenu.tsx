@@ -11,18 +11,10 @@ const HeaderMenu = styled.ul`
 	align-items: center;
 `;
 
-const ShopNameText = styled.p`
-	color: #fff;
-	font-size: 19px;
-	font-weight: 600;
-	margin-right: 20px;
-`;
-
 const ManagerMenu: React.FC = () => {
 	return (
 		<HeaderMenu>
 			<ManagerMenuAtom menuName="주문접수" />
-			<ShopNameText>가게 이름</ShopNameText>
 		</HeaderMenu>
 	);
 };

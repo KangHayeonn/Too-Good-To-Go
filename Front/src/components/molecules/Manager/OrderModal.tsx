@@ -149,90 +149,120 @@ const OrderModal: React.FC<modal> = ({
 	createdTime,
 }) => {
 	const [selectTime, setSelectTime] = useState<string>("");
-	console.log(selectTime);
+	const [timeBtnColor, setTimeBtnColor] = useState<Array<string>>([
+		"#e0e0e0",
+		"#e0e0e0",
+		"#e0e0e0",
+		"#e0e0e0",
+		"#e0e0e0",
+		"#e0e0e0",
+	]);
+	const [timeTextColor, setTimeTextColor] = useState<Array<string>>([
+		"#999",
+		"#999",
+		"#999",
+		"#999",
+		"#999",
+		"#999",
+	]);
 	const clickSelectTime = (numb: string) => {
 		setSelectTime(numb);
-		const btn = document.getElementsByClassName(
-			"css-8ku6p5"
-		) as HTMLCollectionOf<HTMLElement>;
+		// eslint-disable-next-line prefer-const
+		let newArr = [...timeBtnColor];
+		// eslint-disable-next-line prefer-const
+		let newArr2 = [...timeTextColor];
+
 		if (numb === "20") {
-			btn[0].style.backgroundColor = "#55b689";
-			btn[0].style.color = "#fff";
-			btn[1].style.backgroundColor = "#e0e0e0";
-			btn[1].style.color = "#999";
-			btn[2].style.backgroundColor = "#e0e0e0";
-			btn[2].style.color = "#999";
-			btn[3].style.backgroundColor = "#e0e0e0";
-			btn[3].style.color = "#999";
-			btn[4].style.backgroundColor = "#e0e0e0";
-			btn[4].style.color = "#999";
-			btn[5].style.backgroundColor = "#e0e0e0";
-			btn[5].style.color = "#999";
+			newArr[0] = "#55b689";
+			newArr[1] = "#e0e0e0";
+			newArr[2] = "#e0e0e0";
+			newArr[3] = "#e0e0e0";
+			newArr[4] = "#e0e0e0";
+			newArr[5] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+
+			newArr2[0] = "#fff";
+			newArr2[1] = "#999";
+			newArr2[2] = "#999";
+			newArr2[3] = "#999";
+			newArr2[4] = "#999";
+			newArr2[5] = "#999";
+			setTimeTextColor(newArr2);
 		} else if (numb === "30") {
-			btn[1].style.backgroundColor = "#55b689";
-			btn[1].style.color = "#fff";
-			btn[0].style.backgroundColor = "#e0e0e0";
-			btn[0].style.color = "#999";
-			btn[2].style.backgroundColor = "#e0e0e0";
-			btn[2].style.color = "#999";
-			btn[3].style.backgroundColor = "#e0e0e0";
-			btn[3].style.color = "#999";
-			btn[4].style.backgroundColor = "#e0e0e0";
-			btn[4].style.color = "#999";
-			btn[5].style.backgroundColor = "#e0e0e0";
-			btn[5].style.color = "#999";
+			newArr[1] = "#55b689";
+			newArr[0] = "#e0e0e0";
+			newArr[2] = "#e0e0e0";
+			newArr[3] = "#e0e0e0";
+			newArr[4] = "#e0e0e0";
+			newArr[5] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+			newArr2[1] = "#fff";
+			newArr2[0] = "#999";
+			newArr2[2] = "#999";
+			newArr2[3] = "#999";
+			newArr2[4] = "#999";
+			newArr2[5] = "#999";
+			setTimeTextColor(newArr2);
 		} else if (numb === "40") {
-			btn[2].style.backgroundColor = "#55b689";
-			btn[2].style.color = "#fff";
-			btn[0].style.backgroundColor = "#e0e0e0";
-			btn[0].style.color = "#999";
-			btn[1].style.backgroundColor = "#e0e0e0";
-			btn[1].style.color = "#999";
-			btn[3].style.backgroundColor = "#e0e0e0";
-			btn[3].style.color = "#999";
-			btn[4].style.backgroundColor = "#e0e0e0";
-			btn[4].style.color = "#999";
-			btn[5].style.backgroundColor = "#e0e0e0";
-			btn[5].style.color = "#999";
+			newArr[2] = "#55b689";
+			newArr[0] = "#e0e0e0";
+			newArr[1] = "#e0e0e0";
+			newArr[3] = "#e0e0e0";
+			newArr[4] = "#e0e0e0";
+			newArr[5] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+			newArr2[2] = "#fff";
+			newArr2[1] = "#999";
+			newArr2[0] = "#999";
+			newArr2[3] = "#999";
+			newArr2[4] = "#999";
+			newArr2[5] = "#999";
+			setTimeTextColor(newArr2);
 		} else if (numb === "50") {
-			btn[3].style.backgroundColor = "#55b689";
-			btn[3].style.color = "#fff";
-			btn[0].style.backgroundColor = "#e0e0e0";
-			btn[0].style.color = "#999";
-			btn[1].style.backgroundColor = "#e0e0e0";
-			btn[1].style.color = "#999";
-			btn[2].style.backgroundColor = "#e0e0e0";
-			btn[2].style.color = "#999";
-			btn[4].style.backgroundColor = "#e0e0e0";
-			btn[4].style.color = "#999";
-			btn[5].style.backgroundColor = "#e0e0e0";
-			btn[5].style.color = "#999";
+			newArr[3] = "#55b689";
+			newArr[0] = "#e0e0e0";
+			newArr[1] = "#e0e0e0";
+			newArr[2] = "#e0e0e0";
+			newArr[4] = "#e0e0e0";
+			newArr[5] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+			newArr2[3] = "#fff";
+			newArr2[1] = "#999";
+			newArr2[2] = "#999";
+			newArr2[0] = "#999";
+			newArr2[4] = "#999";
+			newArr2[5] = "#999";
+			setTimeTextColor(newArr2);
 		} else if (numb === "60") {
-			btn[4].style.backgroundColor = "#55b689";
-			btn[4].style.color = "#fff";
-			btn[0].style.backgroundColor = "#e0e0e0";
-			btn[0].style.color = "#999";
-			btn[1].style.backgroundColor = "#e0e0e0";
-			btn[1].style.color = "#999";
-			btn[3].style.backgroundColor = "#e0e0e0";
-			btn[3].style.color = "#999";
-			btn[2].style.backgroundColor = "#e0e0e0";
-			btn[2].style.color = "#999";
-			btn[5].style.backgroundColor = "#e0e0e0";
-			btn[5].style.color = "#999";
+			newArr[4] = "#55b689";
+			newArr[0] = "#e0e0e0";
+			newArr[1] = "#e0e0e0";
+			newArr[3] = "#e0e0e0";
+			newArr[2] = "#e0e0e0";
+			newArr[5] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+			newArr2[4] = "#fff";
+			newArr2[1] = "#999";
+			newArr2[2] = "#999";
+			newArr2[3] = "#999";
+			newArr2[0] = "#999";
+			newArr2[5] = "#999";
+			setTimeTextColor(newArr2);
 		} else if (numb === "90") {
-			btn[5].style.backgroundColor = "#55b689";
-			btn[5].style.color = "#fff";
-			btn[0].style.backgroundColor = "#e0e0e0";
-			btn[0].style.color = "#999";
-			btn[1].style.backgroundColor = "#e0e0e0";
-			btn[1].style.color = "#999";
-			btn[3].style.backgroundColor = "#e0e0e0";
-			btn[3].style.color = "#999";
-			btn[4].style.backgroundColor = "#e0e0e0";
-			btn[4].style.color = "#999";
-			btn[2].style.backgroundColor = "#e0e0e0";
-			btn[2].style.color = "#999";
+			newArr[5] = "#55b689";
+			newArr[0] = "#e0e0e0";
+			newArr[1] = "#e0e0e0";
+			newArr[3] = "#e0e0e0";
+			newArr[4] = "#e0e0e0";
+			newArr[2] = "#e0e0e0";
+			setTimeBtnColor(newArr);
+			newArr2[5] = "#fff";
+			newArr2[1] = "#999";
+			newArr2[2] = "#999";
+			newArr2[3] = "#999";
+			newArr2[4] = "#999";
+			newArr2[0] = "#999";
+			setTimeTextColor(newArr2);
 		}
 	};
 
@@ -240,7 +270,7 @@ const OrderModal: React.FC<modal> = ({
 		const target = e.target as HTMLTextAreaElement;
 		setSelectTime(target.value);
 		const btn = document.getElementsByClassName(
-			"css-8ku6p5"
+			"timeSelectBtn"
 		) as HTMLCollectionOf<HTMLElement>;
 
 		btn[1].style.backgroundColor = "#e0e0e0";
@@ -292,26 +322,38 @@ const OrderModal: React.FC<modal> = ({
 							<TimeSelectBtnAtom
 								text="20분"
 								onClick={() => clickSelectTime("20")}
+								background={timeBtnColor[0]}
+								textColor={timeTextColor[0]}
 							/>
 							<TimeSelectBtnAtom
 								text="30분"
 								onClick={() => clickSelectTime("30")}
+								background={timeBtnColor[1]}
+								textColor={timeTextColor[1]}
 							/>
 							<TimeSelectBtnAtom
 								text="40분"
 								onClick={() => clickSelectTime("40")}
+								background={timeBtnColor[2]}
+								textColor={timeTextColor[2]}
 							/>
 							<TimeSelectBtnAtom
 								text="50분"
 								onClick={() => clickSelectTime("50")}
+								background={timeBtnColor[3]}
+								textColor={timeTextColor[3]}
 							/>
 							<TimeSelectBtnAtom
 								text="60분"
 								onClick={() => clickSelectTime("60")}
+								background={timeBtnColor[4]}
+								textColor={timeTextColor[4]}
 							/>
 							<TimeSelectBtnAtom
 								text="90분"
 								onClick={() => clickSelectTime("90")}
+								background={timeBtnColor[5]}
+								textColor={timeTextColor[5]}
 							/>
 						</TimeList>
 						<ButtonWrap>

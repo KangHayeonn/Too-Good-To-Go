@@ -13,14 +13,14 @@ spring:
     encoding: UTF-8
 
   jpa:
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       use-new-id-generator-mappings: false
-      ddl-auto: update
+      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+    show-sql: false
 
   datasource:
     url: jdbc:mysql://main-db.cohzk36tpf3r.ap-northeast-2.rds.amazonaws.com:3306/toogoodtogo
@@ -30,7 +30,7 @@ spring:
 decorator:
   datasource:
     p6spy:
-      enable-logging: false
+      enable-logging: true
 #  datasource:
 #    url: jdbc:h2:tcp://localhost/~/test
 #    username: sa

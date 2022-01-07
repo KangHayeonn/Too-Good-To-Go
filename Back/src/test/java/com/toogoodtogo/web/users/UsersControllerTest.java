@@ -2,6 +2,8 @@ package com.toogoodtogo.web.users;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.sign.TokenDto;
@@ -47,6 +49,12 @@ class UsersControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ShopRepository shopRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
@@ -56,6 +64,9 @@ class UsersControllerTest {
 
     @BeforeEach
     public void setUp() {
+        productRepository.deleteAll();
+        shopRepository.deleteAll();
+        userRepository.deleteAllInBatch();
         userRepository.save(User.builder()
                 .email("email@email.com")
                 .password(passwordEncoder.encode("password"))
@@ -69,7 +80,9 @@ class UsersControllerTest {
 
     @AfterEach
     public void setDown() {
-        userRepository.deleteAll();
+        productRepository.deleteAll();
+        shopRepository.deleteAll();
+        userRepository.deleteAllInBatch();
     }
 
     @Test

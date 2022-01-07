@@ -5,6 +5,7 @@ import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.sign.TokenDto;
@@ -46,6 +47,9 @@ class ShopsControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ShopRepository shopRepository;
 
     @Autowired
@@ -69,7 +73,8 @@ class ShopsControllerTest {
 
     @BeforeEach
     public void setUp() {
-        shopRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
 
         manager = userRepository.save(User.builder()
@@ -94,7 +99,9 @@ class ShopsControllerTest {
 
     @AfterEach
     public void setDown() {
-        shopRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
     @Test

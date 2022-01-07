@@ -2,6 +2,9 @@ package com.toogoodtogo.web.users.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.security.RefreshTokenRepository;
+import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -44,7 +47,16 @@ class SignControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ShopRepository shopRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     private SignService signService;
@@ -54,31 +66,23 @@ class SignControllerTest {
 
     @BeforeEach
     public void setUp() {
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
         signService.signup(UserSignupRequest.builder()
                 .email("user@email.com").password("user_pw")
                 .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
-//        userRepository.save(User.builder()
-//                .email("user@email.com")
-//                .password(passwordEncoder.encode("user_pw"))
-//                .name("userA")
-//                .phone("010-0000-0000")
-//                .role("ROLE_USER")
-//                .build());
         signService.signup(UserSignupRequest.builder()
                 .email("manager@email.com").password("manager_pw")
                 .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
-//        userRepository.save(User.builder()
-//                .email("manager@email.com")
-//                .password(passwordEncoder.encode("manager_pw"))
-//                .name("managerA")
-//                .phone("010-1111-1111")
-//                .role("ROLE_MANAGER")
-//                .build());
     }
 
     @AfterEach
     public void setDown() {
-        userRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+        refreshTokenRepository.deleteAllInBatch();
     }
 
     @ParameterizedTest

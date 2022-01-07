@@ -75,8 +75,8 @@ class ProductsControllerTest {
 
     @BeforeEach
     public void setUp() {
-        productRepository.deleteAll();
-        shopRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
 
         manager = userRepository.save(User.builder()
@@ -102,7 +102,7 @@ class ProductsControllerTest {
 
     @AfterEach
     public void setDown() {
-        productRepository.deleteAll();
+        productRepository.deleteAllInBatch();
     }
 
     @Test

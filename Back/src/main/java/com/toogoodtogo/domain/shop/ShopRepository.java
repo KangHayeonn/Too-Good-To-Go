@@ -2,12 +2,17 @@ package com.toogoodtogo.domain.shop;
 
 import com.toogoodtogo.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ShopRepository extends JpaRepository<Shop, Long> {
     //List<Shop> findByUserid(Long userId);
-    List<Shop> findByUser(User user);
+    List<Shop> findByUser(User user); //findAll??
+
+    @Query("select s from Shop s where s.user.id = ?1 and s.id = ?2")
+    Optional<Shop> findByUserIdAndId(Long memberId, Long shopId);
 }

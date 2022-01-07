@@ -63,8 +63,7 @@ public class ShopService implements ShopUseCase {
     @Override
     @Transactional
     public ShopDto updateShop(Long managerId, Long shopId, UpdateShopRequest request) {
-        Shop modifiedShop = shopRepository.findById(shopId).orElseThrow();
-        if (managerId != modifiedShop.getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
+        Shop modifiedShop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
         modifiedShop.update(request.getName(), request.getImage(), request.getCategory(), request.getPhone(), request.getAddress(), new Hours(request.getOpen(), request.getClose()));
         return new ShopDto(modifiedShop);
     }
@@ -72,8 +71,7 @@ public class ShopService implements ShopUseCase {
     @Override
     @Transactional
     public void deleteShop(Long managerId, Long shopId) {
-        Shop deleteShop = shopRepository.findById(shopId).orElseThrow();
-        if (managerId != deleteShop.getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
+        Shop deleteShop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
         productRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
     }

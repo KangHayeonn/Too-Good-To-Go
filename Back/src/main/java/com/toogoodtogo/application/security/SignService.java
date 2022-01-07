@@ -36,7 +36,7 @@ public class SignService {
         TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
-                .key(user.getId())
+                .tokenKey(user.getId())
                 .token(tokenDto.getRefreshToken())
                 .build();
         tokenRepository.save(refreshToken);
@@ -71,7 +71,7 @@ public class SignService {
         // user pk로 유저 검색 / repo 에 저장된 Refresh Token 이 없음
         User user = userRepository.findById(Long.parseLong(authentication.getName()))
                 .orElseThrow(CUserNotFoundException::new);
-        RefreshToken refreshToken = tokenRepository.findByKey(user.getId())
+        RefreshToken refreshToken = tokenRepository.findByTokenKey(user.getId())
                 .orElseThrow(CRefreshTokenException::new);
 
         // 리프레시 토큰 불일치 에러

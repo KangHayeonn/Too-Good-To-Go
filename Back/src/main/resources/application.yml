@@ -1,4 +1,10 @@
 spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/toogoodtoogo?serverTimezone=UTC&characterEncoding=UTF-8&llowPublicKeyRetrieval=true&useSSL=false
+#    username: root
+#    password:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
   profiles:
     include: jwt
 
@@ -7,9 +13,19 @@ spring:
     encoding: UTF-8
 
   jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       use-new-id-generator-mappings: false
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+
+  datasource:
+    url: jdbc:mysql://main-db.cohzk36tpf3r.ap-northeast-2.rds.amazonaws.com:3306/toogoodtogo
+    username: admin
+    password: egZyYrN7eNDVM2U!pFwD
 
 decorator:
   datasource:

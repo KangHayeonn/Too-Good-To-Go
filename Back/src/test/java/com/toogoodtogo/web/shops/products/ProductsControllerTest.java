@@ -123,13 +123,10 @@ class ProductsControllerTest {
                                 fieldWithPath("data.[].image").description("product image")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].name").value("김치찌개"))
-                .andExpect(jsonPath("$.data[1].name").value("된장찌개"));
+                .andExpect(status().isOk());
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     void addProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddProductRequest.builder()

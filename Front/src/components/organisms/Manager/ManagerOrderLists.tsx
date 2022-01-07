@@ -29,14 +29,16 @@ const checkStatus = (status: string) => {
 	}
 };
 
-const statusMatchFn = (status: string) => {
+const checkStatus2 = (status: string) => {
 	switch (status) {
-		case "접수대기":
-			return "ORDER_COMPLETED";
-		case "완료":
-			return "CANCELED" || "PICKUP_COMPLETED";
-		case "처리중":
-			return "PREPARING" || "WAITING_PICKUP";
+		case "ORDER_COMPLETED":
+			return "접수대기";
+		case "PREPARING":
+			return "처리중";
+		case "WAITING_PICKUP":
+			return "처리중";
+		case "PICKUP_COMPLETED":
+			return "완료";
 		default:
 			return "오류";
 	}
@@ -51,7 +53,7 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
 	return (
 		<Ul>
 			{orderList.map((row) =>
-				row.status.includes(`${statusMatchFn(statusMatchName)}`) ||
+				statusMatchName === checkStatus2(row.status) ||
 				statusMatchName === "전체조회" ? (
 					<ManagerOrderList
 						key={row.id}

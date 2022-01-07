@@ -1,54 +1,42 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.toogoodtogo.application.shop.product.ProductUseCase;
-import com.toogoodtogo.domain.shop.Shop;
+import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class ProductsController {
     private final ProductUseCase productUseCase;
     private final ShopRepository shopRepository;
 
     @GetMapping("/shops/{shopId}/products")
-    public ApiResponse<ProductDto> findProducts(@PathVariable("shopId") Long shopId) {
+    public ApiResponse<List<ProductDto>> findProducts(@PathVariable Long shopId) {
         return new ApiResponse(productUseCase.findAllProducts(shopId));
     }
 
-    @GetMapping("/api/shopboards")
-    public ApiResponse<List<ProductDto>> findShopBoards() {
-        return new ApiResponse<>(
-                productUseCase.findAllShopBoards()
-                        .stream()
-                        .map(ProductDto::new)
-                        .collect(Collectors.toList())
-        );
+    @PostMapping("/manager/shops/{shopId}/products")
+    public ApiResponse<ProductDto> addProduct(@CurrentUser User user, @PathVariable Long shopId, @RequestBody AddProductRequest request) {
+        return new ApiResponse(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
     }
 
-    @PostMapping("/api/shops/{shopId}/products")
-    public ApiResponse<ProductDto> addProducts(
-            @PathVariable("shopId") Long shopId,
-            @RequestBody AddProductRequest body) {
-        Shop shop = shopRepository.findById(shopId).orElseThrow();
-        return new ApiResponse<>(
-                new ProductDto(productUseCase.addProduct(
-                        shop,
-                        body.getName(),
-                        body.getPrice(),
-                        body.getDiscountedPrice(),
-                        body.getImage()
-                ))
-        );
+    @PatchMapping("/manager/shop/{shopId}/products/{productId}")
+    public ApiResponse<ProductDto> updateProduct(
+            @CurrentUser User user, @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
+        return new ApiResponse(productUseCase.updateProduct(user.getId(), productId, request));
+    }
+
+    @DeleteMapping("/manager/shop/{shopId}/products/{productId}")
+    public ApiResponse<Long> deleteProduct(@CurrentUser User user, @PathVariable Long productId) {
+        productUseCase.deleteProduct(user.getId(), productId);
+        return new ApiResponse(0L);
     }
 }

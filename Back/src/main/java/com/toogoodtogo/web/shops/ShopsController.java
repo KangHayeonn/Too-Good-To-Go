@@ -1,34 +1,44 @@
 package com.toogoodtogo.web.shops;
 
 import com.toogoodtogo.application.shop.ShopUseCase;
+import com.toogoodtogo.configuration.security.CurrentUser;
+import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/shops")
+@RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class ShopsController {
     private final ShopUseCase shopUseCase;
 
-    @GetMapping
-    public ApiResponse<ShopDto> findShops() {
+    @GetMapping("/shops")
+    public ApiResponse<ShopDto> findAllShops() {
         return new ApiResponse(shopUseCase.findAllShops());
     }
 
-    @PostMapping
-    public ApiResponse<ShopDto> addShop(@RequestBody AddShopRequest body) {
-        return new ApiResponse(
-                new ShopDto(shopUseCase.addShop(
-                        body.getName(),
-                        body.getCategory(),
-                        body.getImage()
-                ))
-        );
+    @GetMapping("/manager/shops")
+    public ApiResponse<List<ShopDto>> findShops(@CurrentUser User user) {
+        return new ApiResponse(shopUseCase.findShops(user.getId()));
     }
 
+    @PostMapping("/manager/shop")
+    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody AddShopRequest request) {
+        return new ApiResponse(shopUseCase.addShop(user.getId(), request));
+    }
+    
+    @PatchMapping("/manager/shop/{shopId}")
+    public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
+        return new ApiResponse(shopUseCase.updateShop(user.getId(), shopId, request));
+    }
+
+    @DeleteMapping("/manager/shop/{shopId}")
+    public ApiResponse<Long> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
+        shopUseCase.deleteShop(user.getId(), shopId);
+        return new ApiResponse(0L);
+    }
 }

@@ -6,10 +6,7 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.advice.exception.*;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.TokenRequest;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
-import com.toogoodtogo.web.users.sign.UserSignupRequest;
+import com.toogoodtogo.web.users.sign.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -46,10 +43,10 @@ public class SignService {
         return tokenDto;
     }
 
-    public Long signup(UserSignupRequest userSignupDto) {
+    public UserSignupResponse signup(UserSignupRequest userSignupDto) {
         if (userRepository.findByEmail(userSignupDto.getEmail()).isPresent())
             throw new CEmailSignupFailedException();
-        return userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId();
+        return new UserSignupResponse(userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId());
     }
 
 //    @Transactional

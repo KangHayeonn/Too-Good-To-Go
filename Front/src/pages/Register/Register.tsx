@@ -29,21 +29,19 @@ const Register: React.FC = () => {
 						onChange={handleChange}
 					>
 						<FormControlLabel
-							value="user"
+							value="USER"
 							control={<Radio />}
 							label="고객용"
 						/>
 						<FormControlLabel
-							value="seller"
+							value="MANAGER"
 							control={<Radio />}
 							label="사장님용"
 						/>
 					</RadioGroup>
 				</FormControl>
 				<InputCtn>
-					<div className="input-row"> 라디오 버튼 이후 추가 </div>
 					<div className="input-row">
-						{" "}
 						<input
 							className="id input"
 							type="text"
@@ -103,7 +101,6 @@ const Register: React.FC = () => {
 							확인
 						</Confirm>
 					</div>
-
 				</InputCtn>
 				<BtnCtn>
 					<Button type="button" className="btn register-confirm-btn">

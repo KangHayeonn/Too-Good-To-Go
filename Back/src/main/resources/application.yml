@@ -5,7 +5,18 @@ spring:
   messages:
     basename: i18n/exception
     encoding: UTF-8
-    
+
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
+      ddl-auto: update
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver

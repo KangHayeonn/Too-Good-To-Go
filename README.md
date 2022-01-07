@@ -5,52 +5,64 @@
 [![Backend_CD](https://github.com/KangHayeonn/Too-Good-To-Go/actions/workflows/Backend_CD.yml/badge.svg?branch=master)](https://github.com/KangHayeonn/Too-Good-To-Go/actions/workflows/Backend_CD.yml)
 
 ---
+## 아이디어 주제
 
-### 아이디어 주제
+*  음식물 폐기문제를 해결하기 위해 지역 식당, 빵집, 식료품점의 남은 식품을 정가 대비 저렴하게 소비자에게 판매하는 웹사이트
+<br>
 
-##### 💙 음식물 폐기문제를 해결하기 위해 지역 식당, 빵집, 식료품점의 남은 식품을 정가 대비 저렴하게 소비자에게 판매하는 웹사이트
+## 프로젝트 방식(타입)
 
-### 프로젝트 방식(타입)
+*  Full Stack
+<br>
 
-##### 💛 Full Stack
+## 기능 설명
 
----
+* 메뉴 카테고리, 가게에 따라 상품을 장바구니에 추가하거나 즉시 주문 가능
+* 주문할 경우 기존 저장된 사용자 정보를 불러오거나 신규 등록 가능
+* 주문자가 주문내역 및 마이페이지를 확인 가능
+* 사장님은 가게 및 상품을 등록 가능
+* 사장님은 가게별로 접수된 주문에 대해 주문 접수 및 거절
+* 주문 접수 등록된 시간에 따라 주문자의 주문내역에 실시간 반영
+<br>
 
-### 일정
+## 기술 설명
+- React, TypeScript, Redux 를 이용해 Front-end 개발 
+- SpringBoot, JPA, REST API 이용해 Back-end 개발
+- Amazon AWS, Docker, GithubActions를 이용해 CI/CD 구축
+<br>
 
-| **주차** | **추진내용**                                                              |
-| -------- | ------------------------------------------------------------------------- |
-| 1주차    | 아이디어 구상 & 프로젝트 목표 설정                                        |
-| 2주차    | 기본 레이아웃 & 도메인 설계, 웹사이트 기술 환경 설정, 시장조사 & 벤치마킹 |
-| 3주차    | 도메인 분석 및 스토리보드 작성, 개발 스택 조사 및 개발 환경 설정          |
-| 4주차    | 퍼블리싱 & 데이터베이스 모델링                                            |
-| 5주차    | 개발                                                                      |
-| 6주차    | 개발                                                                      |
-| 7주차    | 개발                                                                      |
-| 8주차    | 최종 검수 및 테스트                                                       |
+## 기술 스택
 
-\*\* 위는 예시로 회의를 통해서 세부적인 일정을 세울 예정
+### Front
+* React
 
-🎈 Max : 3 months
+| **항목** | **기술 스택**              |
+| -------- | --------------------------- |
+| 환경세팅    | CRA |
+| 사용언어    | TypeScript |
+| 스타일링    | Emotion |
+| 상태관리    | Hooks, Redux |
+| 코드통합    | Prettier |
+| 에러검출    | Eslint |
+| API 통신    | Axios |
 
-### 기술 스택
+### Back
+* SpringBoot
 
--  Front : HTML, CSS, JS, ReactJS
--  Back : SpringBoot, Server(미정), DB(H2)
+| **항목** | **기술 스택**              |
+| -------- | --------------------------- |
+| Server    | AWS |
+| DB    | Amazon RDS |
+| 문서자동화    | REST Docs |
+| 보안    | Spring Security, JWT |
+| 기타    | REST API, JPA, QueryDSL |
 
-### 사용 API
 
-(미정)
+### CI/CD
+* Docker
+* Github Actions
+* Amazon AWS
 
-### 참여자
-
-강상원, 강하연, 김재원, 박수호, 최지훈
-
-### 업무분담
-
--  Design : 강상원
--  Front : 강상원, 강하연, 최지훈
--  Back : 김재원, 박수호, 강상원, 강하연
 
 ### 협업 툴
 
@@ -59,3 +71,7 @@
 -  Slack
 -  줌(Zoom)
 -  figma
+
+
+---
+![readme](./readme.PNG)

@@ -32,13 +32,13 @@ public class ShopsController {
     }
     
     @PatchMapping("/manager/shop/{shopId}")
-    public ApiResponse<ShopDto> updateShop(@PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
-        return new ApiResponse(shopUseCase.updateShop(shopId, request));
+    public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
+        return new ApiResponse(shopUseCase.updateShop(user.getId(), shopId, request));
     }
 
     @DeleteMapping("/manager/shop/{shopId}")
-    public ApiResponse<Long> deleteShop(@PathVariable Long shopId) {
-        shopUseCase.deleteShop(shopId);
+    public ApiResponse<Long> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
+        shopUseCase.deleteShop(user.getId(), shopId);
         return new ApiResponse(0L);
     }
 }

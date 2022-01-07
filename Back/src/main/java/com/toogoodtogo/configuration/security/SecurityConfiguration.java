@@ -52,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**", "/api/users/**", "/api/shops/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
                 .antMatchers("/api/me").hasAnyRole("USER", "MANAGER")
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().denyAll()
 
                 .and()
@@ -66,6 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/docs/**");
+        web.ignoring().antMatchers("/h2-console/**");
         // static 경로
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }

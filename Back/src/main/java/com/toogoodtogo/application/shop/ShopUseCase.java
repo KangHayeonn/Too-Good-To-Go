@@ -11,6 +11,6 @@ public interface ShopUseCase {
     List<ShopDto> findAllShops();
     List<ShopDto> findShops(Long managerId);
     ShopDto addShop(Long managerId, AddShopRequest request);
-    ShopDto updateShop(Long shopId, UpdateShopRequest request);
-    void deleteShop(Long shopId);
+    ShopDto updateShop(Long managerId, Long shopId, UpdateShopRequest request);
+    void deleteShop(Long managerId, Long shopId);
 }

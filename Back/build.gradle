@@ -44,6 +44,7 @@ dependencies {
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
     // Json을 결과로 매핑하기 위한 의존성
     implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 }
 
 ext {

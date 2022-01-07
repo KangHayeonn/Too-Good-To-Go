@@ -108,7 +108,7 @@ const ProfileOrderList: React.FC = () => {
 			<EditTitle className="edit-title">
 				<p>개인정보</p>
 				<img src={Line13} alt="line13" />
-				<p>MY PAGE</p>
+				<p>ORDER LIST</p>
 			</EditTitle>
 
 			{orderData ? (

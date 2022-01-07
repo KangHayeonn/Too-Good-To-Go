@@ -1,15 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import axios from "axios";
+
+const initialUserState = {
+	email: "",
+	password: "",
+	name: "",
+	phone: "",
+	role: "user",
+};
 
 const Register: React.FC = () => {
-	const [value, setValue] = React.useState("female");
+	const [formValue, setFormValue] = useState(initialUserState);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setValue((event.target as HTMLInputElement).value);
+		console.log(event.target);
+		setFormValue({
+			...formValue,
+			[event.target.name]: event.target.value,
+		});
+		console.log(formValue);
+	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log("handlesubmit");
+		const loginFormData = new FormData();
+		loginFormData.append("email", formValue.email);
+		loginFormData.append("password", formValue.password);
+		loginFormData.append("name", formValue.name);
+		loginFormData.append("phone", formValue.phone);
+		loginFormData.append("role", formValue.role);
+
+		try {
+			console.log("try block");
+			const response = await axios({
+				method: "post",
+				url: "http://54.180.134.20/api/signup",
+				data: loginFormData,
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+
+			console.log("response: ", response);
+		} catch (error) {
+			console.log("catch block: ", error);
+		}
 	};
 
 	return (
@@ -20,93 +59,100 @@ const Register: React.FC = () => {
 					<img src="image/Line 13.png" alt="" />
 					<h4>SIGN UP</h4>
 				</TitleCtn>
-				<FormControl component="fieldset">
-					<RadioGroup
-						row
-						aria-label="gender"
-						name="controlled-radio-buttons-group"
-						value={value}
-						onChange={handleChange}
-					>
-						<FormControlLabel
-							value="user"
-							control={<Radio />}
-							label="고객용"
-						/>
-						<FormControlLabel
-							value="seller"
-							control={<Radio />}
-							label="사장님용"
-						/>
-					</RadioGroup>
-				</FormControl>
-				<InputCtn>
-					<div className="input-row">
-						<input
-							className="id input"
-							type="text"
-							name=""
-							id=""
-							placeholder="아이디를 입력하세요."
-						/>{" "}
-						<Confirm type="button" className="confirm-btn">
-							중복확인
-						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="password input"
-							type="password"
-							name=""
-							id=""
-							placeholder="비밀번호를 입력하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
+				<form onSubmit={(e) => handleSubmit(e)}>
+					<FormControl component="fieldset">
+						<RadioGroup
+							row
+							aria-label="role"
+							name="controlled-radio-buttons-group"
+							defaultValue="user"
+							onChange={handleChange}
+						>
+							<FormControlLabel
+								value="user"
+								control={<Radio />}
+								label="고객"
+								name="role"
+							/>
+							<FormControlLabel
+								value="seller"
+								control={<Radio />}
+								label="사장님"
+								name="role"
+							/>
+						</RadioGroup>
+					</FormControl>
+
+					<InputCtn>
+						<div className="input-row">
+							<input
+								className="email input"
+								type="email"
+								name="email"
+								value={formValue.email}
+								onChange={handleChange}
+								id=""
+								placeholder="이메일을 입력하세요."
+							/>
+							{/* <Confirm type="button" className="confirm-btn">
+						//중복 확인 논리가 들어가야함
+						</Confirm> */}
+						</div>
+						<div className="input-row">
+							<input
+								className="name input"
+								type="text"
+								name="name"
+								onChange={handleChange}
+								value={formValue.name}
+								id=""
+								placeholder="이름 입력하세요."
+							/>
+						</div>
+						<div className="input-row">
+							<input
+								className="password input"
+								type="password"
+								name="password"
+								id=""
+								placeholder="비밀번호를 입력하세요."
+							/>
+						</div>
+						<div className="input-row input-row-confirm-btn">
+							<input
+								className="password-confirm input"
+								type="password"
+								name="password"
+								onChange={handleChange}
+								value={formValue.password}
+								id=""
+								placeholder="비밀번호를 확인하세요."
+							/>
+							{/* <Confirm type="button" className="confirm-btn">
 							확인
+						</Confirm> */}
+						</div>
+						<div className="input-row">
+							<input
+								className="phone-input input"
+								type="text"
+								onChange={handleChange}
+								value={formValue.phone}
+								name="phone"
+								id=""
+								placeholder="핸드폰 번호를 입력하세요."
+							/>
+						</div>
+					</InputCtn>
+					<BtnCtn>
+						<Confirm
+							type="submit"
+							className="btn register-confirm-btn"
+						>
+							회원가입 완료
 						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="password-confirm input"
-							type="password"
-							name=""
-							id=""
-							placeholder="비밀번호를 확인하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
-							확인
-						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="email input"
-							type="email"
-							name=""
-							id=""
-							placeholder="이메일을 입력하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
-							확인
-						</Confirm>
-					</div>
-					<div className="input-row">
-						<input
-							className="address-input input"
-							type="text"
-							name=""
-							id=""
-							placeholder="핸드폰 번호를 입력하세요."
-						/>
-						<Confirm type="button" className="confirm-btn">
-							확인
-						</Confirm>
-					</div>
-				</InputCtn>
-				<BtnCtn>
-					<Button type="button" className="btn register-confirm-btn">
-						회원가입 완료
-					</Button>
-				</BtnCtn>
+					</BtnCtn>
+				</form>
 			</Container>
 		</Wrapper>
 	);
@@ -178,11 +224,15 @@ const InputCtn = styled.div`
 	input {
 		font-size: 16px;
 		font-weight: bold;
-		width: 225px;
+		width: 285px;
 		height: 45px;
 		margin: 10px;
 		padding-left: 20px;
 		border: 1px solid #c9cbca;
+	}
+
+	.input-row-confirm-button {
+		width: 250px;
 	}
 	input-row {
 		width: 500px;

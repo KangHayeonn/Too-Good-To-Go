@@ -29,12 +29,12 @@ const Register: React.FC = () => {
 						onChange={handleChange}
 					>
 						<FormControlLabel
-							value="user"
+							value="USER"
 							control={<Radio />}
 							label="고객용"
 						/>
 						<FormControlLabel
-							value="seller"
+							value="MANAGER"
 							control={<Radio />}
 							label="사장님용"
 						/>

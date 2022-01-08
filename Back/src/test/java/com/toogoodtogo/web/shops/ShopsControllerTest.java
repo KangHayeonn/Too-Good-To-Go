@@ -1,11 +1,15 @@
 package com.toogoodtogo.web.shops;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.TokenDto;
+import com.toogoodtogo.web.users.sign.UserLoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,10 +47,16 @@ class ShopsControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ShopRepository shopRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SignService signService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -57,22 +67,26 @@ class ShopsControllerTest {
     @Autowired
     private static int shopId;
 
-    @Autowired
-    private static User manager;
+    private User manager;
+
+    private TokenDto token;
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+
         manager = userRepository.save(User.builder()
-                .email("email@email.com")
+                .email("shopTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
                 .phone("010-0000-0000")
                 .role("ROLE_MANAGER")
                 .build());
-        managerId = Math.toIntExact(manager.getId());
 
-        shopRepository.deleteAll();
+        token = signService.login(UserLoginRequest.builder().email("shopTest@email.com").password("password").build());
+
         Shop shop1 = Shop.builder()
                 .user(manager).name("shop1").image("test1").category(new String[]{"한식"}).phone("010-1234-5678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
@@ -85,7 +99,9 @@ class ShopsControllerTest {
 
     @AfterEach
     public void setDown() {
-        shopRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
     @Test
@@ -116,10 +132,10 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
     void findShops() throws Exception {
         //then
-        mockMvc.perform(get("/api/manager/{managerId}/shops", managerId))
+        mockMvc.perform(get("/api/manager/shops")
+                .header("Authorization", token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/find",
                         preprocessRequest(prettyPrint()),
@@ -141,15 +157,15 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
-    void addProduct() throws Exception {
+    void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .user(manager).name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
+                .name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
 
         //when
-        ResultActions actions = mockMvc.perform(post("/api/manager/{managerId}/shop", managerId)
+        ResultActions actions = mockMvc.perform(post("/api/manager/shop")
+                .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -177,7 +193,7 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void updateShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
@@ -192,6 +208,7 @@ class ShopsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
+                .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -219,10 +236,11 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void deleteShop() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId))
+        mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)
+                .header("Authorization", token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",
                         preprocessRequest(prettyPrint()),

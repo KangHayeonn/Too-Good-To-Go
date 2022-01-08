@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartCardSelectorReducer from "../features/cartFeatures/selectCartCardsSlice";
+import managerOrderCountReducer from "../features/manager/ManagerOrderCountSlice";
 
 export const store = configureStore({
 	reducer: {
 		selectCartCards: cartCardSelectorReducer,
+		managerOrderCount: managerOrderCountReducer,
 	},
 });
 

@@ -1,11 +1,14 @@
 package com.toogoodtogo.web.users.sign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.security.RefreshTokenRepository;
+import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -16,14 +19,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -46,32 +47,42 @@ class SignControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ShopRepository shopRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private SignService signService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() {
-        userRepository.save(User.builder()
-                .email("user@email.com")
-                .password(passwordEncoder.encode("user_pw"))
-                .name("userA")
-                .phone("010-0000-0000")
-                .role("ROLE_USER")
-                .build());
-        userRepository.save(User.builder()
-                .email("manager@email.com")
-                .password(passwordEncoder.encode("manager_pw"))
-                .name("managerA")
-                .phone("010-1111-1111")
-                .role("ROLE_MANAGER")
-                .build());
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+        signService.signup(UserSignupRequest.builder()
+                .email("user@email.com").password("user_pw")
+                .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
+        signService.signup(UserSignupRequest.builder()
+                .email("manager@email.com").password("manager_pw")
+                .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
     }
 
     @AfterEach
     public void setDown() {
-        userRepository.deleteAll();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+        refreshTokenRepository.deleteAllInBatch();
     }
 
     @ParameterizedTest

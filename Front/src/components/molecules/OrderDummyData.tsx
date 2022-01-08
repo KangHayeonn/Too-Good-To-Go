@@ -108,7 +108,7 @@ export const orderData = [
 		],
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
-		status: "ORDER_COMPLETED",
+		status: "PICKUP_COMPLETED",
 		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
@@ -139,7 +139,7 @@ export const orderData = [
 		],
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
-		status: "ORDER_COMPLETED",
+		status: "WAITING_PICKUP",
 		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
@@ -170,7 +170,7 @@ export const orderData = [
 		],
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
-		status: "ORDER_COMPLETED",
+		status: "CANCELED",
 		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
@@ -201,7 +201,7 @@ export const orderData = [
 		],
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
-		status: "ORDER_COMPLETED",
+		status: "CANCELED",
 		createdAt: "2021-11-30T11:00:00+09:00",
 	},
 	{
@@ -232,7 +232,16 @@ export const orderData = [
 		],
 		requirement: "60분뒤에 도착할 것 같아요",
 		payment: "카드",
-		status: "ORDER_COMPLETED",
+		status: "PREPARING",
 		createdAt: "2021-11-30T11:00:00+09:00",
+	},
+];
+
+export const orderDataCount = [
+	{
+		order_completed: 0,
+		preparing: 0,
+		completed: 0,
+		showAll: 0,
 	},
 ];

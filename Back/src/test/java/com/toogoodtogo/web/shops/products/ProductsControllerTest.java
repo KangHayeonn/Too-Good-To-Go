@@ -1,10 +1,15 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
+import com.toogoodtogo.domain.user.User;
+import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.TokenDto;
+import com.toogoodtogo.web.users.sign.UserLoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -48,16 +54,45 @@ class ProductsControllerTest {
     private ShopRepository shopRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SignService signService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     private static Long shopId;
 
     @Autowired
     private static Long productId;
 
+    @Autowired
+    private static User manager;
+
+    private TokenDto token;
+
     @BeforeEach
     public void setUp() {
-        Shop shop = Shop.builder().name("shop1").image("test1").category(new String[]{"한식"}).build();
+        productRepository.deleteAllInBatch();
+        shopRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+
+        manager = userRepository.save(User.builder()
+                .email("productTest@email.com")
+                .password(passwordEncoder.encode("password"))
+                .name("name")
+                .phone("010-0000-0000")
+                .role("ROLE_MANAGER")
+                .build());
+
+        token = signService.login(UserLoginRequest.builder().email("productTest@email.com").password("password").build());
+
+        Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(new String[]{"한식"}).build();
         shopRepository.save(shop);
         shopId = shop.getId();
+
         Product product1 = Product.builder().shop(shop).name("김치찌개").price(6000L).discountedPrice(5000L).image("test1").build();
         Product product2 = Product.builder().shop(shop).name("된장찌개").price(7000L).discountedPrice(6000L).image("test2").build();
         productRepository.save(product1);
@@ -67,7 +102,7 @@ class ProductsControllerTest {
 
     @AfterEach
     public void setDown() {
-        productRepository.deleteAll();
+        productRepository.deleteAllInBatch();
     }
 
     @Test
@@ -88,13 +123,10 @@ class ProductsControllerTest {
                                 fieldWithPath("data.[].image").description("product image")
                         )
                 ))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].name").value("김치찌개"))
-                .andExpect(jsonPath("$.data[1].name").value("된장찌개"));
+                .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
     void addProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddProductRequest.builder()
@@ -106,6 +138,7 @@ class ProductsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/manager/shops/{shopId}/products", shopId)
+                .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -130,7 +163,7 @@ class ProductsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void updateProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateProductRequest.builder()
@@ -142,6 +175,7 @@ class ProductsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/products/{productId}", shopId, productId)
+                .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -169,10 +203,11 @@ class ProductsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "MANAGER")
+//    @WithMockUser(roles = "MANAGER")
     public void deleteProduct() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}/products/{productId}", shopId, productId))
+        mockMvc.perform(delete("/api/manager/shop/{shopId}/products/{productId}", shopId, productId)
+                .header("Authorization", token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("products/delete",
                         preprocessRequest(prettyPrint()),

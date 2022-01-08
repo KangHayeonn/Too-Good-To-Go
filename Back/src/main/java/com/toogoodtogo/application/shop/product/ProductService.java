@@ -1,5 +1,6 @@
 package com.toogoodtogo.application.shop.product;
 
+import com.toogoodtogo.advice.exception.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
@@ -35,8 +36,10 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto addProduct(Long shopId, AddProductRequest request) {
-        Shop shop = shopRepository.findById(shopId).orElseThrow();
+    public ProductDto addProduct(Long managerId, Long shopId, AddProductRequest request) {
+        Shop shop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
+//        Shop shop = shopRepository.findById(shopId).orElseThrow();
+//        if (managerId != shop.getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         Product product = Product.builder()
                 .shop(shop)
                 .name(request.getName())
@@ -48,14 +51,19 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto updateProduct(Long productId, UpdateProductRequest request) {
-        Product modifiedProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
+    public ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest request) {
+        Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
+//        Product modifiedProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
+//        if (managerId != modifiedProduct.getShop().getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
         return new ProductDto(modifiedProduct);
     }
 
     @Transactional
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(Long managerId, Long productId) {
+        Product deleteProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
+//        Product deleteProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
+//        if (managerId != deleteProduct.getShop().getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         productRepository.deleteById(productId);
     }
 }

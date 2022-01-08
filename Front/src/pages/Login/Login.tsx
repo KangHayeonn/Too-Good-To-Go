@@ -1,7 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const LOGIN_URL = "http://localhost:8888";
 
 const Login: React.FC = () => {
+	const [inputId, setInputId] = useState("");
+	const [inputPw, setInputPw] = useState("");
+
+	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setInputId(value);
+	};
+
+	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		setInputPw(value);
+	};
+
+	const onClickLogin = () => {
+		console.log("click login");
+		console.log("ID : ", inputId);
+		console.log("Pw : ", inputPw);
+		// hook call 에러 뜸 (handler 안에 useEffect 사용할 시)
+		axios
+			.post(`${LOGIN_URL}/login`, {
+				email: inputId,
+				password: inputPw,
+			})
+			.then((res) => {
+				console.log(res);
+				console.log("성공");
+			})
+			.catch((e) => {
+				console.log("실패");
+				console.error(e);
+			});
+	};
+
+	useEffect(() => {
+		axios
+			.get(`${LOGIN_URL}/login`)
+			.then((res) => console.log(res.status))
+			.catch();
+	});
+
 	return (
 		<Wrapper>
 			<Container>
@@ -14,25 +58,35 @@ const Login: React.FC = () => {
 					<input
 						className="id input"
 						type="text"
-						name=""
-						id=""
+						name="input_id"
+						id="login_id"
+						value={inputId}
+						onChange={handleInputId}
 						placeholder="아이디를 입력하세요."
 					/>
 					<input
 						className="password input"
 						type="password"
-						name=""
-						id=""
+						name="input_pw"
+						id="login_pw"
+						value={inputPw}
+						onChange={handleInputPw}
 						placeholder="비밀번호를 입력하세요."
 					/>
 				</InputCtn>
 				<BtnCtn>
-					<button type="button" className="btn login-btn">
+					<button
+						type="button"
+						className="btn login-btn"
+						onClick={onClickLogin}
+					>
 						로그인
 					</button>
-					<button type="button" className="btn register-btn">
-						회원가입
-					</button>
+					<Link to="/register">
+						<button type="button" className="btn register-btn">
+							회원가입
+						</button>
+					</Link>
 				</BtnCtn>
 			</Container>
 		</Wrapper>
@@ -117,6 +171,7 @@ const BtnCtn = styled.div`
 	button.register-btn {
 		margin-top: 10px;
 		background-color: #54b689;
+		color: #fff;
 	}
 
 	button:hover {

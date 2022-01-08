@@ -1,6 +1,7 @@
 package com.toogoodtogo.domain.security;
 
 import com.toogoodtogo.domain.BaseTimeEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,17 +9,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "refresh_token")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "refresh_token")
 public class RefreshToken extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
-    private Long key;
+    private Long tokenKey;
 
     @Column(nullable = false)
     private String token;
@@ -29,8 +31,8 @@ public class RefreshToken extends BaseTimeEntity {
     }
 
     @Builder
-    public RefreshToken(Long key, String token) {
-        this.key = key;
+    public RefreshToken(Long tokenKey, String token) {
+        this.tokenKey = tokenKey;
         this.token = token;
     }
 }

@@ -5,6 +5,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
+import { Route } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const initialUserState = {
 	email: "",
@@ -16,6 +18,7 @@ const initialUserState = {
 
 const Register: React.FC = () => {
 	const [formValue, setFormValue] = useState(initialUserState);
+	const history = useHistory();
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		console.log(event.target);
@@ -29,23 +32,17 @@ const Register: React.FC = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log("handlesubmit");
-		const loginFormData = new FormData();
-		loginFormData.append("email", formValue.email);
-		loginFormData.append("password", formValue.password);
-		loginFormData.append("name", formValue.name);
-		loginFormData.append("phone", formValue.phone);
-		loginFormData.append("role", formValue.role);
+		const stringifiedFormValue = JSON.stringify(formValue);
 
 		try {
-			console.log("try block");
-			const response = await axios({
+			console.log("loginFormData: ", stringifiedFormValue);
+			const response = await axios("http://54.180.134.20/api/signup", {
 				method: "post",
-				url: "http://54.180.134.20/api/signup",
-				data: loginFormData,
-				headers: { "Content-Type": "multipart/form-data" },
+				data: stringifiedFormValue,
+				headers: { "Content-Type": "application/json" },
 			});
-
 			console.log("response: ", response);
+			history.push({ pathname: "/" });
 		} catch (error) {
 			console.log("catch block: ", error);
 		}

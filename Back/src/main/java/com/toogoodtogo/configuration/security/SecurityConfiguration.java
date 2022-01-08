@@ -87,6 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
 //        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://too-good-to-go.s3-website.ap-northeast-2.amazonaws.com/");
         //configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");

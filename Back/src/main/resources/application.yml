@@ -1,16 +1,11 @@
 spring:
   profiles:
     include: jwt
-
   messages:
     basename: i18n/exception
     encoding: UTF-8
-
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
-
-decorator:
   datasource:
-    p6spy:
-      enable-logging: true
+    url: jdbc:h2:mem:toogoodtogo

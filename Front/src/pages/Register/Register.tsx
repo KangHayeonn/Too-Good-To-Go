@@ -5,7 +5,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
-import { Route } from "react-router-dom";
 import { useHistory } from "react-router";
 
 const initialUserState = {
@@ -13,7 +12,7 @@ const initialUserState = {
 	password: "",
 	name: "",
 	phone: "",
-	role: "user",
+	role: "ROLE_USER",
 };
 
 const Register: React.FC = () => {
@@ -21,21 +20,20 @@ const Register: React.FC = () => {
 	const history = useHistory();
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event.target);
 		setFormValue({
 			...formValue,
 			[event.target.name]: event.target.value,
 		});
-		console.log(formValue);
+		// console.log(formValue);
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("handlesubmit");
+		// console.log("handlesubmit");
 		const stringifiedFormValue = JSON.stringify(formValue);
 
 		try {
-			console.log("loginFormData: ", stringifiedFormValue);
+			// console.log("loginFormData: ", stringifiedFormValue);
 			const response = await axios("http://54.180.134.20/api/signup", {
 				method: "post",
 				data: stringifiedFormValue,
@@ -62,17 +60,17 @@ const Register: React.FC = () => {
 							row
 							aria-label="role"
 							name="controlled-radio-buttons-group"
-							defaultValue="user"
+							defaultValue="ROLE_USER"
 							onChange={handleChange}
 						>
 							<FormControlLabel
-								value="user"
+								value="ROLE_USER"
 								control={<Radio />}
 								label="고객"
 								name="role"
 							/>
 							<FormControlLabel
-								value="seller"
+								value="ROLE_MANAGER"
 								control={<Radio />}
 								label="사장님"
 								name="role"

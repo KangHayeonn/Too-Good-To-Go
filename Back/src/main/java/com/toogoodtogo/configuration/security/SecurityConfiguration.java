@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable() // 기본설정은 비 인증시 로그인 폼 화면으로 리다이렉트 되는데 미설정
-                .cors().and()
+                .cors().configurationSource(corsConfigurationSource()).and()
                 .csrf().disable() // 상태 저장하지 않으므로 csrf 보안 미설정
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 미생성

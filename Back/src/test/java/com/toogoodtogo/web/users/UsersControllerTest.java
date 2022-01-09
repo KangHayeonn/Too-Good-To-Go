@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -112,7 +111,6 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     public void updateUser() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
@@ -121,7 +119,7 @@ class UsersControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/user")
+        ResultActions actions = mockMvc.perform(patch("/api/me")
                 .content(object)
                 .header("Authorization", token.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)

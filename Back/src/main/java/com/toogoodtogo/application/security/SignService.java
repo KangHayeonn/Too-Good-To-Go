@@ -36,7 +36,7 @@ public class SignService {
         TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
-                .tokenKey(user.getId())
+                .userId(user.getId())
                 .token(tokenDto.getRefreshToken())
                 .build();
         tokenRepository.save(refreshToken);
@@ -63,25 +63,21 @@ public class SignService {
         if (!jwtTokenProvider.validationToken(tokenRequest.getRefreshToken())) {
             throw new CRefreshTokenException();
         }
-
         // AccessToken 에서 Username (pk) 가져오기
         String accessToken = tokenRequest.getAccessToken();
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-
         // user pk로 유저 검색 / repo 에 저장된 Refresh Token 이 없음
-        User user = userRepository.findById(Long.parseLong(authentication.getName()))
+        User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(CUserNotFoundException::new);
-        RefreshToken refreshToken = tokenRepository.findByTokenKey(user.getId())
+        RefreshToken refreshToken = tokenRepository.findByUserId(user.getId())
                 .orElseThrow(CRefreshTokenException::new);
-
         // 리프레시 토큰 불일치 에러
         if (!refreshToken.getToken().equals(tokenRequest.getRefreshToken()))
             throw new CRefreshTokenException();
-
         // AccessToken, RefreshToken 토큰 재발급, 리프레쉬 토큰 저장
         TokenDto newCreatedToken = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
-        tokenRepository.save(updateRefreshToken);
+        tokenRepository.save(updateRefreshToken); //더티체킹으로 token 값만 update
 
         return newCreatedToken;
     }

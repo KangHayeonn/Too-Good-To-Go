@@ -14,17 +14,17 @@ public class SignController {
     @PostMapping(value = "/login")
     public ApiResponse<TokenDto> login(@RequestBody UserLoginRequest userLoginRequest) {
         TokenDto tokenDto = signService.login(userLoginRequest);
-        return new ApiResponse(tokenDto);
+        return new ApiResponse<>(tokenDto);
     }
 
     @PostMapping("/signup")
     public ApiResponse<UserSignupResponse> signup(@RequestBody UserSignupRequest userSignupRequest) {
-        return new ApiResponse(signService.signup(userSignupRequest));
+        return new ApiResponse<>(signService.signup(userSignupRequest));
     }
 
     @PostMapping("/reissue") //토큰 재발급 요청
     public ApiResponse<TokenDto> reissue(@RequestBody TokenRequest tokenRequest) {
-        return new ApiResponse(signService.reissue(tokenRequest));
+        return new ApiResponse<>(signService.reissue(tokenRequest));
     }
 
 }

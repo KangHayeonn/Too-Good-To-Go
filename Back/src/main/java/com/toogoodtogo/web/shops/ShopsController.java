@@ -18,27 +18,27 @@ public class ShopsController {
 
     @GetMapping("/shops")
     public ApiResponse<ShopDto> findAllShops() {
-        return new ApiResponse(shopUseCase.findAllShops());
+        return new ApiResponse<>(shopUseCase.findAllShops());
     }
 
     @GetMapping("/manager/shops")
     public ApiResponse<List<ShopDto>> findShops(@CurrentUser User user) {
-        return new ApiResponse(shopUseCase.findShops(user.getId()));
+        return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
     @PostMapping("/manager/shop")
     public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody AddShopRequest request) {
-        return new ApiResponse(shopUseCase.addShop(user.getId(), request));
+        return new ApiResponse<>(shopUseCase.addShop(user.getId(), request));
     }
     
     @PatchMapping("/manager/shop/{shopId}")
     public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
-        return new ApiResponse(shopUseCase.updateShop(user.getId(), shopId, request));
+        return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
     }
 
     @DeleteMapping("/manager/shop/{shopId}")
     public ApiResponse<Long> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
         shopUseCase.deleteShop(user.getId(), shopId);
-        return new ApiResponse(0L);
+        return new ApiResponse<>(0L);
     }
 }

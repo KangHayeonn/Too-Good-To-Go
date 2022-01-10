@@ -17,7 +17,7 @@ import ProfilePage from "./pages/profilePage/ProfilePage";
 const Router: React.FC = () => {
 	return (
 		<BrowserRouter>
-			<Header />
+			<Header loginOn={false} />
 			<Switch>
 				<Route exact path="/" component={MainPage} />
 				<Route exact path="/shopmenu/" component={ShopMenuPage} />

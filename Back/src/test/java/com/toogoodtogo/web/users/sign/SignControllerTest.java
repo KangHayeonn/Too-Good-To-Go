@@ -5,10 +5,10 @@ import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -230,23 +229,40 @@ class SignControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
-//    @Test
-//    @WithMockUser(roles = "USER")
-//    public void access_success() throws Exception {
-//        //then
-//        mockMvc.perform(get("/api/users"))
-//                .andDo(print())
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @WithMockUser(roles = {"GUEST"})
-//    public void access_denied() throws Exception {
-//        //then
-//        mockMvc.perform(get("/api/users"))
-//                .andDo(print())
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/exception/accessDenied"));
-//        ;
-//    }
+    @Test
+    public void reissue() throws Exception {
+        //given
+        TokenDto userToken = signService.login(UserLoginRequest.builder().email("user@email.com").password("user_pw").build());
+        String object = objectMapper.writeValueAsString(TokenRequest.builder()
+                .accessToken(userToken.getAccessToken())
+                .refreshToken(userToken.getRefreshToken())
+                .build());
+
+        //when
+        ResultActions actions = mockMvc.perform(post("/api/reissue")
+                .content(object)
+                .header("Authorization", userToken.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(object));
+
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("reissue",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("accessToken").description("accessToken"),
+                                fieldWithPath("refreshToken").description("refreshToken")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.grantType").description("grantType"),
+                                fieldWithPath("data.accessToken").description("accessToken"),
+                                fieldWithPath("data.refreshToken").description("refreshToken"),
+                                fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
 }

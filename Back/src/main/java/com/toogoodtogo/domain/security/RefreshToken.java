@@ -20,7 +20,7 @@ public class RefreshToken extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long tokenKey;
+    private Long userId;
 
     @Column(nullable = false)
     private String token;
@@ -31,8 +31,8 @@ public class RefreshToken extends BaseTimeEntity {
     }
 
     @Builder
-    public RefreshToken(Long tokenKey, String token) {
-        this.tokenKey = tokenKey;
+    public RefreshToken(Long userId, String token) {
+        this.userId = userId;
         this.token = token;
     }
 }

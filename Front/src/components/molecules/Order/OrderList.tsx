@@ -77,7 +77,7 @@ const DropTitle = styled.div`
 const OrderList: React.FC = () => {
 	const [hidden, setHidden] = useState(true);
 	const show = () => setHidden((current) => !current);
-	console.log(hidden);
+
 	return (
 		<DropButton displayType={hidden}>
 			<DropTitle>

@@ -44,6 +44,7 @@ const Login: React.FC = () => {
 				history.push("/");
 			})
 			.catch((e) => {
+				console.log(e);
 				console.log("로그인 실패");
 				console.error(e);
 			});

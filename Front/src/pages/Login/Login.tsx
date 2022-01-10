@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 
-const LOGIN_URL = "http://localhost:8888";
+const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
+const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
 
 const Login: React.FC = () => {
 	const [inputId, setInputId] = useState("");
 	const [inputPw, setInputPw] = useState("");
+	const history = useHistory();
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
@@ -23,6 +25,7 @@ const Login: React.FC = () => {
 		console.log("click login");
 		console.log("ID : ", inputId);
 		console.log("Pw : ", inputPw);
+
 		// hook call 에러 뜸 (handler 안에 useEffect 사용할 시)
 		axios
 			.post(`${LOGIN_URL}/login`, {
@@ -31,20 +34,36 @@ const Login: React.FC = () => {
 			})
 			.then((res) => {
 				console.log(res);
-				console.log("성공");
+				const { accessToken } = res.data.data;
+				axios.defaults.headers.common.Authorization = accessToken
+					? `${accessToken}`
+					: "";
+				console.log("로그인 성공");
+				// accessToken 만료하기 1분 전에 로그인 연장
+				setTimeout(onSlientRefresh, JWT_EXPIREY_TIME - 60000);
+				history.push("/");
+			})
+			.catch((e) => {
+				console.log("로그인 실패");
+				console.error(e);
+			});
+	};
+
+	const onSlientRefresh = () => {
+		axios
+			.post("/slient-refresh", {
+				email: inputId,
+				password: inputPw,
+			})
+			.then((res) => {
+				console.log(res);
+				console.log("로그인 성공");
 			})
 			.catch((e) => {
 				console.log("실패");
 				console.error(e);
 			});
 	};
-
-	useEffect(() => {
-		axios
-			.get(`${LOGIN_URL}/login`)
-			.then((res) => console.log(res.status))
-			.catch();
-	});
 
 	return (
 		<Wrapper>

@@ -18,7 +18,7 @@ public class ShopsController {
 
     @GetMapping("/shops")
     public ApiResponse<ShopDto> findAllShops() {
-        return new ApiResponse<>(shopUseCase.findAllShops());
+        return new ApiResponse(shopUseCase.findAllShops());
     }
 
     @GetMapping("/manager/shops")

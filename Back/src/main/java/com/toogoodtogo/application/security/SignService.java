@@ -31,7 +31,7 @@ public class SignService {
                 .orElseThrow(CEmailLoginFailedException::new);
         // 회원 패스워드 일치 여부 확인
         if (!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword()))
-            throw new CEmailLoginFailedException();
+            throw new CPasswordLoginFailedException();
         // AccessToken, RefreshToken 발급
         TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장

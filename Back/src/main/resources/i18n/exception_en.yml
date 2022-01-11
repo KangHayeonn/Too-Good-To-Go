@@ -11,6 +11,12 @@ emailLoginFailed:
 passwordLoginFailed:
   code: "-1001"
   msg: "It's an incorrect password."
+alreadyLoginFailed:
+  code: "-1001"
+  msg: "It's already logged in."
+noLoginFailed:
+  code: "-1001"
+  msg: "It's not logged in"
 emailSignupFailed:
   code: "-1002"
   msg: "This email is already subscribed."

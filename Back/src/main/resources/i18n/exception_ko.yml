@@ -11,6 +11,12 @@ emailLoginFailed:
 passwordLoginFailed:
   code: "-1001"
   msg: "잘못된 비밀번호입니다."
+alreadyLoginFailed:
+  code: "-1001"
+  msg: "이미 로그인된 계정입니다."
+noLoginFailed:
+  code: "-1001"
+  msg: "로그인 되지 않은 계정입니다."
 emailSignupFailed:
   code: "-1002"
   msg: "이미 가입된 이메일입니다."

@@ -13,5 +13,5 @@ public interface ProductUseCase {
     List<ProductDto> findProducts(Long shopId);
     ProductDto addProduct(Long managerId, Long shopId, AddProductRequest addProductRequest);
     ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest updateProductRequest);
-    void deleteProduct(Long managerId, Long productId);
+    String deleteProduct(Long managerId, Long productId);
 }

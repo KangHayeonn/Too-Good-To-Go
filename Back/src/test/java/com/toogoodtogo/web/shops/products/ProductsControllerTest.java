@@ -2,6 +2,7 @@ package com.toogoodtogo.web.shops.products;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
@@ -21,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -57,6 +57,9 @@ class ProductsControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
@@ -78,6 +81,7 @@ class ProductsControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
+        refreshTokenRepository.deleteAllInBatch();
 
         manager = userRepository.save(User.builder()
                 .email("productTest@email.com")
@@ -102,6 +106,7 @@ class ProductsControllerTest {
 
     @AfterEach
     public void setDown() {
+        signService.logout(manager.getId());
         productRepository.deleteAllInBatch();
     }
 
@@ -232,7 +237,7 @@ class ProductsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("data")
+                                fieldWithPath("data").description("success message")
                         )
                 ))
                 .andExpect(status().isOk());

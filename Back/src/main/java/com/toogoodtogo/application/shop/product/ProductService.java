@@ -64,8 +64,9 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public void deleteProduct(Long managerId, Long productId) {
-        Product deleteProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
+    public String deleteProduct(Long managerId, Long productId) {
+        productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
         productRepository.deleteById(productId);
+        return "success";
     }
 }

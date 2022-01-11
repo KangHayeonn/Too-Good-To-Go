@@ -1,6 +1,8 @@
 package com.toogoodtogo.web.users.sign;
 
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.configuration.security.CurrentUser;
+import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,4 +29,8 @@ public class SignController {
         return new ApiResponse<>(signService.reissue(tokenRequest));
     }
 
+    @GetMapping("/logout")
+    public ApiResponse<String> logout(@CurrentUser User user) {
+        return new ApiResponse<>(signService.logout(user.getId()));
+    }
 }

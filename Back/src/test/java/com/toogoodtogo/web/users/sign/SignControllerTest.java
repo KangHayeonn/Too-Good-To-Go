@@ -30,6 +30,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,6 +69,8 @@ class SignControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
+        refreshTokenRepository.deleteAllInBatch();
+
         signService.signup(UserSignupRequest.builder()
                 .email("user@email.com").password("user_pw")
                 .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
@@ -243,8 +246,7 @@ class SignControllerTest {
                 .content(object)
                 .header("Authorization", userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(object));
+                .accept(MediaType.APPLICATION_JSON));
 
         //then
         actions
@@ -261,6 +263,28 @@ class SignControllerTest {
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
                                 fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void logout() throws Exception {
+        //given
+        TokenDto userToken = signService.login(UserLoginRequest.builder().email("user@email.com").password("user_pw").build());
+
+        ResultActions actions = mockMvc.perform(get("/api/logout")
+                .header("Authorization", userToken.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("logout",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("success message")
                         )
                 ))
                 .andExpect(status().isOk());

@@ -1,7 +1,6 @@
 package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
-import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.common.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +59,26 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ErrorResponse passwordLoginFailedException(HttpServletRequest request, CPasswordLoginFailedException e) {
         return new ErrorResponse("Login Password Wrong", getMessage("passwordLoginFailed.msg"));
+    }
+
+    /***
+     * -1001
+     * 로그인 시 이미 로그인 된 유저일때 발생시키는 예외
+     */
+    @ExceptionHandler(CAlreadyLoginException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ErrorResponse alreadyLoginException(HttpServletRequest request, CAlreadyLoginException e) {
+        return new ErrorResponse("Already Login", getMessage("alreadyLoginFailed.msg"));
+    }
+
+    /***
+     * -1001
+     * 로그아웃 시 로그인 되지 않은 유저일때 발생시키는 예외
+     */
+    @ExceptionHandler(CNoLoginException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ErrorResponse noLoginException(HttpServletRequest request, CNoLoginException e) {
+        return new ErrorResponse("No Login", getMessage("noLoginFailed.msg"));
     }
 
     /***

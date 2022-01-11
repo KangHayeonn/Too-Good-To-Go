@@ -36,8 +36,7 @@ public class ShopsController {
     }
 
     @DeleteMapping("/manager/shop/{shopId}")
-    public ApiResponse<Long> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
-        shopUseCase.deleteShop(user.getId(), shopId);
-        return new ApiResponse<>(0L);
+    public ApiResponse<String> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
+        return new ApiResponse<String>(shopUseCase.deleteShop(user.getId(), shopId));
     }
 }

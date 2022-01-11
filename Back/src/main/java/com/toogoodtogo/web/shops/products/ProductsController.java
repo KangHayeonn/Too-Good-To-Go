@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductsController {
     private final ProductUseCase productUseCase;
-    private final ShopRepository shopRepository;
 
     @GetMapping("/products")
     public ApiResponse<List<ProductDto>> findAllProducts() {
@@ -39,8 +38,7 @@ public class ProductsController {
     }
 
     @DeleteMapping("/manager/shop/{shopId}/product/{productId}")
-    public ApiResponse<Long> deleteProduct(@CurrentUser User user, @PathVariable Long productId) {
-        productUseCase.deleteProduct(user.getId(), productId);
-        return new ApiResponse<>(0L);
+    public ApiResponse<String> deleteProduct(@CurrentUser User user, @PathVariable Long productId) {
+        return new ApiResponse<String>(productUseCase.deleteProduct(user.getId(), productId));
     }
 }

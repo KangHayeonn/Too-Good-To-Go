@@ -70,9 +70,10 @@ public class ShopService implements ShopUseCase {
 
     @Override
     @Transactional
-    public void deleteShop(Long managerId, Long shopId) {
+    public String deleteShop(Long managerId, Long shopId) {
         Shop deleteShop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
         productRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
+        return "success";
     }
 }

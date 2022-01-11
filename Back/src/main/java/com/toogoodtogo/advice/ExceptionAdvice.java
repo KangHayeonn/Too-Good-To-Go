@@ -44,12 +44,22 @@ public class ExceptionAdvice {
 
     /***
      * -1001
-     * 유저 이메일 로그인 실패 시 발생시키는 예외
+     * 유저 이메일 로그인 시 이메일이 틀렸을때 발생시키는 예외
      */
     @ExceptionHandler(CEmailLoginFailedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ErrorResponse emailLoginFailedException(HttpServletRequest request, CEmailLoginFailedException e) {
-        return new ErrorResponse("Email Login Failed", getMessage("emailLoginFailed.msg"));
+        return new ErrorResponse("Login Email Wrong", getMessage("emailLoginFailed.msg"));
+    }
+
+    /***
+     * -1001
+     * 유저 이메일 로그인 시 비밀번호가 틀렸을때 발생시키는 예외
+     */
+    @ExceptionHandler(CPasswordLoginFailedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ErrorResponse passwordLoginFailedException(HttpServletRequest request, CPasswordLoginFailedException e) {
+        return new ErrorResponse("Login Password Wrong", getMessage("passwordLoginFailed.msg"));
     }
 
     /***

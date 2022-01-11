@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -67,58 +67,51 @@ const MenuBox = styled.ul`
 	min-height: 100px; //최소 높이
 	max-height: 200px; //최대 높이
 `;
-interface Props {
-	show: boolean;
-}
-const PaymentModal: React.FC<Props> = ({ show }) => {
-	const [isClosed, setIsClosed] = useState(show);
+
+type ModalProps = {
+	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const PaymentModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 	const onClickClosed = useCallback(() => {
-		setIsClosed((isClosed) => !isClosed);
-	}, [setIsClosed]);
-	// show가 false면 화면에 메뉴를 나타내지 않음
-	if (!show) {
-		return null;
-	}
-	// show가 true면 아래 메뉴가 화면에 나타남
+		setModalOpen(false);
+	}, []);
 	return (
 		<>
-			{isClosed ? null : (
-				<Container>
-					<Popup>
-						<Header>
-							<span className="head-title">결제수단선택</span>
-						</Header>
-						<Body>
-							<div className="body-contentbox">
-								<MenuBox>
-									<li>무통장 입금</li>
-									<li>신용/체크카드</li>
-									<li>핸드폰 결제</li>
-									<li>카카오페이</li>
-									<li>직접 만나서 결제</li>
-								</MenuBox>
-							</div>
-						</Body>
-						<Footer>
-							<button
-								type="button"
-								className="pop-btn confirm"
-								id="confirm"
-							>
-								확인
-							</button>
-							<button
-								type="button"
-								className="pop-btn close"
-								id="close"
-								onClick={onClickClosed}
-							>
-								닫기
-							</button>
-						</Footer>
-					</Popup>
-				</Container>
-			)}
+			<Container>
+				<Popup>
+					<Header>
+						<span className="head-title">결제수단선택</span>
+					</Header>
+					<Body>
+						<div className="body-contentbox">
+							<MenuBox>
+								<li>무통장 입금</li>
+								<li>신용/체크카드</li>
+								<li>핸드폰 결제</li>
+								<li>카카오페이</li>
+								<li>직접 만나서 결제</li>
+							</MenuBox>
+						</div>
+					</Body>
+					<Footer>
+						<button
+							type="button"
+							className="pop-btn confirm"
+							id="confirm"
+						>
+							확인
+						</button>
+						<button
+							type="button"
+							className="pop-btn close"
+							id="close"
+							onClick={onClickClosed}
+						>
+							닫기
+						</button>
+					</Footer>
+				</Popup>
+			</Container>
 		</>
 	);
 };

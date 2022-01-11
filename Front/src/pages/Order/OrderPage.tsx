@@ -36,16 +36,16 @@ const OrderButton = styled.button`
 `;
 
 const OrderPage: React.FC = () => {
-	const [show, setShow] = useState(false);
+	const [openModal, setOpenModal] = useState(false);
 	const popRef = useRef<HTMLDivElement>(null);
 
 	const onClickOutside = useCallback(
 		({ target }) => {
 			if (popRef.current && !popRef.current.contains(target)) {
-				setShow(false);
+				setOpenModal(false);
 			}
 		},
-		[setShow]
+		[setOpenModal]
 	);
 	useEffect(() => {
 		document.addEventListener("click", onClickOutside);
@@ -54,8 +54,13 @@ const OrderPage: React.FC = () => {
 		};
 	}, []);
 	const onClickToggleModal = useCallback(() => {
-		setShow((prev) => !prev);
-	}, [setShow]);
+		setOpenModal((prev) => !prev);
+	}, [setOpenModal]);
+
+	const showModal = useCallback(() => {
+		return <Modal setModalOpen={setOpenModal} />;
+	}, []);
+
 	return (
 		<PageTemplate isHeader={false} isSection={false} isFooter={false}>
 			<OrderForm />
@@ -67,8 +72,8 @@ const OrderPage: React.FC = () => {
 				<OrderButton type="button" onClick={onClickToggleModal}>
 					주문하기
 				</OrderButton>
-				<Modal show={show} />
 			</Button>
+			{!!openModal && showModal()}
 		</PageTemplate>
 	);
 };

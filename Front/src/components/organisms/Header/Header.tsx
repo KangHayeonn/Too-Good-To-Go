@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import "./Header.css";
@@ -11,9 +11,10 @@ const navBar = css`
 	background-color: #54b689;
 	border-bottom: 1px solid #d6d6d6;
 `;
-
-const Header: React.FC = () => {
-	const [logged] = useState(false);
+type Props = {
+	loginOn: boolean;
+};
+const Header: React.FC<Props> = ({ loginOn }) => {
 	return (
 		<div>
 			<nav css={navBar}>
@@ -39,7 +40,7 @@ const Header: React.FC = () => {
 						</form>
 					</div>
 					<div className="account">
-						{logged === false ? (
+						{!loginOn ? (
 							<div className="loginState">
 								<Link to="/login">로그인</Link>
 								<Link to="/register">회원가입</Link>

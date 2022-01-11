@@ -106,12 +106,31 @@ class ProductsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
-    void findProducts() throws Exception {
+    void findAllProducts() throws Exception {
         //then
-        mockMvc.perform(get("/api/shops/{shopId}/products", shopId))
+        mockMvc.perform(get("/api/products", shopId))
                 .andDo(print())
                 .andDo(document("products/findAll",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].id").description("product id"),
+                                fieldWithPath("data.[].name").description("product name"),
+                                fieldWithPath("data.[].price").description("product image"),
+                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+                                fieldWithPath("data.[].image").description("product image")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findProducts() throws Exception {
+        //then
+        mockMvc.perform(get("/api/shop/{shopId}/products", shopId))
+                .andDo(print())
+                .andDo(document("products/find",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -137,7 +156,7 @@ class ProductsControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(post("/api/manager/shops/{shopId}/products", shopId)
+        ResultActions actions = mockMvc.perform(post("/api/manager/shop/{shopId}/product", shopId)
                 .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -174,7 +193,7 @@ class ProductsControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/products/{productId}", shopId, productId)
+        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
                 .header("Authorization", token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -206,7 +225,7 @@ class ProductsControllerTest {
 //    @WithMockUser(roles = "MANAGER")
     public void deleteProduct() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}/products/{productId}", shopId, productId)
+        mockMvc.perform(delete("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
                 .header("Authorization", token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("products/delete",

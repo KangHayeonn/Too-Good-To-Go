@@ -12,8 +12,4 @@ public class AddProductRequest {
     private Long price;
     private Long discountedPrice;
     private String image;
-
-//    public toServiceDto() {
-//
-//    }
 }

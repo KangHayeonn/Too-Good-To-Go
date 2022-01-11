@@ -28,7 +28,15 @@ public class ProductService implements ProductUseCase {
     private ShopRepository shopRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductDto> findAllProducts(Long shopId) {
+    public List<ProductDto> findAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDto> findProducts(Long shopId) {
         return productRepository.findAllByShopId(shopId)
                 .stream()
                 .map(ProductDto::new)
@@ -38,8 +46,6 @@ public class ProductService implements ProductUseCase {
     @Transactional
     public ProductDto addProduct(Long managerId, Long shopId, AddProductRequest request) {
         Shop shop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
-//        Shop shop = shopRepository.findById(shopId).orElseThrow();
-//        if (managerId != shop.getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         Product product = Product.builder()
                 .shop(shop)
                 .name(request.getName())
@@ -53,8 +59,6 @@ public class ProductService implements ProductUseCase {
     @Transactional
     public ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest request) {
         Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
-//        Product modifiedProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
-//        if (managerId != modifiedProduct.getShop().getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
         return new ProductDto(modifiedProduct);
     }
@@ -62,8 +66,6 @@ public class ProductService implements ProductUseCase {
     @Transactional
     public void deleteProduct(Long managerId, Long productId) {
         Product deleteProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
-//        Product deleteProduct = productRepository.findById(productId).orElseThrow(); //예외 처리!!
-//        if (managerId != deleteProduct.getShop().getUser().getId()) throw new CAccessDeniedException(); //이게 맞나....
         productRepository.deleteById(productId);
     }
 }

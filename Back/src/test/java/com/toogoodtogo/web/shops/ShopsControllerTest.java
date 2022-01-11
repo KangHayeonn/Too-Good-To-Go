@@ -105,7 +105,6 @@ class ShopsControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     void findAllShops() throws Exception {
         //then
         mockMvc.perform(get("/api/shops"))
@@ -173,7 +172,7 @@ class ShopsControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("shops/add",
+                .andDo(document("shop/add",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -193,7 +192,6 @@ class ShopsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void updateShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
@@ -236,7 +234,6 @@ class ShopsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void deleteShop() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)

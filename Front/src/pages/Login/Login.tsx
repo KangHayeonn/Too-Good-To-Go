@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
@@ -9,6 +10,8 @@ const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초�
 const Login: React.FC = () => {
 	const [inputId, setInputId] = useState("");
 	const [inputPw, setInputPw] = useState("");
+	const [errorModal, setErrorModal] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>("");
 	const history = useHistory();
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +22,12 @@ const Login: React.FC = () => {
 	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setInputPw(value);
+	};
+
+	const showErrorModal = (errorMsg: string) => {
+		return (
+			<ErrorModal setModalOpen={setErrorModal} errorMessage={errorMsg} />
+		);
 	};
 
 	const onClickLogin = () => {
@@ -44,9 +53,20 @@ const Login: React.FC = () => {
 				history.push("/");
 			})
 			.catch((e) => {
-				console.log(e);
-				console.log("로그인 실패");
-				console.error(e);
+				const { status } = e.response;
+				const { reason } = e.response.data;
+				console.log(reason);
+				console.log(status);
+				if (status === 409) {
+					if (reason === "Login Email Wrong") {
+						setErrorModal(true);
+						setErrorMessage("아이디가 틀렸습니다.");
+					} else if (reason === "Login Password Wrong") {
+						setErrorModal(true);
+						setErrorMessage("비밀번호가 틀렸습니다.");
+					} else
+						console.log("원인을 알 수 없는 에러가 발생하였습니다.");
+				}
 			});
 	};
 
@@ -109,6 +129,7 @@ const Login: React.FC = () => {
 					</Link>
 				</BtnCtn>
 			</Container>
+			{!!errorModal && showErrorModal(errorMessage)}
 		</Wrapper>
 	);
 };

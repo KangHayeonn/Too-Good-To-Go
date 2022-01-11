@@ -72,10 +72,10 @@ class SignControllerTest {
         refreshTokenRepository.deleteAllInBatch();
 
         signService.signup(UserSignupReq.builder()
-                .email("user@email.com").password("user_pw")
+                .email("user@email.com").password("user_password")
                 .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
         signService.signup(UserSignupReq.builder()
-                .email("manager@email.com").password("manager_pw")
+                .email("manager@email.com").password("manager_password")
                 .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
     }
 
@@ -93,7 +93,7 @@ class SignControllerTest {
         //given
         String object = objectMapper.writeValueAsString(UserLoginReq.builder()
                 .email(role + "@email.com")
-                .password(role + "_pw")
+                .password(role + "_password")
                 .build());
 
         //when
@@ -148,7 +148,8 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("message").description("message"),
+                                fieldWithPath("errors").description("errors")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -161,7 +162,7 @@ class SignControllerTest {
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
         String object = objectMapper.writeValueAsString(UserSignupReq.builder()
                 .email(role + "B@email.com" + time)
-                .password(role + "_pw")
+                .password(role + "_password")
                 .name(role + "B")
                 .phone("010-4444-4444")
                 .role(role.toUpperCase())
@@ -199,7 +200,7 @@ class SignControllerTest {
         //given
         String object = objectMapper.writeValueAsString(UserSignupReq.builder()
                 .email(role + "@email.com")
-                .password(role + "_pw")
+                .password(role + "_password")
                 .name(role + "B")
                 .phone("010-4444-4444")
                 .role(role.toUpperCase())
@@ -226,7 +227,8 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("message").description("message"),
+                                fieldWithPath("errors").description("errors")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -235,7 +237,7 @@ class SignControllerTest {
     @Test
     public void reissue() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_pw").build());
+        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_password").build());
         String object = objectMapper.writeValueAsString(TokenReq.builder()
                 .accessToken(userToken.getAccessToken())
                 .refreshToken(userToken.getRefreshToken())
@@ -271,7 +273,7 @@ class SignControllerTest {
     @Test
     public void logout() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_pw").build());
+        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_password").build());
 
         ResultActions actions = mockMvc.perform(get("/api/logout")
                 .header("Authorization", userToken.getAccessToken())

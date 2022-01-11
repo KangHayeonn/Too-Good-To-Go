@@ -7,12 +7,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.web.firewall.RequestRejectedException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +41,86 @@ public class ExceptionAdvice {
     protected ErrorResponse defaultException(HttpServletRequest request, Exception e) {
         log.info(String.valueOf(e));
         return new ErrorResponse("Unknown error", getMessage("unKnown.msg"));
+    }
+
+    /***
+     * -0000
+     * Request Body validation Exception
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse argumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        return new ErrorResponse("Request Body Not Valid", getMessage("requestBodyNotValid.msg"),
+                e.getBindingResult().getFieldErrors().stream().map(error ->
+                        new ErrorResponse.Error(error.getField(),
+                                error.getRejectedValue().toString(),
+                                error.getDefaultMessage())).collect(Collectors.toList()));
+    }
+
+    /***
+     * -0000
+     * Request Body field type mismatch Exception
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse argumentNotValidException(HttpServletRequest request, HttpMessageNotReadableException e) {
+        String tmp = e.getMessage();
+        return new ErrorResponse("Request Body field type is mismatch", getMessage("requestBodyTypeMismatch.msg"),
+                Collections.singletonList(new ErrorResponse.Error(
+                        tmp.split("\"")[5], tmp.split("\"")[1],
+                        tmp.split("`")[1] + " 자리에 " +
+                                tmp.substring(0, tmp.indexOf("\"")-1).split("`")[2].substring(6) + "가 들어왔습니다.")));
+    } //안되나.....
+
+    /***
+     * -1111
+     * Path Variable, Query Parameter validation Exception
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse argumentNotValidException(HttpServletRequest request, ConstraintViolationException e) {
+        return new ErrorResponse("Path Variable or Query Parameter Not Valid", getMessage("pathQueryNotValid.msg"),
+                e.getConstraintViolations().stream().map(error ->
+                        new ErrorResponse.Error(error.getPropertyPath().toString(),
+                                error.getInvalidValue().toString(),
+                                error.getMessage())).collect(Collectors.toList()));
+    }
+
+    /***
+     * -2222
+     * Path Variable missing Exception
+     */
+    @ExceptionHandler(MissingPathVariableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse pathVariableMissingException(HttpServletRequest request, MissingPathVariableException e) {
+        return new ErrorResponse("Path Variable is missing", getMessage("pathVariableMissing.msg"),
+                Collections.singletonList(new ErrorResponse.Error(e.getVariableName(), " ", e.getMessage())));
+                //이러면 error 한개만 나오지 않나?
+    }
+
+    /***
+     * -2222
+     * Query Parameter missing Exception
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse pathVariableMissingException(HttpServletRequest request, MissingServletRequestParameterException e) {
+        return new ErrorResponse("Query Parameter is missing", getMessage("queryParameterMissing.msg"),
+                Collections.singletonList(new ErrorResponse.Error(e.getParameterName(), " ", e.getMessage())));
+        //이러면 error 한개만 나오지 않나?
+    }
+
+
+    /***
+     * -3333
+     * Path Parameter Type Mismatch Exception
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse typeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException e) {
+        return new ErrorResponse("Path Parameter Type is mismatch", getMessage("pathTypeMismatch.msg"),
+                Collections.singletonList(new ErrorResponse.Error(e.getName(), e.getValue().toString(), e.getMessage())));
+        //이러면 error 한개만 나오지 않나?
     }
 
     /***
@@ -120,6 +211,16 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorResponse wrongURLException(HttpServletRequest request, NoHandlerFoundException e) {
         return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"));
+    }
+
+    /**
+     * -1008
+     * URL 에 올바르지 않은 문자가 있을 경우 발생 시키는 예외
+     */
+    @ExceptionHandler(RequestRejectedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ErrorResponse wrongStringURLException(HttpServletRequest request, RequestRejectedException e) {
+        return new ErrorResponse("Wrong String in URL", getMessage("requestRejected.msg"));
     }
 
     /**

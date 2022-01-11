@@ -2,6 +2,24 @@
 unKnown:
   code: "-9999"
   msg: "An unknown error has occurred."
+requestBodyNotValid:
+  code: "-0000"
+  msg: "Problem in Request Body."
+requestBodyTypeMismatch:
+  code: "-0000"
+  msg: "Request Body field type is mismatch."
+pathQueryNotValid:
+  code: "-1111"
+  msg: "Problem in Path variable or Query parameter."
+pathVariableMissing:
+  code: "-2222"
+  msg: "Path variable is missing."
+queryParameterMissing:
+  code: "-2222"
+  msg: "Query Parameter is missing."
+pathTypeMismatch:
+  code: "-3333"
+  msg: "Type is mismatch."
 userNotFound:
   code: "-1000"
   msg: "This member not exist"
@@ -29,6 +47,9 @@ emailSignupFailed:
 noHandlerFound:
   code: "-1008"
   msg: "Wrong URL."
+requestRejected:
+  code: "-1008"
+  msg: "URL contains characters that are not allowed"
 authenticationEntrypoint:
   code: "-1009"
   msg: "JWT is wrong."

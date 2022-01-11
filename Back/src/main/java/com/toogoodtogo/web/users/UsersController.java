@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -16,12 +18,12 @@ public class UsersController {
     private final UserUseCase userUseCase;
 
     @GetMapping("/me")
-    public ApiResponse<UserDto> userInfo(@CurrentUser User user, @RequestParam String lang) {
+    public ApiResponse<UserDto> userInfo(@CurrentUser User user/*, @RequestParam String lang*/) {
         return new ApiResponse<>(userUseCase.findUser(user.getId()));
     }
 
     @PatchMapping("/me")
-    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody UserUpdateReq userUpdateReq) {
+    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody @Valid UserUpdateReq userUpdateReq) {
         return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateReq));
     }
 }

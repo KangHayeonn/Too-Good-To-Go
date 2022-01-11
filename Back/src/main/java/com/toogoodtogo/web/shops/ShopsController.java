@@ -5,10 +5,15 @@ import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -26,17 +31,22 @@ public class ShopsController {
     }
 
     @PostMapping("/manager/shop")
-    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody ShopAddReq request) {
+    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody @Valid ShopAddReq request) {
         return new ApiResponse<>(shopUseCase.addShop(user.getId(), request));
     }
     
     @PatchMapping("/manager/shop/{shopId}")
-    public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody ShopUpdateReq request) {
+    public ApiResponse<ShopDto> updateSho
+            (@CurrentUser User user,
+             @PathVariable @Positive(message = "path 오류") Long shopId,
+             @RequestBody @Valid ShopUpdateReq request) {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
     }
 
     @DeleteMapping("/manager/shop/{shopId}")
-    public ApiResponse<String> deleteShop(@CurrentUser User user, @PathVariable Long shopId) {
+    public ApiResponse<String> deleteShop
+            (@CurrentUser User user,
+             @PathVariable @Positive(message = "path 오류") Long shopId) {
         return new ApiResponse<String>(shopUseCase.deleteShop(user.getId(), shopId));
     }
 }

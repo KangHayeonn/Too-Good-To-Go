@@ -7,6 +7,8 @@ import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api")
 @RequiredArgsConstructor
@@ -14,18 +16,18 @@ public class SignController {
     private final SignService signService;
 
     @PostMapping(value = "/login")
-    public ApiResponse<TokenDto> login(@RequestBody UserLoginReq userLoginReq) {
+    public ApiResponse<TokenDto> login(@RequestBody @Valid UserLoginReq userLoginReq) {
         TokenDto tokenDto = signService.login(userLoginReq);
         return new ApiResponse<>(tokenDto);
     }
 
     @PostMapping("/signup")
-    public ApiResponse<UserSignupRes> signup(@RequestBody UserSignupReq userSignupReq) {
+    public ApiResponse<UserSignupRes> signup(@RequestBody @Valid UserSignupReq userSignupReq) {
         return new ApiResponse<>(signService.signup(userSignupReq));
     }
 
     @PostMapping("/reissue") //토큰 재발급 요청
-    public ApiResponse<TokenDto> reissue(@RequestBody TokenReq tokenReq) {
+    public ApiResponse<TokenDto> reissue(@RequestBody @Valid TokenReq tokenReq) {
         return new ApiResponse<>(signService.reissue(tokenReq));
     }
 

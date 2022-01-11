@@ -20,23 +20,23 @@ public class ProductsController {
 
     @GetMapping("/shops/{shopId}/products")
     public ApiResponse<List<ProductDto>> findProducts(@PathVariable Long shopId) {
-        return new ApiResponse(productUseCase.findAllProducts(shopId));
+        return new ApiResponse<>(productUseCase.findAllProducts(shopId));
     }
 
     @PostMapping("/manager/shops/{shopId}/products")
     public ApiResponse<ProductDto> addProduct(@CurrentUser User user, @PathVariable Long shopId, @RequestBody AddProductRequest request) {
-        return new ApiResponse(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
+        return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
     }
 
     @PatchMapping("/manager/shop/{shopId}/products/{productId}")
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user, @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
-        return new ApiResponse(productUseCase.updateProduct(user.getId(), productId, request));
+        return new ApiResponse<>(productUseCase.updateProduct(user.getId(), productId, request));
     }
 
     @DeleteMapping("/manager/shop/{shopId}/products/{productId}")
     public ApiResponse<Long> deleteProduct(@CurrentUser User user, @PathVariable Long productId) {
         productUseCase.deleteProduct(user.getId(), productId);
-        return new ApiResponse(0L);
+        return new ApiResponse<>(0L);
     }
 }

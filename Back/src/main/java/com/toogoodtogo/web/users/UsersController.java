@@ -17,11 +17,11 @@ public class UsersController {
 
     @GetMapping("/me")
     public ApiResponse<UserDetailResponse> userInfo(@CurrentUser User user, @RequestParam String lang) {
-        return new ApiResponse(userUseCase.findUser(user.getId()));
+        return new ApiResponse<>(userUseCase.findUser(user.getId()));
     }
 
     @PatchMapping("/me")
     public ApiResponse<UserDetailResponse> updateUser (@CurrentUser User user, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return new ApiResponse(userUseCase.update(user.getId(), userUpdateRequest));
+        return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateRequest));
     }
 }

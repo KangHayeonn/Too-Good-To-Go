@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddProductRequest {
+public class ProductAddReq {
     private String name;
     private Long price;
     private Long discountedPrice;

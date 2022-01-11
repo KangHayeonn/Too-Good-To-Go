@@ -1,6 +1,5 @@
 package com.toogoodtogo.application.security;
 
-import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.configuration.security.JwtTokenProvider;
 import com.toogoodtogo.domain.security.RefreshToken;
 import com.toogoodtogo.domain.security.RefreshTokenRepository;
@@ -28,16 +27,13 @@ public class SignService {
     private final RefreshTokenRepository tokenRepository;
 
     @Transactional
-    public TokenDto login(UserLoginRequest userLoginRequest) {
+    public TokenDto login(UserLoginReq userLoginReq) {
         // 회원 정보 존재하는지 확인
-        User user = userRepository.findByEmail(userLoginRequest.getEmail())
-                .orElseThrow(CEmailLoginFailedException::new);
+        User user = userRepository.findByEmail(userLoginReq.getEmail()).orElseThrow(CEmailLoginFailedException::new);
         // 로그인 된 상태인지 확인
-        List<RefreshToken> all = tokenRepository.findAll();
         if (tokenRepository.findByUserId(user.getId()).isPresent()) throw new CAlreadyLoginException();
         // 회원 패스워드 일치 여부 확인
-        if (!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword()))
-            throw new CPasswordLoginFailedException();
+        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())) throw new CPasswordLoginFailedException();
         // AccessToken, RefreshToken 발급
         TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장
@@ -50,10 +46,9 @@ public class SignService {
     }
 
     @Transactional
-    public UserSignupResponse signup(UserSignupRequest userSignupDto) {
-        if (userRepository.findByEmail(userSignupDto.getEmail()).isPresent())
-            throw new CEmailSignupFailedException();
-        return new UserSignupResponse(userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId());
+    public UserSignupRes signup(UserSignupReq userSignupDto) {
+        if (userRepository.findByEmail(userSignupDto.getEmail()).isPresent()) throw new CEmailSignupFailedException();
+        return new UserSignupRes(userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId());
     }
 
 //    @Transactional
@@ -66,21 +61,18 @@ public class SignService {
 //    }
 
     @Transactional
-    public TokenDto reissue(TokenRequest tokenRequest) {
+    public TokenDto reissue(TokenReq tokenReq) {
         // 만료된 refresh token 에러
-        if (!jwtTokenProvider.validationToken(tokenRequest.getRefreshToken())) {
+        if (!jwtTokenProvider.validationToken(tokenReq.getRefreshToken()))
             throw new CRefreshTokenException();
-        }
         // AccessToken 에서 Username (pk) 가져오기
-        String accessToken = tokenRequest.getAccessToken();
+        String accessToken = tokenReq.getAccessToken();
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
         // user pk로 유저 검색 / repo 에 저장된 Refresh Token 이 없음
-        User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(CUserNotFoundException::new);
-        RefreshToken refreshToken = tokenRepository.findByUserId(user.getId())
-                .orElseThrow(CRefreshTokenException::new);
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(CUserNotFoundException::new);
+        RefreshToken refreshToken = tokenRepository.findByUserId(user.getId()).orElseThrow(CRefreshTokenException::new);
         // 리프레시 토큰 불일치 에러
-        if (!refreshToken.getToken().equals(tokenRequest.getRefreshToken()))
+        if (!refreshToken.getToken().equals(tokenReq.getRefreshToken()))
             throw new CRefreshTokenException();
         // AccessToken, RefreshToken 토큰 재발급, 리프레쉬 토큰 저장
         TokenDto newCreatedToken = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());

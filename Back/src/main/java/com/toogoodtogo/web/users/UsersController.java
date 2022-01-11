@@ -16,12 +16,12 @@ public class UsersController {
     private final UserUseCase userUseCase;
 
     @GetMapping("/me")
-    public ApiResponse<UserDetailResponse> userInfo(@CurrentUser User user, @RequestParam String lang) {
+    public ApiResponse<UserDto> userInfo(@CurrentUser User user, @RequestParam String lang) {
         return new ApiResponse<>(userUseCase.findUser(user.getId()));
     }
 
     @PatchMapping("/me")
-    public ApiResponse<UserDetailResponse> updateUser (@CurrentUser User user, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateRequest));
+    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody UserUpdateReq userUpdateReq) {
+        return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateReq));
     }
 }

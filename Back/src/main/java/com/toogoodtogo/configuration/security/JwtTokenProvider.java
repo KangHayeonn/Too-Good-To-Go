@@ -33,7 +33,6 @@ public class JwtTokenProvider {
     private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1 hour
     private final Long refreshTokenValidMillisecond = 14 * 24 * 60 * 60 * 1000L; // 14 day
     private final UserDetailsService userDetailsService;
-    //private final CustomUserDetailsService userDetailsService;
 
     @PostConstruct
     // Jwt 생성 시 서명으로 사용할 secret key를 BASE64로 인코딩

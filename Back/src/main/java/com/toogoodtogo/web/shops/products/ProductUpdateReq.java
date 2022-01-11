@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.shops;
+package com.toogoodtogo.web.shops.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateShopRequest {
+public class ProductUpdateReq {
     private String name;
+    private Long price;
+    private Long discountedPrice;
     private String image;
-    private String[] category;
-    private String phone;
-    private String address;
-    private String open;
-    private String close;
 }

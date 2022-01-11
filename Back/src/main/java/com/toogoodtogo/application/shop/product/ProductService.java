@@ -1,17 +1,17 @@
 package com.toogoodtogo.application.shop.product;
 
 import com.toogoodtogo.advice.exception.CAccessDeniedException;
+import com.toogoodtogo.advice.exception.CProductNotFoundException;
+import com.toogoodtogo.advice.exception.CShopNotFoundException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.web.shops.products.AddProductRequest;
+import com.toogoodtogo.web.shops.products.ProductAddReq;
 import com.toogoodtogo.web.shops.products.ProductDto;
-import com.toogoodtogo.web.shops.products.UpdateProductRequest;
-import com.toogoodtogo.web.users.UserDetailResponse;
+import com.toogoodtogo.web.shops.products.ProductUpdateReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +44,8 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto addProduct(Long managerId, Long shopId, AddProductRequest request) {
-        Shop shop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CAccessDeniedException::new);
+    public ProductDto addProduct(Long managerId, Long shopId, ProductAddReq request) {
+        Shop shop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CShopNotFoundException::new);
         Product product = Product.builder()
                 .shop(shop)
                 .name(request.getName())
@@ -57,15 +57,15 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest request) {
-        Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
+    public ProductDto updateProduct(Long managerId, Long productId, ProductUpdateReq request) {
+        Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CProductNotFoundException::new);
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
         return new ProductDto(modifiedProduct);
     }
 
     @Transactional
     public String deleteProduct(Long managerId, Long productId) {
-        productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CAccessDeniedException::new);
+        if (!productRepository.findByUserIdAndId(managerId, productId).isPresent()) throw new CProductNotFoundException();
         productRepository.deleteById(productId);
         return "success";
     }

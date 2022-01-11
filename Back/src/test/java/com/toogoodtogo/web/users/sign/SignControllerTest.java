@@ -71,10 +71,10 @@ class SignControllerTest {
         userRepository.deleteAllInBatch();
         refreshTokenRepository.deleteAllInBatch();
 
-        signService.signup(UserSignupRequest.builder()
+        signService.signup(UserSignupReq.builder()
                 .email("user@email.com").password("user_pw")
                 .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
-        signService.signup(UserSignupRequest.builder()
+        signService.signup(UserSignupReq.builder()
                 .email("manager@email.com").password("manager_pw")
                 .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
     }
@@ -91,7 +91,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_success(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+        String object = objectMapper.writeValueAsString(UserLoginReq.builder()
                 .email(role + "@email.com")
                 .password(role + "_pw")
                 .build());
@@ -127,7 +127,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+        String object = objectMapper.writeValueAsString(UserLoginReq.builder()
                 .email(role + "@email.com")
                 .password("wrongPassword")
                 .build());
@@ -159,7 +159,7 @@ class SignControllerTest {
     public void signUp_success(String role) throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
+        String object = objectMapper.writeValueAsString(UserSignupReq.builder()
                 .email(role + "B@email.com" + time)
                 .password(role + "_pw")
                 .name(role + "B")
@@ -197,7 +197,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void signUp_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
+        String object = objectMapper.writeValueAsString(UserSignupReq.builder()
                 .email(role + "@email.com")
                 .password(role + "_pw")
                 .name(role + "B")
@@ -235,8 +235,8 @@ class SignControllerTest {
     @Test
     public void reissue() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginRequest.builder().email("user@email.com").password("user_pw").build());
-        String object = objectMapper.writeValueAsString(TokenRequest.builder()
+        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_pw").build());
+        String object = objectMapper.writeValueAsString(TokenReq.builder()
                 .accessToken(userToken.getAccessToken())
                 .refreshToken(userToken.getRefreshToken())
                 .build());
@@ -271,7 +271,7 @@ class SignControllerTest {
     @Test
     public void logout() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginRequest.builder().email("user@email.com").password("user_pw").build());
+        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_pw").build());
 
         ResultActions actions = mockMvc.perform(get("/api/logout")
                 .header("Authorization", userToken.getAccessToken())

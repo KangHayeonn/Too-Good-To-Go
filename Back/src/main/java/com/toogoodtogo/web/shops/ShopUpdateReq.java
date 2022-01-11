@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddShopRequest {
+public class ShopUpdateReq {
     private String name;
     private String image;
     private String[] category;

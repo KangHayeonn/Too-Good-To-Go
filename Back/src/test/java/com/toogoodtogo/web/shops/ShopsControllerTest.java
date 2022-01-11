@@ -10,7 +10,7 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
+import com.toogoodtogo.web.users.sign.UserLoginReq;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,7 +89,7 @@ class ShopsControllerTest {
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("shopTest@email.com").password("password").build());
+        token = signService.login(UserLoginReq.builder().email("shopTest@email.com").password("password").build());
 
         Shop shop1 = Shop.builder()
                 .user(manager).name("shop1").image("test1").category(new String[]{"한식"}).phone("010-1234-5678")
@@ -163,7 +163,7 @@ class ShopsControllerTest {
     @Test
     void addShop() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(AddShopRequest.builder()
+        String object = objectMapper.writeValueAsString(ShopAddReq.builder()
                 .name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
 
@@ -199,7 +199,7 @@ class ShopsControllerTest {
     @Test
     public void updateShop() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
+        String object = objectMapper.writeValueAsString(ShopUpdateReq.builder()
                 .name("shop3")
                 .image("test3")
                 .category(new String[]{"일식"})

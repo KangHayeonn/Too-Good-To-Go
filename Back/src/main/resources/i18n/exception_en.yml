@@ -5,39 +5,48 @@ unKnown:
 userNotFound:
   code: "-1000"
   msg: "This member not exist"
-emailLoginFailed:
+shopNotFound:
   code: "-1001"
+  msg: "This shop not exist"
+productNotFound:
+  code: "-1002"
+  msg: "This product not exist"
+emailLoginFailed:
+  code: "-1003"
   msg: "It's an ID you didn't sign up for."
 passwordLoginFailed:
-  code: "-1001"
+  code: "-1004"
   msg: "It's an incorrect password."
 alreadyLoginFailed:
-  code: "-1001"
+  code: "-1005"
   msg: "It's already logged in."
 noLoginFailed:
-  code: "-1001"
+  code: "-1006"
   msg: "It's not logged in"
 emailSignupFailed:
-  code: "-1002"
+  code: "-1007"
   msg: "This email is already subscribed."
+noHandlerFound:
+  code: "-1008"
+  msg: "Wrong URL."
 authenticationEntrypoint:
-  code: "-1003"
-  msg: "You do not have permission to access that resource."
+  code: "-1009"
+  msg: "JWT is wrong."
 accessDenied:
-  code: "-1004"
+  code: "-1010"
   msg: "Permission not accessible to this resource."
 refreshTokenInValid:
-  code: "-1005"
+  code: "-1011"
   msg: "Refresh Token is Wrong."
 expiredAccessToken:
-  code: "-1006"
+  code: "-1012"
   msg: "AccessToken is Expired"
 communicationException:
-  code: "-1007"
+  code: "-1013"
   msg: "An error occurred during the social authentication process."
 userExistException:
-  code: "-1008"
+  code: "-1014"
   msg: "Already signed account, please login."
 agreementException:
-  code: "-1009"
+  code: "-1015"
   msg: "A consent is required for the required consent item."

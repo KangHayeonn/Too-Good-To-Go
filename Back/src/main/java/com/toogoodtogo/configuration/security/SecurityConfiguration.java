@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/me", "/api/reissue", "/api/logout").hasAnyRole("USER", "MANAGER")
                 .antMatchers("/h2-console/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .anyRequest().denyAll()
+//                .anyRequest().denyAll()
 
                 .and()
                 .exceptionHandling()

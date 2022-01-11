@@ -8,7 +8,7 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
+import com.toogoodtogo.web.users.sign.UserLoginReq;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,7 +82,7 @@ class UsersControllerTest {
                 .role("ROLE_USER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("email@email.com").password("password").build());
+        token = signService.login(UserLoginReq.builder().email("email@email.com").password("password").build());
     }
 
     @AfterEach
@@ -122,7 +122,7 @@ class UsersControllerTest {
     @Test
     public void updateUser() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
+        String object = objectMapper.writeValueAsString(UserUpdateReq.builder()
                 .password("new_password")
                 .phone("010-1234-5678")
                 .build());

@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "refresh_token")
@@ -28,11 +29,5 @@ public class RefreshToken extends BaseTimeEntity {
     public RefreshToken updateToken(String token) {
         this.token = token;
         return this;
-    }
-
-    @Builder
-    public RefreshToken(Long userId, String token) {
-        this.userId = userId;
-        this.token = token;
     }
 }

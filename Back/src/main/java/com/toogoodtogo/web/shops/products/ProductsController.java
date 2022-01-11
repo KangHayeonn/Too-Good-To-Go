@@ -2,7 +2,6 @@ package com.toogoodtogo.web.shops.products;
 
 import com.toogoodtogo.application.shop.product.ProductUseCase;
 import com.toogoodtogo.configuration.security.CurrentUser;
-import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +26,13 @@ public class ProductsController {
     }
 
     @PostMapping("/manager/shop/{shopId}/product")
-    public ApiResponse<ProductDto> addProduct(@CurrentUser User user, @PathVariable Long shopId, @RequestBody AddProductRequest request) {
+    public ApiResponse<ProductDto> addProduct(@CurrentUser User user, @PathVariable Long shopId, @RequestBody ProductAddReq request) {
         return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
     }
 
     @PatchMapping("/manager/shop/{shopId}/product/{productId}")
     public ApiResponse<ProductDto> updateProduct(
-            @CurrentUser User user, @PathVariable Long productId, @RequestBody UpdateProductRequest request) {
+            @CurrentUser User user, @PathVariable Long productId, @RequestBody ProductUpdateReq request) {
         return new ApiResponse<>(productUseCase.updateProduct(user.getId(), productId, request));
     }
 

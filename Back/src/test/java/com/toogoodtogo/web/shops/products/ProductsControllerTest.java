@@ -10,7 +10,7 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
+import com.toogoodtogo.web.users.sign.UserLoginReq;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,7 +91,7 @@ class ProductsControllerTest {
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("productTest@email.com").password("password").build());
+        token = signService.login(UserLoginReq.builder().email("productTest@email.com").password("password").build());
 
         Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(new String[]{"한식"}).build();
         shopRepository.save(shop);
@@ -153,7 +153,7 @@ class ProductsControllerTest {
     @Test
     void addProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(AddProductRequest.builder()
+        String object = objectMapper.writeValueAsString(ProductAddReq.builder()
                 .name("미역국")
                 .price(9000L)
                 .discountedPrice(8000L)
@@ -187,10 +187,9 @@ class ProductsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void updateProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UpdateProductRequest.builder()
+        String object = objectMapper.writeValueAsString(ProductUpdateReq.builder()
                 .name("북어국")
                 .price(8000L)
                 .discountedPrice(7000L)
@@ -227,7 +226,6 @@ class ProductsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void deleteProduct() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)

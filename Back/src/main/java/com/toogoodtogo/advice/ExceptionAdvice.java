@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,6 +44,26 @@ public class ExceptionAdvice {
 
     /***
      * -1001
+     * 가게를 찾지 못했을 때 발생시키는 예외
+     */
+    @ExceptionHandler(CShopNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse shopNotFoundException(HttpServletRequest request, CShopNotFoundException e) {
+        return new ErrorResponse("Shop Not Found", getMessage("shopNotFound.msg"));
+    }
+
+    /***
+     * -1002
+     * 상품를 찾지 못했을 때 발생시키는 예외
+     */
+    @ExceptionHandler(CProductNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse productNotFoundException(HttpServletRequest request, CProductNotFoundException e) {
+        return new ErrorResponse("Product Not Found", getMessage("productNotFound.msg"));
+    }
+
+    /***
+     * -1003
      * 유저 이메일 로그인 시 이메일이 틀렸을때 발생시키는 예외
      */
     @ExceptionHandler(CEmailLoginFailedException.class)
@@ -52,7 +73,7 @@ public class ExceptionAdvice {
     }
 
     /***
-     * -1001
+     * -1004
      * 유저 이메일 로그인 시 비밀번호가 틀렸을때 발생시키는 예외
      */
     @ExceptionHandler(CPasswordLoginFailedException.class)
@@ -62,7 +83,7 @@ public class ExceptionAdvice {
     }
 
     /***
-     * -1001
+     * -1005
      * 로그인 시 이미 로그인 된 유저일때 발생시키는 예외
      */
     @ExceptionHandler(CAlreadyLoginException.class)
@@ -72,7 +93,7 @@ public class ExceptionAdvice {
     }
 
     /***
-     * -1001
+     * -1006
      * 로그아웃 시 로그인 되지 않은 유저일때 발생시키는 예외
      */
     @ExceptionHandler(CNoLoginException.class)
@@ -82,7 +103,7 @@ public class ExceptionAdvice {
     }
 
     /***
-     * -1002
+     * -1007
      * 회원 가입 시 이미 로그인 된 이메일인 경우 발생 시키는 예외
      */
     @ExceptionHandler(CEmailSignupFailedException.class)
@@ -92,7 +113,17 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1003
+     * -1008
+     * 틀린 URL 로 접근했을 경우 발생 시키는 예외
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ErrorResponse wrongURLException(HttpServletRequest request, NoHandlerFoundException e) {
+        return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"));
+    }
+
+    /**
+     * -1009
      * 전달한 Jwt 이 정상적이지 않은 경우 발생 시키는 예외
      */
     @ExceptionHandler(CAuthenticationEntryPointException.class)
@@ -102,7 +133,7 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1004
+     * -1010
      * 권한이 없는 리소스를 요청한 경우 발생 시키는 예외
      */
     @ExceptionHandler(CAccessDeniedException.class)
@@ -111,8 +142,9 @@ public class ExceptionAdvice {
         return new ErrorResponse("Access Denied", getMessage("accessDenied.msg"));
     }
 
+
     /**
-     * -1005
+     * -1011
      * refresh token 에러시 발생 시키는 에러
      */
     @ExceptionHandler(CRefreshTokenException.class)
@@ -122,7 +154,7 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1006
+     * -1012
      * 액세스 토큰 만료시 발생하는 에러
      */
     @ExceptionHandler(CExpiredAccessTokenException.class)
@@ -132,7 +164,7 @@ public class ExceptionAdvice {
     }
 
 //    /***
-//     * -1007
+//     * -1013
 //     * Social 인증 과정에서 문제 발생하는 에러
 //     */
 //    @ExceptionHandler(CCommunicationException.class)
@@ -144,7 +176,7 @@ public class ExceptionAdvice {
 //    }
 
     /***
-     * -1008
+     * -1014
      * 기 가입자 에러
      */
     @ExceptionHandler(CUserExistException.class)
@@ -154,7 +186,7 @@ public class ExceptionAdvice {
     }
 
 //    /***
-//     * -1009
+//     * -1015
 //     * 소셜 로그인 시 필수 동의항목 미동의시 에러
 //     */
 //    @ExceptionHandler(CSocialAgreementException.class)

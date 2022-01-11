@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSignupRequest {
+public class UserSignupReq {
     private String email;
     private String password;
     private String name;

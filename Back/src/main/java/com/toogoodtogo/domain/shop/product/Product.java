@@ -1,17 +1,16 @@
 package com.toogoodtogo.domain.shop.product;
 
 import com.toogoodtogo.domain.shop.Shop;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue
@@ -28,15 +27,6 @@ public class Product {
     private Long discountedPrice;
 
     private String image;
-
-    @Builder
-    public Product(Shop shop, String name, Long price, Long discountedPrice, String image) {
-        this.shop = shop;
-        this.name = name;
-        this.price = price;
-        this.discountedPrice = discountedPrice;
-        this.image = image;
-    }
 
     public void update(String name, Long price, Long discountedPrice, String image) {
         this.name = name;

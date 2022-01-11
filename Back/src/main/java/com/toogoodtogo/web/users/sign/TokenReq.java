@@ -4,12 +4,12 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TokenRequest {
+public class TokenReq {
     String accessToken;
     String refreshToken;
 
     @Builder
-    public TokenRequest(String accessToken, String refreshToken) {
+    public TokenReq(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

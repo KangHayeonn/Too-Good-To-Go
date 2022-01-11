@@ -26,12 +26,12 @@ public class ShopsController {
     }
 
     @PostMapping("/manager/shop")
-    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody AddShopRequest request) {
+    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody ShopAddReq request) {
         return new ApiResponse<>(shopUseCase.addShop(user.getId(), request));
     }
     
     @PatchMapping("/manager/shop/{shopId}")
-    public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody UpdateShopRequest request) {
+    public ApiResponse<ShopDto> updateShop(@CurrentUser User user, @PathVariable Long shopId, @RequestBody ShopUpdateReq request) {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
     }
 

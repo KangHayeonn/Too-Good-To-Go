@@ -14,19 +14,19 @@ public class SignController {
     private final SignService signService;
 
     @PostMapping(value = "/login")
-    public ApiResponse<TokenDto> login(@RequestBody UserLoginRequest userLoginRequest) {
-        TokenDto tokenDto = signService.login(userLoginRequest);
+    public ApiResponse<TokenDto> login(@RequestBody UserLoginReq userLoginReq) {
+        TokenDto tokenDto = signService.login(userLoginReq);
         return new ApiResponse<>(tokenDto);
     }
 
     @PostMapping("/signup")
-    public ApiResponse<UserSignupResponse> signup(@RequestBody UserSignupRequest userSignupRequest) {
-        return new ApiResponse<>(signService.signup(userSignupRequest));
+    public ApiResponse<UserSignupRes> signup(@RequestBody UserSignupReq userSignupReq) {
+        return new ApiResponse<>(signService.signup(userSignupReq));
     }
 
     @PostMapping("/reissue") //토큰 재발급 요청
-    public ApiResponse<TokenDto> reissue(@RequestBody TokenRequest tokenRequest) {
-        return new ApiResponse<>(signService.reissue(tokenRequest));
+    public ApiResponse<TokenDto> reissue(@RequestBody TokenReq tokenReq) {
+        return new ApiResponse<>(signService.reissue(tokenReq));
     }
 
     @GetMapping("/logout")

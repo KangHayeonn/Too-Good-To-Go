@@ -246,7 +246,7 @@ class SignControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/reissue")
                 .content(object)
-                .header("Authorization", userToken.getAccessToken())
+                .header("Authorization", "Bearer " + userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -276,7 +276,7 @@ class SignControllerTest {
         TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_password").build());
 
         ResultActions actions = mockMvc.perform(get("/api/logout")
-                .header("Authorization", userToken.getAccessToken())
+                .header("Authorization", "Bearer " + userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         //then

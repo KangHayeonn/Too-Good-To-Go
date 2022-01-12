@@ -139,7 +139,7 @@ class ShopsControllerTest {
     void findShops() throws Exception {
         //then
         mockMvc.perform(get("/api/manager/shops")
-                .header("Authorization", token.getAccessToken()))
+                .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/find",
                         preprocessRequest(prettyPrint()),
@@ -169,7 +169,7 @@ class ShopsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/manager/shop")
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -211,7 +211,7 @@ class ShopsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -242,7 +242,7 @@ class ShopsControllerTest {
     public void deleteShop() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)
-                .header("Authorization", token.getAccessToken()))
+                .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",
                         preprocessRequest(prettyPrint()),

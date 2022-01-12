@@ -47,27 +47,24 @@ emailSignupFailed:
 noHandlerFound:
   code: "-1008"
   msg: "Wrong URL."
-requestRejected:
-  code: "-1009"
-  msg: "URL contains characters that are not allowed"
 authenticationEntrypoint:
-  code: "-1010"
+  code: "-1009"
   msg: "JWT is wrong."
 accessDenied:
-  code: "-1011"
+  code: "-1010"
   msg: "Permission not accessible to this resource."
 refreshTokenInValid:
-  code: "-1012"
+  code: "-1011"
   msg: "Refresh Token is Wrong."
 expiredAccessToken:
-  code: "-1013"
+  code: "-1012"
   msg: "AccessToken is Expired"
 communicationException:
-  code: "-1014"
+  code: "-1013"
   msg: "An error occurred during the social authentication process."
 userExistException:
-  code: "-1015"
+  code: "-1014"
   msg: "Already signed account, please login."
 agreementException:
-  code: "-1016"
+  code: "-1015"
   msg: "A consent is required for the required consent item."

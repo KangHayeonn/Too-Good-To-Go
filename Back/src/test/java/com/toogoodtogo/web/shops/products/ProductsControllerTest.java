@@ -162,7 +162,7 @@ class ProductsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/manager/shop/{shopId}/product", shopId)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -198,7 +198,7 @@ class ProductsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -229,7 +229,7 @@ class ProductsControllerTest {
     public void deleteProduct() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
-                .header("Authorization", token.getAccessToken()))
+                .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("products/delete",
                         preprocessRequest(prettyPrint()),

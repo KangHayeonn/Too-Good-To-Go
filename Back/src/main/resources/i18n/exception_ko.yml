@@ -47,27 +47,24 @@ emailSignupFailed:
 noHandlerFound:
   code: "-1008"
   msg: "없는 URL 입니다."
-requestRejected:
-  code: "-1009"
-  msg: "URL 에 허용되지 않은 문자가 포함되어 있습니다."
 authenticationEntrypoint:
-  code: "-1010"
+  code: "-1009"
   msg: "토큰이 비정상적입니다."
 accessDenied:
-  code: "-1011"
+  code: "-1010"
   msg: "해당 리소스에 접근할 수 없는 권한입니다."
 refreshTokenInValid:
-  code: "-1012"
+  code: "-1011"
   msg: "리프레쉬 토큰이 잘못되었습니다."
 expiredAccessToken:
-  code: "-1013"
+  code: "-1012"
   msg: "액세스 토큰이 만료되었습니다."
 communicationException:
-  code: "-1014"
+  code: "-1013"
   msg: "소셜 인증 과정 중 오류가 발생했습니다."
 userExistException:
-  code: "-1015"
+  code: "-1014"
   msg: "이미 가입된 계정입니다. 로그인을 해주세요"
 agreementException:
-  code: "-1016"
+  code: "-1015"
   msg: "필수동의 항목에 대해 동의가 필요합니다."

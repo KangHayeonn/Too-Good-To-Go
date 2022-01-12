@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -99,11 +100,14 @@ public class JwtTokenProvider {
         }
     }
 
-    // HTTP Request 의 Header 에서 Token Parsing -> "X-AUTH-TOKEN: jwt"
+    // HTTP Request 의 Header 에서 Token Parsing -> "Authorization: jwt"
     // HTTP Request header에서 세팅된 토큰값 가져와서 유효성 검사
     // 제한된 리소스에 접근할 때 Http header에 토큰 세팅하여 호출하면 유효성 검사 통해 사용자 인증 받을 수 있다.
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization"); //X-AUTH-TOKEN -> Authorization
+        String authHeader = request.getHeader("Authorization");
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer "))
+            return authHeader.substring(7);
+        return null;
     }
 
     // jwt 의 유효성 및 만료일자 확인

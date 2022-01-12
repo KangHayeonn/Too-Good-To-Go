@@ -97,7 +97,7 @@ class UsersControllerTest {
     public void findUserInfo() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(get("/api/me")
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .param("lang", "ko"));
         //then
         //when
@@ -130,7 +130,7 @@ class UsersControllerTest {
         //when
         ResultActions actions = mockMvc.perform(patch("/api/me")
                 .content(object)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 

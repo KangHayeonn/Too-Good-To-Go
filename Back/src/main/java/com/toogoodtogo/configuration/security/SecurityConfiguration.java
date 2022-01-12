@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -60,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
                 .antMatchers("/api/me", "/api/reissue", "/api/logout").hasAnyRole("USER", "MANAGER")
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/h2-console/**", "/favicon.ico").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 //                .anyRequest().denyAll()
 
@@ -79,6 +81,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**");
         // static 경로
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        // 더블 슬래시 허용
+        web.httpFirewall(defaultHttpFirewall());
     }
 
     @Bean
@@ -97,5 +101,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public HttpFirewall defaultHttpFirewall() { //더블 슬래시 허용
+        return new DefaultHttpFirewall();
     }
 }

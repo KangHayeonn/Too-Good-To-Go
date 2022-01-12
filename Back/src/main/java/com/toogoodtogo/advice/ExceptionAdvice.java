@@ -202,17 +202,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorResponse wrongURLException(HttpServletRequest request, NoHandlerFoundException e) {
-        return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"));
-    }
-
-    /**
-     * -1008
-     * URL 에 올바르지 않은 문자가 있을 경우 발생 시키는 예외
-     */
-    @ExceptionHandler(RequestRejectedException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ErrorResponse wrongStringURLException(HttpServletRequest request, RequestRejectedException e) {
-        return new ErrorResponse("Wrong String in URL", getMessage("requestRejected.msg"));
+        return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"),
+                Collections.singletonList(new ErrorResponse.Error("url", e.getRequestURL(), "Wrong URL")));
     }
 
     /**
@@ -234,7 +225,6 @@ public class ExceptionAdvice {
     protected ErrorResponse accessDeniedException(HttpServletRequest request, CAccessDeniedException e) {
         return new ErrorResponse("Access Denied", getMessage("accessDenied.msg"));
     }
-
 
     /**
      * -1011

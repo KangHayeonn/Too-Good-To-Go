@@ -4,22 +4,22 @@ unKnown:
   msg: "An unknown error has occurred."
 requestBodyNotValid:
   code: "-0000"
-  msg: "Problem in Request Body."
-requestBodyTypeMismatch:
-  code: "-0000"
-  msg: "Request Body field type is mismatch."
-pathQueryNotValid:
+  msg: "Request Body field is wrong."
+requestBodyWrong:
   code: "-1111"
+  msg: "Problem in Request Body."
+pathQueryNotValid:
+  code: "-2222"
   msg: "Problem in Path variable or Query parameter."
 pathVariableMissing:
-  code: "-2222"
-  msg: "Path variable is missing."
-queryParameterMissing:
-  code: "-2222"
-  msg: "Query Parameter is missing."
-pathTypeMismatch:
   code: "-3333"
-  msg: "Type is mismatch."
+  msg: "Path variable is missing."
+pathVariableTypeMismatch:
+  code: "-4444"
+  msg: "Path variable type is mismatch."
+queryParameterMissing:
+  code: "-5555"
+  msg: "Query parameter is missing."
 userNotFound:
   code: "-1000"
   msg: "This member not exist"
@@ -48,26 +48,26 @@ noHandlerFound:
   code: "-1008"
   msg: "Wrong URL."
 requestRejected:
-  code: "-1008"
+  code: "-1009"
   msg: "URL contains characters that are not allowed"
 authenticationEntrypoint:
-  code: "-1009"
+  code: "-1010"
   msg: "JWT is wrong."
 accessDenied:
-  code: "-1010"
+  code: "-1011"
   msg: "Permission not accessible to this resource."
 refreshTokenInValid:
-  code: "-1011"
+  code: "-1012"
   msg: "Refresh Token is Wrong."
 expiredAccessToken:
-  code: "-1012"
+  code: "-1013"
   msg: "AccessToken is Expired"
 communicationException:
-  code: "-1013"
+  code: "-1014"
   msg: "An error occurred during the social authentication process."
 userExistException:
-  code: "-1014"
+  code: "-1015"
   msg: "Already signed account, please login."
 agreementException:
-  code: "-1015"
+  code: "-1016"
   msg: "A consent is required for the required consent item."

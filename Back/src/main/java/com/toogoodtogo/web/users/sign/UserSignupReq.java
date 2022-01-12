@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 public class UserSignupReq {
     @Email(message = "Email 형식이 아닙니다.")
     @NotBlank(message = "이메일은 필수 값입니다.")
+    @Pattern(regexp = "[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}", message = "Email 형식이 아닙니다.")
     private String email;
     @NotBlank(message = "비밀번호는 필수 값입니다.")
     @Length(min = 8, message = "비밀번호는 최소 {min}자 이상입니다.")

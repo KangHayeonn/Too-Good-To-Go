@@ -4,22 +4,22 @@ unKnown:
   msg: "알수 없는 오류가 발생하였습니다."
 requestBodyNotValid:
   code: "-0000"
-  msg: "Request Body 에 문제가 있습니다."
-requestBodyTypeMismatch:
-  code: "-0000"
-  msg: "Request Body 의 필드의 타입이 틀립니다."
-pathQueryNotValid:
+  msg: "Request body field 에 문제가 있습니다."
+requestBodyWrong:
   code: "-1111"
+  msg: "Request body 에 문제가 있습니다."
+pathQueryNotValid:
+  code: "-2222"
   msg: "Path variable 혹은 Query parameter 에 문제가 있습니다."
 pathVariableMissing:
-  code: "-2222"
-  msg: "Path variable 이 없습니다."
-queryParameterMissing:
-  code: "-2222"
-  msg: "Query Parameter 가 없습니다."
-pathTypeMismatch:
   code: "-3333"
-  msg: "타입이 잘못되었습니다."
+  msg: "Path variable 이 없습니다."
+pathVariableTypeMismatch:
+  code: "-4444"
+  msg: "Path variable 타입이 잘못되었습니다."
+queryParameterMissing:
+  code: "-5555"
+  msg: "Query parameter 가 없습니다."
 userNotFound:
   code: "-1000"
   msg: "존재하지 않는 회원입니다."
@@ -48,26 +48,26 @@ noHandlerFound:
   code: "-1008"
   msg: "없는 URL 입니다."
 requestRejected:
-  code: "-1008"
+  code: "-1009"
   msg: "URL 에 허용되지 않은 문자가 포함되어 있습니다."
 authenticationEntrypoint:
-  code: "-1009"
-  msg: "JWT 가 비정상적입니다."
-accessDenied:
   code: "-1010"
+  msg: "토큰이 비정상적입니다."
+accessDenied:
+  code: "-1011"
   msg: "해당 리소스에 접근할 수 없는 권한입니다."
 refreshTokenInValid:
-  code: "-1011"
+  code: "-1012"
   msg: "리프레쉬 토큰이 잘못되었습니다."
 expiredAccessToken:
-  code: "-1012"
+  code: "-1013"
   msg: "액세스 토큰이 만료되었습니다."
 communicationException:
-  code: "-1013"
+  code: "-1014"
   msg: "소셜 인증 과정 중 오류가 발생했습니다."
 userExistException:
-  code: "-1014"
+  code: "-1015"
   msg: "이미 가입된 계정입니다. 로그인을 해주세요"
 agreementException:
-  code: "-1015"
+  code: "-1016"
   msg: "필수동의 항목에 대해 동의가 필요합니다."

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -19,6 +20,7 @@ import javax.validation.constraints.Size;
 public class UserLoginReq {
     @Email(message = "Email 형식이 아닙니다.")
     @NotBlank(message = "이메일은 필수 값입니다.")
+    @Pattern(regexp = "[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}",message = "Email 형식이 아닙니다.")
     private String email;
     @NotBlank(message = "비밀번호는 필수 값입니다.")
     @Length(min = 8, message = "비밀번호는 최소 {min}자 이상입니다.")

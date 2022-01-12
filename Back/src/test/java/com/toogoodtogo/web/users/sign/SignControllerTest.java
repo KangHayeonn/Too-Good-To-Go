@@ -161,7 +161,7 @@ class SignControllerTest {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
         String object = objectMapper.writeValueAsString(UserSignupReq.builder()
-                .email(role + "B@email.com" + time)
+                .email(role + "B@email.com")
                 .password(role + "_password")
                 .name(role + "B")
                 .phone("010-4444-4444")

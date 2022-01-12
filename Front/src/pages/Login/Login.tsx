@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
+import { setSessionToken } from "../../helpers/tokenControl";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
@@ -12,6 +13,8 @@ const Login: React.FC = () => {
 	const [inputPw, setInputPw] = useState("");
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
 	const history = useHistory();
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +51,12 @@ const Login: React.FC = () => {
 					? `${accessToken}`
 					: "";
 				console.log("로그인 성공");
+
+				// 지훈-storing token into local storage
+				setSessionToken(accessToken);
+
+				// 지훈-take user info from the resposne body, and store it into global state for other files to use user info state.
+
 				// accessToken 만료하기 1분 전에 로그인 연장
 				setTimeout(onSlientRefresh, JWT_EXPIREY_TIME - 60000);
 				history.push("/");
@@ -69,7 +78,10 @@ const Login: React.FC = () => {
 				}
 			});
 	};
-
+	console.log(
+		"axios default header of token: ",
+		axios.defaults.headers.common.Authorization
+	);
 	const onSlientRefresh = () => {
 		axios
 			.post("/slient-refresh", {
@@ -89,11 +101,6 @@ const Login: React.FC = () => {
 	return (
 		<Wrapper>
 			<Container>
-				<TitleCtn>
-					<h4>로그인</h4>
-					<img src="image/Line 13.png" alt="" />
-					<h4>SIGN IN</h4>
-				</TitleCtn>
 				<InputCtn>
 					<input
 						className="id input"

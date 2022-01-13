@@ -28,8 +28,8 @@ const MenuCards: React.FC = () => {
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
 		// Will return cards only with cartItemQuantity >= 1
-		return state.selectCartCards.filter((e) => {
-			return e.cartItemQuantity;
+		return state.selectMenuItems.filter((e) => {
+            return (e.cartItemQuantity > 0) ? e.cartItemQuantity : 1;
 		});
 	});
 

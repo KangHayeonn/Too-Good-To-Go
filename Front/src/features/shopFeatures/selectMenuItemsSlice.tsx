@@ -24,7 +24,7 @@ export const initialCards: initialCartCardType[] = shopData.map(
 );
 
 export const selectMenuItemsSlice = createSlice({
-	name: "selectCartCards",
+	name: "selectMenuItems",
 	initialState: initialCards,
 	reducers: {
 		selectCartCardByID: (state, action: PayloadAction<number>) => {
@@ -35,15 +35,19 @@ export const selectMenuItemsSlice = createSlice({
 				return e;
 			});
 		},
-		deleteSelectedCards: (state) => {
-			let filteredArrOfState: initialCartCardType[] = [];
-			filteredArrOfState = state.filter((e) => {
-				return e.isChecked === false;
-			});
-
-			return filteredArrOfState;
+		deleteSelectedItem: (state, action: PayloadAction<number>) => {
+			return state
+				.map((e) => {
+					if (e.shopId === action.payload) {
+						return { ...e, cartItemQuantity: 0 };
+					}
+					return e;
+				})
+				.filter((e) => {
+					return e.cartItemQuantity;
+				});
 		},
-		incrementSelectedCards: (state, action: PayloadAction<number>) => {
+		incrementSelectedItems: (state, action: PayloadAction<number>) => {
 			return state.map((e) => {
 				if (e.shopId === action.payload) {
 					return { ...e, cartItemQuantity: e.cartItemQuantity + 1 };
@@ -51,15 +55,11 @@ export const selectMenuItemsSlice = createSlice({
 				return e;
 			});
 		},
-		decrementSelectedCards: (state, action: PayloadAction<number>) => {
-			// Deletes card which has cartItemQuantity <= 0
+		decrementSelectedItems: (state, action: PayloadAction<number>) => {
 			return state
 				.map((e) => {
 					if (e.shopId === action.payload) {
-						return {
-							...e,
-							cartItemQuantity: e.cartItemQuantity - 1,
-						};
+						return { ...e, cartItemQuantity: (e.cartItemQuantity > 1) ? e.cartItemQuantity-1 : 1 };
 					}
 					return e;
 				})
@@ -73,9 +73,9 @@ export const selectMenuItemsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
 	selectCartCardByID,
-	deleteSelectedCards,
-	incrementSelectedCards,
-	decrementSelectedCards,
+	deleteSelectedItem,
+	incrementSelectedItems,
+	decrementSelectedItems,
 } = selectMenuItemsSlice.actions;
 
 export default selectMenuItemsSlice.reducer;

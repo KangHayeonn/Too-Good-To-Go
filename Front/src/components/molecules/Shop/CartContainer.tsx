@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../app/store";
 // rtk
 import {
-	incrementSelectedCards,
-	decrementSelectedCards,
+	incrementSelectedItems,
+	decrementSelectedItems,
+	deleteSelectedItem
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
-
-// type accumulatedAmountType = {
-// 	cost: number;
-// };
 
 type buttonType = {
 	children: React.ReactNode;
@@ -20,7 +18,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 	const dispatch = useDispatch();
 
     const isCheckedArr = useSelector((state: RootState) => {
-		return state.selectCartCards.filter((e) => {
+		return state.selectMenuItems.filter((e) => {
 			return e.isChecked;
 		});
 	});
@@ -28,7 +26,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 	// Accumulate money for display
 	const accumulatedAmount: number = isCheckedArr.reduce((accu, curr) => {
 		// eslint-disable-next-line no-param-reassign
-		accu += curr.shopFoodCost;
+		accu += curr.shopFoodCost * curr.cartItemQuantity;
 		return accu;
 	}, 0);
 
@@ -47,18 +45,29 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 					{isCheckedArr.map((e) => {
 						return (
                             <div className="menu-item">
-                                <li key={e.shopId}>
-								{e.shopFoodName}
-								{e.cartItemQuantity > 1 &&
-									` x ${e.cartItemQuantity}`}
-							    </li>
+								<Item>
+									<li key={e.shopId}>
+									{e.shopFoodName}
+									{e.cartItemQuantity > 1 &&
+										` x ${e.cartItemQuantity}`}
+									</li>
+									<button
+										className="delete"
+										type ="button"
+										onClick={() => {
+											dispatch(deleteSelectedItem(e.shopId));
+										}}
+									>
+										<CloseIcon className="delete-icon" />
+									</button>
+								</Item>
                                 <QuantityButton>
 										<button
                                             className="menu-item-button"
 											type="button"
 											onClick={() => {
 												dispatch(
-													decrementSelectedCards(
+													decrementSelectedItems(
 														e.shopId
 													)
 												);
@@ -72,7 +81,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 											type="button"
 											onClick={() => {
 												dispatch(
-													incrementSelectedCards(
+													incrementSelectedItems(
 														e.shopId
 													)
 												);
@@ -85,15 +94,11 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
                         )
 					})}
 				</p>
-				<p className="menuPriceAndDiscount">상품가격(할인가): </p>
 			</div>
 			<div className="third-section">
-				<p hidden>1</p>
-			</div>
-			<div className="fourth-section">
 				<p>총 {numberWithCommas}원</p>
 			</div>
-			<div className="fifth-section">
+			<div className="fourth-section">
 				<button type="button">{children}</button>
 			</div>
 		</Wrapper>
@@ -139,14 +144,10 @@ const Wrapper = styled.div`
 		}
 		.menu-item {
             border-bottom: 1px solid #eee;
+			margin-bottom: 10px;
 		}
 	}
-
 	.third-section {
-		height: 79px;
-		border-bottom: 2px solid grey;
-	}
-	.fourth-section {
 		height: 47px;
 		border-bottom: 2px solid grey;
 		color: #54b689;
@@ -159,14 +160,14 @@ const Wrapper = styled.div`
 	p {
 		margin-right: 15px;
 	}
-	.fifth-section {
+	.fourth-section {
 		height: 81px;
 	}
 
 	button {
 		width: 152px;
 		height: 45px;
-		background-color: #54b689;
+		background: #54b689;
 		color: white;
 		font-size: 15px;
 		font-weight: 700;
@@ -179,6 +180,22 @@ const Wrapper = styled.div`
 	}
 `;
 
+const Item = styled.div`
+	display:flex;
+	justify-content: space-between;
+
+	.delete {
+		background: white;
+		color: black;
+		width : 33px;
+		height: 19px;
+		margin-top: 6px;
+	}
+	.delete-icon {
+		font-size: 19px;
+	}
+`
+
 const QuantityButton = styled.div`
 	width: 80px;
 	height: 20px;
@@ -189,8 +206,7 @@ const QuantityButton = styled.div`
 	overflow: hidden;
 	border-radius: 13px;
 	background-color: #e7e4e4;
-    margin-left : 170px;
-    margin-bottom : 13px;
+	margin: 10px 0 13px 170px;
 
 	.menu-item-button {
 		font-size: 17px;

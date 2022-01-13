@@ -23,7 +23,7 @@ const Router: React.FC = () => {
 		if (token) {
 			axios.defaults.headers.common.Authorization = token;
 		}
-	});
+	}, []);
 	return (
 		<BrowserRouter>
 			<Header loginOn={false} />

@@ -1,7 +1,6 @@
 import React from "react";
 // Styles
 import styled from "@emotion/styled";
-import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 // rtk
@@ -20,7 +19,12 @@ type theme = {
 	checked: boolean;
 };
 
-const CartCards: React.FC = () => {
+// 할인율 계산
+const calculatedDiscount = (price: number, discountedPrice: number): number => {
+    return Math.ceil((1 - discountedPrice / price) * 100);
+};
+
+const MenuCards: React.FC = () => {
 	const dispatch = useDispatch();
 
 	// logic to display cards
@@ -42,48 +46,16 @@ const CartCards: React.FC = () => {
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
 							<div className="cardInfo">
-								<p>{card.shopName}</p>
-								<strong>shopType, Pipe, foodType</strong>
-								<p>{card.shopFoodName}</p>
+								<p className="cardInfo-shopName">{card.shopName}</p>
+								<p className="cardInfo-shopFoodName">{card.shopFoodName}</p>
+                                <div className="cardInfo-price">
+                                    <p>{calculatedDiscount(card.shopBeforeCost, card.shopFoodCost)}%</p>
+                                    <p>{card.shopFoodCost}원</p>
+                                    <s>({card.shopBeforeCost}원)</s>
+                                </div>
 							</div>
 							<div className="right-wrapper">
-								<div className="price-ctn">
-									<p className="price">
-										<s>({card.shopBeforeCost}원)</s>
-										<ArrowRightAltRoundedIcon className="right-arrow" />
-										<strong>{card.shopFoodCost}원</strong>
-									</p>
-								</div>
 								<div className="btn-ctn">
-									{/* <button type="button">수정</button> */}
-									{/* Card quantity button component */}
-									<QuantityButton>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													decrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											-
-										</button>
-										<p>{card.cartItemQuantity}</p>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													incrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											+
-										</button>
-									</QuantityButton>
 									<button
 										className="select-btn"
 										type="button"
@@ -94,7 +66,7 @@ const CartCards: React.FC = () => {
 											);
 										}}
 									>
-										선택
+										담기
 									</button>
 								</div>
 							</div>
@@ -111,25 +83,7 @@ const CartCards: React.FC = () => {
 	);
 };
 
-export default CartCards;
-
-const QuantityButton = styled.div`
-	width: 142px;
-	height: 27px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-direction: row;
-	overflow: hidden;
-	border-radius: 13px;
-	background-color: #e7e4e4;
-
-	button {
-		font-size: 20px;
-		width: 55px;
-		background-color: #e7e4e4;
-	}
-`;
+export default MenuCards;
 
 const Wrapper = styled.div`
 	width: 700px;
@@ -199,9 +153,30 @@ const CartCard = styled.div<theme>`
 	}
 
 	.cardInfo > * {
-		margin: 6px;
-		margin-left: 15px;
+		margin: 3px;
+		margin-left: 14px;
 	}
+
+    .cardInfo-shopName {
+        font-size : 16px;
+    }
+
+    .cardInfo-shopFoodName {
+        font-size : 22px;
+        font-weight: 600;
+    }
+
+    .cardInfo-price {
+        display : flex;
+        font-size : 17px;
+        font-weight: 500;
+    }
+
+    .cardInfo-price > p:first-of-type {
+        color: #2F8D09;
+        padding-right : 5px;
+        font-weight: 700;
+    }
 
 	p:last-child {
 		font-weight: 600;
@@ -218,14 +193,14 @@ const CartCard = styled.div<theme>`
 	.btn-ctn {
 		/* display: border-box; */
 		flex-direction: row;
-		width: 250px;
+		width: 100px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin: 10px;
 
 		.select-btn {
-			width: 74px;
+			width: 99px;
 			height: 27px;
 			border-radius: 8px;
 			background-color: #cfcfcf;
@@ -245,10 +220,5 @@ const CartCard = styled.div<theme>`
 
 	.price > s {
 		color: black;
-	}
-
-	.right-arrow {
-		/* margin-top: 20px; */
-		/* padding-top */
 	}
 `;

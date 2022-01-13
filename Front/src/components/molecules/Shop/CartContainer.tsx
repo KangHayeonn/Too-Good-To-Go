@@ -19,14 +19,6 @@ type buttonType = {
 const CartContainer: React.FC<buttonType> = ({ children }) => {
 	const dispatch = useDispatch();
 
-    // logic to display cards
-	const displayCardArr = useSelector((state: RootState) => {
-		// Will return cards only with cartItemQuantity >= 1
-		return state.selectCartCards.filter((e) => {
-			return e.cartItemQuantity;
-		});
-	});
-
     const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectCartCards.filter((e) => {
 			return e.isChecked;

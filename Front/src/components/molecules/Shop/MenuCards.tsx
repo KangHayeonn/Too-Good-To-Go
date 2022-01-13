@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	selectCartCardByID,
 	initialCartCardType,
-	incrementSelectedCards,
-	decrementSelectedCards,
-} from "../../../features/cartFeatures/selectCartCardsSlice";
+} from "../../../features/shopFeatures/selectMenuItemsSlice";
 import { RootState } from "../../../app/store";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
@@ -88,7 +86,6 @@ export default MenuCards;
 const Wrapper = styled.div`
 	width: 700px;
 	height: 579px;
-	/* border: 1px solid blue; */
 	border-top: 1px solid #d3d3d3;
 	overflow: visible;
 	overflow-x: hidden;
@@ -113,25 +110,26 @@ const Wrapper = styled.div`
 const CartCard = styled.div<theme>`
 	width: 660px;
 	height: 181px;
-	border: 1px solid #d3d3d3;
 	padding: 10px 10px 10px 0;
 	margin: 25px 25px 20px 0;
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
-	background-color: ${({ checked }) => checked && `#c2f8b421`};
-	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
-	box-shadow: ${({ checked }) =>
+	border: ${({ checked }) =>
 		checked
-			? `0 4px 8px 1px rgba(84, 182, 137, 0.5)`
-			: `0 4px 8px 0 rgba(0, 0, 0, 0.1)`};
+			? `2px solid #C9C9C9`
+			: `1px solid #d3d3d3`};
+    box-shadow: ${({ checked }) =>
+            checked
+                ? `0 4px 8px 0 rgba(0, 0, 0, 0.4)`
+                : `0 4px 8px 0 rgba(0, 0, 0, 0.2)`};
 
 	transition: 0.3s;
 	:hover {
 		box-shadow: ${({ checked }) =>
 			checked
-				? `0 8px 16px 1px rgba(84, 182, 137, 0.8)`
-				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.2)`};
+				? `0 8px 16px 0 rgba(0, 0, 0, 0.5)`
+				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.3)`};
 	}
 
 	.card-img-ctn {
@@ -182,10 +180,6 @@ const CartCard = styled.div<theme>`
 		font-weight: 600;
 	}
 
-	.cardInfo > strong {
-		color: #85bf70;
-	}
-
 	.right-wrapper {
 		margin-left: 160px;
 	}
@@ -205,20 +199,9 @@ const CartCard = styled.div<theme>`
 			border-radius: 8px;
 			background-color: #cfcfcf;
 			color: black;
-			font-weight: 500;
+			font-weight: 600;
 			font-size: 13px;
 			margin: 3px;
 		}
-	}
-
-	.price {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-	}
-
-	.price > s {
-		color: black;
 	}
 `;

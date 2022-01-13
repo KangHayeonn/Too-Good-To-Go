@@ -4,11 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../app/store";
 // rtk
 import {
-	selectCartCardByID,
-	initialCartCardType,
 	incrementSelectedCards,
 	decrementSelectedCards,
-} from "../../../features/cartFeatures/selectCartCardsSlice";
+} from "../../../features/shopFeatures/selectMenuItemsSlice";
 
 // type accumulatedAmountType = {
 // 	cost: number;
@@ -207,6 +205,7 @@ const QuantityButton = styled.div`
 		width: 30px;
 		background-color: #e7e4e4;
         padding-bottom: 21px;
+        color: #959595;
 	}
 
     p {

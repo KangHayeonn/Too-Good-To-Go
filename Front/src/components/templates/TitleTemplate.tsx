@@ -32,7 +32,7 @@ const ShopTitle = styled.div`
 	align-items: flex-end;
 `;
 
-const ShopTime = styled.image`
+const ShopTime = styled.div`
 	width: 200px;
 	height: 30px;
 	font-size: 15px;

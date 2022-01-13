@@ -1,6 +1,7 @@
 package com.toogoodtogo.web.orders.dto;
 
 import com.toogoodtogo.application.order.AddOrderDto;
+import com.toogoodtogo.domain.user.User;
 import lombok.Getter;
 
 import java.util.List;
@@ -13,8 +14,9 @@ public class AddOrderRequest {
     private String paymentMethod;
     private List<AddOrderRequestProductDto> products;
 
-    public AddOrderDto convert() {
+    public AddOrderDto convert(User user) {
         return new AddOrderDto(
+                user,
                 phone,
                 paymentMethod,
                 requirement,

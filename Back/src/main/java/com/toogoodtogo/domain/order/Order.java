@@ -3,6 +3,7 @@ package com.toogoodtogo.domain.order;
 import com.toogoodtogo.domain.BaseTimeEntity;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.Product;
+import com.toogoodtogo.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,14 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
     private String phone;
 
     private String requirement;
@@ -29,11 +38,6 @@ public class Order extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-    // TODO: User
-
-    @OneToOne
-    private Shop shop;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();

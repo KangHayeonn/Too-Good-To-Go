@@ -19,18 +19,19 @@ type theme = {
 
 // 할인율 계산
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
-    return Math.ceil((1 - discountedPrice / price) * 100);
+	return Math.ceil((1 - discountedPrice / price) * 100);
 };
 
-const MenuCards: React.FC = () => {
+interface shopMatchId {
+	shopMatchId?: number;
+}
+const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const dispatch = useDispatch();
+	console.log(shopMatchId);
 
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
-		// Will return cards only with cartItemQuantity >= 1
-		return state.selectMenuItems.filter((e) => {
-            return (e.cartItemQuantity > 0) ? e.cartItemQuantity : 1;
-		});
+		return state.selectMenuItems;
 	});
 
 	if (displayCardArr.length) {
@@ -44,13 +45,23 @@ const MenuCards: React.FC = () => {
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
 							<div className="cardInfo">
-								<p className="cardInfo-shopName">{card.shopName}</p>
-								<p className="cardInfo-shopFoodName">{card.shopFoodName}</p>
-                                <div className="cardInfo-price">
-                                    <p>{calculatedDiscount(card.shopBeforeCost, card.shopFoodCost)}%</p>
-                                    <p>{card.shopFoodCost}원</p>
-                                    <s>({card.shopBeforeCost}원)</s>
-                                </div>
+								<p className="cardInfo-shopName">
+									{card.shopName}
+								</p>
+								<p className="cardInfo-shopFoodName">
+									{card.shopFoodName}
+								</p>
+								<div className="cardInfo-price">
+									<p>
+										{calculatedDiscount(
+											card.shopBeforeCost,
+											card.shopFoodCost
+										)}
+										%
+									</p>
+									<p>{card.shopFoodCost}원</p>
+									<s>({card.shopBeforeCost}원)</s>
+								</div>
 							</div>
 							<div className="right-wrapper">
 								<div className="btn-ctn">
@@ -58,7 +69,6 @@ const MenuCards: React.FC = () => {
 										className="select-btn"
 										type="button"
 										onClick={() => {
-											// console.log(data.shopId);
 											dispatch(
 												selectCartCardByID(card.shopId)
 											);
@@ -79,6 +89,10 @@ const MenuCards: React.FC = () => {
 			<img src={fighting} alt="화이팅도치의 존재" />
 		</Wrapper>
 	);
+};
+
+MenuCards.defaultProps = {
+	shopMatchId: 0,
 };
 
 export default MenuCards;
@@ -116,13 +130,11 @@ const CartCard = styled.div<theme>`
 	align-items: center;
 	border-radius: 8px;
 	border: ${({ checked }) =>
+		checked ? `2px solid #C9C9C9` : `1px solid #d3d3d3`};
+	box-shadow: ${({ checked }) =>
 		checked
-			? `2px solid #C9C9C9`
-			: `1px solid #d3d3d3`};
-    box-shadow: ${({ checked }) =>
-            checked
-                ? `0 4px 8px 0 rgba(0, 0, 0, 0.4)`
-                : `0 4px 8px 0 rgba(0, 0, 0, 0.2)`};
+			? `0 4px 8px 0 rgba(0, 0, 0, 0.4)`
+			: `0 4px 8px 0 rgba(0, 0, 0, 0.2)`};
 
 	transition: 0.3s;
 	:hover {
@@ -155,26 +167,26 @@ const CartCard = styled.div<theme>`
 		margin-left: 14px;
 	}
 
-    .cardInfo-shopName {
-        font-size : 16px;
-    }
+	.cardInfo-shopName {
+		font-size: 16px;
+	}
 
-    .cardInfo-shopFoodName {
-        font-size : 22px;
-        font-weight: 600;
-    }
+	.cardInfo-shopFoodName {
+		font-size: 22px;
+		font-weight: 600;
+	}
 
-    .cardInfo-price {
-        display : flex;
-        font-size : 17px;
-        font-weight: 500;
-    }
+	.cardInfo-price {
+		display: flex;
+		font-size: 17px;
+		font-weight: 500;
+	}
 
-    .cardInfo-price > p:first-of-type {
-        color: #2F8D09;
-        padding-right : 5px;
-        font-weight: 700;
-    }
+	.cardInfo-price > p:first-of-type {
+		color: #2f8d09;
+		padding-right: 5px;
+		font-weight: 700;
+	}
 
 	p:last-child {
 		font-weight: 600;

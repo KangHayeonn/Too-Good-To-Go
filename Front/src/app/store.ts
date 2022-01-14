@@ -3,12 +3,11 @@ import cartCardSelectorReducer from "../features/cartFeatures/selectCartCardsSli
 import managerOrderCountReducer from "../features/manager/ManagerOrderCountSlice";
 import menuItemsSelectorReducer from "../features/shopFeatures/selectMenuItemsSlice";
 
-
 export const store = configureStore({
 	reducer: {
 		selectCartCards: cartCardSelectorReducer,
 		managerOrderCount: managerOrderCountReducer,
-		selectMenuItems: menuItemsSelectorReducer
+		selectMenuItems: menuItemsSelectorReducer,
 	},
 });
 

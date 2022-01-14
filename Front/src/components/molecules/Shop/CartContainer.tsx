@@ -7,7 +7,7 @@ import { RootState } from "../../../app/store";
 import {
 	incrementSelectedItems,
 	decrementSelectedItems,
-	deleteSelectedItem
+	deleteSelectedItem,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
 
 type buttonType = {
@@ -17,7 +17,7 @@ type buttonType = {
 const CartContainer: React.FC<buttonType> = ({ children }) => {
 	const dispatch = useDispatch();
 
-    const isCheckedArr = useSelector((state: RootState) => {
+	const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectMenuItems.filter((e) => {
 			return e.isChecked;
 		});
@@ -30,7 +30,6 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 		return accu;
 	}, 0);
 
-	// Insert thousand comma separator from accumulatedAmount, IIFE used.
 	const numberWithCommas = ((x: number) => {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	})(accumulatedAmount);
@@ -41,59 +40,57 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 				<p hidden>1</p>
 			</div>
 			<div className="second-section">
-				<p className="menu">
+				<div className="menu">
 					{isCheckedArr.map((e) => {
 						return (
-                            <div className="menu-item">
+							<div className="menu-item" key={e.shopId}>
 								<Item>
 									<li key={e.shopId}>
-									{e.shopFoodName}
-									{e.cartItemQuantity > 1 &&
-										` x ${e.cartItemQuantity}`}
+										{e.shopFoodName}
+										{e.cartItemQuantity > 1 &&
+											` x ${e.cartItemQuantity}`}
 									</li>
 									<button
 										className="delete"
-										type ="button"
+										type="button"
 										onClick={() => {
-											dispatch(deleteSelectedItem(e.shopId));
+											dispatch(
+												deleteSelectedItem(e.shopId)
+											);
 										}}
 									>
 										<CloseIcon className="delete-icon" />
 									</button>
 								</Item>
-                                <QuantityButton>
-										<button
-                                            className="menu-item-button"
-											type="button"
-											onClick={() => {
-												dispatch(
-													decrementSelectedItems(
-														e.shopId
-													)
-												);
-											}}
-										>
-											-
-										</button>
-										<p>{e.cartItemQuantity}</p>
-										<button
-                                            className="menu-item-button"
-											type="button"
-											onClick={() => {
-												dispatch(
-													incrementSelectedItems(
-														e.shopId
-													)
-												);
-											}}
-										>
-											+
-										</button>
-									</QuantityButton>
-                            </div>
-                        )
+								<QuantityButton>
+									<button
+										className="menu-item-button"
+										type="button"
+										onClick={() => {
+											dispatch(
+												decrementSelectedItems(e.shopId)
+											);
+										}}
+									>
+										-
+									</button>
+									<div>{e.cartItemQuantity}</div>
+									<button
+										className="menu-item-button"
+										type="button"
+										onClick={() => {
+											dispatch(
+												incrementSelectedItems(e.shopId)
+											);
+										}}
+									>
+										+
+									</button>
+								</QuantityButton>
+							</div>
+						);
 					})}
-				</p>
+				</div>
 			</div>
 			<div className="third-section">
 				<p>총 {numberWithCommas}원</p>
@@ -109,7 +106,7 @@ export default CartContainer;
 
 const Wrapper = styled.div`
 	width: 271px;
-	min-height: 349px;
+	min-height: 291px;
 	height: auto;
 	border: 1px solid lightgrey;
 	display: flex;
@@ -129,22 +126,21 @@ const Wrapper = styled.div`
 		justify-content: center;
 		align-items: flex-start;
 		flex-direction: column;
-		p {
-			margin-left: 20px;
-			margin: 10px;
-			li {
-				margin: 5px;
-				list-style: none;
-				text-align: left;
-			}
-		}
 		.menu {
 			font-size: 20px;
 			font-weight: bold;
 		}
 		.menu-item {
-            border-bottom: 1px solid #eee;
+			border-bottom: 1px solid #eee;
 			margin-bottom: 10px;
+			margin-left: 10px;
+			margin-top: 10px;
+
+			li {
+				margin: 10px;
+				list-style: none;
+				text-align: left;
+			}
 		}
 	}
 	.third-section {
@@ -181,20 +177,20 @@ const Wrapper = styled.div`
 `;
 
 const Item = styled.div`
-	display:flex;
+	display: flex;
 	justify-content: space-between;
 
 	.delete {
 		background: white;
 		color: black;
-		width : 33px;
+		width: 33px;
 		height: 19px;
 		margin-top: 6px;
 	}
 	.delete-icon {
 		font-size: 19px;
 	}
-`
+`;
 
 const QuantityButton = styled.div`
 	width: 80px;
@@ -207,16 +203,13 @@ const QuantityButton = styled.div`
 	border-radius: 13px;
 	background-color: #e7e4e4;
 	margin: 10px 0 13px 170px;
+	font-size: 14px;
 
 	.menu-item-button {
 		font-size: 17px;
 		width: 30px;
-		background-color: #e7e4e4;
-        padding-bottom: 21px;
-        color: #959595;
+		background: #e7e4e4;
+		padding-bottom: 21px;
+		color: #959595;
 	}
-
-    p {
-        font-size: 14px;
-    }
 `;

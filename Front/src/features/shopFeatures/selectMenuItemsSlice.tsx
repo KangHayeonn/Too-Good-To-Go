@@ -36,16 +36,12 @@ export const selectMenuItemsSlice = createSlice({
 			});
 		},
 		deleteSelectedItem: (state, action: PayloadAction<number>) => {
-			return state
-				.map((e) => {
-					if (e.shopId === action.payload) {
-						return { ...e, cartItemQuantity: 0 };
-					}
-					return e;
-				})
-				.filter((e) => {
-					return e.cartItemQuantity;
-				});
+			return state.map((e) => {
+				if (e.shopId === action.payload) {
+					return { ...e, isChecked: !e.isChecked };
+				}
+				return e;
+			});
 		},
 		incrementSelectedItems: (state, action: PayloadAction<number>) => {
 			return state.map((e) => {
@@ -59,7 +55,13 @@ export const selectMenuItemsSlice = createSlice({
 			return state
 				.map((e) => {
 					if (e.shopId === action.payload) {
-						return { ...e, cartItemQuantity: (e.cartItemQuantity > 1) ? e.cartItemQuantity-1 : 1 };
+						return {
+							...e,
+							cartItemQuantity:
+								e.cartItemQuantity > 1
+									? e.cartItemQuantity - 1
+									: 1,
+						};
 					}
 					return e;
 				})

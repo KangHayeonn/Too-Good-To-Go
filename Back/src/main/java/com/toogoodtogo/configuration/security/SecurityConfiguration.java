@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
 //                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
-                .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
+                .antMatchers("/api/user/**", "/api/users/**", "/api/orders/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
                 .antMatchers("/api/me", "/api/reissue", "/api/logout").hasAnyRole("USER", "MANAGER")
                 .antMatchers("/h2-console/**", "/favicon.ico").permitAll()

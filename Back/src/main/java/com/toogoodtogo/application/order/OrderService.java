@@ -38,6 +38,7 @@ public class OrderService implements OrderUseCase {
 
         // TODO: product 없는 거에 대한 예외 처리
         Order order = Order.builder()
+                .user(addOrderDto.getUser())
                 .shop(products.get(0).getShop())
                 .phone(addOrderDto.getPhone())
                 .requirement(addOrderDto.getRequirement())

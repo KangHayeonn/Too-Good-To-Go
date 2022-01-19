@@ -67,6 +67,7 @@ const MainSwiperContent: React.FC<slice> = ({ start, last }) => {
 			{shop.slice(start, last).map((row) => (
 				<ShopListLi key={row.id}>
 					<ShopCard
+						shopId={row.shop.id}
 						shopName={row.shop.name}
 						shopFoodImg={row.image}
 						shopFoodName={row.name}

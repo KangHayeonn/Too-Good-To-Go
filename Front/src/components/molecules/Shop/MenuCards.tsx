@@ -1,16 +1,13 @@
 import React from "react";
 // Styles
 import styled from "@emotion/styled";
-import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 // rtk
 import {
 	selectCartCardByID,
 	initialCartCardType,
-	incrementSelectedCards,
-	decrementSelectedCards,
-} from "../../../features/cartFeatures/selectCartCardsSlice";
+} from "../../../features/shopFeatures/selectMenuItemsSlice";
 import { RootState } from "../../../app/store";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
@@ -20,15 +17,21 @@ type theme = {
 	checked: boolean;
 };
 
-const CartCards: React.FC = () => {
+// 할인율 계산
+const calculatedDiscount = (price: number, discountedPrice: number): number => {
+	return Math.ceil((1 - discountedPrice / price) * 100);
+};
+
+interface shopMatchId {
+	shopMatchId?: number;
+}
+const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const dispatch = useDispatch();
+	console.log(shopMatchId);
 
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
-		// Will return cards only with cartItemQuantity >= 1
-		return state.selectCartCards.filter((e) => {
-			return e.cartItemQuantity;
-		});
+		return state.selectMenuItems;
 	});
 
 	if (displayCardArr.length) {
@@ -42,59 +45,36 @@ const CartCards: React.FC = () => {
 								<img src={card.shopFoodImg} alt="Food" />
 							</div>
 							<div className="cardInfo">
-								<p>{card.shopName}</p>
-								<strong>shopType, Pipe, foodType</strong>
-								<p>{card.shopFoodName}</p>
+								<p className="cardInfo-shopName">
+									{card.shopName}
+								</p>
+								<p className="cardInfo-shopFoodName">
+									{card.shopFoodName}
+								</p>
+								<div className="cardInfo-price">
+									<p>
+										{calculatedDiscount(
+											card.shopBeforeCost,
+											card.shopFoodCost
+										)}
+										%
+									</p>
+									<p>{card.shopFoodCost}원</p>
+									<s>({card.shopBeforeCost}원)</s>
+								</div>
 							</div>
 							<div className="right-wrapper">
-								<div className="price-ctn">
-									<p className="price">
-										<s>({card.shopBeforeCost}원)</s>
-										<ArrowRightAltRoundedIcon className="right-arrow" />
-										<strong>{card.shopFoodCost}원</strong>
-									</p>
-								</div>
 								<div className="btn-ctn">
-									{/* <button type="button">수정</button> */}
-									{/* Card quantity button component */}
-									<QuantityButton>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													decrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											-
-										</button>
-										<p>{card.cartItemQuantity}</p>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													incrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											+
-										</button>
-									</QuantityButton>
 									<button
 										className="select-btn"
 										type="button"
 										onClick={() => {
-											// console.log(data.shopId);
 											dispatch(
 												selectCartCardByID(card.shopId)
 											);
 										}}
 									>
-										선택
+										담기
 									</button>
 								</div>
 							</div>
@@ -111,30 +91,15 @@ const CartCards: React.FC = () => {
 	);
 };
 
-export default CartCards;
+MenuCards.defaultProps = {
+	shopMatchId: 0,
+};
 
-const QuantityButton = styled.div`
-	width: 142px;
-	height: 27px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-direction: row;
-	overflow: hidden;
-	border-radius: 13px;
-	background-color: #e7e4e4;
-
-	button {
-		font-size: 20px;
-		width: 55px;
-		background-color: #e7e4e4;
-	}
-`;
+export default MenuCards;
 
 const Wrapper = styled.div`
 	width: 700px;
 	height: 579px;
-	/* border: 1px solid blue; */
 	border-top: 1px solid #d3d3d3;
 	overflow: visible;
 	overflow-x: hidden;
@@ -159,25 +124,24 @@ const Wrapper = styled.div`
 const CartCard = styled.div<theme>`
 	width: 660px;
 	height: 181px;
-	border: 1px solid #d3d3d3;
 	padding: 10px 10px 10px 0;
 	margin: 25px 25px 20px 0;
 	display: flex;
 	align-items: center;
 	border-radius: 8px;
-	background-color: ${({ checked }) => checked && `#c2f8b421`};
-	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+	border: ${({ checked }) =>
+		checked ? `2px solid #C9C9C9` : `1px solid #d3d3d3`};
 	box-shadow: ${({ checked }) =>
 		checked
-			? `0 4px 8px 1px rgba(84, 182, 137, 0.5)`
-			: `0 4px 8px 0 rgba(0, 0, 0, 0.1)`};
+			? `0 4px 8px 0 rgba(0, 0, 0, 0.4)`
+			: `0 4px 8px 0 rgba(0, 0, 0, 0.2)`};
 
 	transition: 0.3s;
 	:hover {
 		box-shadow: ${({ checked }) =>
 			checked
-				? `0 8px 16px 1px rgba(84, 182, 137, 0.8)`
-				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.2)`};
+				? `0 8px 16px 0 rgba(0, 0, 0, 0.5)`
+				: ` 0 8px 16px 0 rgba(0, 0, 0, 0.3)`};
 	}
 
 	.card-img-ctn {
@@ -199,16 +163,33 @@ const CartCard = styled.div<theme>`
 	}
 
 	.cardInfo > * {
-		margin: 6px;
-		margin-left: 15px;
+		margin: 3px;
+		margin-left: 14px;
+	}
+
+	.cardInfo-shopName {
+		font-size: 16px;
+	}
+
+	.cardInfo-shopFoodName {
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+	.cardInfo-price {
+		display: flex;
+		font-size: 17px;
+		font-weight: 500;
+	}
+
+	.cardInfo-price > p:first-of-type {
+		color: #2f8d09;
+		padding-right: 5px;
+		font-weight: 700;
 	}
 
 	p:last-child {
 		font-weight: 600;
-	}
-
-	.cardInfo > strong {
-		color: #85bf70;
 	}
 
 	.right-wrapper {
@@ -218,37 +199,21 @@ const CartCard = styled.div<theme>`
 	.btn-ctn {
 		/* display: border-box; */
 		flex-direction: row;
-		width: 250px;
+		width: 100px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin: 10px;
 
 		.select-btn {
-			width: 74px;
+			width: 99px;
 			height: 27px;
 			border-radius: 8px;
 			background-color: #cfcfcf;
 			color: black;
-			font-weight: 500;
+			font-weight: 600;
 			font-size: 13px;
 			margin: 3px;
 		}
-	}
-
-	.price {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-	}
-
-	.price > s {
-		color: black;
-	}
-
-	.right-arrow {
-		/* margin-top: 20px; */
-		/* padding-top */
 	}
 `;

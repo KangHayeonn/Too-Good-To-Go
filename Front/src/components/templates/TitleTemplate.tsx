@@ -32,7 +32,7 @@ const ShopTitle = styled.div`
 	align-items: flex-end;
 `;
 
-const ShopTime = styled.image`
+const ShopTime = styled.div`
 	width: 200px;
 	height: 30px;
 	font-size: 15px;
@@ -60,7 +60,7 @@ type Props = {
 const TitleTemplate: React.FC<Props> = ({ image, title, time, ...props }) => {
 	return (
 		<Wrapper {...props}>
-			<ShopImage src={image} alt="음식점 사진" />
+			<ShopImage src={image} alt="ShopImage" />
 			<Content>
 				<ShopTitle>{title}</ShopTitle>
 				<ShopTime>{time}</ShopTime>

@@ -9,8 +9,10 @@ import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginReq;
+import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
+import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Arrays;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -87,13 +91,13 @@ class ProductsControllerTest {
                 .email("productTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phone("010-0000-0000")
+                .phone("01000000000")
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginReq.builder().email("productTest@email.com").password("password").build());
+        token = signService.login(LoginUserRequest.builder().email("productTest@email.com").password("password").build());
 
-        Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(new String[]{"한식"}).build();
+        Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(Arrays.asList("한식")).build();
         shopRepository.save(shop);
         shopId = shop.getId();
 
@@ -153,7 +157,7 @@ class ProductsControllerTest {
     @Test
     void addProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ProductAddReq.builder()
+        String object = objectMapper.writeValueAsString(AddProductRequest.builder()
                 .name("미역국")
                 .price(9000L)
                 .discountedPrice(8000L)
@@ -189,7 +193,7 @@ class ProductsControllerTest {
     @Test
     public void updateProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ProductUpdateReq.builder()
+        String object = objectMapper.writeValueAsString(UpdateProductRequest.builder()
                 .name("북어국")
                 .price(8000L)
                 .discountedPrice(7000L)

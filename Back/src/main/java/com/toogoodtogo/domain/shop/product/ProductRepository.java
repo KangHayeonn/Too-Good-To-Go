@@ -17,6 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.shop.user.id = ?1 and p.id = ?2")
     Optional<Product> findByUserIdAndId(Long memberId, Long productId);
 
+    @Query("select p from Product p where p.shop.id = ?1 and p.name = ?2")
+    Optional<Product> findByShopIdAndName(Long shopId, String name);
+
     @Modifying
     @Query("delete from Product p where p.shop.id = ?1")
     void deleteByShopId(Long shopId);

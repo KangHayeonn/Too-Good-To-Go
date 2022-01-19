@@ -1,16 +1,19 @@
 package com.toogoodtogo.web.shops.products;
 
+import com.toogoodtogo.advice.ValidationSequence;
+import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.application.shop.product.ProductUseCase;
 import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
+import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
+import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -35,7 +38,9 @@ public class ProductsController {
     public ApiResponse<ProductDto> addProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestBody @Valid ProductAddReq request) {
+             @RequestBody @Validated(ValidationSequence.class) AddProductRequest request) {
+        if (request.getDiscountedPrice() > request.getPrice())
+            throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
         return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
     }
 
@@ -43,7 +48,9 @@ public class ProductsController {
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long productId,
-            @RequestBody @Valid ProductUpdateReq request) {
+            @RequestBody @Validated(ValidationSequence.class) UpdateProductRequest request) {
+        if (request.getDiscountedPrice() > request.getPrice())
+            throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
         return new ApiResponse<>(productUseCase.updateProduct(user.getId(), productId, request));
     }
 
@@ -51,6 +58,16 @@ public class ProductsController {
     public ApiResponse<String> deleteProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long productId) {
-        return new ApiResponse<String>(productUseCase.deleteProduct(user.getId(), productId));
+        return new ApiResponse<>(productUseCase.deleteProduct(user.getId(), productId));
+    }
+
+    @GetMapping("/shop/{shopId}/products/sort/{method}")
+    public ApiResponse<List<ProductDto>> sortProductsPerShopByDiscountRate(@PathVariable @Positive Long shopId, @PathVariable String method) {
+        return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
+    }
+
+    @GetMapping("/category/{category}/products/sort/{method}")
+    public ApiResponse<List<ProductDto>> sortProductsPerCategory(@PathVariable String category, @PathVariable String method) {
+        return new ApiResponse<>(productUseCase.sortProductsPerCategory(category, method));
     }
 }

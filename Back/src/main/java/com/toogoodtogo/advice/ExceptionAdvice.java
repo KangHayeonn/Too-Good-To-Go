@@ -8,7 +8,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -279,6 +278,17 @@ public class ExceptionAdvice {
 //                Integer.parseInt(getMessage("agreementException.code")), getMessage("agreementException.msg")
 //        );
 //    }
+
+    /***
+     * -1016
+     * 유효성 검사 실패
+     */
+    @ExceptionHandler(CValidCheckException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse validCheckException(HttpServletRequest request, CValidCheckException e) {
+        return new ErrorResponse("Valid Exception", getMessage("validCheckException.msg"),
+                Collections.singletonList(new ErrorResponse.Error(" ", " ", e.getMessage())));
+    }
 
     private String getMessage(String code) {
         return getMessage(code, null);

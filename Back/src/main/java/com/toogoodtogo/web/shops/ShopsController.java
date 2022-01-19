@@ -1,15 +1,18 @@
 package com.toogoodtogo.web.shops;
 
+import com.toogoodtogo.advice.ValidationSequence;
 import com.toogoodtogo.application.shop.ShopUseCase;
 import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
+import com.toogoodtogo.web.shops.dto.AddShopRequest;
+import com.toogoodtogo.web.shops.dto.ShopDto;
+import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class ShopsController {
     }
 
     @PostMapping("/manager/shop")
-    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody @Valid ShopAddReq request) {
+    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody @Validated(ValidationSequence.class) AddShopRequest request) {
         return new ApiResponse<>(shopUseCase.addShop(user.getId(), request));
     }
     
@@ -39,7 +42,7 @@ public class ShopsController {
     public ApiResponse<ShopDto> updateSho
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestBody @Valid ShopUpdateReq request) {
+             @RequestBody @Validated(ValidationSequence.class) UpdateShopRequest request) {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
     }
 

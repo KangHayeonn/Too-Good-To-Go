@@ -1,8 +1,7 @@
 package com.toogoodtogo.configuration.security;
 
 import com.toogoodtogo.advice.exception.CAuthenticationEntryPointException;
-import com.toogoodtogo.domain.user.UserPrincipal;
-import com.toogoodtogo.web.users.sign.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import lombok.RequiredArgsConstructor;

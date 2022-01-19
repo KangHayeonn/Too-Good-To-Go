@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.shops.products;
+package com.toogoodtogo.web.shops.products.dto;
 
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.Product;

@@ -5,6 +5,7 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     //id 'org.asciidoctor.jvm.pdf' version "3.2.0"
     //id 'org.asciidoctor.jvm.gems' version "3.2.0"
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
 }
 
@@ -46,6 +47,8 @@ dependencies {
     // Json을 결과로 매핑하기 위한 의존성
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+    //queryDSL
+    implementation 'com.querydsl:querydsl-jpa'
 }
 
 ext {
@@ -82,4 +85,20 @@ task copyDocument(type: Copy) {
 }
 build {
     dependsOn copyDocument
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }

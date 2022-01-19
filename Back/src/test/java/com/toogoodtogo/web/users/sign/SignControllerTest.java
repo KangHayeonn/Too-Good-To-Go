@@ -6,6 +6,10 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
+import com.toogoodtogo.web.users.sign.dto.SignupUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,12 +75,12 @@ class SignControllerTest {
         userRepository.deleteAllInBatch();
         refreshTokenRepository.deleteAllInBatch();
 
-        signService.signup(UserSignupReq.builder()
+        signService.signup(SignupUserRequest.builder()
                 .email("user@email.com").password("user_password")
-                .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
-        signService.signup(UserSignupReq.builder()
+                .name("userA").phone("01000000000").role("ROLE_USER").build());
+        signService.signup(SignupUserRequest.builder()
                 .email("manager@email.com").password("manager_password")
-                .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
+                .name("managerA").phone("01011111111").role("ROLE_MANAGER").build());
     }
 
     @AfterEach
@@ -91,7 +95,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_success(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginReq.builder()
+        String object = objectMapper.writeValueAsString(LoginUserRequest.builder()
                 .email(role + "@email.com")
                 .password(role + "_password")
                 .build());
@@ -127,7 +131,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginReq.builder()
+        String object = objectMapper.writeValueAsString(LoginUserRequest.builder()
                 .email(role + "@email.com")
                 .password("wrongPassword")
                 .build());
@@ -160,11 +164,11 @@ class SignControllerTest {
     public void signUp_success(String role) throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupReq.builder()
+        String object = objectMapper.writeValueAsString(SignupUserRequest.builder()
                 .email(role + "B@email.com")
                 .password(role + "_password")
                 .name(role + "B")
-                .phone("010-4444-4444")
+                .phone("01044444444")
                 .role(role.toUpperCase())
                 .build());
 
@@ -198,11 +202,11 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void signUp_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupReq.builder()
+        String object = objectMapper.writeValueAsString(SignupUserRequest.builder()
                 .email(role + "@email.com")
                 .password(role + "_password")
                 .name(role + "B")
-                .phone("010-4444-4444")
+                .phone("01044444444")
                 .role(role.toUpperCase())
                 .build());
 
@@ -237,8 +241,8 @@ class SignControllerTest {
     @Test
     public void reissue() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_password").build());
-        String object = objectMapper.writeValueAsString(TokenReq.builder()
+        TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
+        String object = objectMapper.writeValueAsString(TokenRequest.builder()
                 .accessToken(userToken.getAccessToken())
                 .refreshToken(userToken.getRefreshToken())
                 .build());
@@ -273,7 +277,7 @@ class SignControllerTest {
     @Test
     public void logout() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginReq.builder().email("user@email.com").password("user_password").build());
+        TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
 
         ResultActions actions = mockMvc.perform(get("/api/logout")
                 .header("Authorization", "Bearer " + userToken.getAccessToken())

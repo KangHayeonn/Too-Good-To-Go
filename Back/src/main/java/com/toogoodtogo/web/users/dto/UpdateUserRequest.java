@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.users;
+package com.toogoodtogo.web.users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserUpdateReq {
+public class UpdateUserRequest {
     @NotBlank(message = "비밀번호는 필수 값입니다.")
     @Length(min = 8, message = "비밀번호는 최소 {min}자 이상입니다.")
     private String password;

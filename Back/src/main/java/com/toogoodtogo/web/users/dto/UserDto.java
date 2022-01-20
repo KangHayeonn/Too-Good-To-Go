@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.users;
+package com.toogoodtogo.web.users.dto;
 
 import com.toogoodtogo.domain.user.User;
 import lombok.Getter;

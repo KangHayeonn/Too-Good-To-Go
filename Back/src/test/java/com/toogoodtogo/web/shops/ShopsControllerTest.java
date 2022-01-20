@@ -9,8 +9,10 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginReq;
+import com.toogoodtogo.web.shops.dto.AddShopRequest;
+import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -85,18 +90,18 @@ class ShopsControllerTest {
                 .email("shopTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phone("010-0000-0000")
+                .phone("01000000000")
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginReq.builder().email("shopTest@email.com").password("password").build());
+        token = signService.login(LoginUserRequest.builder().email("shopTest@email.com").password("password").build());
 
         Shop shop1 = Shop.builder()
-                .user(manager).name("shop1").image("test1").category(new String[]{"한식"}).phone("010-1234-5678")
+                .user(manager).name("shop1").image("test1").category(Arrays.asList("한식")).phone("01012345678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
         shopRepository.save(shop1);
         shopRepository.save(Shop.builder()
-                .user(manager).name("shop2").image("test2").category(new String[]{"중식"}).phone("010-5678-9012")
+                .user(manager).name("shop2").image("test2").category(Arrays.asList("중식")).phone("01056789012")
                 .address("서울특별시 양천구 목동 2번지").hours(new Hours("11:00", "23:00")).build());
         shopId = Math.toIntExact(shop1.getId());
     }
@@ -163,8 +168,8 @@ class ShopsControllerTest {
     @Test
     void addShop() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ShopAddReq.builder()
-                .name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
+        String object = objectMapper.writeValueAsString(AddShopRequest.builder()
+                .name("shop4").image("test4").category(Arrays.asList("한식")).phone("01044444444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
 
         //when
@@ -199,11 +204,11 @@ class ShopsControllerTest {
     @Test
     public void updateShop() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ShopUpdateReq.builder()
+        String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
                 .name("shop3")
                 .image("test3")
-                .category(new String[]{"일식"})
-                .phone("010-8765-4321")
+                .category(Arrays.asList("일식"))
+                .phone("01087654321")
                 .address("test3")
                 .open("12:00")
                 .close("21:00")

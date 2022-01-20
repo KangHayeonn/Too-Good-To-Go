@@ -4,6 +4,8 @@ import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.*;
+import com.toogoodtogo.web.users.dto.UpdateUserRequest;
+import com.toogoodtogo.web.users.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class UsersController {
     }
 
     @PatchMapping("/me")
-    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody @Valid UserUpdateReq userUpdateReq) {
-        return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateReq));
+    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody @Valid UpdateUserRequest request) {
+        return new ApiResponse<>(userUseCase.update(user.getId(), request));
     }
 }

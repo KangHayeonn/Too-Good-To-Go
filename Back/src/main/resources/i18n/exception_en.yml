@@ -68,3 +68,6 @@ userExistException:
 agreementException:
   code: "-1015"
   msg: "A consent is required for the required consent item."
+validCheckException:
+  code: "-1016"
+  msg: "It's not a valid value."

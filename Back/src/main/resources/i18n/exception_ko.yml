@@ -68,3 +68,6 @@ userExistException:
 agreementException:
   code: "-1015"
   msg: "필수동의 항목에 대해 동의가 필요합니다."
+validCheckException:
+  code: "-1016"
+  msg: "유효한 값이 아닙니다."

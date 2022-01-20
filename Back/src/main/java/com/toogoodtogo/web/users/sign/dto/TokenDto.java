@@ -1,4 +1,4 @@
-package com.toogoodtogo.web.users.sign;
+package com.toogoodtogo.web.users.sign.dto;
 
 import lombok.*;
 

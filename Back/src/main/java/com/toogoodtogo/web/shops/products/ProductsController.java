@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -61,13 +60,23 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.deleteProduct(user.getId(), productId));
     }
 
-    @GetMapping("/shop/{shopId}/products/sort/{method}")
-    public ApiResponse<List<ProductDto>> sortProductsPerShopByDiscountRate(@PathVariable @Positive Long shopId, @PathVariable String method) {
-        return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
+//    @GetMapping("/shop/{shopId}/products/sort/{method}")
+//    public ApiResponse<List<ProductCard>> sortProductsPerShop(@PathVariable @Positive Long shopId, @PathVariable String method) {
+//        return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
+//    }
+
+    @GetMapping("/products/recommend")
+    public ApiResponse<List<ProductDto>> recommendProducts() {
+        return new ApiResponse<>(productUseCase.recommendProducts());
     }
 
     @GetMapping("/category/{category}/products/sort/{method}")
     public ApiResponse<List<ProductDto>> sortProductsPerCategory(@PathVariable String category, @PathVariable String method) {
         return new ApiResponse<>(productUseCase.sortProductsPerCategory(category, method));
+    }
+
+    @GetMapping("/shop/{shopId}/products/sort/{method}")
+    public ApiResponse<List<ProductDto>> sortProductsPerShop(@PathVariable Long shopId, @PathVariable String method) {
+        return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
     }
 }

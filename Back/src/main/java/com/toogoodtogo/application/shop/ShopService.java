@@ -2,6 +2,7 @@ package com.toogoodtogo.application.shop;
 
 import com.toogoodtogo.advice.exception.CShopNotFoundException;
 import com.toogoodtogo.advice.exception.CUserNotFoundException;
+import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
@@ -47,6 +48,8 @@ public class ShopService implements ShopUseCase {
     @Transactional
     public ShopDto addShop(Long managerId, AddShopRequest request) {
         User manager = userRepository.findById(managerId).orElseThrow(CUserNotFoundException::new); //예외 처리!!
+        if(shopRepository.findByAddressAndName(request.getAddress(), request.getName()).isPresent())
+            throw new CValidCheckException("이미 있는 가게입니다.");
         Shop shop = Shop.builder()
                 .user(manager)
                 .name(request.getName())

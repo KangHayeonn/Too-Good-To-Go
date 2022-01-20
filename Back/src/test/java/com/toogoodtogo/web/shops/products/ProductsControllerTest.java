@@ -101,10 +101,16 @@ class ProductsControllerTest {
         shopRepository.save(shop);
         shopId = shop.getId();
 
-        Product product1 = Product.builder().shop(shop).name("김치찌개").price(6000L).discountedPrice(5000L).image("test1").build();
-        Product product2 = Product.builder().shop(shop).name("된장찌개").price(7000L).discountedPrice(6000L).image("test2").build();
+        Product product1 = Product.builder().shop(shop).name("김치찌개").price(10000L).discountedPrice(9000L).image("test1").build();
+        Product product2 = Product.builder().shop(shop).name("된장찌개").price(11000L).discountedPrice(10000L).image("test2").build();
+        Product product3 = Product.builder().shop(shop).name("마라탕").price(12000L).discountedPrice(11000L).image("test3").build();
+        Product product4 = Product.builder().shop(shop).name("짜글이").price(13000L).discountedPrice(12000L).image("test4").build();
+        Product product5 = Product.builder().shop(shop).name("오뎅탕").price(14000L).discountedPrice(13000L).image("test5").build();
         productRepository.save(product1);
         productRepository.save(product2);
+        productRepository.save(product3);
+        productRepository.save(product4);
+        productRepository.save(product5);
         productId = product1.getId();
     }
 
@@ -124,6 +130,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
                                 fieldWithPath("data.[].id").description("product id"),
                                 fieldWithPath("data.[].name").description("product name"),
                                 fieldWithPath("data.[].price").description("product image"),
@@ -144,6 +152,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
                                 fieldWithPath("data.[].id").description("product id"),
                                 fieldWithPath("data.[].name").description("product name"),
                                 fieldWithPath("data.[].price").description("product image"),
@@ -179,6 +189,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.shopId").description("product shop id"),
+                                fieldWithPath("data.shopName").description("product shop name"),
                                 fieldWithPath("data.id").description("product id"),
                                 fieldWithPath("data.name").description("product name"),
                                 fieldWithPath("data.price").description("product price"),
@@ -215,6 +227,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.shopId").description("product shop id"),
+                                fieldWithPath("data.shopName").description("product shop name"),
                                 fieldWithPath("data.id").description("product id"),
                                 fieldWithPath("data.name").description("product name"),
                                 fieldWithPath("data.price").description("product price"),
@@ -244,4 +258,74 @@ class ProductsControllerTest {
                 ))
                 .andExpect(status().isOk());
     }
+
+//    @Test
+//    void recommendProducts() throws Exception {
+//        //then
+//        mockMvc.perform(get("/api/products/recommend"))
+//                .andDo(print())
+//                .andDo(document("products/recommend",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void sortProductsPerCategory() throws Exception {
+//        String category = "한식";
+//        String method = "discount";
+//        //then
+//        mockMvc.perform(get("/api/category/{category}/products/sort/{method}", category, method))
+//                .andDo(print())
+//                .andDo(document("products/category",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void sortProductsPerShop() throws Exception {
+//        String method = "";
+//        //then
+//        mockMvc.perform(get("/api/shop/{shopId}/products/sort/{method}", shopId, method))
+//                .andDo(print())
+//                .andDo(document("products/shop",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].rate").description("shop discount rate"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
 }

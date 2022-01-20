@@ -7,6 +7,7 @@ import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepositorySupport;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
@@ -25,13 +26,16 @@ public class ProductService implements ProductUseCase {
     private ProductRepository productRepository;
 
     @Autowired
+    private ProductRepositorySupport productRepositorySupport;
+
+    @Autowired
     private ShopRepository shopRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDto> findAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(ProductDto::new)
+                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
                 .collect(Collectors.toList());
     }
 
@@ -39,7 +43,7 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> findProducts(Long shopId) {
         return productRepository.findAllByShopId(shopId)
                 .stream()
-                .map(ProductDto::new)
+                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
                 .collect(Collectors.toList());
     }
 
@@ -56,14 +60,15 @@ public class ProductService implements ProductUseCase {
 //                .image(request.getImage())
 //                .build();
 //        return new ProductDto(productRepository.save(product));
-        return new ProductDto(productRepository.save(request.toEntity(shop)));
+        // ProductCard로 하고 product.shop.id 하면 안되나?
+        return new ProductDto(shop.getId(), shop.getName(), productRepository.save(request.toEntity(shop)));
     }
 
     @Transactional
     public ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest request) {
         Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CProductNotFoundException::new);
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
-        return new ProductDto(modifiedProduct);
+        return new ProductDto(modifiedProduct.getShop().getId(), modifiedProduct.getShop().getName() ,modifiedProduct);
     }
 
     @Transactional
@@ -74,16 +79,17 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> sortProductsPerShop(Long shopId, String method) {
-        switch (method) {
-            case "discount":
-                return null;
-        }
-        return null;
+    public List<ProductDto> recommendProducts() {
+        return productRepositorySupport.recommendProducts();
     }
 
     @Transactional(readOnly = true)
     public List<ProductDto> sortProductsPerCategory(String category, String method) {
-        return null;
+        return productRepositorySupport.sortProductsPerCategory(category, method);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDto> sortProductsPerShop(Long shopId, String method) {
+        return productRepositorySupport.sortProductsPerShop(shopId, method);
     }
 }

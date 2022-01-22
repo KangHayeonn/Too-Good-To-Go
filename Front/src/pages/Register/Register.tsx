@@ -11,7 +11,9 @@ const initialUserState = {
 	email: "",
 	password: "",
 	name: "",
-	phone: "",
+	phone1: "",
+	phone2: "",
+	phone3: "",
 	role: "ROLE_USER",
 };
 
@@ -127,16 +129,39 @@ const Register: React.FC = () => {
 							확인
 						</Confirm> */}
 						</div>
-						<div className="input-row">
-							<input
-								className="phone-input input"
-								type="text"
-								onChange={handleChange}
-								value={formValue.phone}
-								name="phone"
-								id=""
-								placeholder="핸드폰 번호를 입력하세요."
-							/>
+						<p className="phone-info">핸드폰 번호를 입력하세요</p>
+						<div className="phone-input-container">
+							<div className="phone-input">
+								<input
+									className="phone-input input "
+									type="text"
+									onChange={handleChange}
+									value={formValue.phone1}
+									name="phone1"
+									id=""
+									placeholder="핸드폰 번호를 입력하세요."
+								/>
+							</div>
+							<div className="phone-input">
+								<input
+									className="phone-input input "
+									type="text"
+									onChange={handleChange}
+									value={formValue.phone2}
+									name="phone2"
+									id=""
+								/>
+							</div>
+							<div className="phone-input">
+								<input
+									className="phone-input input "
+									type="text"
+									onChange={handleChange}
+									value={formValue.phone3}
+									name="phone3"
+									id=""
+								/>
+							</div>
 						</div>
 					</InputCtn>
 					<BtnCtn>
@@ -229,11 +254,31 @@ const InputCtn = styled.div`
 	.input-row-confirm-button {
 		width: 250px;
 	}
-	input-row {
+	/* input-row {
 		width: 500px;
 		margin: 0;
 		padding: 0;
 		display: inline-block;
+	} */
+
+	.phone-info {
+		position: relative;
+		left: -75px;
+		margin: 0 0 0 0;
+	}
+
+	.phone-input-container {
+		width: 318px;
+		display: flex;
+		margin-left: 0;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+
+		.phone-input {
+			width: 70px;
+			margin-right: 35px;
+		}
 	}
 `;
 

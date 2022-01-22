@@ -96,13 +96,6 @@ const CartCards: React.FC = () => {
 									>
 										선택
 									</button>
-
-									{/* removed checkbox icon with shadow rgba */}
-									{/* {card.isChecked ? (
-										<CheckBoxIcon />
-									) : (
-										<CheckBoxOutlineBlankIcon />
-									)} */}
 								</div>
 							</div>
 						</CartCard>

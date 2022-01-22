@@ -1,11 +1,14 @@
-package com.toogoodtogo.web.users.sign;
+package com.toogoodtogo.web.users.sign.dto;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
-@Setter
 @NoArgsConstructor
 public class TokenRequest {
+    @NotBlank(message = "access token 은 필수값입니다.")
     String accessToken;
+    @NotBlank(message = "refresh token 은 필수값입니다.")
     String refreshToken;
 
     @Builder

@@ -1,13 +1,11 @@
 package com.toogoodtogo.application.user;
 
-import com.toogoodtogo.web.users.UserDetailResponse;
-import com.toogoodtogo.web.users.UserUpdateRequest;
-
-import java.util.List;
+import com.toogoodtogo.web.users.dto.UserDto;
+import com.toogoodtogo.web.users.dto.UpdateUserRequest;
 
 public interface UserUseCase {
-    UserDetailResponse findUser(Long id);
+    UserDto findUser(Long id);
 //    List<UserDetailResponse> findAllUser();
-    UserDetailResponse update(Long id, UserUpdateRequest UserUpdateRequest);
+    UserDto update(Long id, UpdateUserRequest UpdateUserRequest);
 //    void delete(Long id);
 }

@@ -1,9 +1,7 @@
 package com.toogoodtogo.advice.exception;
 
 public class CAuthenticationEntryPointException extends RuntimeException {
-    public CAuthenticationEntryPointException() {
-        super();
-    }
+    public CAuthenticationEntryPointException() { super(); }
 
     public CAuthenticationEntryPointException(String message) {
         super(message);

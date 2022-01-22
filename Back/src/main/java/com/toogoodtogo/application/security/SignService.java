@@ -6,7 +6,7 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.advice.exception.*;
-import com.toogoodtogo.web.users.sign.*;
+import com.toogoodtogo.web.users.sign.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,13 +25,17 @@ public class SignService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository tokenRepository;
 
-    public TokenDto login(UserLoginRequest userLoginRequest) {
+    @Transactional
+    public TokenDto login(LoginUserRequest loginUserRequest) {
         // 회원 정보 존재하는지 확인
-        User user = userRepository.findByEmail(userLoginRequest.getEmail())
-                .orElseThrow(CEmailLoginFailedException::new);
+        User user = userRepository.findByEmail(loginUserRequest.getEmail()).orElseThrow(CEmailLoginFailedException::new);
+        // 로그인 된 상태이면 기존 refresh token 삭제
+        if (tokenRepository.findByUserId(user.getId()).isPresent()) {
+            RefreshToken refreshToken = tokenRepository.findByUserId(user.getId()).orElseThrow(CNoLoginException::new);
+            tokenRepository.delete(refreshToken);
+        }
         // 회원 패스워드 일치 여부 확인
-        if (!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword()))
-            throw new CPasswordLoginFailedException();
+        if (!passwordEncoder.matches(loginUserRequest.getPassword(), user.getPassword())) throw new CPasswordLoginFailedException();
         // AccessToken, RefreshToken 발급
         TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId(), user.getRole());
         // RefreshToken 저장
@@ -43,10 +47,10 @@ public class SignService {
         return tokenDto;
     }
 
-    public UserSignupResponse signup(UserSignupRequest userSignupDto) {
-        if (userRepository.findByEmail(userSignupDto.getEmail()).isPresent())
-            throw new CEmailSignupFailedException();
-        return new UserSignupResponse(userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId());
+    @Transactional
+    public SignupUserResponse signup(SignupUserRequest userSignupDto) {
+        if (userRepository.findByEmail(userSignupDto.getEmail()).isPresent()) throw new CEmailSignupFailedException();
+        return new SignupUserResponse(userRepository.save(userSignupDto.toEntity(passwordEncoder)).getId());
     }
 
 //    @Transactional
@@ -58,19 +62,17 @@ public class SignService {
 //        return userRepository.save(userSignupRequestDto.toEntity()).getId();
 //    }
 
+    @Transactional
     public TokenDto reissue(TokenRequest tokenRequest) {
         // 만료된 refresh token 에러
-        if (!jwtTokenProvider.validationToken(tokenRequest.getRefreshToken())) {
+        if (!jwtTokenProvider.validationToken(tokenRequest.getRefreshToken()))
             throw new CRefreshTokenException();
-        }
         // AccessToken 에서 Username (pk) 가져오기
         String accessToken = tokenRequest.getAccessToken();
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
         // user pk로 유저 검색 / repo 에 저장된 Refresh Token 이 없음
-        User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(CUserNotFoundException::new);
-        RefreshToken refreshToken = tokenRepository.findByUserId(user.getId())
-                .orElseThrow(CRefreshTokenException::new);
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(CUserNotFoundException::new);
+        RefreshToken refreshToken = tokenRepository.findByUserId(user.getId()).orElseThrow(CRefreshTokenException::new);
         // 리프레시 토큰 불일치 에러
         if (!refreshToken.getToken().equals(tokenRequest.getRefreshToken()))
             throw new CRefreshTokenException();
@@ -80,5 +82,13 @@ public class SignService {
         tokenRepository.save(updateRefreshToken); //더티체킹으로 token 값만 update
 
         return newCreatedToken;
+    }
+
+    @Transactional
+    public String logout(Long userId) {
+        // 이미 로그아웃 되어서 해당 유저의 아이디를 갖는 refresh token 이 없으면 에러
+        RefreshToken refreshToken = tokenRepository.findByUserId(userId).orElseThrow(CNoLoginException::new);
+        tokenRepository.delete(refreshToken);
+        return "success";
     }
 }

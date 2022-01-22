@@ -6,6 +6,10 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
+import com.toogoodtogo.web.users.sign.dto.SignupUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +34,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,12 +73,14 @@ class SignControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
-        signService.signup(UserSignupRequest.builder()
-                .email("user@email.com").password("user_pw")
-                .name("userA").phone("010-0000-0000").role("ROLE_USER").build());
-        signService.signup(UserSignupRequest.builder()
-                .email("manager@email.com").password("manager_pw")
-                .name("managerA").phone("010-1111-1111").role("ROLE_MANAGER").build());
+        refreshTokenRepository.deleteAllInBatch();
+
+        signService.signup(SignupUserRequest.builder()
+                .email("user@email.com").password("user_password")
+                .name("userA").phone("01000000000").role("ROLE_USER").build());
+        signService.signup(SignupUserRequest.builder()
+                .email("manager@email.com").password("manager_password")
+                .name("managerA").phone("01011111111").role("ROLE_MANAGER").build());
     }
 
     @AfterEach
@@ -88,9 +95,9 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_success(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+        String object = objectMapper.writeValueAsString(LoginUserRequest.builder()
                 .email(role + "@email.com")
-                .password(role + "_pw")
+                .password(role + "_password")
                 .build());
 
         //when
@@ -124,7 +131,7 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void login_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserLoginRequest.builder()
+        String object = objectMapper.writeValueAsString(LoginUserRequest.builder()
                 .email(role + "@email.com")
                 .password("wrongPassword")
                 .build());
@@ -145,7 +152,8 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("message").description("message"),
+                                fieldWithPath("errors").description("errors")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -156,11 +164,11 @@ class SignControllerTest {
     public void signUp_success(String role) throws Exception {
         //given
         long time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
-                .email(role + "B@email.com" + time)
-                .password(role + "_pw")
+        String object = objectMapper.writeValueAsString(SignupUserRequest.builder()
+                .email(role + "B@email.com")
+                .password(role + "_password")
                 .name(role + "B")
-                .phone("010-4444-4444")
+                .phone("01044444444")
                 .role(role.toUpperCase())
                 .build());
 
@@ -194,11 +202,11 @@ class SignControllerTest {
     @CsvSource({"user", "manager"})
     public void signUp_fail(String role) throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserSignupRequest.builder()
+        String object = objectMapper.writeValueAsString(SignupUserRequest.builder()
                 .email(role + "@email.com")
-                .password(role + "_pw")
+                .password(role + "_password")
                 .name(role + "B")
-                .phone("010-4444-4444")
+                .phone("01044444444")
                 .role(role.toUpperCase())
                 .build());
 
@@ -223,7 +231,8 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("message").description("message"),
+                                fieldWithPath("errors").description("errors")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -232,7 +241,7 @@ class SignControllerTest {
     @Test
     public void reissue() throws Exception {
         //given
-        TokenDto userToken = signService.login(UserLoginRequest.builder().email("user@email.com").password("user_pw").build());
+        TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
         String object = objectMapper.writeValueAsString(TokenRequest.builder()
                 .accessToken(userToken.getAccessToken())
                 .refreshToken(userToken.getRefreshToken())
@@ -241,10 +250,9 @@ class SignControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/reissue")
                 .content(object)
-                .header("Authorization", userToken.getAccessToken())
+                .header("Authorization", "Bearer " + userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(object));
+                .accept(MediaType.APPLICATION_JSON));
 
         //then
         actions
@@ -261,6 +269,28 @@ class SignControllerTest {
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
                                 fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void logout() throws Exception {
+        //given
+        TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
+
+        ResultActions actions = mockMvc.perform(get("/api/logout")
+                .header("Authorization", "Bearer " + userToken.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("logout",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("success message")
                         )
                 ))
                 .andExpect(status().isOk());

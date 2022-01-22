@@ -77,6 +77,7 @@ const beforeSaleValueStyle = css`
 `;
 
 type shopCardType = {
+	shopId: number;
 	shopName: string;
 	shopFoodImg: string;
 	shopFoodName: string;
@@ -86,6 +87,7 @@ type shopCardType = {
 };
 
 const ShopCard: React.FC<shopCardType> = ({
+	shopId,
 	shopName,
 	shopFoodImg,
 	shopFoodName,
@@ -98,6 +100,8 @@ const ShopCard: React.FC<shopCardType> = ({
 		setWidth(document.querySelector("#shopCardDiv")?.clientWidth);
 		console.log(width);
 	}, []);
+
+	console.log("ShopCard -> id : ", shopId);
 	return (
 		<ShopCardStyle id="shopCardDiv">
 			<Link

@@ -80,6 +80,12 @@ operation::login/manager/success[snippets='curl-request,http-request,http-respon
 === MANAGER 로그인 실패 [POST]
 operation::login/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
+== Logout Api
+
+=== User 로그아웃 [POST]
+operation::logout[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+
 == 토큰 Api
 
 === 토큰 재발급 [POST]
@@ -112,8 +118,11 @@ operation::shops/delete[snippets='curl-request,http-request,http-response,respon
 
 == Product Api
 
-=== PRODUCT 조회 [GET]
+=== PRODUCT 전체 조회 [GET]
 operation::products/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== PRODUCT 조회 [GET]
+operation::products/find[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 === PRODUCT 추가 [POST]
 operation::products/add[snippets='curl-request,http-request,http-response,response-body,response-fields']

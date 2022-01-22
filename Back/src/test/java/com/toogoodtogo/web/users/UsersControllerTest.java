@@ -2,12 +2,14 @@ package com.toogoodtogo.web.users;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
+import com.toogoodtogo.web.users.dto.UpdateUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,10 +56,15 @@ class UsersControllerTest {
     private ShopRepository shopRepository;
 
     @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    private User user;
 
     private TokenDto token;
 
@@ -66,19 +73,22 @@ class UsersControllerTest {
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();
-        userRepository.save(User.builder()
+        refreshTokenRepository.deleteAllInBatch();
+
+        user = userRepository.save(User.builder()
                 .email("email@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phone("010-0000-0000")
+                .phone("01000000000")
                 .role("ROLE_USER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("email@email.com").password("password").build());
+        token = signService.login(LoginUserRequest.builder().email("email@email.com").password("password").build());
     }
 
     @AfterEach
     public void setDown() {
+        signService.logout(user.getId());
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();
@@ -88,7 +98,7 @@ class UsersControllerTest {
     public void findUserInfo() throws Exception {
         //given
         ResultActions actions = mockMvc.perform(get("/api/me")
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .param("lang", "ko"));
         //then
         //when
@@ -113,15 +123,15 @@ class UsersControllerTest {
     @Test
     public void updateUser() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(UserUpdateRequest.builder()
+        String object = objectMapper.writeValueAsString(UpdateUserRequest.builder()
                 .password("new_password")
-                .phone("010-1234-5678")
+                .phone("01012345678")
                 .build());
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/me")
                 .content(object)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -141,6 +151,6 @@ class UsersControllerTest {
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.phone").value("010-1234-5678"));
+                .andExpect(jsonPath("$.data.phone").value("01012345678"));
     }
 }

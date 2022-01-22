@@ -2,14 +2,17 @@ package com.toogoodtogo.web.shops;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toogoodtogo.application.security.SignService;
+import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginRequest;
+import com.toogoodtogo.web.shops.dto.AddShopRequest;
+import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +24,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -56,6 +61,9 @@ class ShopsControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
@@ -76,36 +84,37 @@ class ShopsControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
+        refreshTokenRepository.deleteAllInBatch();
 
         manager = userRepository.save(User.builder()
                 .email("shopTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phone("010-0000-0000")
+                .phone("01000000000")
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginRequest.builder().email("shopTest@email.com").password("password").build());
+        token = signService.login(LoginUserRequest.builder().email("shopTest@email.com").password("password").build());
 
         Shop shop1 = Shop.builder()
-                .user(manager).name("shop1").image("test1").category(new String[]{"한식"}).phone("010-1234-5678")
+                .user(manager).name("shop1").image("test1").category(Arrays.asList("한식")).phone("01012345678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
         shopRepository.save(shop1);
         shopRepository.save(Shop.builder()
-                .user(manager).name("shop2").image("test2").category(new String[]{"중식"}).phone("010-5678-9012")
+                .user(manager).name("shop2").image("test2").category(Arrays.asList("중식")).phone("01056789012")
                 .address("서울특별시 양천구 목동 2번지").hours(new Hours("11:00", "23:00")).build());
         shopId = Math.toIntExact(shop1.getId());
     }
 
     @AfterEach
     public void setDown() {
+        signService.logout(manager.getId());
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     void findAllShops() throws Exception {
         //then
         mockMvc.perform(get("/api/shops"))
@@ -135,7 +144,7 @@ class ShopsControllerTest {
     void findShops() throws Exception {
         //then
         mockMvc.perform(get("/api/manager/shops")
-                .header("Authorization", token.getAccessToken()))
+                .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/find",
                         preprocessRequest(prettyPrint()),
@@ -160,12 +169,12 @@ class ShopsControllerTest {
     void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .name("shop4").image("test4").category(new String[]{"양식"}).phone("010-4444-4444")
+                .name("shop4").image("test4").category(Arrays.asList("한식")).phone("01044444444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/manager/shop")
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -173,7 +182,7 @@ class ShopsControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("shops/add",
+                .andDo(document("shop/add",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -193,14 +202,13 @@ class ShopsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void updateShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
                 .name("shop3")
                 .image("test3")
-                .category(new String[]{"일식"})
-                .phone("010-8765-4321")
+                .category(Arrays.asList("일식"))
+                .phone("01087654321")
                 .address("test3")
                 .open("12:00")
                 .close("21:00")
@@ -208,7 +216,7 @@ class ShopsControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
-                .header("Authorization", token.getAccessToken())
+                .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -236,17 +244,16 @@ class ShopsControllerTest {
     }
 
     @Test
-//    @WithMockUser(roles = "MANAGER")
     public void deleteShop() throws Exception {
         //then
         mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)
-                .header("Authorization", token.getAccessToken()))
+                .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("data")
+                                fieldWithPath("data").description("success message")
                         )
                 ))
                 .andExpect(status().isOk());

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/exception")
 public class ExceptionController {
-
     @GetMapping("/entryPoint")
     public ErrorResponse entrypointException() {
         throw new CAuthenticationEntryPointException();

@@ -1,26 +1,21 @@
 package com.toogoodtogo.configuration.security;
 
-import com.toogoodtogo.configuration.security.JwtAuthenticationFilter;
-import com.toogoodtogo.configuration.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
@@ -51,17 +46,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 권한 관리 대상 지정 옵션
                         // 메인 화면, 로그인 및 가입 접근은 누구나 가능
                         // 더 손봐야 함!!
-                .antMatchers("/api/signup", "/api/login", "/", "/exception/**", "/api/shops/**").permitAll()
+                .antMatchers("/api/signup", "/api/login", "/", "/exception/**").permitAll()
+                .antMatchers("/api/shop/**", "/api/shops/**", "/api/product/**", "/api/products/**", "/api/category/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
 //                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
                 .antMatchers("/api/user/**", "/api/users/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
-                .antMatchers("/api/me", "/api/reissue").hasAnyRole("USER", "MANAGER")
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/me", "/api/reissue", "/api/logout").hasAnyRole("USER", "MANAGER")
+                .antMatchers("/h2-console/**", "/favicon.ico").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .anyRequest().denyAll()
+//                .anyRequest().denyAll()
 
                 .and()
                 .exceptionHandling()
@@ -78,6 +74,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**");
         // static 경로
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        // 더블 슬래시 허용
+        web.httpFirewall(defaultHttpFirewall());
     }
 
     @Bean
@@ -96,5 +94,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public HttpFirewall defaultHttpFirewall() { //더블 슬래시 허용
+        return new DefaultHttpFirewall();
     }
 }

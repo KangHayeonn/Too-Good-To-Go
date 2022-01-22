@@ -171,6 +171,7 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 				menuMatchName === "전체보기" ? (
 					<ShopListLi key={row.id}>
 						<ShopCard
+							shopId={row.shop.id}
 							shopName={row.shop.name}
 							shopFoodImg={
 								row.image

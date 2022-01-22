@@ -32,6 +32,7 @@ const Router: React.FC = () => {
 				<Route exact path="/shopmenu/" component={ShopMenuPage} />
 				<Route path="/shopmenu/:menuName" component={ShopMenuPage} />
 				<Route exact path="/shop" component={Shop} />
+				<Route path="/shop/:shop_id" component={Shop} />
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/register" component={Register} />
 				<Route exact path="/cart" component={CartPage} />

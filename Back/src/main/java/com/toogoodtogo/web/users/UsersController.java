@@ -4,9 +4,13 @@ import com.toogoodtogo.application.user.UserUseCase;
 import com.toogoodtogo.configuration.security.CurrentUser;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.*;
+import com.toogoodtogo.web.users.dto.UpdateUserRequest;
+import com.toogoodtogo.web.users.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -16,12 +20,12 @@ public class UsersController {
     private final UserUseCase userUseCase;
 
     @GetMapping("/me")
-    public ApiResponse<UserDetailResponse> userInfo(@CurrentUser User user, @RequestParam String lang) {
+    public ApiResponse<UserDto> userInfo(@CurrentUser User user/*, @RequestParam String lang*/) {
         return new ApiResponse<>(userUseCase.findUser(user.getId()));
     }
 
     @PatchMapping("/me")
-    public ApiResponse<UserDetailResponse> updateUser (@CurrentUser User user, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return new ApiResponse<>(userUseCase.update(user.getId(), userUpdateRequest));
+    public ApiResponse<UserDto> updateUser (@CurrentUser User user, @RequestBody @Valid UpdateUserRequest request) {
+        return new ApiResponse<>(userUseCase.update(user.getId(), request));
     }
 }

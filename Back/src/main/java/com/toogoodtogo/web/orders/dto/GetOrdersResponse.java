@@ -6,6 +6,7 @@ import com.toogoodtogo.domain.order.OrderStatus;
 import com.toogoodtogo.domain.shop.Shop;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ public class GetOrdersResponse {
     private final List<ProductDto> products;
     private final OrderStatus status;
     private final String requirement;
+    private final LocalDateTime createdAt;
 
     @Getter
     public static class ShopDto {
@@ -59,5 +61,6 @@ public class GetOrdersResponse {
                 .collect(Collectors.toList());
         status = order.getStatus();
         requirement = order.getRequirement();
+        createdAt = order.getCreatedAt();
     }
 }

@@ -9,8 +9,10 @@ import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.web.users.sign.TokenDto;
-import com.toogoodtogo.web.users.sign.UserLoginReq;
+import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
+import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenDto;
+import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Arrays;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -87,20 +91,26 @@ class ProductsControllerTest {
                 .email("productTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
-                .phone("010-0000-0000")
+                .phone("01000000000")
                 .role("ROLE_MANAGER")
                 .build());
 
-        token = signService.login(UserLoginReq.builder().email("productTest@email.com").password("password").build());
+        token = signService.login(LoginUserRequest.builder().email("productTest@email.com").password("password").build());
 
-        Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(new String[]{"한식"}).build();
+        Shop shop = Shop.builder().user(manager).name("shop1").image("test1").category(Arrays.asList("한식")).build();
         shopRepository.save(shop);
         shopId = shop.getId();
 
-        Product product1 = Product.builder().shop(shop).name("김치찌개").price(6000L).discountedPrice(5000L).image("test1").build();
-        Product product2 = Product.builder().shop(shop).name("된장찌개").price(7000L).discountedPrice(6000L).image("test2").build();
+        Product product1 = Product.builder().shop(shop).name("김치찌개").price(10000L).discountedPrice(9000L).image("test1").build();
+        Product product2 = Product.builder().shop(shop).name("된장찌개").price(11000L).discountedPrice(10000L).image("test2").build();
+        Product product3 = Product.builder().shop(shop).name("마라탕").price(12000L).discountedPrice(11000L).image("test3").build();
+        Product product4 = Product.builder().shop(shop).name("짜글이").price(13000L).discountedPrice(12000L).image("test4").build();
+        Product product5 = Product.builder().shop(shop).name("오뎅탕").price(14000L).discountedPrice(13000L).image("test5").build();
         productRepository.save(product1);
         productRepository.save(product2);
+        productRepository.save(product3);
+        productRepository.save(product4);
+        productRepository.save(product5);
         productId = product1.getId();
     }
 
@@ -120,6 +130,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
                                 fieldWithPath("data.[].id").description("product id"),
                                 fieldWithPath("data.[].name").description("product name"),
                                 fieldWithPath("data.[].price").description("product image"),
@@ -140,6 +152,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
                                 fieldWithPath("data.[].id").description("product id"),
                                 fieldWithPath("data.[].name").description("product name"),
                                 fieldWithPath("data.[].price").description("product image"),
@@ -153,7 +167,7 @@ class ProductsControllerTest {
     @Test
     void addProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ProductAddReq.builder()
+        String object = objectMapper.writeValueAsString(AddProductRequest.builder()
                 .name("미역국")
                 .price(9000L)
                 .discountedPrice(8000L)
@@ -175,6 +189,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.shopId").description("product shop id"),
+                                fieldWithPath("data.shopName").description("product shop name"),
                                 fieldWithPath("data.id").description("product id"),
                                 fieldWithPath("data.name").description("product name"),
                                 fieldWithPath("data.price").description("product price"),
@@ -189,7 +205,7 @@ class ProductsControllerTest {
     @Test
     public void updateProduct() throws Exception {
         //given
-        String object = objectMapper.writeValueAsString(ProductUpdateReq.builder()
+        String object = objectMapper.writeValueAsString(UpdateProductRequest.builder()
                 .name("북어국")
                 .price(8000L)
                 .discountedPrice(7000L)
@@ -211,6 +227,8 @@ class ProductsControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.shopId").description("product shop id"),
+                                fieldWithPath("data.shopName").description("product shop name"),
                                 fieldWithPath("data.id").description("product id"),
                                 fieldWithPath("data.name").description("product name"),
                                 fieldWithPath("data.price").description("product price"),
@@ -240,4 +258,74 @@ class ProductsControllerTest {
                 ))
                 .andExpect(status().isOk());
     }
+
+//    @Test
+//    void recommendProducts() throws Exception {
+//        //then
+//        mockMvc.perform(get("/api/products/recommend"))
+//                .andDo(print())
+//                .andDo(document("products/recommend",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void sortProductsPerCategory() throws Exception {
+//        String category = "한식";
+//        String method = "discount";
+//        //then
+//        mockMvc.perform(get("/api/category/{category}/products/sort/{method}", category, method))
+//                .andDo(print())
+//                .andDo(document("products/category",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void sortProductsPerShop() throws Exception {
+//        String method = "";
+//        //then
+//        mockMvc.perform(get("/api/shop/{shopId}/products/sort/{method}", shopId, method))
+//                .andDo(print())
+//                .andDo(document("products/shop",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("data").description("product data"),
+//                                fieldWithPath("data.[].shopId").description("product shop id"),
+//                                fieldWithPath("data.[].shopName").description("product shop name"),
+//                                fieldWithPath("data.[].id").description("product id"),
+//                                fieldWithPath("data.[].name").description("product name"),
+//                                fieldWithPath("data.[].price").description("product image"),
+//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].rate").description("shop discount rate"),
+//                                fieldWithPath("data.[].image").description("product image")
+//                        )
+//                ))
+//                .andExpect(status().isOk());
+//    }
 }

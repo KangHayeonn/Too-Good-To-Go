@@ -6,6 +6,7 @@ import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.user.User;
 import lombok.*;
 
+import javax.jdo.annotations.Join;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class Order extends BaseTimeEntity {
                 .order(this)
                 .product(product)
                 .quantity(quantity)
+                .price(product.getPrice())
+                .discountedPrice(product.getDiscountedPrice())
                 .build();
         orderProducts.add(orderProduct);
     }

@@ -16,6 +16,10 @@ public class OrderProduct {
     @GeneratedValue
     private Long id;
 
+    private Long price;
+
+    private Long discountedPrice;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

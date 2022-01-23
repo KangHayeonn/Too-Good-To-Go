@@ -55,4 +55,11 @@ public class OrderService implements OrderUseCase {
 
         return orderRepository.save(order);
     }
+
+    public List<Order> findOrdersByUserId(Long userId) {
+        // TODO:
+        // 1. Resolve N+1 problem
+        // 2. Apply QueryDSL
+        return orderRepository.findAllByUserId(userId);
+    }
 }

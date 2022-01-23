@@ -7,11 +7,12 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.orders.dto.AddOrderRequest;
 import com.toogoodtogo.web.orders.dto.AddOrderResponse;
+import com.toogoodtogo.web.orders.dto.GetOrdersResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -27,4 +28,13 @@ public class OrdersController {
         Order order = orderUseCase.addOrder(body.convert(user));
         return new ApiResponse<>(new AddOrderResponse(order.getId()));
     }
+
+    @GetMapping
+    public ApiResponse<List<GetOrdersResponse>> orderProducts(@CurrentUser User user) {
+        List<Order> orders = orderUseCase.findOrdersByUserId(user.getId());
+        return new ApiResponse<>(orders.stream()
+                .map(GetOrdersResponse::new)
+                .collect(Collectors.toList()));
+    }
+
 }

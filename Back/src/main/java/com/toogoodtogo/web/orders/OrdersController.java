@@ -37,4 +37,12 @@ public class OrdersController {
                 .collect(Collectors.toList()));
     }
 
+    @DeleteMapping("/{orderId}")
+    public ApiResponse<String> cancelOrder(
+            @CurrentUser User user,
+            @PathVariable Long orderId) throws Exception {
+        orderUseCase.cancelOrder(user, orderId);
+        return new ApiResponse<>("success");
+    }
+
 }

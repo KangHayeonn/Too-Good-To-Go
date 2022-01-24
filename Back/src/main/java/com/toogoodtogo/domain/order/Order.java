@@ -54,4 +54,10 @@ public class Order extends BaseTimeEntity {
         orderProducts.add(orderProduct);
     }
 
+    public void cancelOrder() throws Exception {
+        if (!status.canCancel())
+            throw new Exception("cannot cancel order. status:" + status);
+        status = OrderStatus.CANCELED;
+    }
+
 }

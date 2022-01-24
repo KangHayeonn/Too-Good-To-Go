@@ -5,5 +5,9 @@ public enum OrderStatus {
     CANCELED,
     PREPARING,
     WAITING_PICKUP,
-    PICKUP_COMPLETED,
+    PICKUP_COMPLETED;
+
+    public Boolean canCancel() {
+        return true;
+    }
 }

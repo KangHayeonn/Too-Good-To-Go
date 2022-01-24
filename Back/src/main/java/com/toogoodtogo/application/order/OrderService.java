@@ -8,6 +8,7 @@ import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
+import com.toogoodtogo.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,7 +26,6 @@ public class OrderService implements OrderUseCase {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    @Override
     @Transactional
     public Order addOrder(AddOrderDto addOrderDto) {
         List<Product> products = productRepository.findAllById(
@@ -59,5 +60,14 @@ public class OrderService implements OrderUseCase {
     public List<Order> findOrdersByUserId(Long userId) {
         // TODO: Apply QueryDSL
         return orderRepository.findAllByUserId(userId);
+    }
+
+    @Transactional
+    public void cancelOrder(User user, Long orderId) throws Exception {
+        Order order = orderRepository
+                .findByIdAndUserId(orderId, user.getId())
+                .orElseThrow(Exception::new);
+        order.cancelOrder();
+        orderRepository.save(order);
     }
 }

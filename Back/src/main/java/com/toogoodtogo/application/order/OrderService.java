@@ -26,6 +26,7 @@ public class OrderService implements OrderUseCase {
     private final ProductRepository productRepository;
     private final CachedOrderInfoRepository cachedOrderInfoRepository;
 
+    @Override
     @Transactional
     public Order addOrder(AddOrderDto addOrderDto) {
         List<Product> products = productRepository.findAllById(
@@ -75,11 +76,13 @@ public class OrderService implements OrderUseCase {
         return orderRepository.save(order);
     }
 
+    @Override
     public List<Order> findOrdersByUserId(Long userId) {
         // TODO: Apply QueryDSL
         return orderRepository.findAllByUserId(userId);
     }
 
+    @Override
     @Transactional
     public void cancelOrder(User user, Long orderId) throws OrderNotFoundException {
         Order order = orderRepository
@@ -87,5 +90,11 @@ public class OrderService implements OrderUseCase {
                 .orElseThrow(OrderNotFoundException::new);
         order.cancelOrder();
         orderRepository.save(order);
+    }
+
+    @Override
+    public CachedOrderInfo findCachedOrderInfoByUserId(Long userId) {
+        return cachedOrderInfoRepository.findByUserId(userId)
+                .orElse(new CachedOrderInfo());
     }
 }

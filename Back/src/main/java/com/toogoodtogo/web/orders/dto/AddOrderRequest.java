@@ -13,6 +13,8 @@ public class AddOrderRequest {
     private String requirement;
     private String paymentMethod;
     private List<AddOrderRequestProductDto> products;
+    private Boolean cacheRequirement;
+    private Boolean cachePaymentMethod;
 
     public AddOrderDto convert(User user) {
         return new AddOrderDto(
@@ -22,7 +24,9 @@ public class AddOrderRequest {
                 requirement,
                 products.stream()
                         .map(AddOrderRequestProductDto::convert)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                cacheRequirement,
+                cachePaymentMethod
         );
     }
 }

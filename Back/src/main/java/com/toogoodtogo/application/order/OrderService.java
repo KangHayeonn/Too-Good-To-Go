@@ -1,9 +1,6 @@
 package com.toogoodtogo.application.order;
 
-import com.toogoodtogo.domain.order.Order;
-import com.toogoodtogo.domain.order.OrderProduct;
-import com.toogoodtogo.domain.order.OrderRepository;
-import com.toogoodtogo.domain.order.OrderStatus;
+import com.toogoodtogo.domain.order.*;
 import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
 import com.toogoodtogo.domain.shop.Shop;
@@ -27,6 +24,7 @@ import java.util.stream.Collectors;
 public class OrderService implements OrderUseCase {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final CachedOrderInfoRepository cachedOrderInfoRepository;
 
     @Transactional
     public Order addOrder(AddOrderDto addOrderDto) {
@@ -54,6 +52,24 @@ public class OrderService implements OrderUseCase {
                     product,
                     productQuantityMap.get(product.getId())
             );
+        }
+
+        if (Boolean.TRUE.equals(addOrderDto.getCacheRequirement())
+                || Boolean.TRUE.equals(addOrderDto.getCachePaymentMethod())) {
+            CachedOrderInfo cachedOrderInfo = cachedOrderInfoRepository
+                    .findByUserId(addOrderDto.getUser().getId())
+                    .orElse(new CachedOrderInfo());
+            cachedOrderInfo.setUser(addOrderDto.getUser());
+            cachedOrderInfo.setRequirement(
+                    Boolean.TRUE.equals(addOrderDto.getCacheRequirement()) ?
+                            addOrderDto.getRequirement() : null);
+            cachedOrderInfo.setPaymentMethod(
+                    Boolean.TRUE.equals(addOrderDto.getCachePaymentMethod()) ?
+                            addOrderDto.getPaymentMethod() : null);
+            cachedOrderInfoRepository.save(cachedOrderInfo);
+        } else {
+            cachedOrderInfoRepository.
+                    deleteAllByUserId(addOrderDto.getUser().getId());
         }
 
         return orderRepository.save(order);

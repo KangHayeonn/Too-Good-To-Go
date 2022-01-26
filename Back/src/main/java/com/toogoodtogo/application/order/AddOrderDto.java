@@ -14,6 +14,8 @@ public class AddOrderDto {
     private String paymentMethod;
     private String requirement;
     private List<AddOrderProductDto> products;
+    private Boolean cacheRequirement;
+    private Boolean cachePaymentMethod;
 
     @Getter
     @AllArgsConstructor

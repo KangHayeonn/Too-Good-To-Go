@@ -28,11 +28,14 @@ const CartCards: React.FC = () => {
 		[]
 	);
 	const dispatch = useDispatch();
-	// logic to display cards
+	// Used for useEffect trigger when entered '/cart'
 	const location = useLocation();
+
+	// used for useEffect, triggers useEffect with every redux reducer invoke.
 	const reduxStateCollector = useSelector((state: RootState) => {
 		return state.selectCartCards;
 	});
+
 	useEffect(() => {
 		console.log(location);
 		if (!getLocalStorageCart()) {

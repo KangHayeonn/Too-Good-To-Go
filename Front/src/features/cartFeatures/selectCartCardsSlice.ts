@@ -17,11 +17,11 @@ export type initialCartCardType = CartCardType & {
 	cartItemQuantity: number;
 };
 
-export const initialCards: initialCartCardType[] = shopData.map(
-	(e: CartCardType) => {
-		return { ...e, isChecked: false, cartItemQuantity: 1 };
-	}
-);
+const initialCards: initialCartCardType[] = shopData.map((e: CartCardType) => {
+	return { ...e, isChecked: false, cartItemQuantity: 1 };
+});
+
+console.log("reducer");
 
 export const selectCartCardsSlice = createSlice({
 	name: "selectCartCards",
@@ -81,6 +81,13 @@ export const selectCartCardsSlice = createSlice({
 					return e.cartItemQuantity;
 				});
 		},
+		addItemsToCart: (
+			state,
+			action: PayloadAction<initialCartCardType[]>
+		) => {
+			console.log("addItemsToCart:", action.payload);
+			return action.payload;
+		},
 	},
 });
 
@@ -91,6 +98,7 @@ export const {
 	deleteSelectedCards,
 	incrementSelectedCards,
 	decrementSelectedCards,
+	addItemsToCart,
 } = selectCartCardsSlice.actions;
 
 export default selectCartCardsSlice.reducer;

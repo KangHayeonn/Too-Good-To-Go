@@ -1,6 +1,7 @@
 package com.toogoodtogo.domain.order;
 
 import com.toogoodtogo.domain.BaseTimeEntity;
+import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.user.User;
@@ -54,9 +55,10 @@ public class Order extends BaseTimeEntity {
         orderProducts.add(orderProduct);
     }
 
-    public void cancelOrder() throws Exception {
+    public void cancelOrder() throws OrderCancelException {
         if (!status.canCancel())
-            throw new Exception("cannot cancel order. status:" + status);
+            throw new OrderCancelException(
+                    "cannot cancel order in status: " + status);
         status = OrderStatus.CANCELED;
     }
 

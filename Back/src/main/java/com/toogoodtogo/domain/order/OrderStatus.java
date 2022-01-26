@@ -8,6 +8,6 @@ public enum OrderStatus {
     PICKUP_COMPLETED;
 
     public Boolean canCancel() {
-        return true;
+        return this.equals(ORDER_COMPLETED);
     }
 }

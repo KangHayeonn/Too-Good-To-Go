@@ -4,6 +4,8 @@ import com.toogoodtogo.domain.order.Order;
 import com.toogoodtogo.domain.order.OrderProduct;
 import com.toogoodtogo.domain.order.OrderRepository;
 import com.toogoodtogo.domain.order.OrderStatus;
+import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
+import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
@@ -63,10 +65,10 @@ public class OrderService implements OrderUseCase {
     }
 
     @Transactional
-    public void cancelOrder(User user, Long orderId) throws Exception {
+    public void cancelOrder(User user, Long orderId) throws OrderNotFoundException {
         Order order = orderRepository
                 .findByIdAndUserId(orderId, user.getId())
-                .orElseThrow(Exception::new);
+                .orElseThrow(OrderNotFoundException::new);
         order.cancelOrder();
         orderRepository.save(order);
     }

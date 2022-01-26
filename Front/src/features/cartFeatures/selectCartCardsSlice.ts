@@ -1,6 +1,8 @@
 // rtk
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { shopData } from "../../components/molecules/ShopDummyData";
+// localStorage helper function
+import { setLocalStorageCart } from "../../helpers/cartControl";
 
 export type CartCardType = {
 	shopId: number;
@@ -28,46 +30,66 @@ export const selectCartCardsSlice = createSlice({
 	initialState: initialCards,
 	reducers: {
 		selectCartCardByID: (state, action: PayloadAction<number>) => {
-			return state.map((e) => {
+			const cards = state.map((e) => {
 				if (e.shopId === action.payload) {
 					return { ...e, isChecked: !e.isChecked };
 				}
 				return e;
 			});
+			// set localstorage with state.selectCartCards
+			setLocalStorageCart(JSON.stringify(cards));
+
+			return cards;
 		},
 		selectAllCartCards: (state, action: PayloadAction<boolean>) => {
 			if (action.payload === true) {
-				return state.map((e) => {
+				const cards = state.map((e) => {
 					return { ...e, isChecked: false };
 				});
+				// set localstorage with state.selectCartCards
+				setLocalStorageCart(JSON.stringify(cards));
+
+				return cards;
 				// eslint-disable-next-line no-else-return
 			} else if (action.payload === false) {
-				return state.map((e) => {
+				const cards = state.map((e) => {
 					return { ...e, isChecked: true };
 				});
+				// set localstorage with state.selectCartCards
+				setLocalStorageCart(JSON.stringify(cards));
+
+				return cards;
 			} else {
 				return state;
 			}
 		},
 		deleteSelectedCards: (state) => {
 			let filteredArrOfState: initialCartCardType[] = [];
+
 			filteredArrOfState = state.filter((e) => {
 				return e.isChecked === false;
 			});
+			// set localstorage with state.selectCartCards
+			setLocalStorageCart(JSON.stringify(filteredArrOfState));
 
 			return filteredArrOfState;
 		},
 		incrementSelectedCards: (state, action: PayloadAction<number>) => {
-			return state.map((e) => {
+			const cards = state.map((e) => {
 				if (e.shopId === action.payload) {
 					return { ...e, cartItemQuantity: e.cartItemQuantity + 1 };
 				}
 				return e;
 			});
+
+			// set localstorage with state.selectCartCards
+			setLocalStorageCart(JSON.stringify(cards));
+
+			return cards;
 		},
 		decrementSelectedCards: (state, action: PayloadAction<number>) => {
 			// Deletes card which has cartItemQuantity <= 0
-			return state
+			const cards = state
 				.map((e) => {
 					if (e.shopId === action.payload) {
 						return {
@@ -80,12 +102,21 @@ export const selectCartCardsSlice = createSlice({
 				.filter((e) => {
 					return e.cartItemQuantity;
 				});
+
+			// set localstorage with state.selectCartCards
+			setLocalStorageCart(JSON.stringify(cards));
+
+			return cards;
 		},
 		addItemsToCart: (
 			state,
 			action: PayloadAction<initialCartCardType[]>
 		) => {
 			console.log("addItemsToCart:", action.payload);
+
+			// set localstorage with state.selectCartCards
+			setLocalStorageCart(JSON.stringify(action.payload));
+
 			return action.payload;
 		},
 	},

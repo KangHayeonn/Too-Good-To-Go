@@ -1,6 +1,8 @@
 package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
+import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
+import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
 import com.toogoodtogo.web.common.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorResponse defaultException(HttpServletRequest request, Exception e) {
         log.info(String.valueOf(e));
+        e.printStackTrace();
         return new ErrorResponse("Unknown error", getMessage("unKnown.msg"));
     }
 
@@ -288,6 +291,18 @@ public class ExceptionAdvice {
     protected ErrorResponse validCheckException(HttpServletRequest request, CValidCheckException e) {
         return new ErrorResponse("Valid Exception", getMessage("validCheckException.msg"),
                 Collections.singletonList(new ErrorResponse.Error(" ", " ", e.getMessage())));
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ErrorResponse orderNotFoundException(HttpServletRequest request, OrderNotFoundException e) {
+        return new ErrorResponse("OrderNotFoundException", getMessage("orderNotFoundException.msg"));
+    }
+
+    @ExceptionHandler(OrderCancelException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse orderCancelException(HttpServletRequest request, OrderCancelException e) {
+        return new ErrorResponse("OrderCancelException", getMessage("orderCancelException.msg"));
     }
 
     private String getMessage(String code) {

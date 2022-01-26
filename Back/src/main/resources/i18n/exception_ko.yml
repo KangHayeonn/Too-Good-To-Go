@@ -71,3 +71,9 @@ agreementException:
 validCheckException:
   code: "-1016"
   msg: "유효한 값이 아닙니다."
+orderNotFoundException:
+  code: "-1017"
+  msg: "주문을 찾을 수 없습니다."
+orderCancelException:
+  code: "-1018"
+  msg: "주문을 취소할 수 없습니다."

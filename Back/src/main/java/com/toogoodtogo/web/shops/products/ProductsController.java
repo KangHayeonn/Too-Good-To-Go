@@ -8,6 +8,7 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.ProductTmp;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -66,7 +67,7 @@ public class ProductsController {
 //    }
 
     @GetMapping("/products/recommend")
-    public ApiResponse<List<ProductDto>> recommendProducts() {
+    public ApiResponse<List<ProductTmp>> recommendProducts() {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 
@@ -75,7 +76,7 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.sortProductsPerCategory(category, method));
     }
 
-    @GetMapping("/shop/{shopId}/products/sort/{method}")
+    @GetMapping("/shop/{shopId}/products/sort{method}")
     public ApiResponse<List<ProductDto>> sortProductsPerShop(@PathVariable Long shopId, @PathVariable String method) {
         return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
     }

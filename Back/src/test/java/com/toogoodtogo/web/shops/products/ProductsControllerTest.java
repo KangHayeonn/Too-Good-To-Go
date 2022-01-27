@@ -275,6 +275,7 @@ class ProductsControllerTest {
 //                                fieldWithPath("data.[].name").description("product name"),
 //                                fieldWithPath("data.[].price").description("product image"),
 //                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+//                                fieldWithPath("data.[].rate").description("shop rate"),
 //                                fieldWithPath("data.[].image").description("product image")
 //                        )
 //                ))
@@ -304,28 +305,27 @@ class ProductsControllerTest {
 //                ))
 //                .andExpect(status().isOk());
 //    }
-//
-//    @Test
-//    void sortProductsPerShop() throws Exception {
-//        String method = "";
-//        //then
-//        mockMvc.perform(get("/api/shop/{shopId}/products/sort/{method}", shopId, method))
-//                .andDo(print())
-//                .andDo(document("products/shop",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                                fieldWithPath("data").description("product data"),
-//                                fieldWithPath("data.[].shopId").description("product shop id"),
-//                                fieldWithPath("data.[].shopName").description("product shop name"),
-//                                fieldWithPath("data.[].id").description("product id"),
-//                                fieldWithPath("data.[].name").description("product name"),
-//                                fieldWithPath("data.[].price").description("product image"),
-//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-//                                fieldWithPath("data.[].rate").description("shop discount rate"),
-//                                fieldWithPath("data.[].image").description("product image")
-//                        )
-//                ))
-//                .andExpect(status().isOk());
-//    }
+
+    @Test
+    void sortProductsPerShop() throws Exception {
+        String method = "";
+        //then
+        mockMvc.perform(get("/api/shop/{shopId}/products/sort{method}", shopId, method))
+                .andDo(print())
+                .andDo(document("products/shop",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
+                                fieldWithPath("data.[].id").description("product id"),
+                                fieldWithPath("data.[].name").description("product name"),
+                                fieldWithPath("data.[].price").description("product image"),
+                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+                                fieldWithPath("data.[].image").description("product image")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
 }

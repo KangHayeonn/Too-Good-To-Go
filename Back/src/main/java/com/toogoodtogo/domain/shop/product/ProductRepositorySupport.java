@@ -1,10 +1,14 @@
 package com.toogoodtogo.domain.shop.product;
 
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.ProductTmp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -31,11 +35,10 @@ public class ProductRepositorySupport {
                 product.name,
                 product.price,
                 product.discountedPrice,
-                product.price.subtract(product.discountedPrice).divide(product.price).multiply(100L).as("rate"),
                 product.image))
                 .from(product) // 맞나?
                 .innerJoin(product.shop, shop)
-                .where(eqCategory(category)) // 가게의 카테고리? 아님 상품의 카테고리?
+                .where(eqCategory(category))
                 .orderBy(orderType(method))
                 .fetch();
     }
@@ -48,7 +51,6 @@ public class ProductRepositorySupport {
                 product.name,
                 product.price,
                 product.discountedPrice,
-                product.price.subtract(product.discountedPrice).divide(product.price).multiply(100L).as("rate"),
                 product.image))
                 .from(product) // 맞나?
                 .innerJoin(product.shop, shop)
@@ -59,38 +61,53 @@ public class ProductRepositorySupport {
 
     private OrderSpecifier<?> orderType(String method) {
         log.info("orderTest : " + method);
-        if(method.equals("rate")){
+        if(method.equals("/rate")){
             //할인율 = (p-dp)/p*100
             return product.price.subtract(product.discountedPrice).divide(product.price).multiply(100L).desc();
         }
-        else if (method.equals("discount")) {
+        else if (method.equals("/discount")) {
             return product.discountedPrice.asc();
         }
         else return product.id.desc(); // 디폴트값 최신순. BaseTimeEntity 상속 or Id 순 "update"?
     }
 
-    public List<ProductDto> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개
+    public List<ProductTmp> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개
         //queryDSL에선 form 서브쿼리 지원안함....
         QProduct p1 = new QProduct("p1");
         QProduct p2 = new QProduct("p2");
-        return queryFactory.select(Projections.fields(ProductDto.class, // or .constructor
+
+        List<Long> productIdList = queryFactory.select(p1.id)
+                .from(p1)
+                .innerJoin(p1.shop, shop)
+                .leftJoin(p2)
+                .on(p1.shop.id.eq(p2.shop.id)
+                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
+                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
+                .where(p2.id.isNull()) // ??
+                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
+                .limit(1)
+                .fetch();//??;
+
+        return queryFactory.select(Projections.fields(ProductTmp.class, // or .constructor
                 shop.id.as("shopId"),
                 shop.name.as("shopName"),
                 p1.id,
                 p1.name,
                 p1.price,
                 p1.discountedPrice,
-                product.price.subtract(product.discountedPrice).divide(product.price).multiply(100L).as("rate"),
+                p1.price.subtract(p1.discountedPrice).divide(p1.price).multiply(100L).as("rate"),
                 p1.image))
                 .from(p1)
                 .innerJoin(p1.shop, shop)
+                .fetchJoin()
                 .leftJoin(p2)
+                .fetchJoin()
                 .on(p1.shop.id.eq(p2.shop.id)
-                        .and(p1.discountedPrice.mod(p1.price).multiply(100L)
-                                .lt(p2.discountedPrice.mod(p2.price).multiply(100L))))
-                .where(p2.isNull()) // ??
-                .orderBy(p1.discountedPrice.mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
-                .limit(10)
+                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
+                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
+                .where(p2.id.isNull()) // ??
+                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
+                .limit(5)
                 .fetch();//??;
     }
 
@@ -107,12 +124,8 @@ public class ProductRepositorySupport {
     }
 
     public BooleanExpression eqCategory(String category) {
-        log.info("categoryTest");
-        log.info("DSA " + shop.category.getType().getName());
-        log.info("DSA " + shop.category.getClass().getName());
-        List<String> tmp = Arrays.asList(category);
-        return null;
-//        return hasText(category) ? Expressions.anyOf(tmp.stream().map(shop.category.contains(category)).toArray(BooleanExpression[]::new)) : null;
-//        return hasText(category) ? shop.category.contains(category) : null;
+        log.info(String.valueOf(shop.category.getType()));
+        log.info(String.valueOf(shop.category.getClass()));
+        return hasText(category) ? shop.category.any().stringValue().contains(category) : null;
     }
 }

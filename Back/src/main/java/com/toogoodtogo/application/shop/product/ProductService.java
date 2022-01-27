@@ -10,6 +10,7 @@ import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepositorySupport;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.ProductTmp;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +61,20 @@ public class ProductService implements ProductUseCase {
 //                .image(request.getImage())
 //                .build();
 //        return new ProductDto(productRepository.save(product));
-        // ProductCard로 하고 product.shop.id 하면 안되나?
-        return new ProductDto(shop.getId(), shop.getName(), productRepository.save(request.toEntity(shop)));
+        return ProductDto.builder()
+                .shopId(shop.getId())
+                .shopName(shop.getName())
+                .product(productRepository.save(request.toEntity(shop))).build();
     }
 
     @Transactional
     public ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest request) {
         Product modifiedProduct = productRepository.findByUserIdAndId(managerId, productId).orElseThrow(CProductNotFoundException::new);
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), request.getImage());
-        return new ProductDto(modifiedProduct.getShop().getId(), modifiedProduct.getShop().getName() ,modifiedProduct);
+        return ProductDto.builder()
+                .shopId(modifiedProduct.getShop().getId())
+                .shopName(modifiedProduct.getShop().getName())
+                .product(modifiedProduct).build();
     }
 
     @Transactional
@@ -79,7 +85,7 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> recommendProducts() {
+    public List<ProductTmp> recommendProducts() {
         return productRepositorySupport.recommendProducts();
     }
 

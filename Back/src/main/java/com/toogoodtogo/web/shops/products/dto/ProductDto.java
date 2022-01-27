@@ -1,6 +1,7 @@
 package com.toogoodtogo.web.shops.products.dto;
 
 import com.toogoodtogo.domain.shop.product.Product;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ public class ProductDto {
     private Long discountedPrice;
     private String image;
 
+    @Builder
     public ProductDto(Long shopId, String shopName, Product product) {
         this.shopId = shopId;
         this.shopName = shopName;

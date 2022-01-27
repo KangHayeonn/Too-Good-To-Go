@@ -71,3 +71,9 @@ agreementException:
 validCheckException:
   code: "-1016"
   msg: "It's not a valid value."
+orderNotFoundException:
+  code: "-1017"
+  msg: "Order not found."
+orderCancelException:
+  code: "-1018"
+  msg: "Order cannot be canceled"

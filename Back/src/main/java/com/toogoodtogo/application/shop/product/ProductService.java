@@ -1,7 +1,7 @@
 package com.toogoodtogo.application.shop.product;
 
-import com.toogoodtogo.advice.exception.CProductNotFoundException;
-import com.toogoodtogo.advice.exception.CShopNotFoundException;
+import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
+import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
@@ -90,8 +90,8 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> sortProductsPerCategory(String category, String method) {
-        return productRepositorySupport.sortProductsPerCategory(category, method);
+    public List<List<ProductDto>> productsPerCategory(String category) {
+        return productRepositorySupport.productsPerCategory(category);
     }
 
     @Transactional(readOnly = true)

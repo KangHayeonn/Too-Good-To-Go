@@ -37,3 +37,4 @@ out/
 .vscode/
 /src/main/resources/application-local.yml
 /spy.log
+/src/main/resources/application-jwt.yml

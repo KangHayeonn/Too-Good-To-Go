@@ -1,4 +1,4 @@
-package com.toogoodtogo.advice.exception;
+package com.toogoodtogo.domain.security.exceptions;
 
 public class CEmailLoginFailedException extends RuntimeException {
     public CEmailLoginFailedException() {

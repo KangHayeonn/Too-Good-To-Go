@@ -1,8 +1,6 @@
 package com.toogoodtogo.web.shops.products.dto;
 
 import com.toogoodtogo.advice.ValidationGroups;
-import com.toogoodtogo.advice.exception.CAuthenticationEntryPointException;
-import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.Product;
 import lombok.*;

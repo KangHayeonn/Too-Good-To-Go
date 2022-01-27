@@ -1,5 +1,7 @@
 package com.toogoodtogo.domain.shop;
 
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
 import com.toogoodtogo.domain.ListToStringConverter;
 import com.toogoodtogo.domain.user.User;
 import lombok.*;
@@ -26,6 +28,7 @@ public class Shop {
 
     private String image;
 
+    @QueryType(PropertyType.STRING)
     @Convert(converter = ListToStringConverter.class)
     private List<String> category;
 

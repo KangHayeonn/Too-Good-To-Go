@@ -1,6 +1,6 @@
 package com.toogoodtogo.configuration.security;
 
-import com.toogoodtogo.advice.exception.CAuthenticationEntryPointException;
+import com.toogoodtogo.domain.security.exceptions.CAuthenticationEntryPointException;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
@@ -26,7 +26,7 @@ import java.util.Date;
 // Jwts는 여러가지 암호화 알고리즘을 제공하고 알고리즘과 비밀키 가지고 토큰 생성
 public class JwtTokenProvider {
 
-    @Value("spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
     private String ROLES = "roles";

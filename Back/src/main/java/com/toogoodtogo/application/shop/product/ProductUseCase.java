@@ -14,6 +14,6 @@ public interface ProductUseCase {
     ProductDto updateProduct(Long managerId, Long productId, UpdateProductRequest updateProductRequest);
     String deleteProduct(Long managerId, Long productId);
     List<ProductTmp> recommendProducts();
-    List<ProductDto> sortProductsPerCategory(String category, String method);
+    List<List<ProductDto>> productsPerCategory(String category);
     List<ProductDto> sortProductsPerShop(Long shopId, String method);
 }

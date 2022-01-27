@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    secret: ${{secrets.JWT_KEY}}
   jpa:
     hibernate:
       ddl-auto: none

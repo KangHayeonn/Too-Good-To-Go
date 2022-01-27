@@ -281,30 +281,29 @@ class ProductsControllerTest {
 //                ))
 //                .andExpect(status().isOk());
 //    }
-//
-//    @Test
-//    void sortProductsPerCategory() throws Exception {
-//        String category = "한식";
-//        String method = "discount";
-//        //then
-//        mockMvc.perform(get("/api/category/{category}/products/sort/{method}", category, method))
-//                .andDo(print())
-//                .andDo(document("products/category",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                                fieldWithPath("data").description("product data"),
-//                                fieldWithPath("data.[].shopId").description("product shop id"),
-//                                fieldWithPath("data.[].shopName").description("product shop name"),
-//                                fieldWithPath("data.[].id").description("product id"),
-//                                fieldWithPath("data.[].name").description("product name"),
-//                                fieldWithPath("data.[].price").description("product image"),
-//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-//                                fieldWithPath("data.[].image").description("product image")
-//                        )
-//                ))
-//                .andExpect(status().isOk());
-//    }
+
+    @Test
+    void productsPerCategory() throws Exception {
+        String category = "한식";
+        //then
+        mockMvc.perform(get("/api/category/{category}/products", category))
+                .andDo(print())
+                .andDo(document("products/category",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].[].shopName").description("product shop name"),
+                                fieldWithPath("data.[].[].id").description("product id"),
+                                fieldWithPath("data.[].[].name").description("product name"),
+                                fieldWithPath("data.[].[].price").description("product image"),
+                                fieldWithPath("data.[].[].discountedPrice").description("shop discountedPrice"),
+                                fieldWithPath("data.[].[].image").description("product image")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void sortProductsPerShop() throws Exception {

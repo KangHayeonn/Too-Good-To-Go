@@ -1,4 +1,4 @@
-package com.toogoodtogo.advice.exception;
+package com.toogoodtogo.domain.user.exceptions;
 
 public class CUserNotFoundException extends RuntimeException {
     public CUserNotFoundException(String message, Throwable cause) {

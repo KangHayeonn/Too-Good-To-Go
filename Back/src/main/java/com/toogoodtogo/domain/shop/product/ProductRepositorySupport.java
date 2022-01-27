@@ -1,7 +1,9 @@
 package com.toogoodtogo.domain.shop.product;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,20 +30,38 @@ public class ProductRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     // 상점 아이디, 이름 포함
-    public List<ProductDto> sortProductsPerCategory(String category, String method) { //method String 대신 enum?
-        return queryFactory.select(Projections.fields(ProductDto.class,
-                shop.id.as("shopId"),
-                shop.name.as("shopName"),
-                product.id,
-                product.name,
-                product.price,
-                product.discountedPrice,
-                product.image))
-                .from(product) // 맞나?
-                .innerJoin(product.shop, shop)
-                .where(eqCategory(category))
-                .orderBy(orderType(method))
-                .fetch();
+    public List<List<ProductDto>> productsPerCategory(String category) { //method String 대신 enum?
+        List<Tuple> results = queryFactory.select(shop.id, shop.category).from(shop).fetch();
+        List<Long> shopList = new ArrayList<>();
+        results.stream().forEach(tuple -> {
+            if (tuple.get(shop.category).contains(category)) {
+                shopList.add(tuple.get(shop.id));
+            }
+        });
+//        for (Tuple tuple : results) {
+//            Long id = tuple.get(shop.id);
+//            List<String> categories = tuple.get(shop.category);
+//            log.info("SHOP id : {}, category : {}", id, categories);
+//            if (categories.contains(category)) {
+//                shopList.add(tuple.get(shop.id));
+//            }
+//        }
+        List<List<ProductDto>> data = new ArrayList<>();
+        shopList.stream().forEach(id -> {
+            data.add(queryFactory.select(Projections.fields(ProductDto.class,
+                    shop.id.as("shopId"),
+                    shop.name.as("shopName"),
+                    product.id,
+                    product.name,
+                    product.price,
+                    product.discountedPrice,
+                    product.image))
+                    .from(product) // 맞나?
+                    .innerJoin(product.shop, shop)
+                    .where(eqShopId(id))
+                    .fetch());
+        });
+        return data;
     }
 
     public List<ProductDto> sortProductsPerShop(Long shopId, String method) { //method String 대신 enum?
@@ -98,8 +119,9 @@ public class ProductRepositorySupport {
                 p1.price.subtract(p1.discountedPrice).divide(p1.price).multiply(100L).as("rate"),
                 p1.image))
                 .from(p1)
-                .innerJoin(p1.shop, shop)
-                .fetchJoin()
+//                .innerJoin(p1.shop, shop)
+//                .fetchJoin()
+//                .innerJoin(p2.shop, shop)
                 .leftJoin(p2)
                 .fetchJoin()
                 .on(p1.shop.id.eq(p2.shop.id)
@@ -124,8 +146,9 @@ public class ProductRepositorySupport {
     }
 
     public BooleanExpression eqCategory(String category) {
-        log.info(String.valueOf(shop.category.getType()));
-        log.info(String.valueOf(shop.category.getClass()));
-        return hasText(category) ? shop.category.any().stringValue().contains(category) : null;
+//        log.info(String.valueOf(shop.category.getType()));
+//        log.info(String.valueOf(shop.category.getClass()));
+//        return hasText(category) ? shop.category.any().stringValue().contains(category) : null;
+        return hasText(category) ? Expressions.stringPath(String.valueOf(shop.category)).contains(category) : null;
     }
 }

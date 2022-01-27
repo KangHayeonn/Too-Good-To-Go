@@ -1,4 +1,4 @@
-package com.toogoodtogo.advice.exception;
+package com.toogoodtogo.domain.user.exceptions;
 
 public class CUserExistException extends RuntimeException {
     public CUserExistException() {

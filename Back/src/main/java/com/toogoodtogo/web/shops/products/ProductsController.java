@@ -71,9 +71,9 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 
-    @GetMapping("/category/{category}/products/sort/{method}")
-    public ApiResponse<List<ProductDto>> sortProductsPerCategory(@PathVariable String category, @PathVariable String method) {
-        return new ApiResponse<>(productUseCase.sortProductsPerCategory(category, method));
+    @GetMapping("/category/{category}/products")
+    public ApiResponse<List<List<ProductDto>>> productsPerCategory(@PathVariable String category) {
+        return new ApiResponse<>(productUseCase.productsPerCategory(category));
     }
 
     @GetMapping("/shop/{shopId}/products/sort{method}")

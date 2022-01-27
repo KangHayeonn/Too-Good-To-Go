@@ -1,7 +1,7 @@
 package com.toogoodtogo.application.shop;
 
-import com.toogoodtogo.advice.exception.CShopNotFoundException;
-import com.toogoodtogo.advice.exception.CUserNotFoundException;
+import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;

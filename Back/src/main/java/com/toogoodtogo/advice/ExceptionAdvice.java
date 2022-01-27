@@ -3,6 +3,11 @@ package com.toogoodtogo.advice;
 import com.toogoodtogo.advice.exception.*;
 import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
+import com.toogoodtogo.domain.security.exceptions.*;
+import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
+import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
+import com.toogoodtogo.domain.user.exceptions.CUserExistException;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.web.common.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +28,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

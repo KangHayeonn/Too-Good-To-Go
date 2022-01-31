@@ -20,6 +20,7 @@ configurations {
 }
 
 repositories {
+    maven { url 'https://repo.spring.io/release' }
     mavenCentral()
 }
 
@@ -49,6 +50,8 @@ dependencies {
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
     //queryDSL
     implementation 'com.querydsl:querydsl-jpa'
+    //AWS S3
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 }
 
 ext {

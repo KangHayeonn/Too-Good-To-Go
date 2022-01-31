@@ -22,12 +22,14 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -173,13 +175,20 @@ class ProductsControllerTest {
                 .discountedPrice(8000L)
                 .image("image1")
                 .build());
+        MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
-        ResultActions actions = mockMvc.perform(post("/api/manager/shop/{shopId}/product", shopId)
-                .header("Authorization", "Bearer " + token.getAccessToken())
-                .content(object)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+//        ResultActions actions = mockMvc.perform(post("/api/manager/shop/{shopId}/product", shopId)
+//                .header("Authorization", "Bearer " + token.getAccessToken())
+//                .content(object)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON));
+
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}/product", shopId)
+                .file(new MockMultipartFile("file", null, null, (InputStream) null))
+//                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
+                .file(request).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token.getAccessToken()));
 
         //then
         actions
@@ -209,15 +218,21 @@ class ProductsControllerTest {
                 .name("북어국")
                 .price(8000L)
                 .discountedPrice(7000L)
-                .image("new_image")
                 .build());
+        MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
-                .header("Authorization", "Bearer " + token.getAccessToken())
-                .content(object)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+//        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
+//                .header("Authorization", "Bearer " + token.getAccessToken())
+//                .content(object)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON));
+
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
+                .file(new MockMultipartFile("file", null, null, (InputStream) null))
+//                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
+                .file(request).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token.getAccessToken()));
 
         //then
         actions
@@ -239,8 +254,7 @@ class ProductsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("북어국"))
                 .andExpect(jsonPath("$.data.price").value(8000L))
-                .andExpect(jsonPath("$.data.discountedPrice").value(7000L))
-                .andExpect(jsonPath("$.data.image").value("new_image"));
+                .andExpect(jsonPath("$.data.discountedPrice").value(7000L));
     }
 
     @Test

@@ -1,6 +1,9 @@
 spring:
   profiles:
-    include: jwt
+    include:
+      - jwt
+      - aws
+      - credentials
   messages:
     basename: i18n/exception
     encoding: UTF-8

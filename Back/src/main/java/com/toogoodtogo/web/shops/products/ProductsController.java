@@ -13,8 +13,10 @@ import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -38,20 +40,23 @@ public class ProductsController {
     public ApiResponse<ProductDto> addProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestBody @Validated(ValidationSequence.class) AddProductRequest request) {
+             @RequestPart(required = false) MultipartFile file,
+             @RequestPart @Validated(ValidationSequence.class) AddProductRequest request) throws IOException {
         if (request.getDiscountedPrice() > request.getPrice())
             throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
-        return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, request/*.toServiceDto()*/));
+        return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, file, request/*.toServiceDto()*/));
     }
 
-    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
+//    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
+    @PostMapping("/manager/shop/{shopId}/product/{productId}")
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long productId,
-            @RequestBody @Validated(ValidationSequence.class) UpdateProductRequest request) {
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart @Validated(ValidationSequence.class) UpdateProductRequest request) throws IOException {
         if (request.getDiscountedPrice() > request.getPrice())
             throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
-        return new ApiResponse<>(productUseCase.updateProduct(user.getId(), productId, request));
+        return new ApiResponse<>(productUseCase.updateProduct(user.getId(), productId, file, request));
     }
 
     @DeleteMapping("/manager/shop/{shopId}/product/{productId}")

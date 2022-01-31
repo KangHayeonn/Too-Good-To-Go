@@ -1,6 +1,7 @@
 package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
+import com.toogoodtogo.domain.exceptions.CUploadImageInvalidException;
 import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
 import com.toogoodtogo.domain.security.exceptions.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -59,6 +61,19 @@ public class ExceptionAdvice {
             log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", error.getField(), error.getRejectedValue(), error.getDefaultMessage());
         }
         return new ErrorResponse("Request body's field is not valid", getMessage("requestBodyNotValid.msg"));
+    }
+
+    /***
+     * -0000
+     * Request Body validation Exception
+     */
+    @ExceptionHandler(WebExchangeBindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse requestBodyNotValidException(HttpServletRequest request, WebExchangeBindException e) {
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", error.getField(), error.getRejectedValue(), error.getDefaultMessage());
+        }
+        return new ErrorResponse("Request part's field is not valid", getMessage("requestBodyNotValid.msg"));
     }
 
     /***
@@ -304,6 +319,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse orderCancelException(HttpServletRequest request, OrderCancelException e) {
         return new ErrorResponse("OrderCancelException", getMessage("orderCancelException.msg"));
+    }
+
+    @ExceptionHandler(CUploadImageInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse profileImageInvalidException(HttpServletRequest request, CUploadImageInvalidException e) {
+        return new ErrorResponse("UploadImageInvalidException", getMessage("uploadImageInvalidException.msg"));
     }
 
     private String getMessage(String code) {

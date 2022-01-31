@@ -38,3 +38,5 @@ out/
 /src/main/resources/application-local.yml
 /spy.log
 /src/main/resources/application-jwt.yml
+/src/main/resources/application-aws.yml
+/src/main/resources/application-credentials.yml

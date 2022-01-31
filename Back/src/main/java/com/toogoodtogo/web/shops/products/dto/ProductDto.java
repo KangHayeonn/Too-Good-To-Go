@@ -26,4 +26,15 @@ public class ProductDto {
         this.discountedPrice = product.getDiscountedPrice();
         this.image = product.getImage();
     }
+
+    @Builder
+    public ProductDto(Product product) {
+        this.shopId = product.getShop().getId();
+        this.shopName = product.getShop().getName();
+        this.id = product.getId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.discountedPrice = product.getDiscountedPrice();
+        this.image = product.getImage();
+    }
 }

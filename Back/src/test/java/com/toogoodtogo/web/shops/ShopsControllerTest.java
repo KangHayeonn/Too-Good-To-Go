@@ -22,14 +22,20 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -169,15 +175,22 @@ class ShopsControllerTest {
     void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .name("shop4").image("test4").category(Arrays.asList("한식")).phone("01044444444")
+                .name("shop4").image("test4").category(Collections.singletonList("한식")).phone("01044444444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
+        MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
-        ResultActions actions = mockMvc.perform(post("/api/manager/shop")
-                .header("Authorization", "Bearer " + token.getAccessToken())
-                .content(object)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+//        ResultActions actions = mockMvc.perform(post("/api/manager/shop")
+//                .header("Authorization", "Bearer " + token.getAccessToken())
+//                .content(object)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON));
+
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop")
+                .file(new MockMultipartFile("file", null, null, (InputStream) null))
+//                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
+                .file(request).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token.getAccessToken()));
 
         //then
         actions
@@ -207,19 +220,26 @@ class ShopsControllerTest {
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
                 .name("shop3")
                 .image("test3")
-                .category(Arrays.asList("일식"))
+                .category(Collections.singletonList("일식"))
                 .phone("01087654321")
                 .address("test3")
                 .open("12:00")
                 .close("21:00")
                 .build());
+        MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
-                .header("Authorization", "Bearer " + token.getAccessToken())
-                .content(object)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+//        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
+//                .header("Authorization", "Bearer " + token.getAccessToken())
+//                .content(object)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON));
+
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}", shopId)
+                .file(new MockMultipartFile("file", null, null, (InputStream) null))
+//                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
+                .file(request).accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token.getAccessToken()));
 
         //then
         actions

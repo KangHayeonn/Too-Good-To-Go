@@ -10,3 +10,14 @@ spring:
     url: ${DB_CONNECTION_STRING}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+cloud:
+  aws:
+    s3:
+      bucket: toogoodtogobucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instanceProfile: true

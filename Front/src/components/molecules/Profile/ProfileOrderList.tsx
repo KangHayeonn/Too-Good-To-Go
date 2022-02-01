@@ -48,7 +48,7 @@ const ProfileOrderList: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
-		"https://run.mocky.io/v3/913e714d-1fa7-4b4e-9129-495770a98865",
+		"https://run.mocky.io/v3/acde94dc-1618-4d91-bae4-d57631a3b035",
 		(er: unknown) => {
 			console.log(er);
 		}

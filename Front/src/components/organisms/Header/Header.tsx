@@ -60,6 +60,7 @@ const Header: React.FC<Props> = ({ loginOn }) => {
 						)}
 					</div>
 					<Link to="/cart">장바구니</Link>
+					<Link to="/profile">profile</Link>
 				</div>
 			</nav>
 		</div>

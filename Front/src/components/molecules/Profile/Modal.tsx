@@ -6,9 +6,9 @@ import useOnClickOutside from "./hooks/use-onclick-outside";
 type ModalProps = {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	shopName: string;
-	shopPhone: number;
+	shopPhone: string;
 	request: string;
-	createdAt: string;
+	createdAt: Date;
 	orderedProduct: string[];
 };
 

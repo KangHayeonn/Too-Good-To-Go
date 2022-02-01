@@ -1,15 +1,14 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import CircularProgress from "@mui/material/CircularProgress";
 
-import Line13 from "../../../../public/image/Line 13.png";
 // import api from "./api/posts";
 import useGetData from "../../atoms/useGetData";
 import Modal from "./Modal";
+import Line13 from "../../../../public/image/Line 13.png";
+import OrderList from "./OrderList";
 
-type orderType = {
+export type orderType = {
 	id: number;
 	shop: {
 		id: number;
@@ -25,7 +24,7 @@ type orderType = {
 		price: number;
 	}[];
 	status: string;
-	createdAt: string;
+	createdAt: Date;
 	accept: boolean;
 	pickupAt: string;
 	request: string;
@@ -41,7 +40,7 @@ type ProductT = {
 const ProfileOrderList: React.FC = () => {
 	// Axios data cannot be added in order list.
 	// product's image attribute missing.
-	const initialState: unknown[] | (() => unknown[]) = [];
+	const initialState: Map<string, orderType[]> = new Map();
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [cardNumber, setCardNumber] = useState<number>(0);
 
@@ -53,6 +52,7 @@ const ProfileOrderList: React.FC = () => {
 			console.log(er);
 		}
 	);
+
 	const renderSwitch = (stat: string) => {
 		switch (stat) {
 			case "ORDER_COMPLETE":
@@ -72,9 +72,13 @@ const ProfileOrderList: React.FC = () => {
 	};
 
 	function showModal(cardId: number) {
-		const shop = orderData.find((e: orderType) => {
-			return e.shop.id === cardId;
-		});
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const shop = Array.from(orderData.keys())
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			.flatMap((key: string): Array<orderType> => orderData.get(key)!)
+			.find((e: orderType) => {
+				return e.shop.id === cardId;
+			})!;
 		console.log("shop:", shop);
 
 		const orderedProduct = shop.products.map((e: ProductT) => {
@@ -95,7 +99,6 @@ const ProfileOrderList: React.FC = () => {
 		}
 		return null;
 	}
-
 	const productLengthChecker = (productLength: number): string | null => {
 		if (productLength > 1) {
 			return ` 외 ${productLength - 1}개`;
@@ -110,80 +113,16 @@ const ProfileOrderList: React.FC = () => {
 				<img src={Line13} alt="line13" />
 				<p>ORDER LIST</p>
 			</EditTitle>
-
-			{orderData ? (
-				<OrderListContainer>
-					{orderData.map((card: orderType) => {
-						return (
-							<OrderContainer key={card.id}>
-								<DateDivider>
-									<hr />
-									<p className="dateDivider">
-										{moment(card.createdAt)
-											.utc()
-											.format("YYYY-MM-DD")}
-									</p>
-									<hr />
-								</DateDivider>
-								<ProfileCard>
-									<div className="card-img-ctn">
-										<img src={card.shop.image} alt="Food" />
-									</div>
-									<div className="cardInfo">
-										<div className="cardInfo-flex">
-											<strong>
-												{renderSwitch(card.status)}
-											</strong>
-											<p>
-												{moment(card.pickupAt)
-													.utc()
-													.format("HH시 mm분")}
-											</p>
-											<p className="food-cost">
-												{card.products[0].price}원
-											</p>
-										</div>
-										<p className="card-info-text">
-											<strong>
-												{card.shop.categories}
-											</strong>
-											<span className="grey-text">|</span>
-											{card.shop.name}
-										</p>
-
-										<p>
-											{card.products[0].name}
-											<span>
-												<></>
-											</span>
-											{productLengthChecker(
-												card.products.length
-											)}
-										</p>
-									</div>
-									<div className="button-wrapper">
-										<button
-											type="button"
-											onClick={() => {
-												setCardNumber(card.shop.id);
-												setIsModalOpen(true);
-											}}
-										>
-											<p>주문 정보</p>
-										</button>
-										<Link to="/"> 가게 정보 </Link>
-									</div>
-								</ProfileCard>
-							</OrderContainer>
-						);
-					})}
-					{isModalOpen && showModal(cardNumber)}
-				</OrderListContainer>
-			) : (
-				<LoadingContainer>
-					<CircularProgress />
-				</LoadingContainer>
-			)}
+			<OrderList
+				showModal={showModal}
+				renderSwitch={renderSwitch}
+				orderData={orderData}
+				productLengthChecker={productLengthChecker}
+				setCardNumber={setCardNumber}
+				setIsModalOpen={setIsModalOpen}
+				isModalOpen={isModalOpen}
+				cardNumber={cardNumber}
+			/>
 		</Wrapper>
 	);
 };
@@ -372,3 +311,6 @@ const ProfileCard = styled.div`
 		}
 	}
 `;
+function key(key: any) {
+	throw new Error("Function not implemented.");
+}

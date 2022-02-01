@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import FormContainer from "./FormContainer";
-import ProfileOrderList from "./ProfileOrderList";
+import ProfileOrderListContainer from "./ProfileOrderListContainer";
 
 type theme = {
 	checked: boolean;
@@ -68,7 +68,7 @@ const ProfileContent: React.FC = () => {
 			</SelectionContainer>
 			<ProfileEditContainer>
 				{showProfileEdit && <FormContainer />}
-				{showOrderList && <ProfileOrderList />}
+				{showOrderList && <ProfileOrderListContainer />}
 			</ProfileEditContainer>
 		</Content>
 	);

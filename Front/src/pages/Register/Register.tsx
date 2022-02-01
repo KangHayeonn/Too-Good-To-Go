@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -10,7 +10,9 @@ import { useHistory } from "react-router";
 const initialUserState = {
 	email: "",
 	password: "",
+	cpassword: "",
 	name: "",
+	phone: "",
 	phone1: "",
 	phone2: "",
 	phone3: "",
@@ -19,20 +21,53 @@ const initialUserState = {
 
 const Register: React.FC = () => {
 	const [formValue, setFormValue] = useState(initialUserState);
+	const [validation, setValidation] = useState("");
 	const history = useHistory();
+	// password validation
+
+	useEffect(() => {
+		if (formValue.password.length < 8) {
+			setValidation("비밀번호는 최소 8자 이상이여야 합니다.");
+		} else {
+			setValidation("");
+		}
+
+		if (
+			!(formValue.password === formValue.cpassword) &&
+			formValue.password.length > 7
+		) {
+			setValidation("비밀번호가 일치하지 않습니다.");
+		} else if (
+			formValue.password === formValue.cpassword &&
+			formValue.password.length > 7
+		) {
+			setValidation("");
+		}
+		console.log("2", formValue);
+	}, [formValue]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		console.log("1", formValue);
+
 		setFormValue({
 			...formValue,
 			[event.target.name]: event.target.value,
 		});
-		// console.log(formValue);
+
+		// If passwords are different, send a message
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		// console.log("handlesubmit");
+		// join phone number values to one
+		formValue.phone =
+			formValue.phone1 + formValue.phone2 + formValue.phone3;
+
 		const stringifiedFormValue = JSON.stringify(formValue);
+		if (validation) {
+			alert("비밀번호 확인 바람");
+			return;
+		}
 
 		try {
 			// console.log("loginFormData: ", stringifiedFormValue);
@@ -111,6 +146,8 @@ const Register: React.FC = () => {
 								className="password input"
 								type="password"
 								name="password"
+								onChange={handleChange}
+								value={formValue.password}
 								id=""
 								placeholder="비밀번호를 입력하세요."
 							/>
@@ -119,17 +156,18 @@ const Register: React.FC = () => {
 							<input
 								className="password-confirm input"
 								type="password"
-								name="password"
+								name="cpassword"
 								onChange={handleChange}
-								value={formValue.password}
+								value={formValue.cpassword}
 								id=""
 								placeholder="비밀번호를 확인하세요."
 							/>
-							{/* <Confirm type="button" className="confirm-btn">
-							확인
-						</Confirm> */}
 						</div>
-						<p className="phone-info">핸드폰 번호를 입력하세요</p>
+						<span>{validation}</span>
+						{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+						<label htmlFor="phone1" className="phone-info">
+							핸드폰 번호를 입력하세요
+						</label>
 						<div className="phone-input-container">
 							<div className="phone-input">
 								<input
@@ -138,8 +176,8 @@ const Register: React.FC = () => {
 									onChange={handleChange}
 									value={formValue.phone1}
 									name="phone1"
-									id=""
-									placeholder="핸드폰 번호를 입력하세요."
+									id="phone1"
+									placeholder=""
 								/>
 							</div>
 							<div className="phone-input">
@@ -178,9 +216,9 @@ const Register: React.FC = () => {
 	);
 };
 
-const Button = styled.button`
-	background-color: #54b689;
-`;
+// const Button = styled.button`
+// 	background-color: #54b689;
+// `;
 
 const Confirm = styled.button`
 	width: 100px;
@@ -264,7 +302,7 @@ const InputCtn = styled.div`
 	.phone-info {
 		position: relative;
 		left: -75px;
-		margin: 0 0 0 0;
+		margin: 17px 0 0 0;
 	}
 
 	.phone-input-container {

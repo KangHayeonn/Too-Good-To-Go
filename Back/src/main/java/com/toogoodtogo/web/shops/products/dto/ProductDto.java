@@ -15,6 +15,7 @@ public class ProductDto {
     private Long price;
     private Long discountedPrice;
     private String image;
+    private Long priority;
 
     @Builder
     public ProductDto(Long shopId, String shopName, Product product) {
@@ -25,6 +26,7 @@ public class ProductDto {
         this.price = product.getPrice();
         this.discountedPrice = product.getDiscountedPrice();
         this.image = product.getImage();
+        this.priority = product.getPriority();
     }
 
     @Builder
@@ -36,5 +38,6 @@ public class ProductDto {
         this.price = product.getPrice();
         this.discountedPrice = product.getDiscountedPrice();
         this.image = product.getImage();
+        this.priority = product.getPriority();
     }
 }

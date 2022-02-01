@@ -31,8 +31,8 @@ public class JwtTokenProvider {
     private String SECRET_KEY;
 
     private String ROLES = "roles";
-//    private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1 hour/
-    private final Long accessTokenValidMillisecond = 1000L; // 1 second
+    private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1 hour/
+//    private final Long accessTokenValidMillisecond = 1000L; // 1 second
     private final Long refreshTokenValidMillisecond = 14 * 24 * 60 * 60 * 1000L; // 14 day
     private final UserDetailsService userDetailsService;
 

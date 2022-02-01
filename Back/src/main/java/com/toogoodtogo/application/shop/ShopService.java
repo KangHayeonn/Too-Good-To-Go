@@ -2,6 +2,7 @@ package com.toogoodtogo.application.shop;
 
 import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
+import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
@@ -76,10 +77,17 @@ public class ShopService implements ShopUseCase {
         return new ShopDto(shopRepository.save(newShop));
     }
 
+    private boolean checkAccessOfShop(Long managerId, Long shopId) {
+        return shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new).getUser().getId().equals(managerId);
+    }
+
     @Override
     @Transactional
     public ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException {
-        Shop modifiedShop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CShopNotFoundException::new);
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if(!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        // 수정할 shop
+        Shop modifiedShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
 
         String filePath;
         String fileName;
@@ -100,7 +108,10 @@ public class ShopService implements ShopUseCase {
     @Override
     @Transactional
     public String deleteShop(Long managerId, Long shopId) {
-        Shop deleteShop = shopRepository.findByUserIdAndId(managerId, shopId).orElseThrow(CShopNotFoundException::new);
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if(!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        // 삭제할 shop
+        Shop deleteShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
 
         // 해당 shop 의 product 들 이미지 삭제
         s3Uploader.deleteFolderS3("productsImage/" + deleteShop.getId() + "/");

@@ -28,7 +28,7 @@ public class Shop {
 
     private String image;
 
-    @QueryType(PropertyType.STRING)
+//    @QueryType(PropertyType.STRING)
     @Convert(converter = ListToStringConverter.class)
     private List<String> category;
 

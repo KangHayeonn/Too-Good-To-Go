@@ -33,7 +33,7 @@ public class ProductRepositorySupport {
     public List<List<ProductDto>> productsPerCategory(String category) { //method String 대신 enum?
         List<Tuple> results = queryFactory.select(shop.id, shop.category).from(shop).fetch();
         List<Long> shopList = new ArrayList<>();
-        results.stream().forEach(tuple -> {
+        results.forEach(tuple -> {
             if (tuple.get(shop.category).contains(category)) {
                 shopList.add(tuple.get(shop.id));
             }
@@ -47,7 +47,7 @@ public class ProductRepositorySupport {
 //            }
 //        }
         List<List<ProductDto>> data = new ArrayList<>();
-        shopList.stream().forEach(id -> {
+        shopList.forEach(id -> {
             data.add(queryFactory.select(Projections.fields(ProductDto.class,
                     shop.id.as("shopId"),
                     shop.name.as("shopName"),
@@ -55,13 +55,38 @@ public class ProductRepositorySupport {
                     product.name,
                     product.price,
                     product.discountedPrice,
-                    product.image))
+                    product.image,
+                    product.priority))
                     .from(product) // 맞나?
                     .innerJoin(product.shop, shop)
                     .where(eqShopId(id))
                     .fetch());
         });
         return data;
+    }
+
+    public List<ProductDto> productsPerCategory2(String category, String method) { //method String 대신 enum?
+        List<Product> fetch = queryFactory.select(product)
+                .from(product)
+                .innerJoin(product.shop, shop)
+                .where(product.priority.eq(0L))
+                .orderBy(orderType(method))
+                .fetch();
+        List<ProductDto> productList = new ArrayList<>();
+        fetch.forEach(p -> {
+            if (p.getShop().getCategory().contains(category)) {
+                productList.add(new ProductDto(p));
+            }
+        });
+        return productList;
+    }
+
+    public List<Product> findProductsPerShopSortByPriority(Long shopId) { //method String 대신 enum?
+        return queryFactory.selectFrom(product)
+                .innerJoin(product.shop, shop)
+                .where(eqShopId(shopId))
+                .orderBy(orderType("/priority"))
+                .fetch();
     }
 
     public List<ProductDto> sortProductsPerShop(Long shopId, String method) { //method String 대신 enum?
@@ -72,7 +97,8 @@ public class ProductRepositorySupport {
                 product.name,
                 product.price,
                 product.discountedPrice,
-                product.image))
+                product.image,
+                product.priority))
                 .from(product) // 맞나?
                 .innerJoin(product.shop, shop)
                 .where(eqShopId(shopId))
@@ -88,6 +114,10 @@ public class ProductRepositorySupport {
         }
         else if (method.equals("/discount")) {
             return product.discountedPrice.asc();
+        }
+        else if (method.equals("/priority")) {
+            log.info("priority sort");
+            return product.priority.asc();
         }
         else return product.id.desc(); // 디폴트값 최신순. BaseTimeEntity 상속 or Id 순 "update"?
     }

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import "./Header.css";
 import { css } from "@emotion/react";
 import SearchIcon from "@mui/icons-material/Search";
@@ -9,8 +8,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { RootState } from "../../../app/store";
 import { logout } from "../../../modules/user";
-
-const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
+import { initializeForm } from "../../../modules/auth";
 
 const navBar = css`
 	background-color: #54b689;
@@ -22,14 +20,8 @@ const Header: React.FC = () => {
 	const dispatch = useDispatch();
 	const onLogout = () => {
 		dispatch(logout());
+		dispatch(initializeForm());
 	};
-
-	useEffect(() => {
-		axios
-			.get(`${LOGIN_URL}/logout`)
-			.then((res) => console.log(res))
-			.catch();
-	},[dispatch]);
 
 	return (
 		<div>
@@ -64,14 +56,14 @@ const Header: React.FC = () => {
 						) : (
 							<div className="logoutState">
 								<div className="navIcon">
-									<a href="/my">
+									<Link to="/profile">
 										<AccountCircleIcon id="accountIcon" />
-									</a>
-									<a href="/cart">
+									</Link>
+									<Link to="/cart">
 										<ShoppingCartIcon id="cartIcon" />
-									</a>
+									</Link>
 								</div>
-								<a href="/logout" onClick={onLogout}>로그아웃</a>
+								<button type="button" onClick={onLogout}>로그아웃</button>
 							</div>
 						)}
 					</div>

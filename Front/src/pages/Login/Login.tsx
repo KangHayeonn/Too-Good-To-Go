@@ -7,6 +7,7 @@ import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
 import { changeField, initializeForm } from "../../modules/auth";
 import { tempSetUser } from "../../modules/user";
 import { RootState } from "../../app/store";
+import { setAccessToken } from "../../helpers/tokenControl";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
@@ -79,8 +80,9 @@ const Login: React.FC = () => {
 				try {
 					localStorage.setItem("email", JSON.stringify(user));
 					dispatch(tempSetUser(inputId));
+					setAccessToken(accessToken);
 				} catch (e) {
-					console.log("localStorage is not working");
+					console.log("Login login is not working");
 				}
 
 				// accessToken 만료하기 1분 전에 로그인 연장

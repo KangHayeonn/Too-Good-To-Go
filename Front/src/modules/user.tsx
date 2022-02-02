@@ -1,4 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { deleteAccessToken, getAccessToken } from "../helpers/tokenControl";
+
+const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 
 function CHECK_FAILURE() {
     try {
@@ -11,7 +15,17 @@ function CHECK_FAILURE() {
 function LOGOUT() {
     try {
         /* logout api 호출 */
+        axios
+        .get(`${LOGIN_URL}/logout`, {
+            headers: {
+                Authorization: `Bearer ${getAccessToken()}`,
+              }
+        })
+        .then((res) => console.log(res))
+        .catch(e => console.error(e));
+        
         localStorage.removeItem("email"); // localStorage에서 email(ID) 제거
+        deleteAccessToken();
     } catch(e) {
         console.log("localStorage is not working");
     }

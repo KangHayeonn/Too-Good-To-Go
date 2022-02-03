@@ -16,7 +16,9 @@ const navBar = css`
 `;
 
 const Header: React.FC = () => {
-	const { user } = useSelector(( state : RootState ) => ({ user : state.user.user }));
+	const { user } = useSelector((state: RootState) => ({
+		user: state.user.user,
+	}));
 	const dispatch = useDispatch();
 	const onLogout = () => {
 		dispatch(logout());
@@ -63,12 +65,12 @@ const Header: React.FC = () => {
 										<ShoppingCartIcon id="cartIcon" />
 									</Link>
 								</div>
-								<button type="button" onClick={onLogout}>로그아웃</button>
+								<button type="button" onClick={onLogout}>
+									로그아웃
+								</button>
 							</div>
 						)}
 					</div>
-					<Link to="/cart">장바구니</Link>
-					<Link to="/profile">profile</Link>
 				</div>
 			</nav>
 		</div>

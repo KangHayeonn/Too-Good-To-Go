@@ -98,10 +98,10 @@ const ShopCard: React.FC<shopCardType> = ({
 	const [width, setWidth] = useState(imgWidth);
 	useEffect(() => {
 		setWidth(document.querySelector("#shopCardDiv")?.clientWidth);
-		console.log(width);
+		// console.log(width);
 	}, []);
 
-	console.log("ShopCard -> id : ", shopId);
+	// console.log("ShopCard -> id : ", shopId);
 	return (
 		<ShopCardStyle id="shopCardDiv">
 			<Link

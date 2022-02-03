@@ -1,6 +1,7 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toogoodtogo.AmazonS3MockConfig;
 import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Shop;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -47,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
+@Import(AmazonS3MockConfig.class)
 class ProductsControllerTest {
     @Autowired
     private MockMvc mockMvc;

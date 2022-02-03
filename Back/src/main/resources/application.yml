@@ -1,9 +1,10 @@
 spring:
-  profiles:
-    include:
-      - jwt
-      - aws
-      - credentials
+  jwt:
+    secret: jwt
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   messages:
     basename: i18n/exception
     encoding: UTF-8
@@ -17,3 +18,12 @@ spring:
       add-mappings: false
   datasource:
     url: jdbc:h2:mem:toogoodtogo
+
+cloud:
+  aws:
+    s3:
+      bucket: toogoodtogobucket
+    stack:
+      auto: false
+    cloudFront:
+      distributionDomain: https://diefqsnmvol80.cloudfront.net

@@ -189,32 +189,6 @@ const DateDivider = styled.div`
 	}
 `;
 
-const Wrapper = styled.div`
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-`;
-
-const EditTitle = styled.div`
-	position: relative;
-	right: 17px;
-	font-size: 20px;
-	width: 350px;
-	/* border: 1px solid purple; */
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 45px;
-
-	p {
-		font-size: 20px;
-		font-weight: 700;
-		color: #646464;
-	}
-`;
-
 const OrderListContainer = styled.div`
 	/* border: 1px dotted red; */
 	/* width: 800px; */

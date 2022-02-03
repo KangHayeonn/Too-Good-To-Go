@@ -17,6 +17,7 @@ const Login: React.FC = () => {
 	const [inputPw, setInputPw] = useState("");
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const history = useHistory();
@@ -194,6 +195,7 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TitleCtn = styled.div`
 	font-weight: bold;
 	color: #646464;

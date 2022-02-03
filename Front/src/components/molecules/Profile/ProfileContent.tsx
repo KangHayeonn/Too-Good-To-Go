@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import FormContainer from "./FormContainer";
 import ProfileOrderListContainer from "./ProfileOrderListContainer";
-import { getAccessToken } from "../../../helpers/tokenControl";
 import { RootState } from "../../../app/store";
 
 type theme = {
@@ -64,6 +63,7 @@ const ProfileContent: React.FC = () => {
 	}
 
 	if (!logChecker) {
+		// eslint-disable-next-line no-alert
 		alert("로그인해얌");
 		return <>{history.push("/")}</>;
 	}

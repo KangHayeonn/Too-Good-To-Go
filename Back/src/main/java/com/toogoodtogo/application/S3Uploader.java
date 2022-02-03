@@ -64,22 +64,24 @@ public class S3Uploader {
     // delete file
     public void deleteFolderS3(String folderName) {
         log.info("delete folder : " + folderName);
-//        ObjectListing objects = amazonS3Client.listObjects(bucket, folderName);
-        ListObjectsRequest listObject = new ListObjectsRequest();
-        listObject.setBucketName(bucket);
-        listObject.setPrefix(folderName);
+        if(amazonS3Client.doesObjectExist(bucket, folderName)) {
+            //        ObjectListing objects = amazonS3Client.listObjects(bucket, folderName);
+            ListObjectsRequest listObject = new ListObjectsRequest();
+            listObject.setBucketName(bucket);
+            listObject.setPrefix(folderName);
 
-        ObjectListing objects;
-        do {
-            objects = amazonS3Client.listObjects(listObject);
-            //1000개 단위로 읽음
-            for (S3ObjectSummary objectSummary : objects.getObjectSummaries())
-            {
-                amazonS3Client.deleteObject(bucket, objectSummary.getKey());
-            }
-            //objects = s3.listNextBatchOfObjects(objects); <--이녀석은 1000개 단위로만 가져옴..
-            listObject.setMarker(objects.getNextMarker());
-        } while (objects.isTruncated());
+            ObjectListing objects;
+            do {
+                objects = amazonS3Client.listObjects(listObject);
+                //1000개 단위로 읽음
+                for (S3ObjectSummary objectSummary : objects.getObjectSummaries())
+                {
+                    amazonS3Client.deleteObject(bucket, objectSummary.getKey());
+                }
+                //objects = s3.listNextBatchOfObjects(objects); <--이녀석은 1000개 단위로만 가져옴..
+                listObject.setMarker(objects.getNextMarker());
+            } while (objects.isTruncated());
+        }
     }
 
     // update file

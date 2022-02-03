@@ -6,7 +6,8 @@ const header = css`
 	align-items: center;
 	margin-left: 5px;
 	justify-content: space-between;
-	padding-bottom: 30px;
+	padding-top: 50px;
+	padding-bottom: 40px;
 `;
 
 const headerText = css`

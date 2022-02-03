@@ -1,20 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 import "./Header.css";
 import { css } from "@emotion/react";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { RootState } from "../../../app/store";
+import { logout } from "../../../modules/user";
+import { initializeForm } from "../../../modules/auth";
 
 const navBar = css`
 	background-color: #54b689;
 	border-bottom: 1px solid #d6d6d6;
 `;
-type Props = {
-	loginOn: boolean;
-};
-const Header: React.FC<Props> = ({ loginOn }) => {
+
+const Header: React.FC = () => {
+	const { user } = useSelector(( state : RootState ) => ({ user : state.user.user }));
+	const dispatch = useDispatch();
+	const onLogout = () => {
+		dispatch(logout());
+		dispatch(initializeForm());
+	};
+
 	return (
 		<div>
 			<nav css={navBar}>
@@ -40,7 +48,7 @@ const Header: React.FC<Props> = ({ loginOn }) => {
 						</form>
 					</div>
 					<div className="account">
-						{!loginOn ? (
+						{!user ? (
 							<div className="loginState">
 								<Link to="/login">로그인</Link>
 								<Link to="/register">회원가입</Link>
@@ -48,14 +56,14 @@ const Header: React.FC<Props> = ({ loginOn }) => {
 						) : (
 							<div className="logoutState">
 								<div className="navIcon">
-									<a href="/my">
+									<Link to="/profile">
 										<AccountCircleIcon id="accountIcon" />
-									</a>
-									<a href="/cart">
+									</Link>
+									<Link to="/cart">
 										<ShoppingCartIcon id="cartIcon" />
-									</a>
+									</Link>
 								</div>
-								<a href="/logout">로그아웃</a>
+								<button type="button" onClick={onLogout}>로그아웃</button>
 							</div>
 						)}
 					</div>

@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
+<<<<<<< HEAD
 import { setSessionToken } from "../../helpers/tokenControl";
+=======
+import { changeField, initializeForm } from "../../modules/auth";
+import { tempSetUser } from "../../modules/user";
+import { RootState } from "../../app/store";
+import { setAccessToken } from "../../helpers/tokenControl";
+>>>>>>> master
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
@@ -17,14 +25,31 @@ const Login: React.FC = () => {
 
 	const history = useHistory();
 
+	const dispatch = useDispatch();
+	const { user } = useSelector(( state : RootState ) => ({
+		user: state.auth.email
+	}));
+
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setInputId(value);
+		dispatch(
+			changeField({
+				email: value,
+				password: inputPw,
+			})
+		);
 	};
 
 	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
 		setInputPw(value);
+		dispatch(
+			changeField({
+				email: inputId,
+				password: value,
+			})
+		);
 	};
 
 	const showErrorModal = (errorMsg: string) => {
@@ -32,6 +57,11 @@ const Login: React.FC = () => {
 			<ErrorModal setModalOpen={setErrorModal} errorMessage={errorMsg} />
 		);
 	};
+	
+	// 컴포넌트가 처음 렌더링될 때 form 을 초기화
+	useEffect(() => {
+		dispatch(initializeForm());
+	}, [dispatch]);
 
 	const onClickLogin = () => {
 		console.log("click login");
@@ -50,12 +80,25 @@ const Login: React.FC = () => {
 				axios.defaults.headers.common.Authorization = accessToken
 					? `${accessToken}`
 					: "";
+<<<<<<< HEAD
 				console.log("로그인 성공");
 
 				// 지훈-storing token into local storage
 				setSessionToken(accessToken);
 
 				// 지훈-take user info from the resposne body, and store it into global state for other files to use user info state.
+=======
+				console.log(accessToken);
+
+				// loaclStorage에 저장
+				try {
+					localStorage.setItem("email", JSON.stringify(user));
+					dispatch(tempSetUser(inputId));
+					setAccessToken(accessToken);
+				} catch (e) {
+					console.log("Login login is not working");
+				}
+>>>>>>> master
 
 				// accessToken 만료하기 1분 전에 로그인 연장
 				setTimeout(onSlientRefresh, JWT_EXPIREY_TIME - 60000);
@@ -76,6 +119,11 @@ const Login: React.FC = () => {
 					} else
 						console.log("원인을 알 수 없는 에러가 발생하였습니다.");
 				}
+				if(status === 400) {
+					setErrorModal(true);
+					setErrorMessage("로그인 형식 오류 (ID : 이메일, PW : 8자 이상)");
+				}
+				dispatch(initializeForm());
 			});
 	};
 	console.log(

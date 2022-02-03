@@ -54,6 +54,8 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
     // Minio
     implementation 'io.minio:minio:8.3.3'
+    // mock3S
+    testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
 ext {

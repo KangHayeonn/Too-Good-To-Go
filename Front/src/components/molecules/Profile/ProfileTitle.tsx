@@ -1,12 +1,22 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import styled from "@emotion/styled";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
 
 const ProfileTitle: React.FC = () => {
+	const userName = useSelector((state: RootState) => {
+		return state.user.user;
+	});
+
 	return (
 		<Title>
 			<p>
-				안녕하세요, <span> '$[name]'</span>님!
+				안녕하세요,
+				<span>
+					{userName ? `${userName}` : `이렇게 들어오시면 안되는데요`}
+				</span>
+				님
 			</p>
 		</Title>
 	);

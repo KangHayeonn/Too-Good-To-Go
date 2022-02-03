@@ -18,12 +18,12 @@ axios.defaults.withCredentials = true;
 // const store = createStore(rootReducer, composeWithDevTools());
 
 function loadUser() {
-	try{
+	try {
 		const user = localStorage.getItem("email");
-		if(!user) return; // 로그인 상태가 아니라면 아무것도 안 함
+		if (!user) return; // 로그인 상태가 아니라면 아무것도 안 함
 
 		store.dispatch(tempSetUser(JSON.parse(user)));
-	} catch(e) {
+	} catch (e) {
 		console.log("localStorage is not working");
 	}
 }

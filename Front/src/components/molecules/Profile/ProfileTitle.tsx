@@ -6,7 +6,7 @@ import { RootState } from "../../../app/store";
 
 const ProfileTitle: React.FC = () => {
 	const userName = useSelector((state: RootState) => {
-		return state.user.user;
+		return state.user;
 	});
 
 	return (

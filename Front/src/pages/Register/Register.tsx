@@ -7,6 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
 import { useHistory } from "react-router";
+import API from "../../services/api";
 
 const initialUserState = {
 	email: "",
@@ -69,14 +70,8 @@ const Register: React.FC = () => {
 			alert("비밀번호 확인 바람");
 			return;
 		}
-
 		try {
-			// console.log("loginFormData: ", stringifiedFormValue);
-			const response = await axios("http://54.180.134.20/api/signup", {
-				method: "post",
-				data: stringifiedFormValue,
-				headers: { "Content-Type": "application/json" },
-			});
+			const response = await API.postRegisterData(stringifiedFormValue);
 			console.log("response: ", response);
 			history.push({ pathname: "/" });
 		} catch (error) {

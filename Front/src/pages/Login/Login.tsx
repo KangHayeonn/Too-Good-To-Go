@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
-import { changeField, initializeForm } from "../../modules/auth";
+import { changeIdItem, changePwItem, initializeForm } from "../../modules/auth";
 import { tempSetUser } from "../../modules/user";
 import { RootState } from "../../app/store";
 import { setAccessToken } from "../../helpers/tokenControl";
@@ -29,24 +29,12 @@ const Login: React.FC = () => {
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		setInputId(value);
-		dispatch(
-			changeField({
-				email: value,
-				password: inputPw,
-			})
-		);
+		dispatch(changeIdItem(value));
 	};
 
 	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		setInputPw(value);
-		dispatch(
-			changeField({
-				email: inputId,
-				password: value,
-			})
-		);
+		dispatch(changePwItem(value));
 	};
 
 	const showErrorModal = (errorMsg: string) => {

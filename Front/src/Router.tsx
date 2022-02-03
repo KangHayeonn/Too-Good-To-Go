@@ -14,30 +14,17 @@ import Manager from "./pages/Manager/Manager";
 import OrderPage from "./pages/Order/OrderPage";
 import PayPage from "./pages/Pay/PayPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
-<<<<<<< HEAD
-import { getSessionToken } from "./helpers/tokenControl";
-
-const Router: React.FC = () => {
-	// Storing session token into request header on refresh.
-	React.useEffect(() => {
-		const token = getSessionToken();
-=======
 import { getAccessToken } from "./helpers/tokenControl";
 
 const Router: React.FC = () => {
-
 	// Storing session token into request header on refresh.
 	React.useEffect(() => {
 		const token = getAccessToken();
->>>>>>> master
 		if (token) {
 			axios.defaults.headers.common.Authorization = token;
 		}
 	}, []);
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 	return (
 		<BrowserRouter>
 			<Header />

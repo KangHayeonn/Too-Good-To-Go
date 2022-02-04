@@ -17,7 +17,7 @@ const ProfileContent: React.FC = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const logChecker = useSelector((state: RootState) => {
-		return state.user.user;
+		return state.user.name;
 	});
 
 	const location = useLocation();
@@ -27,7 +27,7 @@ const ProfileContent: React.FC = () => {
 		// Checking wheter getAccessToken is valid, if not, false will be returned.
 		// Must be updated, getAccessToken is not created for this usage.
 		console.log("logchecker, ", logChecker);
-		if (logChecker.length) {
+		if (logChecker) {
 			console.log("logChecker: ", logChecker);
 			setIsLoggedIn(true);
 		} else {

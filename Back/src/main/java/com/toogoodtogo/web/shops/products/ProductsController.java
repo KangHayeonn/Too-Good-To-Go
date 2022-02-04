@@ -59,7 +59,7 @@ public class ProductsController {
     }
 
     @PatchMapping("/manager/shops/{shopId}/products/{productId}")
-    public ApiResponse<List<ProductDto>> updatePriorityProduct(
+    public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
             @PathVariable @Positive(message = "path 오류") Long productId,

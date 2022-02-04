@@ -55,8 +55,7 @@ public class ProductRepositorySupport {
                     product.name,
                     product.price,
                     product.discountedPrice,
-                    product.image,
-                    product.priority))
+                    product.image))
                     .from(product) // 맞나?
                     .innerJoin(product.shop, shop)
                     .where(eqShopId(id))
@@ -66,19 +65,30 @@ public class ProductRepositorySupport {
     }
 
     public List<ProductDto> productsPerCategory2(String category, String method) { //method String 대신 enum?
-        List<Product> fetch = queryFactory.select(product)
-                .from(product)
+//        List<Product> fetch = queryFactory.select(product)
+//                .from(product)
+//                .innerJoin(product.shop, shop)
+//                .where(product.priority.eq(0L))
+//                .orderBy(orderType(method))
+//                .fetch();
+//        List<ProductDto> productList = new ArrayList<>();
+//        fetch.forEach(p -> {
+//            if (p.getShop().getCategory().contains(category)) {
+//                productList.add(new ProductDto(p));
+//            }
+//        });
+//        return productList;
+        return queryFactory.select(Projections.fields(ProductDto.class,
+                shop.id.as("shopId"),
+                shop.name.as("shopName"),
+                product.id,
+                product.name,
+                product.price,
+                product.discountedPrice,
+                product.image))
+                .from(product) // 맞나?
                 .innerJoin(product.shop, shop)
-                .where(product.priority.eq(0L))
-                .orderBy(orderType(method))
                 .fetch();
-        List<ProductDto> productList = new ArrayList<>();
-        fetch.forEach(p -> {
-            if (p.getShop().getCategory().contains(category)) {
-                productList.add(new ProductDto(p));
-            }
-        });
-        return productList;
     }
 
     public List<Product> findProductsPerShopSortByPriority(Long shopId) { //method String 대신 enum?
@@ -97,8 +107,7 @@ public class ProductRepositorySupport {
                 product.name,
                 product.price,
                 product.discountedPrice,
-                product.image,
-                product.priority))
+                product.image))
                 .from(product) // 맞나?
                 .innerJoin(product.shop, shop)
                 .where(eqShopId(shopId))

@@ -3,14 +3,12 @@ package com.toogoodtogo.application.shop.product;
 import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
+import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.Product;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepositorySupport;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +32,7 @@ public class ProductService implements ProductUseCase {
     private final ShopRepository shopRepository;
     private final UploadFileConverter uploadFileConverter;
     private final S3Uploader s3Uploader;
+    private final DisplayProductRepository displayProductRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDto> findAllProducts() {
@@ -64,18 +63,19 @@ public class ProductService implements ProductUseCase {
         if (filePath.equals("default.png")) fileName = "default.png"; // 기본 이미지
         else fileName = s3Uploader.upload(file, filePath); // 최종 파일 경로 및 파일 업로드
 
-        // 해당 shop 의 product 갯수
-        Long productPriority = productRepository.countProductByShopId(shopId);
-
         Product new_product = Product.builder()
                 .shop(shop)
                 .name(request.getName())
                 .price(request.getPrice())
                 .discountedPrice(request.getDiscountedPrice())
                 .image(fileName)
-                .priority(productPriority)
                 .build();
-        return new ProductDto(productRepository.save(new_product));
+        productRepository.save(new_product);
+
+        // product 순서
+        DisplayProduct dp = displayProductRepository.findByShopId(shopId);
+        dp.addPrior(new_product.getId());
+        return new ProductDto(new_product);
 //        return ProductDto.builder().product(productRepository.save(new_product)).build();
 //        return ProductDto.builder()
 //                .shopId(shop.getId())
@@ -110,35 +110,15 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public List<ProductDto> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request) {
+    public List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-        Product modifiedProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);;
-        // 해당 shop 의 priority 순으로 정렬된 product 들.
-        List<Product> products = productRepositorySupport.findProductsPerShopSortByPriority(shopId);
-        // 해당 shop 의 product 들 불러서 priority 로 정렬. prior 바뀌면 영향 가는 것들 순회하면서 +1 혹은 -1
-        Long beforePriority = modifiedProduct.getPriority();
-        Long afterPriority = request.getPriority();
-        // 바꾸려는 product 의 우선순위가 더 낮을 때 / 숫자가 더 클 때 / 앞으로 이동할 때
-        if (beforePriority > afterPriority) {
-            for (Product product : products) {
-                if (afterPriority <= product.getPriority() && product.getPriority() < beforePriority) {
-                    product.updatePriority(product.getPriority() + 1);
-                }
-            }
-            modifiedProduct.updatePriority(request.getPriority());
-        }
-        // 바꾸려는 product 의 우선순위가 더 높을 때 / 숫자가 더 낮을 때 / 뒤로 이동할 때
-        else if (beforePriority < afterPriority) {
-            for (Product product : products) {
-                if (beforePriority < product.getPriority() && product.getPriority() < afterPriority) {
-                    product.updatePriority(product.getPriority() - 1);
-                }
-            }
-            modifiedProduct.updatePriority(request.getPriority()-1);
-        }
-        return productRepositorySupport.findProductsPerShopSortByPriority(shopId)
-                .stream().map(ProductDto::new).collect(Collectors.toList());
+
+        DisplayProduct displayProduct = displayProductRepository.findByShopId(shopId);
+
+        displayProduct.update(request.getProductsId());
+
+        return displayProduct.getPriority();
     }
 
     @Transactional
@@ -164,7 +144,20 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> findProductsPerShopSortByPriority(Long shopId) {
-        return productRepositorySupport.findProductsPerShopSortByPriority(shopId)
-                .stream().map(ProductDto::new).collect(Collectors.toList());
+        // 해당 shop 의 모든 product 들
+        List<Product> products = productRepository.findAllByShopId(shopId);
+
+        // product 순서
+        List<String> priority = displayProductRepository.findByShopId(shopId).getPriority();
+
+        List<ProductDto> display = new ArrayList<>();
+        priority.forEach(num -> {
+            products.forEach(product -> {
+                if(product.getId().equals(Long.valueOf(num))) {
+                    display.add(new ProductDto(product));
+                }
+            });
+        });
+        return display;
     }
 }

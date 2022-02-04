@@ -158,7 +158,7 @@ class ProductsControllerTest {
     @Test
     void findProducts() throws Exception {
         //then
-        mockMvc.perform(get("/api/shop/{shopId}/products/all", shopId))
+        mockMvc.perform(get("/api/shops/{shopId}/products/all", shopId))
                 .andDo(print())
                 .andDo(document("products/find",
                         preprocessRequest(prettyPrint()),
@@ -195,7 +195,7 @@ class ProductsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}/product", shopId)
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}/products", shopId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -240,7 +240,7 @@ class ProductsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -278,7 +278,7 @@ class ProductsControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
+        ResultActions actions = mockMvc.perform(patch("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -308,7 +308,7 @@ class ProductsControllerTest {
     @Test
     public void deleteProduct() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}/product/{productId}", shopId, productId)
+        mockMvc.perform(delete("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("products/delete",
@@ -372,7 +372,7 @@ class ProductsControllerTest {
     @Test
     void findProductsPerShopSortByPriority() throws Exception {
         //then
-        mockMvc.perform(get("/api/shop/{shopId}/products", shopId))
+        mockMvc.perform(get("/api/shops/{shopId}/products", shopId))
                 .andDo(print())
                 .andDo(document("products/shop",
                         preprocessRequest(prettyPrint()),

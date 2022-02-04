@@ -35,7 +35,7 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
-    @PostMapping("/manager/shop")
+    @PostMapping("/manager/shops")
     public ApiResponse<ShopDto> addShop(
             @CurrentUser User user,
             @RequestPart(required = false) MultipartFile file,
@@ -44,7 +44,7 @@ public class ShopsController {
     }
     
 //    @PatchMapping("/manager/shop/{shopId}")
-    @PostMapping("/manager/shop/{shopId}")
+    @PostMapping("/manager/shops/{shopId}")
     public ApiResponse<ShopDto> updateShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -53,7 +53,7 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, file, request));
     }
 
-    @DeleteMapping("/manager/shop/{shopId}")
+    @DeleteMapping("/manager/shops/{shopId}")
     public ApiResponse<String> deleteShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {

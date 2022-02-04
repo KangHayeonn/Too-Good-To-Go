@@ -29,12 +29,12 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.findAllProducts());
     }
 
-    @GetMapping("/shop/{shopId}/products/all")
+    @GetMapping("/shops/{shopId}/products/all")
     public ApiResponse<List<ProductDto>> findProducts(@PathVariable @Positive Long shopId) {
         return new ApiResponse<>(productUseCase.findProducts(shopId));
     }
 
-    @PostMapping("/manager/shop/{shopId}/product")
+    @PostMapping("/manager/shops/{shopId}/products")
     public ApiResponse<ProductDto> addProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -46,7 +46,7 @@ public class ProductsController {
     }
 
 //    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
-    @PostMapping("/manager/shop/{shopId}/product/{productId}")
+    @PostMapping("/manager/shops/{shopId}/products/{productId}")
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -58,7 +58,7 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.updateProduct(user.getId(), shopId, productId, file, request));
     }
 
-    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
+    @PatchMapping("/manager/shops/{shopId}/products/{productId}")
     public ApiResponse<List<ProductDto>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -67,7 +67,7 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.updateProductPriority(user.getId(), shopId, productId, request));
     }
 
-    @DeleteMapping("/manager/shop/{shopId}/product/{productId}")
+    @DeleteMapping("/manager/shops/{shopId}/products/{productId}")
     public ApiResponse<String> deleteProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -90,7 +90,7 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.productsPerCategory(category, method));
     }
 
-    @GetMapping("/shop/{shopId}/products")
+    @GetMapping("/shops/{shopId}/products")
     public ApiResponse<List<ProductDto>> findProductsPerShopSortByPriority(@PathVariable Long shopId) {
         return new ApiResponse<>(productUseCase.findProductsPerShopSortByPriority(shopId));
     }

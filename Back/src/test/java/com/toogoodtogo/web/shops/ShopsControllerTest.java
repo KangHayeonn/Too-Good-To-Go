@@ -178,7 +178,7 @@ class ShopsControllerTest {
     void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .name("shop4").image("test4").category(Collections.singletonList("한식")).phone("01044444444")
+                .name("shop4").category(Collections.singletonList("한식")).phone("01044444444")
                 .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
         MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
@@ -189,7 +189,7 @@ class ShopsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop")
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops")
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -238,7 +238,7 @@ class ShopsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shop/{shopId}", shopId)
+        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}", shopId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -269,7 +269,7 @@ class ShopsControllerTest {
     @Test
     public void deleteShop() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shop/{shopId}", shopId)
+        mockMvc.perform(delete("/api/manager/shops/{shopId}", shopId)
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",

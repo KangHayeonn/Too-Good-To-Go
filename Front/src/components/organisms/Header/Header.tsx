@@ -7,8 +7,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { RootState } from "../../../app/store";
-import { logout } from "../../../modules/user";
-import { initializeForm } from "../../../modules/auth";
+import { logout } from "../../../features/user/userSlice";
+import { initializeForm } from "../../../features/auth/authSlice";
 
 const navBar = css`
 	background-color: #54b689;

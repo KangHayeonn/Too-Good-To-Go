@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import { composeWithDevTools } from "redux-devtools-extension";
-// import rootReducer from "./modules";
 import { Provider } from "react-redux";
 import axios from "axios";
 import App from "./App";
@@ -9,13 +7,7 @@ import App from "./App";
 // rtk import
 import { store } from "./app/store";
 
-import {
-	tempSetID,
-	tempSetEmail,
-	tempSetName,
-	tempSetPhone,
-	tempSetRole,
-} from "./modules/user";
+import { tempSetUser } from "./features/user/userSlice";
 import {
 	getUserID,
 	getEmail,
@@ -27,8 +19,6 @@ import {
 // JWT
 axios.defaults.baseURL = "http://54.180.134.20";
 axios.defaults.withCredentials = true;
-
-// const store = createStore(rootReducer, composeWithDevTools());
 
 function loadUser() {
 	try {
@@ -42,11 +32,7 @@ function loadUser() {
 		if (!id) return; // 로그인 상태가 아니라면 아무것도 안 함
 
 		// 새로고침할 경우에도 로그인 유지 및 유저정보 저장
-		store.dispatch(tempSetID(id));
-		store.dispatch(tempSetEmail(email));
-		store.dispatch(tempSetName(name));
-		store.dispatch(tempSetPhone(phone));
-		store.dispatch(tempSetRole(role));
+		store.dispatch(tempSetUser({ id, email, name, phone, role }));
 	} catch (e) {
 		console.log("localStorage is not working");
 	}

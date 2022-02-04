@@ -63,7 +63,7 @@ const Register: React.FC = () => {
 		// join phone number values to one
 		formValue.phone =
 			formValue.phone1 + formValue.phone2 + formValue.phone3;
-
+			
 		const stringifiedFormValue = JSON.stringify(formValue);
 		if (validation) {
 			alert("비밀번호 확인 바람");

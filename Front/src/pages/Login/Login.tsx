@@ -9,6 +9,7 @@ import { RootState } from "../../app/store";
 import { setAccessToken } from "../../helpers/tokenControl";
 import { userAPI } from "../../lib/api/userAPI";
 import { tempSetEmail } from "../../modules/user";
+import { getUserID } from "../../helpers/userInfoControl";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 
@@ -69,6 +70,7 @@ const Login: React.FC = () => {
 					setAccessToken(accessToken);
 					dispatch(tempSetEmail(user.inputId)); // 이 부분이 있어야 로그아웃 버튼으로 바로 변경됨 (헤더부분)
 					userAPI();
+					console.log("IDDIDIDIDID : ", getUserID());
 				} catch (e) {
 					console.log("Login login is not working");
 				}

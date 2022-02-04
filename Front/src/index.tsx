@@ -37,6 +37,7 @@ function loadUser() {
 		const name = getName();
 		const phone = getPhone();
 		const role = getRole();
+		console.log("IDDIDIDIDID : ", getUserID());
 
 		if (!id) return; // 로그인 상태가 아니라면 아무것도 안 함
 

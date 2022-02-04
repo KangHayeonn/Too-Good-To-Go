@@ -1,6 +1,6 @@
 package com.toogoodtogo.configuration.security;
 
-import com.toogoodtogo.advice.exception.CAuthenticationEntryPointException;
+import com.toogoodtogo.domain.security.exceptions.CAuthenticationEntryPointException;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -26,11 +27,12 @@ import java.util.Date;
 // Jwts는 여러가지 암호화 알고리즘을 제공하고 알고리즘과 비밀키 가지고 토큰 생성
 public class JwtTokenProvider {
 
-    @Value("spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
     private String ROLES = "roles";
-    private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1 hour
+    private final Long accessTokenValidMillisecond = 60 * 60 * 1000L; // 1 hour/
+//    private final Long accessTokenValidMillisecond = 1000L; // 1 second
     private final Long refreshTokenValidMillisecond = 14 * 24 * 60 * 60 * 1000L; // 14 day
     private final UserDetailsService userDetailsService;
 
@@ -118,6 +120,25 @@ public class JwtTokenProvider {
         } catch (SecurityException | MalformedJwtException e) {
             log.error("잘못된 Jwt 서명입니다.");
         } catch (ExpiredJwtException e) {
+            log.error("만료된 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.error("지원하지 않는 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.error("잘못된 토큰입니다.");
+        }
+        return false;
+    }
+
+    public boolean validationToken(ServletRequest request, String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (SecurityException e) {
+            log.error("잘못된 Jwt 토큰입니다.");
+        } catch (MalformedJwtException e) {
+            log.error("위조된 Jwt 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            request.setAttribute("exception", "ExpiredJwtException");
             log.error("만료된 토큰입니다.");
         } catch (UnsupportedJwtException e) {
             log.error("지원하지 않는 토큰입니다.");

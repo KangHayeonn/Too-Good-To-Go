@@ -9,6 +9,7 @@ import {
 	decrementSelectedItems,
 	deleteSelectedItem,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
+import { addItemsToCart } from "../../../features/cartFeatures/selectCartCardsSlice";
 
 type buttonType = {
 	children: React.ReactNode;
@@ -96,7 +97,14 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 				<p>총 {numberWithCommas}원</p>
 			</div>
 			<div className="fourth-section">
-				<button type="button">{children}</button>
+				<button
+					type="button"
+					onClick={() => {
+						dispatch(addItemsToCart(isCheckedArr));
+					}}
+				>
+					{children}
+				</button>
 			</div>
 		</Wrapper>
 	);

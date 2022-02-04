@@ -17,7 +17,6 @@ import ProfilePage from "./pages/profilePage/ProfilePage";
 import { getAccessToken } from "./helpers/tokenControl";
 
 const Router: React.FC = () => {
-
 	// Storing session token into request header on refresh.
 	React.useEffect(() => {
 		const token = getAccessToken();

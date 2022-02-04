@@ -19,19 +19,24 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
-
+    @Column(nullable = false)
     private String name;
-
+    @Column(nullable = false)
     private Long price;
-
+    @Column(nullable = false)
     private Long discountedPrice;
-
     private String image;
+    @Column(nullable = false)
+    private Long priority;
 
     public void update(String name, Long price, Long discountedPrice, String image) {
         this.name = name;
         this.price = price;
         this.discountedPrice = discountedPrice;
         this.image = image;
+    }
+
+    public void updatePriority(Long priority) {
+        this.priority = priority;
     }
 }

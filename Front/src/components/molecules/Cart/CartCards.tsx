@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Styles
 import styled from "@emotion/styled";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 // rtk
+import { useLocation } from "react-router-dom";
 import {
 	selectCartCardByID,
 	initialCartCardType,
@@ -14,6 +15,8 @@ import {
 import { RootState } from "../../../app/store";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
+// cart local storage helper function
+import { getLocalStorageCart } from "../../../helpers/cartControl";
 
 // Emotion theme
 type theme = {
@@ -21,92 +24,113 @@ type theme = {
 };
 
 const CartCards: React.FC = () => {
+	const [displayCardArr, setDisplayCardArr] = useState<initialCartCardType[]>(
+		[]
+	);
 	const dispatch = useDispatch();
+	// Used for useEffect trigger when entered '/cart'
+	const location = useLocation();
 
-	// logic to display cards
-	const displayCardArr = useSelector((state: RootState) => {
-		// Will return cards only with cartItemQuantity >= 1
-		return state.selectCartCards.filter((e) => {
-			return e.cartItemQuantity;
-		});
+	// used for useEffect, triggers useEffect with every redux reducer invoke.
+	const reduxStateCollector = useSelector((state: RootState) => {
+		return state.selectCartCards;
 	});
 
-	if (displayCardArr.length) {
+	useEffect(() => {
+		console.log(location);
+		if (!getLocalStorageCart()) {
+			const state = useSelector((state: RootState) => {
+				// Will return cards only with cartItemQuantity >= 1
+				const cards = state.selectCartCards.filter((e) => {
+					return e.cartItemQuantity;
+				});
+
+				return cards;
+			});
+			setDisplayCardArr(state);
+		} else {
+			const state = JSON.parse(getLocalStorageCart() || "{}");
+			setDisplayCardArr(state);
+		}
+	}, [location, reduxStateCollector]);
+
+	if (!displayCardArr.length) {
 		return (
 			<Wrapper>
-				{displayCardArr.map((card: initialCartCardType) => {
-					return (
-						// emotion conditional css
-						<CartCard key={card.shopId} checked={card.isChecked}>
-							<div className="card-img-ctn">
-								<img src={card.shopFoodImg} alt="Food" />
-							</div>
-							<div className="cardInfo">
-								<p>{card.shopName}</p>
-								<strong>shopType, Pipe, foodType</strong>
-								<p>{card.shopFoodName}</p>
-							</div>
-							<div className="right-wrapper">
-								<div className="price-ctn">
-									<p className="price">
-										<s>({card.shopBeforeCost}원)</s>
-										<ArrowRightAltRoundedIcon className="right-arrow" />
-										<strong>{card.shopFoodCost}원</strong>
-									</p>
-								</div>
-								<div className="btn-ctn">
-									{/* <button type="button">수정</button> */}
-									{/* Card quantity button component */}
-									<QuantityButton>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													decrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											-
-										</button>
-										<p>{card.cartItemQuantity}</p>
-										<button
-											type="button"
-											onClick={() => {
-												dispatch(
-													incrementSelectedCards(
-														card.shopId
-													)
-												);
-											}}
-										>
-											+
-										</button>
-									</QuantityButton>
-									<button
-										className="select-btn"
-										type="button"
-										onClick={() => {
-											// console.log(data.shopId);
-											dispatch(
-												selectCartCardByID(card.shopId)
-											);
-										}}
-									>
-										선택
-									</button>
-								</div>
-							</div>
-						</CartCard>
-					);
-				})}
+				<img src={fighting} alt="화이팅도치의 존재" />
 			</Wrapper>
 		);
 	}
+
 	return (
 		<Wrapper>
-			<img src={fighting} alt="화이팅도치의 존재" />
+			{displayCardArr.map((card: initialCartCardType) => {
+				return (
+					// emotion conditional css
+					<CartCard key={card.shopId} checked={card.isChecked}>
+						<div className="card-img-ctn">
+							<img src={card.shopFoodImg} alt="Food" />
+						</div>
+						<div className="cardInfo">
+							<p>{card.shopName}</p>
+							<strong>shopType, Pipe, foodType</strong>
+							<p>{card.shopFoodName}</p>
+						</div>
+						<div className="right-wrapper">
+							<div className="price-ctn">
+								<p className="price">
+									<s>({card.shopBeforeCost}원)</s>
+									<ArrowRightAltRoundedIcon className="right-arrow" />
+									<strong>{card.shopFoodCost}원</strong>
+								</p>
+							</div>
+							<div className="btn-ctn">
+								{/* <button type="button">수정</button> */}
+								{/* Card quantity button component */}
+								<QuantityButton>
+									<button
+										type="button"
+										onClick={() => {
+											dispatch(
+												decrementSelectedCards(
+													card.shopId
+												)
+											);
+										}}
+									>
+										-
+									</button>
+									<p>{card.cartItemQuantity}</p>
+									<button
+										type="button"
+										onClick={() => {
+											dispatch(
+												incrementSelectedCards(
+													card.shopId
+												)
+											);
+										}}
+									>
+										+
+									</button>
+								</QuantityButton>
+								<button
+									className="select-btn"
+									type="button"
+									onClick={() => {
+										// console.log(data.shopId);
+										dispatch(
+											selectCartCardByID(card.shopId)
+										);
+									}}
+								>
+									선택
+								</button>
+							</div>
+						</div>
+					</CartCard>
+				);
+			})}
 		</Wrapper>
 	);
 };

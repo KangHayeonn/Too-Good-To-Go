@@ -1,4 +1,4 @@
-package com.toogoodtogo.advice.exception;
+package com.toogoodtogo.domain.shop.exceptions;
 
 public class CShopNotFoundException extends RuntimeException {
     public CShopNotFoundException() {

@@ -9,10 +9,3 @@ export const getAccessToken = (): string | null => {
 export const deleteAccessToken = (): void => {
 	return localStorage.removeItem("accessToken");
 };
-
-
-// export const LocalStorageHandler = {
-// 	set : setSessionToken,
-// 	get : getSessionToken,
-
-// }

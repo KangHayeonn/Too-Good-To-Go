@@ -15,9 +15,13 @@ const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 �
 const Login: React.FC = () => {
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
 	const history = useHistory();
 
 	const dispatch = useDispatch();
+
 	// 최적화를 위해선 각각의 원소가 변경되었을 경우만 리렌더링 하도록 설정해야 함
 	const user = useSelector((state: RootState) => ({
 		inputId: state.auth.email,
@@ -101,11 +105,6 @@ const Login: React.FC = () => {
 	return (
 		<Wrapper>
 			<Container>
-				<TitleCtn>
-					<h4>로그인</h4>
-					<img src="image/Line 13.png" alt="" />
-					<h4>SIGN IN</h4>
-				</TitleCtn>
 				<InputCtn>
 					<input
 						className="id input"
@@ -162,6 +161,7 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TitleCtn = styled.div`
 	font-weight: bold;
 	color: #646464;

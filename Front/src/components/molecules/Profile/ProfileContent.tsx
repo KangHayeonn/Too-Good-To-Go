@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import FormContainer from "./FormContainer";
-import ProfileOrderList from "./ProfileOrderList";
+import ProfileOrderListContainer from "./ProfileOrderListContainer";
+import { RootState } from "../../../app/store";
 
 type theme = {
 	checked: boolean;
@@ -11,6 +14,26 @@ const ProfileContent: React.FC = () => {
 	const [showProfileEdit, setShowProfileEdit] = useState<boolean>(true);
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
 	const [showManager, setShowManager] = useState<boolean>(false);
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+	const logChecker = useSelector((state: RootState) => {
+		return state.user.user;
+	});
+
+	const location = useLocation();
+	const history = useHistory();
+	useEffect(() => {
+		console.log(location);
+		// Checking wheter getAccessToken is valid, if not, false will be returned.
+		// Must be updated, getAccessToken is not created for this usage.
+		console.log("logchecker, ", logChecker);
+		if (logChecker.length) {
+			console.log("logChecker: ", logChecker);
+			setIsLoggedIn(true);
+		} else {
+			setIsLoggedIn(false);
+		}
+	}, [logChecker, location, history]);
 
 	function handleShowProfileEdit(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -39,6 +62,12 @@ const ProfileContent: React.FC = () => {
 		setShowManager(true);
 	}
 
+	if (!logChecker) {
+		// eslint-disable-next-line no-alert
+		alert("로그인해얌");
+		return <>{history.push("/")}</>;
+	}
+
 	return (
 		<Content>
 			<SelectionContainer>
@@ -48,7 +77,7 @@ const ProfileContent: React.FC = () => {
 						onClick={(e) => handleShowProfileEdit(e)}
 						checked={showProfileEdit}
 					>
-						개인정보 수정
+						개인정보 수정{`${isLoggedIn}`}
 					</ProfileSelectButton>
 					<ProfileSelectButton
 						type="button"
@@ -68,7 +97,7 @@ const ProfileContent: React.FC = () => {
 			</SelectionContainer>
 			<ProfileEditContainer>
 				{showProfileEdit && <FormContainer />}
-				{showOrderList && <ProfileOrderList />}
+				{showOrderList && <ProfileOrderListContainer />}
 			</ProfileEditContainer>
 		</Content>
 	);

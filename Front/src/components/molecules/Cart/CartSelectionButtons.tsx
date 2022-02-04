@@ -24,6 +24,7 @@ const CartSelectionButtons: React.FC = () => {
 	}
 
 	const isCardsChecked: boolean = useSelector((state: RootState) => {
+		// console.log(state.selectCartCards);
 		return state.selectCartCards.some((e) => {
 			return e.isChecked === false;
 		});

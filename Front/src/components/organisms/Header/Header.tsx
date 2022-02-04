@@ -17,7 +17,7 @@ const navBar = css`
 
 const Header: React.FC = () => {
 	const { user } = useSelector((state: RootState) => ({
-		user: state.user.user,
+		user: state.user.email,
 	}));
 	const dispatch = useDispatch();
 	const onLogout = () => {

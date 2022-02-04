@@ -1,4 +1,4 @@
-package com.toogoodtogo.advice.exception;
+package com.toogoodtogo.domain.shop.product.exceptions;
 
 public class CProductNotFoundException extends RuntimeException {
     public CProductNotFoundException() {

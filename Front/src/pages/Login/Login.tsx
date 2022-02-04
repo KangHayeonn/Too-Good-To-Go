@@ -5,16 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
 import { changeIdItem, changePwItem, initializeForm } from "../../modules/auth";
-import { tempSetUser } from "../../modules/user";
 import { RootState } from "../../app/store";
 import { setAccessToken } from "../../helpers/tokenControl";
+import { userAPI } from "../../lib/api/userAPI";
+import { tempSetEmail } from "../../modules/user";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
-const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
 
 const Login: React.FC = () => {
-	const [inputId, setInputId] = useState("");
-	const [inputPw, setInputPw] = useState("");
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,8 +21,11 @@ const Login: React.FC = () => {
 	const history = useHistory();
 
 	const dispatch = useDispatch();
-	const { user } = useSelector((state: RootState) => ({
-		user: state.auth.email,
+
+	// 최적화를 위해선 각각의 원소가 변경되었을 경우만 리렌더링 하도록 설정해야 함
+	const user = useSelector((state: RootState) => ({
+		inputId: state.auth.email,
+		inputPw: state.auth.password,
 	}));
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +51,14 @@ const Login: React.FC = () => {
 
 	const onClickLogin = () => {
 		console.log("click login");
-		console.log("ID : ", inputId);
-		console.log("Pw : ", inputPw);
+		console.log("ID : ", user.inputId);
+		console.log("Pw : ", user.inputPw);
 
 		// hook call 에러 뜸 (handler 안에 useEffect 사용할 시)
 		axios
 			.post(`${LOGIN_URL}/login`, {
-				email: inputId,
-				password: inputPw,
+				email: user.inputId,
+				password: user.inputPw,
 			})
 			.then((res) => {
 				console.log(res);
@@ -67,24 +68,20 @@ const Login: React.FC = () => {
 					: "";
 				console.log(accessToken);
 
-				// loaclStorage에 저장
+				// localStorage에 저장
 				try {
-					localStorage.setItem("email", JSON.stringify(user));
-					dispatch(tempSetUser(inputId));
 					setAccessToken(accessToken);
+					dispatch(tempSetEmail(user.inputId)); // 이 부분이 있어야 로그아웃 버튼으로 바로 변경됨 (헤더부분)
+					userAPI();
 				} catch (e) {
 					console.log("Login login is not working");
 				}
 
-				// accessToken 만료하기 1분 전에 로그인 연장
-				setTimeout(onSlientRefresh, JWT_EXPIREY_TIME - 60000);
 				history.push("/");
 			})
 			.catch((e) => {
 				const { status } = e.response;
 				const { reason } = e.response.data;
-				console.log(reason);
-				console.log(status);
 				if (status === 409) {
 					if (reason === "Login Email Wrong") {
 						setErrorModal(true);
@@ -104,25 +101,6 @@ const Login: React.FC = () => {
 				dispatch(initializeForm());
 			});
 	};
-	console.log(
-		"axios default header of token: ",
-		axios.defaults.headers.common.Authorization
-	);
-	const onSlientRefresh = () => {
-		axios
-			.post("/slient-refresh", {
-				email: inputId,
-				password: inputPw,
-			})
-			.then((res) => {
-				console.log(res);
-				console.log("로그인 성공");
-			})
-			.catch((e) => {
-				console.log("실패");
-				console.error(e);
-			});
-	};
 
 	return (
 		<Wrapper>
@@ -133,7 +111,7 @@ const Login: React.FC = () => {
 						type="text"
 						name="input_id"
 						id="login_id"
-						value={inputId}
+						value={user.inputId}
 						onChange={handleInputId}
 						placeholder="아이디를 입력하세요."
 					/>
@@ -142,7 +120,7 @@ const Login: React.FC = () => {
 						type="password"
 						name="input_pw"
 						id="login_pw"
-						value={inputPw}
+						value={user.inputPw}
 						onChange={handleInputPw}
 						placeholder="비밀번호를 입력하세요."
 					/>

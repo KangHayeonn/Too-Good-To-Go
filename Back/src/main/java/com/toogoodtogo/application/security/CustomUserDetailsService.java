@@ -2,7 +2,7 @@ package com.toogoodtogo.application.security;
 
 import com.toogoodtogo.domain.user.UserPrincipal;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.advice.exception.CUserNotFoundException;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

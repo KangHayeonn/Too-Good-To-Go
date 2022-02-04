@@ -14,8 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByShopId(Long ShopId);
     List<Product> findAll();
 
-    @Query("select p from Product p where p.shop.user.id = ?1 and p.id = ?2") // 수정 해야 할듯?
-    Optional<Product> findByUserIdAndId(Long memberId, Long productId);
+    @Query("select p from Product p where p.shop.id = ?1 and p.id = ?2") // 수정 해야 할듯? join
+    Optional<Product> findByShopIdAndId(Long shopId, Long productId);
 
     @Query("select p from Product p where p.shop.id = ?1 and p.name = ?2") // 수정 해야 할듯?
     Optional<Product> findByShopIdAndName(Long shopId, String name);
@@ -23,4 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Query("delete from Product p where p.shop.id = ?1") // 수정 해야 할듯?
     void deleteByShopId(Long shopId);
+
+    @Query("select count(p) from Product p where p.shop.id = ?1")
+    Long countProductByShopId(Long shopId);
 }

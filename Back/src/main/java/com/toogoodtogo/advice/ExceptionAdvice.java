@@ -1,8 +1,14 @@
 package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
+import com.toogoodtogo.domain.exceptions.CUploadImageInvalidException;
 import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
+import com.toogoodtogo.domain.security.exceptions.*;
+import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
+import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
+import com.toogoodtogo.domain.user.exceptions.CUserExistException;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.web.common.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,19 +16,20 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,11 +57,23 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse requestBodyNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
-        return new ErrorResponse("Request body's field is not valid", getMessage("requestBodyNotValid.msg"),
-                e.getBindingResult().getFieldErrors().stream().map(error ->
-                        new ErrorResponse.Error(error.getField(),
-                                error.getRejectedValue().toString(),
-                                error.getDefaultMessage())).collect(Collectors.toList()));
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", error.getField(), error.getRejectedValue(), error.getDefaultMessage());
+        }
+        return new ErrorResponse("Request body's field is not valid", getMessage("requestBodyNotValid.msg"));
+    }
+
+    /***
+     * -0000
+     * Request Body validation Exception
+     */
+    @ExceptionHandler(WebExchangeBindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse requestBodyNotValidException(HttpServletRequest request, WebExchangeBindException e) {
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", error.getField(), error.getRejectedValue(), error.getDefaultMessage());
+        }
+        return new ErrorResponse("Request part's field is not valid", getMessage("requestBodyNotValid.msg"));
     }
 
     /***
@@ -74,11 +93,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse argumentNotValidException(HttpServletRequest request, ConstraintViolationException e) {
-        return new ErrorResponse("Path Variable or Query Parameter Not Valid", getMessage("pathQueryNotValid.msg"),
-                e.getConstraintViolations().stream().map(error ->
-                        new ErrorResponse.Error(error.getPropertyPath().toString().split(".")[1],
-                                error.getInvalidValue().toString(),
-                                error.getMessage())).collect(Collectors.toList()));
+        for (ConstraintViolation<?> error : e.getConstraintViolations()) {
+            log.error("error field : \"{}\", value : \"{}\", message : \"{}\"",
+                    error.getPropertyPath().toString().split(".")[1], error.getInvalidValue(), error.getMessage());
+        }
+        return new ErrorResponse("Path Variable or Query Parameter Not Valid", getMessage("pathQueryNotValid.msg"));
     }
 
     /***
@@ -88,9 +107,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(MissingPathVariableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse pathVariableMissingException(HttpServletRequest request, MissingPathVariableException e) {
-        return new ErrorResponse("Path Variable is missing", getMessage("pathVariableMissing.msg"),
-                Collections.singletonList(new ErrorResponse.Error(e.getVariableName(), " ", e.getMessage())));
-                //이러면 error 한개만 나오지 않나?
+        log.error("error field : \"{}\", message : \"{}\"", e.getVariableName(), e.getMessage());
+        return new ErrorResponse("Path Variable is missing", getMessage("pathVariableMissing.msg"));
     }
 
     /***
@@ -100,9 +118,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse pathVariableTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException e) {
-        return new ErrorResponse("Path Variable Type is mismatch", getMessage("pathVariableTypeMismatch.msg"),
-                Collections.singletonList(new ErrorResponse.Error(e.getName(), e.getValue().toString(), e.getMessage())));
-        //이러면 error 한개만 나오지 않나?
+        log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", e.getName(), e.getValue(), e.getMessage());
+        return new ErrorResponse("Path Variable Type is mismatch", getMessage("pathVariableTypeMismatch.msg"));
     }
 
     /***
@@ -112,9 +129,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse pathVariableMissingException(HttpServletRequest request, MissingServletRequestParameterException e) {
-        return new ErrorResponse("Query Parameter is missing", getMessage("queryParameterMissing.msg"),
-                Collections.singletonList(new ErrorResponse.Error(e.getParameterName(), " ", e.getMessage())));
-        //이러면 error 한개만 나오지 않나?
+        log.error("error field : \"{}\", message : \"{}\"", e.getParameterName(), e.getMessage());
+        return new ErrorResponse("Query Parameter is missing", getMessage("queryParameterMissing.msg"));
     }
 
     /***
@@ -204,8 +220,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorResponse wrongURLException(HttpServletRequest request, NoHandlerFoundException e) {
-        return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"),
-                Collections.singletonList(new ErrorResponse.Error("url", e.getRequestURL(), "Wrong URL")));
+        log.error("error field : \"{}\", value : \"{}\", message : \"{}\"", "url", e.getRequestURL(), "Wrong URL");
+        return new ErrorResponse("Wrong URL", getMessage("noHandlerFound.msg"));
     }
 
     /**
@@ -289,8 +305,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(CValidCheckException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse validCheckException(HttpServletRequest request, CValidCheckException e) {
-        return new ErrorResponse("Valid Exception", getMessage("validCheckException.msg"),
-                Collections.singletonList(new ErrorResponse.Error(" ", " ", e.getMessage())));
+        log.error("message : \"{}\"",e.getMessage());
+        return new ErrorResponse("Valid Exception", getMessage("validCheckException.msg"));
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
@@ -303,6 +319,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse orderCancelException(HttpServletRequest request, OrderCancelException e) {
         return new ErrorResponse("OrderCancelException", getMessage("orderCancelException.msg"));
+    }
+
+    @ExceptionHandler(CUploadImageInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse profileImageInvalidException(HttpServletRequest request, CUploadImageInvalidException e) {
+        return new ErrorResponse("UploadImageInvalidException", getMessage("uploadImageInvalidException.msg"));
     }
 
     private String getMessage(String code) {

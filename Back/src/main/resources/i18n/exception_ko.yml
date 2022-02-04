@@ -77,3 +77,6 @@ orderNotFoundException:
 orderCancelException:
   code: "-1018"
   msg: "주문을 취소할 수 없습니다."
+uploadImageInvalidException:
+  code: "-1019"
+  msg: "업로드한 사진에 문제가 있습니다."

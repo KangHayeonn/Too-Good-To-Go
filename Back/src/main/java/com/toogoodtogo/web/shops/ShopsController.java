@@ -11,9 +11,11 @@ import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -33,23 +35,28 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
-    @PostMapping("/manager/shop")
-    public ApiResponse<ShopDto> addShop(@CurrentUser User user, @RequestBody @Validated(ValidationSequence.class) AddShopRequest request) {
-        return new ApiResponse<>(shopUseCase.addShop(user.getId(), request));
+    @PostMapping("/manager/shops")
+    public ApiResponse<ShopDto> addShop(
+            @CurrentUser User user,
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart @Validated(ValidationSequence.class) AddShopRequest request) throws IOException {
+        return new ApiResponse<>(shopUseCase.addShop(user.getId(), file, request));
     }
     
-    @PatchMapping("/manager/shop/{shopId}")
-    public ApiResponse<ShopDto> updateSho
+//    @PatchMapping("/manager/shop/{shopId}")
+    @PostMapping("/manager/shops/{shopId}")
+    public ApiResponse<ShopDto> updateShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestBody @Validated(ValidationSequence.class) UpdateShopRequest request) {
-        return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
+             @RequestPart(required = false) MultipartFile file,
+             @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
+        return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, file, request));
     }
 
-    @DeleteMapping("/manager/shop/{shopId}")
+    @DeleteMapping("/manager/shops/{shopId}")
     public ApiResponse<String> deleteShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {
-        return new ApiResponse<String>(shopUseCase.deleteShop(user.getId(), shopId));
+        return new ApiResponse<>(shopUseCase.deleteShop(user.getId(), shopId));
     }
 }

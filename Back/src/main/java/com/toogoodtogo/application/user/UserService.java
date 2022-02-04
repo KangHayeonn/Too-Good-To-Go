@@ -2,7 +2,7 @@ package com.toogoodtogo.application.user;
 
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.advice.exception.CUserNotFoundException;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.web.users.dto.UserDto;
 import com.toogoodtogo.web.users.dto.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;

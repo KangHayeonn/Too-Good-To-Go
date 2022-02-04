@@ -152,8 +152,7 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message"),
-                                fieldWithPath("errors").description("errors")
+                                fieldWithPath("message").description("message")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -231,8 +230,7 @@ class SignControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message"),
-                                fieldWithPath("errors").description("errors")
+                                fieldWithPath("message").description("message")
                         )
                 ))
                 .andExpect(status().is4xxClientError());

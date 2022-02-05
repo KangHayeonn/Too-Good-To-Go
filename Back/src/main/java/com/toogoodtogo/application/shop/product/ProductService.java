@@ -33,6 +33,7 @@ public class ProductService implements ProductUseCase {
     private final UploadFileConverter uploadFileConverter;
     private final S3Uploader s3Uploader;
     private final DisplayProductRepository displayProductRepository;
+    private final ChoiceProductRepository choiceProductRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDto> findAllProducts() {
@@ -128,8 +129,20 @@ public class ProductService implements ProductUseCase {
         Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteProduct.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
+
+        choiceProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
         return "success";
+    }
+
+    @Override
+    public ProductDto choiceProduct(Long managerId, Long shopId, Long productId) {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Product choiceProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+        Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
+        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
+        return new ProductDto(choiceProduct);
     }
 
     @Transactional(readOnly = true)
@@ -139,7 +152,15 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> productsPerCategory(String category, String method) {
-        return productRepositorySupport.productsPerCategory2(category, method);
+        List<ChoiceProduct> all = choiceProductRepository.findAll();
+        List<ProductDto> data = new ArrayList<>();
+        all.forEach(p -> {
+            if (p.getShop().getCategory().contains(category)) {
+                data.add(new ProductDto(p.getProduct()));
+            }
+        });
+        return data;
+//        return productRepositorySupport.productsPerCategory2(category, method);
     }
 
     @Transactional(readOnly = true)

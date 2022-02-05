@@ -13,6 +13,7 @@ public interface ProductUseCase {
     ProductDto updateProduct(Long managerId, Long shopId, Long productId, MultipartFile file, UpdateProductRequest request) throws IOException;
     List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request);
     String deleteProduct(Long managerId, Long shopId, Long productId);
+    ProductDto choiceProduct(Long managerId, Long shopId, Long productId);
     List<ProductTmp> recommendProducts();
     List<ProductDto> productsPerCategory(String category, String method);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);

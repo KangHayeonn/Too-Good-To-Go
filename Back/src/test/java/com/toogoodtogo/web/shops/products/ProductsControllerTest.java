@@ -6,10 +6,7 @@ import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.DisplayProduct;
-import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
-import com.toogoodtogo.domain.shop.product.Product;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
+import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
@@ -77,6 +74,9 @@ class ProductsControllerTest {
     private DisplayProductRepository displayProductRepository;
 
     @Autowired
+    private ChoiceProductRepository choiceProductRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
@@ -95,6 +95,7 @@ class ProductsControllerTest {
 
     @BeforeEach
     public void setUp() {
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         displayProductRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
@@ -137,13 +138,13 @@ class ProductsControllerTest {
                 .shop(shop).priority(new ArrayList<String>(Arrays.asList(
                         String.valueOf(save.getId()), String.valueOf(save1.getId()),
                         String.valueOf(save2.getId()), String.valueOf(save3.getId()), String.valueOf(save4.getId())))).build());
-//        displayProductRepository.save(DisplayProduct.builder()
-//                .shop(shop).priority(tmp).build());
+        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
     }
 
     @AfterEach
     public void setDown() {
         signService.logout(manager.getId());
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
     }
 

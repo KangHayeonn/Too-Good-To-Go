@@ -4,15 +4,12 @@ import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
-import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
-import com.toogoodtogo.domain.shop.product.DisplayProduct;
-import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
+import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.shops.dto.AddShopRequest;
@@ -81,9 +78,6 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
-
-        displayProductRepository.save(DisplayProduct.builder()
-                .shop(newShop).priority(new ArrayList<>()).build());
 
         return new ShopDto(shopRepository.save(newShop));
     }

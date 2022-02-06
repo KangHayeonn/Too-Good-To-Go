@@ -29,4 +29,8 @@ public class ChoiceProduct {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void updateProduct(Product product) {
+        this.product = product;
+    }
 }

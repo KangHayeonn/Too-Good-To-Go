@@ -91,14 +91,6 @@ public class ProductRepositorySupport {
                 .fetch();
     }
 
-    public List<Product> findProductsPerShopSortByPriority(Long shopId) { //method String 대신 enum?
-        return queryFactory.selectFrom(product)
-                .innerJoin(product.shop, shop)
-                .where(eqShopId(shopId))
-                .orderBy(orderType("/priority"))
-                .fetch();
-    }
-
     public List<ProductDto> sortProductsPerShop(Long shopId, String method) { //method String 대신 enum?
         return queryFactory.select(Projections.fields(ProductDto.class,
                 shop.id.as("shopId"),
@@ -123,10 +115,6 @@ public class ProductRepositorySupport {
         }
         else if (method.equals("/discount")) {
             return product.discountedPrice.asc();
-        }
-        else if (method.equals("/priority")) {
-            log.info("priority sort");
-            return product.priority.asc();
         }
         else return product.id.desc(); // 디폴트값 최신순. BaseTimeEntity 상속 or Id 순 "update"?
     }

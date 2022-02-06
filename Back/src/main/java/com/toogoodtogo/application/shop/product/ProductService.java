@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,13 @@ public class ProductService implements ProductUseCase {
 
         // product 순서
         DisplayProduct dp = displayProductRepository.findByShopId(shopId);
-        dp.addPrior(new_product.getId());
+        if(displayProductRepository.findByShopId(shopId) == null) { // 만약 displayProduct 가 없으면
+            displayProductRepository.save(
+                    DisplayProduct.builder().shop(shop)
+                            .priority(new ArrayList<>(Arrays.asList(String.valueOf(new_product.getId())))).build());
+        }
+        else displayProductRepository.findByShopId(shopId).addPrior(new_product.getId());
+
         return new ProductDto(new_product);
 //        return ProductDto.builder().product(productRepository.save(new_product)).build();
 //        return ProductDto.builder()
@@ -114,11 +121,8 @@ public class ProductService implements ProductUseCase {
     public List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-
         DisplayProduct displayProduct = displayProductRepository.findByShopId(shopId);
-
         displayProduct.update(request.getProductsId());
-
         return displayProduct.getPriority();
     }
 
@@ -141,7 +145,9 @@ public class ProductService implements ProductUseCase {
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product choiceProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
-        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
+        if(choiceProductRepository.findByShopId(shop.getId()) == null) { // 고른게 없었으면 추가
+            choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
+        } else choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct); // 있었으면 기존 product 교체
         return new ProductDto(choiceProduct);
     }
 

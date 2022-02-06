@@ -152,7 +152,7 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductTmp> recommendProducts() {
+    public List<ProductDto> recommendProducts() {
         return productRepositorySupport.recommendProducts();
     }
 

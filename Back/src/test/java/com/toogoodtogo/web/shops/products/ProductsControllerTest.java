@@ -325,28 +325,27 @@ class ProductsControllerTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void recommendProducts() throws Exception {
-//        //then
-//        mockMvc.perform(get("/api/products/recommend"))
-//                .andDo(print())
-//                .andDo(document("products/recommend",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        responseFields(
-//                                fieldWithPath("data").description("product data"),
-//                                fieldWithPath("data.[].shopId").description("product shop id"),
-//                                fieldWithPath("data.[].shopName").description("product shop name"),
-//                                fieldWithPath("data.[].id").description("product id"),
-//                                fieldWithPath("data.[].name").description("product name"),
-//                                fieldWithPath("data.[].price").description("product image"),
-//                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-//                                fieldWithPath("data.[].rate").description("shop rate"),
-//                                fieldWithPath("data.[].image").description("product image")
-//                        )
-//                ))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void recommendProducts() throws Exception {
+        //then
+        mockMvc.perform(get("/api/products/recommend"))
+                .andDo(print())
+                .andDo(document("products/recommend",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("data").description("product data"),
+                                fieldWithPath("data.[].shopId").description("product shop id"),
+                                fieldWithPath("data.[].shopName").description("product shop name"),
+                                fieldWithPath("data.[].id").description("product id"),
+                                fieldWithPath("data.[].name").description("product name"),
+                                fieldWithPath("data.[].price").description("product image"),
+                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
+                                fieldWithPath("data.[].image").description("product image")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void productsPerCategory() throws Exception {

@@ -89,7 +89,7 @@ public class ProductsController {
 //    }
 
     @GetMapping("/products/recommend")
-    public ApiResponse<List<ProductTmp>> recommendProducts() {
+    public ApiResponse<List<ProductDto>> recommendProducts() {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 

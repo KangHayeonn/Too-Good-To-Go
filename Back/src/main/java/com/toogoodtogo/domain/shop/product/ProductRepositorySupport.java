@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.toogoodtogo.domain.shop.QShop.shop;
+import static com.toogoodtogo.domain.shop.product.QChoiceProduct.choiceProduct;
 import static com.toogoodtogo.domain.shop.product.QProduct.*;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -127,45 +128,60 @@ public class ProductRepositorySupport {
         else return product.id.desc(); // 디폴트값 최신순. BaseTimeEntity 상속 or Id 순 "update"?
     }
 
-    public List<ProductTmp> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개
-        //queryDSL에선 form 서브쿼리 지원안함....
-        QProduct p1 = new QProduct("p1");
-        QProduct p2 = new QProduct("p2");
-
-        List<Long> productIdList = queryFactory.select(p1.id)
-                .from(p1)
-                .innerJoin(p1.shop, shop)
-                .leftJoin(p2)
-                .on(p1.shop.id.eq(p2.shop.id)
-                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
-                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
-                .where(p2.id.isNull()) // ??
-                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
-                .limit(1)
-                .fetch();//??;
-
-        return queryFactory.select(Projections.fields(ProductTmp.class, // or .constructor
+    public List<ProductDto> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개
+        return queryFactory.select(Projections.fields(ProductDto.class,
                 shop.id.as("shopId"),
                 shop.name.as("shopName"),
-                p1.id,
-                p1.name,
-                p1.price,
-                p1.discountedPrice,
-                p1.price.subtract(p1.discountedPrice).divide(p1.price).multiply(100L).as("rate"),
-                p1.image))
-                .from(p1)
+                product.id,
+                product.name,
+                product.price,
+                product.discountedPrice,
+                product.image))
+                .from(choiceProduct)
+                .innerJoin(choiceProduct.product, product)
+                .innerJoin(choiceProduct.shop, shop)
+                .orderBy(orderType("/rate"))
+                .limit(10)
+                .fetch();
+
+        //queryDSL에선 form 서브쿼리 지원안함....
+//        QProduct p1 = new QProduct("p1");
+//        QProduct p2 = new QProduct("p2");
+//
+//        List<Long> productIdList = queryFactory.select(p1.id)
+//                .from(p1)
 //                .innerJoin(p1.shop, shop)
+//                .leftJoin(p2)
+//                .on(p1.shop.id.eq(p2.shop.id)
+//                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
+//                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
+//                .where(p2.id.isNull()) // ??
+//                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
+//                .limit(1)
+//                .fetch();//??;
+//
+//        return queryFactory.select(Projections.fields(ProductTmp.class, // or .constructor
+//                shop.id.as("shopId"),
+//                shop.name.as("shopName"),
+//                p1.id,
+//                p1.name,
+//                p1.price,
+//                p1.discountedPrice,
+//                p1.price.subtract(p1.discountedPrice).divide(p1.price).multiply(100L).as("rate"),
+//                p1.image))
+//                .from(p1)
+////                .innerJoin(p1.shop, shop)
+////                .fetchJoin()
+////                .innerJoin(p2.shop, shop)
+//                .leftJoin(p2)
 //                .fetchJoin()
-//                .innerJoin(p2.shop, shop)
-                .leftJoin(p2)
-                .fetchJoin()
-                .on(p1.shop.id.eq(p2.shop.id)
-                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
-                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
-                .where(p2.id.isNull()) // ??
-                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
-                .limit(5)
-                .fetch();//??;
+//                .on(p1.shop.id.eq(p2.shop.id)
+//                        .and(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L)
+//                                .lt(p2.price.subtract(p2.discountedPrice).mod(p2.price).multiply(100L))))
+//                .where(p2.id.isNull()) // ??
+//                .orderBy(p1.price.subtract(p1.discountedPrice).mod(p1.price).multiply(100L).desc()) //그 중에서도 할인율순
+//                .limit(5)
+//                .fetch();//??;
     }
 
     public BooleanExpression eqProductName(String productName) {

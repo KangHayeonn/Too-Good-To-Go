@@ -7,6 +7,9 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ChoiceProduct;
+import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
+import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
@@ -73,6 +76,12 @@ class ShopsControllerTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
+    private DisplayProductRepository displayProductRepository;
+
+    @Autowired
+    private ChoiceProductRepository choiceProductRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
@@ -90,6 +99,8 @@ class ShopsControllerTest {
 
     @BeforeEach
     public void setUp() {
+        displayProductRepository.deleteAllInBatch();
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
@@ -118,6 +129,8 @@ class ShopsControllerTest {
     @AfterEach
     public void setDown() {
         signService.logout(manager.getId());
+        displayProductRepository.deleteAllInBatch();
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();

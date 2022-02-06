@@ -4,6 +4,7 @@ import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
+import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
 import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
@@ -32,6 +33,7 @@ public class ShopService implements ShopUseCase {
     private final ProductRepository productRepository;
     private final UploadFileConverter uploadFileConverter;
     private final S3Uploader s3Uploader;
+    private final ChoiceProductRepository choiceProductRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -119,6 +121,8 @@ public class ShopService implements ShopUseCase {
 
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteShop.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
+
+        choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
         return "success";
     }

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DisplayProduct {
+public class ChoiceProduct {
     @Id
     @GeneratedValue
     private Long id;
@@ -26,15 +26,7 @@ public class DisplayProduct {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @Column(nullable = false)
-    @Convert(converter = ListToStringConverter.class)
-    private List<String> priority = new ArrayList<String>();
-
-    public void addPrior(Long productId) {
-        this.priority.add(String.valueOf(productId));
-    }
-
-    public void update(List<String> priority) {
-        this.priority = priority;
-    }
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

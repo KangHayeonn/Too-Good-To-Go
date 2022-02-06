@@ -91,6 +91,14 @@ public class ProductRepositorySupport {
                 .fetch();
     }
 
+    public Product choiceHighestRateProductPerShop(Long shopId) {
+        return queryFactory.selectFrom(product)
+                .where(product.shop.id.eq(shopId))
+                .orderBy(orderType("/rate"))
+                .limit(1)
+                .fetchOne();
+    }
+
     public List<ProductDto> sortProductsPerShop(Long shopId, String method) { //method String 대신 enum?
         return queryFactory.select(Projections.fields(ProductDto.class,
                 shop.id.as("shopId"),

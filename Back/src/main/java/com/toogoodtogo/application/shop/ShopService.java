@@ -5,6 +5,8 @@ import com.toogoodtogo.application.UploadFileConverter;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
+import com.toogoodtogo.domain.shop.product.DisplayProduct;
+import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
 import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
@@ -22,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,7 @@ public class ShopService implements ShopUseCase {
     private final UploadFileConverter uploadFileConverter;
     private final S3Uploader s3Uploader;
     private final ChoiceProductRepository choiceProductRepository;
+    private final DisplayProductRepository displayProductRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -76,6 +81,10 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
+
+        displayProductRepository.save(DisplayProduct.builder()
+                .shop(newShop).build());
+
         return new ShopDto(shopRepository.save(newShop));
     }
 
@@ -122,6 +131,7 @@ public class ShopService implements ShopUseCase {
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteShop.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
 
+        displayProductRepository.deleteByShopId(deleteShop.getId());
         choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
         return "success";

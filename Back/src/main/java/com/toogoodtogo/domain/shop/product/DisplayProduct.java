@@ -26,7 +26,6 @@ public class DisplayProduct {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @Column(nullable = false)
     @Convert(converter = ListToStringConverter.class)
     private List<String> priority = new ArrayList<String>();
 

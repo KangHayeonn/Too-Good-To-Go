@@ -154,9 +154,14 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> productsPerCategory(String category, String method) {
         List<ChoiceProduct> all = choiceProductRepository.findAll();
         List<ProductDto> data = new ArrayList<>();
-        all.forEach(p -> {
-            if (p.getShop().getCategory().contains(category)) {
-                data.add(new ProductDto(p.getProduct()));
+        all.forEach(choiceProduct -> {
+            if (choiceProduct.getShop().getCategory().contains(category)) { // 해당 shop 의 category 가 적합할 때
+                if (choiceProduct.getProduct() == null) { // 만약 선택한 product 가 없으면
+                    //가게에서 가장 할인율 높은거
+                    data.add(new ProductDto(
+                            productRepositorySupport.choiceHighestRateProductPerShop(choiceProduct.getShop().getId())));
+                }
+                else data.add(new ProductDto(choiceProduct.getProduct())); // 선택한 product 가 있으면
             }
         });
         return data;

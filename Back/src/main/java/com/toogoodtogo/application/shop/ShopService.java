@@ -83,7 +83,7 @@ public class ShopService implements ShopUseCase {
                 .build();
 
         displayProductRepository.save(DisplayProduct.builder()
-                .shop(newShop).build());
+                .shop(newShop).priority(new ArrayList<>()).build());
 
         return new ShopDto(shopRepository.save(newShop));
     }

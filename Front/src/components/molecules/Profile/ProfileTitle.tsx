@@ -6,7 +6,7 @@ import { RootState } from "../../../app/store";
 
 const ProfileTitle: React.FC = () => {
 	const userName = useSelector((state: RootState) => {
-		return state.user;
+		return state.user.name;
 	});
 
 	return (
@@ -14,7 +14,7 @@ const ProfileTitle: React.FC = () => {
 			<p>
 				안녕하세요,
 				<span>
-					{userName ? `${userName}` : `이렇게 들어오시면 안되는데요`}
+					{userName ? ` ${userName}` : ` 이렇게 들어오시면 안되는데요`}
 				</span>
 				님
 			</p>

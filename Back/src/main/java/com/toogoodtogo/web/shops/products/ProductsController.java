@@ -59,7 +59,7 @@ public class ProductsController {
     }
 
     @PatchMapping("/manager/shops/{shopId}/products/{productId}")
-    public ApiResponse<List<ProductDto>> updatePriorityProduct(
+    public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
             @PathVariable @Positive(message = "path 오류") Long productId,
@@ -68,11 +68,19 @@ public class ProductsController {
     }
 
     @DeleteMapping("/manager/shops/{shopId}/products/{productId}")
-    public ApiResponse<String> deleteProduct
-            (@CurrentUser User user,
+    public ApiResponse<String> deleteProduct(
+             @CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
              @PathVariable @Positive(message = "path 오류") Long productId) {
         return new ApiResponse<>(productUseCase.deleteProduct(user.getId(), shopId, productId));
+    }
+
+    @GetMapping("/manager/shops/{shopId}/products/{productId}")
+    public ApiResponse<ProductDto> choiceProduct(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @PathVariable @Positive(message = "path 오류") Long productId) {
+        return new ApiResponse<>(productUseCase.choiceProduct(user.getId(), shopId, productId));
     }
 
 //    @GetMapping("/shop/{shopId}/products/sort/{method}")
@@ -81,7 +89,7 @@ public class ProductsController {
 //    }
 
     @GetMapping("/products/recommend")
-    public ApiResponse<List<ProductTmp>> recommendProducts() {
+    public ApiResponse<List<ProductDto>> recommendProducts() {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 

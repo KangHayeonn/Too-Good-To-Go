@@ -19,6 +19,12 @@ spring:
   datasource:
     url: jdbc:h2:mem:toogoodtogo
 
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
 cloud:
   aws:
     s3:

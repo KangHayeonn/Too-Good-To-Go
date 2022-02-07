@@ -5,7 +5,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import axios from "axios";
 import { useHistory } from "react-router";
 import API from "../../services/api";
 
@@ -61,7 +60,7 @@ const Register: React.FC = () => {
 		// join phone number values to one
 		formValue.phone =
 			formValue.phone1 + formValue.phone2 + formValue.phone3;
-
+			
 		const stringifiedFormValue = JSON.stringify(formValue);
 		if (validation) {
 			alert("비밀번호 확인 바람");

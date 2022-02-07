@@ -127,7 +127,7 @@ operation::products/find[snippets='curl-request,http-request,http-response,respo
 === PRODUCT 추가 [POST]
 operation::products/add[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== PRODUCT 업데이트 [PATCH]
+=== PRODUCT 업데이트 [POST]
 operation::products/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 === PRODUCT 우선순위 업데이트 [PATCH]

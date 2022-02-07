@@ -656,13 +656,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_추가_post_response_fields">Response fields</a></li>
 </ul>
 </li>
-<li><a href="#_product_업데이트_patch">PRODUCT 업데이트 [PATCH]</a>
+<li><a href="#_product_업데이트_post">PRODUCT 업데이트 [POST]</a>
 <ul class="sectlevel3">
-<li><a href="#_product_업데이트_patch_curl_request">Curl request</a></li>
-<li><a href="#_product_업데이트_patch_http_request">Example Request</a></li>
-<li><a href="#_product_업데이트_patch_http_response">Example Response</a></li>
-<li><a href="#_product_업데이트_patch_response_body">Response body</a></li>
-<li><a href="#_product_업데이트_patch_response_fields">Response fields</a></li>
+<li><a href="#_product_업데이트_post_curl_request">Curl request</a></li>
+<li><a href="#_product_업데이트_post_http_request">Example Request</a></li>
+<li><a href="#_product_업데이트_post_http_response">Example Response</a></li>
+<li><a href="#_product_업데이트_post_response_body">Response body</a></li>
+<li><a href="#_product_업데이트_post_response_fields">Response fields</a></li>
 </ul>
 </li>
 <li><a href="#_product_우선순위_업데이트_patch">PRODUCT 우선순위 업데이트 [PATCH]</a>
@@ -1287,8 +1287,8 @@ Content-Length: 416
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.BXEJ3X8SxP3GA2w5vC9u35U70cJlWWPkWLDNXbGFsiQ",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ0LCJleHAiOjE2NDQyNTI2NDR9.umrx9jv37JH92FsrmN8cvoOyUR_8CWR4K20n086Hpxg",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDR9.sKPPm4WuEeV3CbdIDDJYhrWHH5bLHVGa5ZboSFLl9yY",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1302,8 +1302,8 @@ Content-Length: 416
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.BXEJ3X8SxP3GA2w5vC9u35U70cJlWWPkWLDNXbGFsiQ",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ0LCJleHAiOjE2NDQyNTI2NDR9.umrx9jv37JH92FsrmN8cvoOyUR_8CWR4K20n086Hpxg",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDR9.sKPPm4WuEeV3CbdIDDJYhrWHH5bLHVGa5ZboSFLl9yY",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1501,8 +1501,8 @@ Content-Length: 420
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.2TW6jBRtRawg5I_XQ8gYzPEF5h6EX-L_-PAADUlSREE",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQ0LCJleHAiOjE2NDQyNTI2NDR9.hHTbSfAlltxDAQiM0Qup1GU0pQsm7PlDb4QeRNLooQU",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDR9.sKPPm4WuEeV3CbdIDDJYhrWHH5bLHVGa5ZboSFLl9yY",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1516,8 +1516,8 @@ Content-Length: 420
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.2TW6jBRtRawg5I_XQ8gYzPEF5h6EX-L_-PAADUlSREE",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQ0LCJleHAiOjE2NDQyNTI2NDR9.hHTbSfAlltxDAQiM0Qup1GU0pQsm7PlDb4QeRNLooQU",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDR9.sKPPm4WuEeV3CbdIDDJYhrWHH5bLHVGa5ZboSFLl9yY",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1675,7 +1675,7 @@ Content-Length: 92
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/logout' -i -X GET \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NDQyMjM5MTIsImV4cCI6MTY0NDIyNzUxMn0.6vMlRKC9bdHTmiqN_pMM6DxF-zNkOjEl5cTCrIh-U4c' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NDQyNDkwNDQsImV4cCI6MTY0NDI1MjY0NH0.Nxqlx1a5vu-EuFeD3zv2wkgXhEXrauKyAUuZUEqFZ20' \
     -H 'Accept: application/json'</code></pre>
 </div>
 </div>
@@ -1686,7 +1686,7 @@ Content-Length: 92
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NDQyMjM5MTIsImV4cCI6MTY0NDIyNzUxMn0.6vMlRKC9bdHTmiqN_pMM6DxF-zNkOjEl5cTCrIh-U4c
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NDQyNDkwNDQsImV4cCI6MTY0NDI1MjY0NH0.Nxqlx1a5vu-EuFeD3zv2wkgXhEXrauKyAUuZUEqFZ20
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -1763,11 +1763,11 @@ Content-Length: 26
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/reissue' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA' \
     -H 'Accept: application/json' \
     -d '{
-  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0",
-  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00"
+  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA",
+  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDV9.DQm-MKdZ9-VaPecUysETBgkKbE_jD5fNhtMqu8r6w1c"
 }'</code></pre>
 </div>
 </div>
@@ -1778,14 +1778,14 @@ Content-Length: 26
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/reissue HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA
 Accept: application/json
 Content-Length: 324
 Host: localhost:8080
 
 {
-  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0",
-  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00"
+  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA",
+  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDV9.DQm-MKdZ9-VaPecUysETBgkKbE_jD5fNhtMqu8r6w1c"
 }</code></pre>
 </div>
 </div>
@@ -1810,8 +1810,8 @@ Content-Length: 416
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDV9.DQm-MKdZ9-VaPecUysETBgkKbE_jD5fNhtMqu8r6w1c",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1825,8 +1825,8 @@ Content-Length: 416
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTEzLCJleHAiOjE2NDQyMjc1MTN9.pPL-910ZFvkLMRKe36P8OOvVBTwT5Kgmrie1rBmywf0",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0MzM1MTN9.x6nvA7EpjEphVpSmLfyh--_nR3LNdF62rcezOlpJh00",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.pkpTgsoMzu3pg_Q6tu5BOCby0Ob-Qa3P5UcBuOkYBhA",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU0NTg2NDV9.DQm-MKdZ9-VaPecUysETBgkKbE_jD5fNhtMqu8r6w1c",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1885,7 +1885,7 @@ Content-Length: 416
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/me?lang=ko' -i -X GET \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTE0LCJleHAiOjE2NDQyMjc1MTR9.zqac8_3K0JXAScoOdN7ZVCO9Nl3SQhq__eHq9T6rui0'</code></pre>
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ2LCJleHAiOjE2NDQyNTI2NDZ9.04PRojXr1KwtHDSDkDiq8lvMVxV4gwdF-L6vXQY_8dc'</code></pre>
 </div>
 </div>
 </div>
@@ -1894,7 +1894,7 @@ Content-Length: 416
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/me?lang=ko HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTE0LCJleHAiOjE2NDQyMjc1MTR9.zqac8_3K0JXAScoOdN7ZVCO9Nl3SQhq__eHq9T6rui0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ2LCJleHAiOjE2NDQyNTI2NDZ9.04PRojXr1KwtHDSDkDiq8lvMVxV4gwdF-L6vXQY_8dc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2002,7 +2002,7 @@ Content-Length: 151
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/me' -i -X PATCH \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTE0LCJleHAiOjE2NDQyMjc1MTR9._m467xbMoGe3cVpN4N4V8Q6DUAHexiO_5h4hpcfh8MY' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.B254ENorQctmJk5nedWZgHB4dXtQvR-pTN3uL5Hg7Mk' \
     -H 'Accept: application/json' \
     -d '{
   "password" : "new_password",
@@ -2017,7 +2017,7 @@ Content-Length: 151
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/me HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjIzOTE0LCJleHAiOjE2NDQyMjc1MTR9._m467xbMoGe3cVpN4N4V8Q6DUAHexiO_5h4hpcfh8MY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MjQ5MDQ1LCJleHAiOjE2NDQyNTI2NDV9.B254ENorQctmJk5nedWZgHB4dXtQvR-pTN3uL5Hg7Mk
 Accept: application/json
 Content-Length: 63
 Host: localhost:8080
@@ -2302,7 +2302,7 @@ Content-Length: 555
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops' -i -X GET \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA4LCJleHAiOjE2NDQyMjc1MDh9.O1yUUqVrh5MvWwwkwSKGNTlXyP_WJBaVpcZr0f1ls00'</code></pre>
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.-aoQc0HWV-Kym8f0lPsYZn8Na-deXZywuh6BeeNPq_s'</code></pre>
 </div>
 </div>
 </div>
@@ -2311,7 +2311,7 @@ Content-Length: 555
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/manager/shops HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA4LCJleHAiOjE2NDQyMjc1MDh9.O1yUUqVrh5MvWwwkwSKGNTlXyP_WJBaVpcZr0f1ls00
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.-aoQc0HWV-Kym8f0lPsYZn8Na-deXZywuh6BeeNPq_s
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2472,7 +2472,7 @@ Content-Length: 555
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops' -i -X POST \
     -H 'Content-Type: multipart/form-data;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA3LCJleHAiOjE2NDQyMjc1MDd9.2bfAUOJCmTU_4mvmM2jyqWRLO0Fum1-WvRlj4yTIKPc' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.q9kqFPZC8S7x4jYiYUQ8p_-Am6DB-SWSoRN7tSPYzWA' \
     -F 'file=' \
     -F 'request={"name":"shop4","category":["category"],"phone":"01044444444","address":"address","open":"10:00","close":"22:00"};type=application/json'</code></pre>
 </div>
@@ -2485,7 +2485,7 @@ Content-Length: 555
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA3LCJleHAiOjE2NDQyMjc1MDd9.2bfAUOJCmTU_4mvmM2jyqWRLO0Fum1-WvRlj4yTIKPc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.q9kqFPZC8S7x4jYiYUQ8p_-Am6DB-SWSoRN7tSPYzWA
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2635,7 +2635,7 @@ Content-Length: 258
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/13' -i -X POST \
     -H 'Content-Type: multipart/form-data;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA3LCJleHAiOjE2NDQyMjc1MDd9.xinISoRFciKEPCVCwHDWr9KlXfZcPKtgf51nyXQKa-s' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.r2Z_BQ3eTQn-7j41HQgYZsZcYbuWMPxKxJIecbaxMsA' \
     -F 'file=' \
     -F 'request={"name":"shop3","image":"test3","category":["category2"],"phone":"01087654321","address":"test3","open":"12:00","close":"21:00"};type=application/json'</code></pre>
 </div>
@@ -2648,7 +2648,7 @@ Content-Length: 258
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/13 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA3LCJleHAiOjE2NDQyMjc1MDd9.xinISoRFciKEPCVCwHDWr9KlXfZcPKtgf51nyXQKa-s
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.r2Z_BQ3eTQn-7j41HQgYZsZcYbuWMPxKxJIecbaxMsA
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2796,7 +2796,7 @@ Content-Length: 251
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/17' -i -X DELETE \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA4LCJleHAiOjE2NDQyMjc1MDh9.i6pnn7yrVztA_bWIDuWeXtvMmPSOOy9vqrNyiRhjrSI'</code></pre>
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.Nkvr3gCidDygrwqj5G4wUrNfXvkKF4AuVcAdmN5jMCc'</code></pre>
 </div>
 </div>
 </div>
@@ -2805,7 +2805,7 @@ Content-Length: 251
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/17 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjIzOTA4LCJleHAiOjE2NDQyMjc1MDh9.i6pnn7yrVztA_bWIDuWeXtvMmPSOOy9vqrNyiRhjrSI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MjQ5MDQwLCJleHAiOjE2NDQyNTI2NDB9.Nkvr3gCidDygrwqj5G4wUrNfXvkKF4AuVcAdmN5jMCc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3266,7 +3266,7 @@ Content-Length: 894
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/8/products' -i -X POST \
     -H 'Content-Type: multipart/form-data;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDcsImV4cCI6MTY0NDIyNzUwN30.RNvbmWWeuhRseUu74yEgbWM0n24MH_UuuD2BOEMVW6g' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzksImV4cCI6MTY0NDI1MjYzOX0.yx8baqbapzf3PdITtnb7doyDK9GR8dKuhdoSxmn-9iM' \
     -F 'file=' \
     -F 'request={"name":"food","price":9000,"discountedPrice":8000};type=application/json'</code></pre>
 </div>
@@ -3279,7 +3279,7 @@ Content-Length: 894
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/8/products HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDcsImV4cCI6MTY0NDIyNzUwN30.RNvbmWWeuhRseUu74yEgbWM0n24MH_UuuD2BOEMVW6g
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzksImV4cCI6MTY0NDI1MjYzOX0.yx8baqbapzf3PdITtnb7doyDK9GR8dKuhdoSxmn-9iM
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3405,28 +3405,28 @@ Content-Length: 188
 </div>
 </div>
 <div class="sect2">
-<h3 id="_product_업데이트_patch"><a class="link" href="#_product_업데이트_patch">PRODUCT 업데이트 [PATCH]</a></h3>
+<h3 id="_product_업데이트_post"><a class="link" href="#_product_업데이트_post">PRODUCT 업데이트 [POST]</a></h3>
 <div class="sect3">
-<h4 id="_product_업데이트_patch_curl_request"><a class="link" href="#_product_업데이트_patch_curl_request">Curl request</a></h4>
+<h4 id="_product_업데이트_post_curl_request"><a class="link" href="#_product_업데이트_post_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/2/products/6' -i -X POST \
     -H 'Content-Type: multipart/form-data;charset=UTF-8' \
     -H 'Accept: application/json' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDUsImV4cCI6MTY0NDIyNzUwNX0.O3p4CP4aJRY85KNY3u9nP0bZredT6q8nJOte2b1I45s' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzcsImV4cCI6MTY0NDI1MjYzN30.g7kjnznQkD_ziSdytrMZyJ1o8l9iMfmt9DuP2zVHgLs' \
     -F 'file=' \
     -F 'request={"name":"chicken","price":8000,"discountedPrice":7000};type=application/json'</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_product_업데이트_patch_http_request"><a class="link" href="#_product_업데이트_patch_http_request">Example Request</a></h4>
+<h4 id="_product_업데이트_post_http_request"><a class="link" href="#_product_업데이트_post_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/2/products/6 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDUsImV4cCI6MTY0NDIyNzUwNX0.O3p4CP4aJRY85KNY3u9nP0bZredT6q8nJOte2b1I45s
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzcsImV4cCI6MTY0NDI1MjYzN30.g7kjnznQkD_ziSdytrMZyJ1o8l9iMfmt9DuP2zVHgLs
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3443,7 +3443,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect3">
-<h4 id="_product_업데이트_patch_http_response"><a class="link" href="#_product_업데이트_patch_http_response">Example Response</a></h4>
+<h4 id="_product_업데이트_post_http_response"><a class="link" href="#_product_업데이트_post_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -3474,7 +3474,7 @@ Content-Length: 184
 </div>
 </div>
 <div class="sect3">
-<h4 id="_product_업데이트_patch_response_body"><a class="link" href="#_product_업데이트_patch_response_body">Response body</a></h4>
+<h4 id="_product_업데이트_post_response_body"><a class="link" href="#_product_업데이트_post_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
@@ -3492,7 +3492,7 @@ Content-Length: 184
 </div>
 </div>
 <div class="sect3">
-<h4 id="_product_업데이트_patch_response_fields"><a class="link" href="#_product_업데이트_patch_response_fields">Response fields</a></h4>
+<h4 id="_product_업데이트_post_response_fields"><a class="link" href="#_product_업데이트_post_response_fields">Response fields</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3559,7 +3559,7 @@ Content-Length: 184
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/9/products/42' -i -X PATCH \
     -H 'Content-Type: application/json;charset=UTF-8' \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDcsImV4cCI6MTY0NDIyNzUwN30.Q5Ph5MhCFm7q2jmo1xIORDnUjVGh7n34IW5JJyuKH6c' \
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzksImV4cCI6MTY0NDI1MjYzOX0.aghtd9VmUbzS6CaS8E7c70Qfl9761OmV3m_rHRAal2U' \
     -H 'Accept: application/json' \
     -d '{
   "productsId" : [ "4", "2", "1", "3", "5" ]
@@ -3573,7 +3573,7 @@ Content-Length: 184
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/manager/shops/9/products/42 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDcsImV4cCI6MTY0NDIyNzUwN30.Q5Ph5MhCFm7q2jmo1xIORDnUjVGh7n34IW5JJyuKH6c
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzksImV4cCI6MTY0NDI1MjYzOX0.aghtd9VmUbzS6CaS8E7c70Qfl9761OmV3m_rHRAal2U
 Accept: application/json
 Content-Length: 50
 Host: localhost:8080
@@ -3649,7 +3649,7 @@ Content-Length: 44
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/manager/shops/5/products/21' -i -X DELETE \
-    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDYsImV4cCI6MTY0NDIyNzUwNn0.pZxhY7i2uJcWPcSrlJMjTbrL66P_W1shxvCJ8aSrOCc'</code></pre>
+    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzgsImV4cCI6MTY0NDI1MjYzOH0.3oREgveU_Xiwbv9pnreaffoa4OYFUXIdJMOlP8kIztA'</code></pre>
 </div>
 </div>
 </div>
@@ -3658,7 +3658,7 @@ Content-Length: 44
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/5/products/21 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyMjM5MDYsImV4cCI6MTY0NDIyNzUwNn0.pZxhY7i2uJcWPcSrlJMjTbrL66P_W1shxvCJ8aSrOCc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQyNDkwMzgsImV4cCI6MTY0NDI1MjYzOH0.3oREgveU_Xiwbv9pnreaffoa4OYFUXIdJMOlP8kIztA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4175,7 +4175,7 @@ Content-Length: 894
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-02-07 16:42:58 +0900
+Last updated 2022-02-08 00:49:45 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

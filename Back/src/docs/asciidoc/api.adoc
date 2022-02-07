@@ -125,7 +125,7 @@ operation::products/findAll[snippets='curl-request,http-request,http-response,re
 operation::products/find[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 === PRODUCT 추가 [POST]
-operation::products/add[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/add[snippets='pat curl-request,http-request,http-response,response-body,response-fields']
 
 === PRODUCT 업데이트 [POST]
 operation::products/update[snippets='curl-request,http-request,http-response,response-body,response-fields']

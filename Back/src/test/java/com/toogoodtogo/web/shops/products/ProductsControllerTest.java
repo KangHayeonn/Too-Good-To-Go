@@ -1,14 +1,9 @@
 package com.toogoodtogo.web.shops.products;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.AmazonS3MockConfig;
-import com.toogoodtogo.application.security.SignService;
-import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.User;
-import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.ControllerTest;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductPriorityRequest;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
@@ -17,24 +12,13 @@ import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -46,51 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@SpringBootTest
-@AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@Import(AmazonS3MockConfig.class)
-class ProductsControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ShopRepository shopRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private DisplayProductRepository displayProductRepository;
-
-    @Autowired
-    private ChoiceProductRepository choiceProductRepository;
-
-    @Autowired
-    private SignService signService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
+class ProductsControllerTest extends ControllerTest {
     private static Long shopId;
-
-    @Autowired
     private static Long productId;
-
-    @Autowired
     private static User manager;
-
     private TokenDto token;
 
     @BeforeEach

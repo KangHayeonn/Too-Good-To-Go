@@ -83,6 +83,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse requestBodyWrongException(HttpServletRequest request, HttpMessageNotReadableException e) {
+        log.info(e.getMessage());
         return new ErrorResponse("Request Body is wrong", getMessage("requestBodyWrong.msg"));
     }
 

@@ -196,7 +196,7 @@ class ProductsControllerTest {
     void addProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddProductRequest.builder()
-                .name("미역국")
+                .name("food")
                 .price(9000L)
                 .discountedPrice(8000L)
                 .build());
@@ -233,14 +233,14 @@ class ProductsControllerTest {
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("미역국"));
+                .andExpect(jsonPath("$.data.name").value("food"));
     }
 
     @Test
     public void updateProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateProductRequest.builder()
-                .name("북어국")
+                .name("chicken")
                 .price(8000L)
                 .discountedPrice(7000L)
                 .build());
@@ -277,7 +277,7 @@ class ProductsControllerTest {
                         )
                 ))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name").value("북어국"))
+                .andExpect(jsonPath("$.data.name").value("chicken"))
                 .andExpect(jsonPath("$.data.price").value(8000L))
                 .andExpect(jsonPath("$.data.discountedPrice").value(7000L));
     }

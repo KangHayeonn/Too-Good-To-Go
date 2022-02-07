@@ -45,12 +45,9 @@ const Register: React.FC = () => {
 		) {
 			setValidation("");
 		}
-		console.log("2", formValue);
 	}, [formValue]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log("1", formValue);
-
 		setFormValue({
 			...formValue,
 			[event.target.name]: event.target.value,
@@ -72,7 +69,6 @@ const Register: React.FC = () => {
 		}
 		try {
 			const response = await API.postRegisterData(stringifiedFormValue);
-			console.log("response: ", response);
 			history.push({ pathname: "/" });
 		} catch (error) {
 			console.log("catch block: ", error);

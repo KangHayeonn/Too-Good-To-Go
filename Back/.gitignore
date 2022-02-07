@@ -41,5 +41,3 @@ out/
 /src/main/resources/application-aws.yml
 /src/main/resources/application-credentials.yml
 /src/main/resources/application-secret.yml
-/src/main/resources/static/docs/api.html
-/BOOT-INF/classes/static/docs/api.html

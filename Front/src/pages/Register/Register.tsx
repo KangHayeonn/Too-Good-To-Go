@@ -67,7 +67,7 @@ const Register: React.FC = () => {
 			return;
 		}
 		try {
-			const response = await API.postRegisterData(stringifiedFormValue);
+			await API.postRegisterData(stringifiedFormValue);
 			history.push({ pathname: "/" });
 		} catch (error) {
 			console.log("catch block: ", error);

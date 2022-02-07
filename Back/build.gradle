@@ -82,7 +82,8 @@ asciidoctor { //asciidoctor task 설정
 bootJar {
     dependsOn asciidoctor //jar 생성전에 asciidoctor 테스크가 실행되도록 설정, gradle build 시 asciidoctor → bootJar 순으로 수행
     // jar static 폴더에 rest docs가 HTML로 생성되면 넣어준다., gradle build 시 ./build/asciidoc/html5/ 에 html 파일 생성
-    from("build/docs/asciidoc") {
+    copy {
+        from "${asciidoctor.outputDir}"
         into 'BOOT-INF/classes/static/docs'
     }
 }

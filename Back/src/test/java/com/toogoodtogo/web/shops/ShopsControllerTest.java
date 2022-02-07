@@ -7,6 +7,9 @@ import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.product.ChoiceProduct;
+import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
+import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
@@ -73,23 +76,26 @@ class ShopsControllerTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
+    private DisplayProductRepository displayProductRepository;
+
+    @Autowired
+    private ChoiceProductRepository choiceProductRepository;
+
+    @Autowired
     private SignService signService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
     private static int managerId;
-
-    @Autowired
     private static int shopId;
-
     private User manager;
-
     private TokenDto token;
 
     @BeforeEach
     public void setUp() {
+        displayProductRepository.deleteAllInBatch();
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
@@ -118,6 +124,8 @@ class ShopsControllerTest {
     @AfterEach
     public void setDown() {
         signService.logout(manager.getId());
+        displayProductRepository.deleteAllInBatch();
+        choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
@@ -178,8 +186,8 @@ class ShopsControllerTest {
     void addShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(AddShopRequest.builder()
-                .name("shop4").category(Collections.singletonList("한식")).phone("01044444444")
-                .address("서울특별시 양천구 목동 4번지").open("10:00").close("22:00").build());
+                .name("shop4").category(new ArrayList<>(Arrays.asList("category"))).phone("01044444444")
+                .address("address").open("10:00").close("22:00").build());
         MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
@@ -198,7 +206,7 @@ class ShopsControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("shop/add",
+                .andDo(document("shops/add",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -223,7 +231,7 @@ class ShopsControllerTest {
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
                 .name("shop3")
                 .image("test3")
-                .category(Collections.singletonList("일식"))
+                .category(new ArrayList<>(Arrays.asList("category2")))
                 .phone("01087654321")
                 .address("test3")
                 .open("12:00")

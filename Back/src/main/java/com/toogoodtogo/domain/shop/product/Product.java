@@ -26,17 +26,11 @@ public class Product {
     @Column(nullable = false)
     private Long discountedPrice;
     private String image;
-    @Column(nullable = false)
-    private Long priority;
 
     public void update(String name, Long price, Long discountedPrice, String image) {
         this.name = name;
         this.price = price;
         this.discountedPrice = discountedPrice;
         this.image = image;
-    }
-
-    public void updatePriority(Long priority) {
-        this.priority = priority;
     }
 }

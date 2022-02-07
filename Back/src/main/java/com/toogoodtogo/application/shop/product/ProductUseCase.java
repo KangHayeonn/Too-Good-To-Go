@@ -11,9 +11,10 @@ public interface ProductUseCase {
     List<ProductDto> findProducts(Long shopId);
     ProductDto addProduct(Long managerId, Long shopId, MultipartFile file, AddProductRequest request) throws IOException;
     ProductDto updateProduct(Long managerId, Long shopId, Long productId, MultipartFile file, UpdateProductRequest request) throws IOException;
-    List<ProductDto> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request);
+    List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request);
     String deleteProduct(Long managerId, Long shopId, Long productId);
-    List<ProductTmp> recommendProducts();
+    ProductDto choiceProduct(Long managerId, Long shopId, Long productId);
+    List<ProductDto> recommendProducts();
     List<ProductDto> productsPerCategory(String category, String method);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);
 }

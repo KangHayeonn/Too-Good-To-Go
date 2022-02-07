@@ -110,7 +110,7 @@ operation::shops/find[snippets='curl-request,http-request,http-response,response
 === SHOP 추가 [POST]
 operation::shops/add[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
-=== SHOP 업데이트 [PATCH]
+=== SHOP 업데이트 [POST]
 operation::shops/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
 === SHOP 삭제 [DELETE]
@@ -130,5 +130,17 @@ operation::products/add[snippets='curl-request,http-request,http-response,respon
 === PRODUCT 업데이트 [PATCH]
 operation::products/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
 
+=== PRODUCT 우선순위 업데이트 [PATCH]
+operation::products/updatePriority[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
 === PRODUCT 삭제 [DELETE]
 operation::products/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== PRODUCT 추천 조회 [GET]
+operation::products/recommend[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== PRODUCT 카테고리 조회 [GET]
+operation::products/category[snippets='curl-request,http-request,http-response,response-body,response-fields']
+
+=== PRODUCT Shop 별 우선순위 조회 [GET]
+operation::products/shop[snippets='curl-request,http-request,http-response,response-body,response-fields']

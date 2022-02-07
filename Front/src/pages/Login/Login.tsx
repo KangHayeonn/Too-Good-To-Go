@@ -1,41 +1,42 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Link, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
-import { changeIdItem, changePwItem, initializeForm } from "../../modules/auth";
-import { RootState } from "../../app/store";
+import { initializeForm } from "../../features/auth/authSlice";
 import { setAccessToken } from "../../helpers/tokenControl";
 import { userAPI } from "../../lib/api/userAPI";
-import { tempSetEmail } from "../../modules/user";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 
 const Login: React.FC = () => {
+	const [inputId, setInputId] = useState<string>("");
+	const [inputPw, setInputPw] = useState<string>("");
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const history = useHistory();
 
 	const dispatch = useDispatch();
 
 	// 최적화를 위해선 각각의 원소가 변경되었을 경우만 리렌더링 하도록 설정해야 함
+	/*
 	const user = useSelector((state: RootState) => ({
 		inputId: state.auth.email,
 		inputPw: state.auth.password,
 	}));
+	*/
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		dispatch(changeIdItem(value));
+		setInputId(value);
 	};
 
 	const handleInputPw = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		dispatch(changePwItem(value));
+		setInputPw(value);
 	};
 
 	const showErrorModal = (errorMsg: string) => {
@@ -51,28 +52,25 @@ const Login: React.FC = () => {
 
 	const onClickLogin = () => {
 		console.log("click login");
-		console.log("ID : ", user.inputId);
-		console.log("Pw : ", user.inputPw);
+		console.log("ID : ", inputId);
+		console.log("Pw : ", inputPw);
 
 		// hook call 에러 뜸 (handler 안에 useEffect 사용할 시)
 		axios
 			.post(`${LOGIN_URL}/login`, {
-				email: user.inputId,
-				password: user.inputPw,
+				email: inputId,
+				password: inputPw,
 			})
 			.then((res) => {
-				console.log(res);
 				const { accessToken } = res.data.data;
 				axios.defaults.headers.common.Authorization = accessToken
 					? `${accessToken}`
 					: "";
-				console.log(accessToken);
 
 				// localStorage에 저장
 				try {
 					setAccessToken(accessToken);
-					dispatch(tempSetEmail(user.inputId)); // 이 부분이 있어야 로그아웃 버튼으로 바로 변경됨 (헤더부분)
-					userAPI();
+					userAPI(dispatch);
 				} catch (e) {
 					console.log("Login login is not working");
 				}
@@ -98,7 +96,6 @@ const Login: React.FC = () => {
 						"로그인 형식 오류 (ID : 이메일, PW : 8자 이상)"
 					);
 				}
-				dispatch(initializeForm());
 			});
 	};
 
@@ -111,7 +108,7 @@ const Login: React.FC = () => {
 						type="text"
 						name="input_id"
 						id="login_id"
-						value={user.inputId}
+						value={inputId}
 						onChange={handleInputId}
 						placeholder="아이디를 입력하세요."
 					/>
@@ -120,7 +117,7 @@ const Login: React.FC = () => {
 						type="password"
 						name="input_pw"
 						id="login_pw"
-						value={user.inputPw}
+						value={inputPw}
 						onChange={handleInputPw}
 						placeholder="비밀번호를 입력하세요."
 					/>

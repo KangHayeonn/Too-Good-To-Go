@@ -127,7 +127,7 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public String deleteProduct(Long managerId, Long shopId, Long productId) {
+    public void deleteProduct(Long managerId, Long shopId, Long productId) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
@@ -136,7 +136,6 @@ public class ProductService implements ProductUseCase {
 
         choiceProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
-        return "success";
     }
 
     @Override

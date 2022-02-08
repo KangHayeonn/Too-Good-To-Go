@@ -86,10 +86,9 @@ public class SignService {
     }
 
     @Transactional
-    public String logout(Long userId) {
+    public void logout(Long userId) {
         // 이미 로그아웃 되어서 해당 유저의 아이디를 갖는 refresh token 이 없으면 에러
         RefreshToken refreshToken = tokenRepository.findByUserId(userId).orElseThrow(CNoLoginException::new);
         tokenRepository.delete(refreshToken);
-        return "success";
     }
 }

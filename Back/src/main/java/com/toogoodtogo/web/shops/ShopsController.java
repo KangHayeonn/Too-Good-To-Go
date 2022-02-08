@@ -9,6 +9,7 @@ import com.toogoodtogo.web.shops.dto.AddShopRequest;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,16 +27,19 @@ public class ShopsController {
     private final ShopUseCase shopUseCase;
 
     @GetMapping("/shops")
-    public ApiResponse<ShopDto> findAllShops() {
-        return new ApiResponse(shopUseCase.findAllShops());
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ShopDto>> findAllShops() {
+        return new ApiResponse<>(shopUseCase.findAllShops());
     }
 
     @GetMapping("/manager/shops")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ShopDto>> findShops(@CurrentUser User user) {
         return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
     @PostMapping("/manager/shops")
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ShopDto> addShop(
             @CurrentUser User user,
             @RequestPart(required = false) MultipartFile file,
@@ -45,6 +49,7 @@ public class ShopsController {
     
 //    @PatchMapping("/manager/shop/{shopId}")
     @PostMapping("/manager/shops/{shopId}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ShopDto> updateShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -54,9 +59,10 @@ public class ShopsController {
     }
 
     @DeleteMapping("/manager/shops/{shopId}")
-    public ApiResponse<String> deleteShop
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShop
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {
-        return new ApiResponse<>(shopUseCase.deleteShop(user.getId(), shopId));
+        shopUseCase.deleteShop(user.getId(), shopId);
     }
 }

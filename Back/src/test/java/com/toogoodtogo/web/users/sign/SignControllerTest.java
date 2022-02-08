@@ -16,12 +16,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,29 +61,29 @@ class SignControllerTest extends ControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/login")
-                        .content(object)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
         //then
         actions
                 .andDo(print())
-                .andDo(document("login/"+ role + "/success",
+                .andDo(document("join/login/"+ role + "/success",
                         preprocessRequest(
 //                                modifyUris().scheme("https").host("www.tgtg.com").removePort(),
                                 prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description("login email"),
-                                fieldWithPath("password").description("login password")
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("password").description("비밀번호")
                         ),
                         responseFields(
                                 fieldWithPath("data.grantType").description("grantType"),
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
-                                fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
+                                fieldWithPath("data.accessTokenExpireDate").description("accessToken 만료시간")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @ParameterizedTest
@@ -95,22 +96,22 @@ class SignControllerTest extends ControllerTest {
                 .build());
         //when
         ResultActions actions = mockMvc.perform(post("/api/login")
-                        .content(object)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
         //then
         actions
                 .andDo(print())
-                .andDo(document("login/" + role + "/fail",
+                .andDo(document("join/login/" + role + "/fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description("login email"),
-                                fieldWithPath("password").description("login password")
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("password").description("비밀번호")
                         ),
                         responseFields(
-                                fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("reason").description("에러 이유"),
+                                fieldWithPath("message").description("에러 메시지")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -131,28 +132,28 @@ class SignControllerTest extends ControllerTest {
 
         //then
         ResultActions actions = mockMvc.perform(post("/api/signup")
-                        .content(object)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON));
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
 
         //when
         actions
                 .andDo(print())
-                .andDo(document("signup/" + role + "/success",
+                .andDo(document("join/signup/" + role + "/success",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + " email"),
-                                fieldWithPath("password").description(role + " password"),
-                                fieldWithPath("name").description(role + " name"),
-                                fieldWithPath("phone").description(role + " phone"),
-                                fieldWithPath("role").description(role + " role")
+                                fieldWithPath("email").description(role + " 이메일"),
+                                fieldWithPath("password").description(role + " 비밀번호"),
+                                fieldWithPath("name").description(role + " 이름"),
+                                fieldWithPath("phone").description(role + " 전화번호"),
+                                fieldWithPath("role").description(role + " 역할")
                         ),
                         responseFields(
-                                fieldWithPath("data.userId").description("user id")
+                                fieldWithPath("data.userId").description("유저 고유 번호")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @ParameterizedTest
@@ -169,26 +170,26 @@ class SignControllerTest extends ControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(object));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(object));
 
         //then
         actions
                 .andDo(print())
-                .andDo(document("signup/" + role + "/fail",
+                .andDo(document("join/signup/" + role + "/fail",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").description(role + " email"),
-                                fieldWithPath("password").description(role + " password"),
-                                fieldWithPath("name").description(role + " name"),
-                                fieldWithPath("phone").description(role + " phone"),
-                                fieldWithPath("role").description(role + " role")
+                                fieldWithPath("email").description(role + " 이메일"),
+                                fieldWithPath("password").description(role + " 비밀번호"),
+                                fieldWithPath("name").description(role + " 이름"),
+                                fieldWithPath("phone").description(role + " 전화번호"),
+                                fieldWithPath("role").description(role + " 역할")
                         ),
                         responseFields(
-                                fieldWithPath("reason").description("reason"),
-                                fieldWithPath("message").description("message")
+                                fieldWithPath("reason").description("에러 이유"),
+                                fieldWithPath("message").description("에러 메시지")
                         )
                 ))
                 .andExpect(status().is4xxClientError());
@@ -213,9 +214,10 @@ class SignControllerTest extends ControllerTest {
         //then
         actions
                 .andDo(print())
-                .andDo(document("reissue",
+                .andDo(document("join/reissue",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("유저의 Access Token")),
                         requestFields(
                                 fieldWithPath("accessToken").description("accessToken"),
                                 fieldWithPath("refreshToken").description("refreshToken")
@@ -224,10 +226,10 @@ class SignControllerTest extends ControllerTest {
                                 fieldWithPath("data.grantType").description("grantType"),
                                 fieldWithPath("data.accessToken").description("accessToken"),
                                 fieldWithPath("data.refreshToken").description("refreshToken"),
-                                fieldWithPath("data.accessTokenExpireDate").description("accessTokenExpireDate")
+                                fieldWithPath("data.accessTokenExpireDate").description("accessToken 만료시간")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -235,20 +237,18 @@ class SignControllerTest extends ControllerTest {
         //given
         TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
 
-        ResultActions actions = mockMvc.perform(get("/api/logout")
+        ResultActions actions = mockMvc.perform(delete("/api/logout")
                 .header("Authorization", "Bearer " + userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         //then
         actions
                 .andDo(print())
-                .andDo(document("logout",
+                .andDo(document("join/logout",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("success message")
-                        )
+                        requestHeaders(headerWithName("Authorization").description("유저의 Access Token"))
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

@@ -47,100 +47,98 @@ endif::[]
 |===
 |환경|Host
 |LOCAL|http://localhost:8080
+|PROD|http://54.180.134.20
 |===
 
 == APIs
-URL은 `/api/`로 시작한다.
+모든 URL 은 `/api/` 로 시작한다.
 
-== Sign Up API
+== Join API
+회원가입, 로그인, 로그아웃, 토큰 재발급 API
 
 === User 회원가입 성공 [POST]
-operation::signup/user/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/signup/user/success[snippets='http-request,request-fields,http-response,response-fields']
 
 === User 회원가입 실패 [POST]
-operation::signup/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/signup/user/fail[snippets='http-request,request-fields,http-response,response-fields']
 
 === MANAGER 회원가입 성공 [POST]
-operation::signup/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/signup/manager/success[snippets='http-request,request-fields,http-response,response-fields']
 
 === MANAGER 회원가입 실패 [POST]
-operation::signup/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-== Login Api
+operation::join/signup/manager/fail[snippets='http-request,request-fields,http-response,response-fields']
 
 === USER 로그인 성공 [POST]
-operation::login/user/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/login/user/success[snippets='http-request,request-fields,http-response,response-fields']
 
 === USER 로그인 실패 [POST]
-operation::login/user/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/login/user/fail[snippets='http-request,request-fields,http-response,response-fields']
 
 === MANAGER 로그인 성공 [POST]
-operation::login/manager/success[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/login/manager/success[snippets='http-request,request-fields,http-response,response-fields']
 
 === MANAGER 로그인 실패 [POST]
-operation::login/manager/fail[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/login/manager/fail[snippets='http-request,request-fields,http-response,response-fields']
 
-== Logout Api
-
-=== User 로그아웃 [POST]
-operation::logout[snippets='curl-request,http-request,http-response,response-body,response-fields']
-
-
-== 토큰 Api
+=== User 로그아웃 [DELETE]
+operation::join/logout[snippets='http-request,request-headers,http-response']
 
 === 토큰 재발급 [POST]
-operation::reissue[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::join/reissue[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 == User Api
 
 === USER 조회 [GET]
-operation::users/me[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::users/me[snippets='http-request,request-headers,http-response,response-fields']
 
 === USER 업데이트 [PATCH]
-operation::users/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::users/update[snippets='http-request,request-headers,http-response,response-fields']
 
 == Shop Api
 
 === SHOP 전체 조회 [GET]
-operation::shops/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::shops/findAll[snippets='http-request,http-response,response-fields']
 
 === SHOP 조회 [GET]
-operation::shops/find[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::shops/find[snippets='http-request,http-response,response-fields']
 
 === SHOP 추가 [POST]
-operation::shops/add[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::shops/add[snippets='http-request,request-headers,http-response,response-fields']
 
 === SHOP 업데이트 [POST]
-operation::shops/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::shops/update[snippets='http-request,request-headers,http-response,response-fields']
 
 === SHOP 삭제 [DELETE]
-operation::shops/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::shops/delete[snippets='http-request,request-headers,http-response']
 
 == Product Api
 
 === PRODUCT 전체 조회 [GET]
-operation::products/findAll[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/findAll[snippets='http-request,http-response,response-fields']
 
 === PRODUCT 조회 [GET]
-operation::products/find[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/find[snippets='http-request,http-response,response-fields']
 
 === PRODUCT 추가 [POST]
-operation::products/add[snippets='pat curl-request,http-request,http-response,response-body,response-fields']
+operation::products/add[snippets='http-request,request-headers,http-response,response-fields']
 
 === PRODUCT 업데이트 [POST]
-operation::products/update[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/update[snippets='http-request,request-headers,http-response,response-fields']
 
 === PRODUCT 우선순위 업데이트 [PATCH]
-operation::products/updatePriority[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/updatePriority[snippets='http-request,request-headers,http-response,response-fields']
 
 === PRODUCT 삭제 [DELETE]
-operation::products/delete[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/delete[snippets='http-request,request-headers,http-response']
+
+=== PRODUCT 추천 [GET]
+operation::products/choice[snippets='http-request,request-headers,http-response,response-fields']
 
 === PRODUCT 추천 조회 [GET]
-operation::products/recommend[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/recommend[snippets='http-request,http-response,response-fields']
 
 === PRODUCT 카테고리 조회 [GET]
-operation::products/category[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/category[snippets='http-request,http-response,response-fields']
 
 === PRODUCT Shop 별 우선순위 조회 [GET]
-operation::products/shop[snippets='curl-request,http-request,http-response,response-body,response-fields']
+operation::products/shop[snippets='http-request,http-response,response-fields']

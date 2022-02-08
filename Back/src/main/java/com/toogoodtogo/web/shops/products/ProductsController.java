@@ -9,7 +9,6 @@ import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,5 +106,11 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findProductsPerShopSortByPriority(@PathVariable Long shopId) {
         return new ApiResponse<>(productUseCase.findProductsPerShopSortByPriority(shopId));
+    }
+
+    @GetMapping("/search/products/{keyword}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ProductDto>> findProductsBySearch(@PathVariable String keyword) {
+        return new ApiResponse<>(productUseCase.findProductsBySearch(keyword));
     }
 }

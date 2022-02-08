@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 import java.util.List;
@@ -64,5 +63,11 @@ public class ShopsController {
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {
         shopUseCase.deleteShop(user.getId(), shopId);
+    }
+
+    @GetMapping("/search/shops/{keyword}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ShopDto>> findProductsBySearch(@PathVariable String keyword) {
+        return new ApiResponse<>(shopUseCase.findShopsBySearch(keyword));
     }
 }

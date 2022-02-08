@@ -40,7 +40,7 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> findAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
+                .map(ProductDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> findProducts(Long shopId) {
         return productRepository.findAllByShopId(shopId)
                 .stream()
-                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
+                .map(ProductDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -190,5 +190,13 @@ public class ProductService implements ProductUseCase {
             });
         });
         return display;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDto> findProductsBySearch(String keyword) {
+        // 검색량 저장하는 기능 추가...?
+        return productRepository.findByNameContaining(keyword).stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
     }
 }

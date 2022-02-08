@@ -15,6 +15,7 @@ import com.toogoodtogo.domain.user.UserRepository;
 import com.toogoodtogo.web.shops.dto.AddShopRequest;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
+import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,5 +129,13 @@ public class ShopService implements ShopUseCase {
         displayProductRepository.deleteByShopId(deleteShop.getId());
         choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ShopDto> findShopsBySearch(String keyword) {
+        // 검색량 저장하는 기능 추가...?
+        return shopRepository.findByNameContaining(keyword).stream()
+                .map(ShopDto::new)
+                .collect(Collectors.toList());
     }
 }

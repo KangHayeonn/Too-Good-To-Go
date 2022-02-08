@@ -3,6 +3,7 @@ package com.toogoodtogo.application.shop;
 import com.toogoodtogo.web.shops.dto.AddShopRequest;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
+import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,4 +15,5 @@ public interface ShopUseCase {
     ShopDto addShop(Long managerId, MultipartFile file, AddShopRequest request) throws IOException;
     ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException;
     void deleteShop(Long managerId, Long shopId);
+    List<ShopDto> findShopsBySearch(String keyword);
 }

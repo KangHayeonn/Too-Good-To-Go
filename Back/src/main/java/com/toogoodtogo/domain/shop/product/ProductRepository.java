@@ -26,4 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select count(p) from Product p where p.shop.id = ?1")
     Long countProductByShopId(Long shopId);
+
+    List<Product> findByNameContaining(String keyword);
 }

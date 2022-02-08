@@ -1,14 +1,9 @@
 package com.toogoodtogo.web.shops.products;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.AmazonS3MockConfig;
-import com.toogoodtogo.application.security.SignService;
-import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.User;
-import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.ControllerTest;
 import com.toogoodtogo.web.shops.products.dto.AddProductRequest;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductPriorityRequest;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
@@ -17,80 +12,33 @@ import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@SpringBootTest
-@AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@Import(AmazonS3MockConfig.class)
-class ProductsControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ShopRepository shopRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private DisplayProductRepository displayProductRepository;
-
-    @Autowired
-    private ChoiceProductRepository choiceProductRepository;
-
-    @Autowired
-    private SignService signService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
+class ProductsControllerTest extends ControllerTest {
     private static Long shopId;
-
-    @Autowired
     private static Long productId;
-
-    @Autowired
     private static User manager;
-
     private TokenDto token;
 
     @BeforeEach
@@ -157,14 +105,13 @@ class ProductsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.[].shopId").description("product shop id"),
-                                fieldWithPath("data.[].shopName").description("product shop name"),
-                                fieldWithPath("data.[].id").description("product id"),
-                                fieldWithPath("data.[].name").description("product name"),
-                                fieldWithPath("data.[].price").description("product image"),
-                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.[].image").description("product image")
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -173,20 +120,22 @@ class ProductsControllerTest {
     @Test
     void findProducts() throws Exception {
         //then
-        mockMvc.perform(get("/api/shops/{shopId}/products/all", shopId))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/shops/{shopId}/products/all", shopId))
                 .andDo(print())
                 .andDo(document("products/find",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.[].shopId").description("product shop id"),
-                                fieldWithPath("data.[].shopName").description("product shop name"),
-                                fieldWithPath("data.[].id").description("product id"),
-                                fieldWithPath("data.[].name").description("product name"),
-                                fieldWithPath("data.[].price").description("product image"),
-                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.[].image").description("product image")
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -209,7 +158,8 @@ class ProductsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}/products", shopId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+                .fileUpload("/api/manager/shops/{shopId}/products", shopId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -221,18 +171,21 @@ class ProductsControllerTest {
                 .andDo(document("products/add",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.shopId").description("product shop id"),
-                                fieldWithPath("data.shopName").description("product shop name"),
-                                fieldWithPath("data.id").description("product id"),
-                                fieldWithPath("data.name").description("product name"),
-                                fieldWithPath("data.price").description("product price"),
-                                fieldWithPath("data.discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.image").description("product image")
+                                fieldWithPath("data.shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.id").description("상품 고유 번호"),
+                                fieldWithPath("data.name").description("상품 이름"),
+                                fieldWithPath("data.price").description("상품 가격"),
+                                fieldWithPath("data.discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.image").description("상품 이미지")
                         )
                 ))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.name").value("food"));
     }
 
@@ -253,7 +206,8 @@ class ProductsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+                .fileUpload("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -265,15 +219,19 @@ class ProductsControllerTest {
                 .andDo(document("products/update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호"),
+                                parameterWithName("productId").description("상품 고유 번호")
+                        ),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.shopId").description("product shop id"),
-                                fieldWithPath("data.shopName").description("product shop name"),
-                                fieldWithPath("data.id").description("product id"),
-                                fieldWithPath("data.name").description("product name"),
-                                fieldWithPath("data.price").description("product price"),
-                                fieldWithPath("data.discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.image").description("product image")
+                                fieldWithPath("data.shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.id").description("상품 고유 번호"),
+                                fieldWithPath("data.name").description("상품 이름"),
+                                fieldWithPath("data.price").description("상품 가격"),
+                                fieldWithPath("data.discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk())
@@ -290,7 +248,8 @@ class ProductsControllerTest {
                 .build());
 
         //when
-        ResultActions actions = mockMvc.perform(patch("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+                .patch("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -302,8 +261,13 @@ class ProductsControllerTest {
                 .andDo(document("products/updatePriority",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호"),
+                                parameterWithName("productId").description("상품 고유 번호")
+                        ),
                         responseFields(
-                                fieldWithPath("data").description("product data")
+                                fieldWithPath("data").description("가게의 상품 우선순위")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -312,17 +276,46 @@ class ProductsControllerTest {
     @Test
     public void deleteProduct() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("products/delete",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("success message")
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호"),
+                                parameterWithName("productId").description("상품 고유 번호")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void choiceProduct() throws Exception {
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
+                .header("Authorization", "Bearer " + token.getAccessToken()))
+                .andDo(print())
+                .andDo(document("products/choice",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호"),
+                                parameterWithName("productId").description("상품 고유 번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.id").description("상품 고유 번호"),
+                                fieldWithPath("data.name").description("상품 이름"),
+                                fieldWithPath("data.price").description("상품 가격"),
+                                fieldWithPath("data.discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.image").description("상품 이미지")
+                        )
+                ))
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -334,14 +327,13 @@ class ProductsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.[].shopId").description("product shop id"),
-                                fieldWithPath("data.[].shopName").description("product shop name"),
-                                fieldWithPath("data.[].id").description("product id"),
-                                fieldWithPath("data.[].name").description("product name"),
-                                fieldWithPath("data.[].price").description("product image"),
-                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.[].image").description("product image")
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -352,20 +344,22 @@ class ProductsControllerTest {
         String category = "한식";
         String method = "/rate";
         //then
-        mockMvc.perform(get("/api/category/{category}/products", category, method))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/category/{category}/products", category, method))
                 .andDo(print())
                 .andDo(document("products/category",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("category").description("가게 카테고리")
+                        ),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.[].shopId").description("product shop id"),
-                                fieldWithPath("data.[].shopName").description("product shop name"),
-                                fieldWithPath("data.[].id").description("product id"),
-                                fieldWithPath("data.[].name").description("product name"),
-                                fieldWithPath("data.[].price").description("product image"),
-                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.[].image").description("product image")
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -374,20 +368,19 @@ class ProductsControllerTest {
     @Test
     void findProductsPerShopSortByCategory() throws Exception {
         //then
-        mockMvc.perform(get("/api/shops/{shopId}/products", shopId))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/shops/{shopId}/products", shopId))
                 .andDo(print())
                 .andDo(document("products/shop",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("product data"),
-                                fieldWithPath("data.[].shopId").description("product shop id"),
-                                fieldWithPath("data.[].shopName").description("product shop name"),
-                                fieldWithPath("data.[].id").description("product id"),
-                                fieldWithPath("data.[].name").description("product name"),
-                                fieldWithPath("data.[].price").description("product image"),
-                                fieldWithPath("data.[].discountedPrice").description("shop discountedPrice"),
-                                fieldWithPath("data.[].image").description("product image")
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
                         )
                 ))
                 .andExpect(status().isOk());

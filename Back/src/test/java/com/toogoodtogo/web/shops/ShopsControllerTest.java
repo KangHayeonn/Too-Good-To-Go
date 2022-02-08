@@ -1,18 +1,9 @@
 package com.toogoodtogo.web.shops;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toogoodtogo.AmazonS3MockConfig;
-import com.toogoodtogo.application.security.SignService;
-import com.toogoodtogo.domain.security.RefreshTokenRepository;
 import com.toogoodtogo.domain.shop.Hours;
 import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ChoiceProduct;
-import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
-import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
-import com.toogoodtogo.domain.user.UserRepository;
+import com.toogoodtogo.web.ControllerTest;
 import com.toogoodtogo.web.shops.dto.AddShopRequest;
 import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
@@ -20,20 +11,12 @@ import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockPart;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -42,51 +25,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@SpringBootTest
-@AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@Import(AmazonS3MockConfig.class)
-class ShopsControllerTest {
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ShopRepository shopRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private DisplayProductRepository displayProductRepository;
-
-    @Autowired
-    private ChoiceProductRepository choiceProductRepository;
-
-    @Autowired
-    private SignService signService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
+class ShopsControllerTest extends ControllerTest {
     private static int managerId;
     private static int shopId;
     private User manager;
@@ -140,16 +90,14 @@ class ShopsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("shop data"),
-                                fieldWithPath("data.[].id").description("shop id"),
-                                fieldWithPath("data.[].name").description("shop name"),
-                                fieldWithPath("data.[].image").description("shop image"),
-                                fieldWithPath("data.[].category").description("shop category"),
-                                fieldWithPath("data.[].phone").description("shop image"),
-                                fieldWithPath("data.[].address").description("shop address"),
-                                fieldWithPath("data.[].hours").description("shop hours"),
-                                fieldWithPath("data.[].hours.open").description("shop open hour"),
-                                fieldWithPath("data.[].hours.close").description("shop close hour")
+                                fieldWithPath("data.[].id").description("가게 고유번호"),
+                                fieldWithPath("data.[].name").description("가게 이름"),
+                                fieldWithPath("data.[].image").description("가게 이미지"),
+                                fieldWithPath("data.[].category").description("가게 카테고리"),
+                                fieldWithPath("data.[].phone").description("가게 전화번호"),
+                                fieldWithPath("data.[].address").description("가게 주소"),
+                                fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.[].hours.close").description("가게 마감시간")
                         )
                 ))
                 .andExpect(status().isOk())
@@ -167,16 +115,14 @@ class ShopsControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("data").description("shop data"),
-                                fieldWithPath("data.[].id").description("shop id"),
-                                fieldWithPath("data.[].name").description("shop name"),
-                                fieldWithPath("data.[].image").description("shop image"),
-                                fieldWithPath("data.[].category").description("shop category"),
-                                fieldWithPath("data.[].phone").description("shop image"),
-                                fieldWithPath("data.[].address").description("shop address"),
-                                fieldWithPath("data.[].hours").description("shop hours"),
-                                fieldWithPath("data.[].hours.open").description("shop open hour"),
-                                fieldWithPath("data.[].hours.close").description("shop close hour")
+                                fieldWithPath("data.[].id").description("가게 고유번호"),
+                                fieldWithPath("data.[].name").description("가게 이름"),
+                                fieldWithPath("data.[].image").description("가게 이미지"),
+                                fieldWithPath("data.[].category").description("가게 카테고리"),
+                                fieldWithPath("data.[].phone").description("가게 전화번호"),
+                                fieldWithPath("data.[].address").description("가게 주소"),
+                                fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.[].hours.close").description("가게 마감시간")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -209,20 +155,28 @@ class ShopsControllerTest {
                 .andDo(document("shops/add",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+//                        requestParts(partWithName("file").description("가게 이미지")),
+//                        requestPartFields("request",
+//                                fieldWithPath("name").description("가게 이름"),
+//                                fieldWithPath("category").description("가게 카테고리"),
+//                                fieldWithPath("phone").description("가게 전화번호"),
+//                                fieldWithPath("address").description("가게 주소"),
+//                                fieldWithPath("open").description("가게 오픈시간"),
+//                                fieldWithPath("close").description("가게 마감시간")
+//                        ),
                         responseFields(
-                                fieldWithPath("data").description("shop data"),
-                                fieldWithPath("data.id").description("shop id"),
-                                fieldWithPath("data.name").description("shop name"),
-                                fieldWithPath("data.image").description("shop image"),
-                                fieldWithPath("data.category").description("shop category"),
-                                fieldWithPath("data.phone").description("shop image"),
-                                fieldWithPath("data.address").description("shop address"),
-                                fieldWithPath("data.hours").description("shop hours"),
-                                fieldWithPath("data.hours.open").description("shop open hour"),
-                                fieldWithPath("data.hours.close").description("shop close hour")
+                                fieldWithPath("data.id").description("가게 고유번호"),
+                                fieldWithPath("data.name").description("가게 이름"),
+                                fieldWithPath("data.image").description("가게 이미지"),
+                                fieldWithPath("data.category").description("가게 카테고리"),
+                                fieldWithPath("data.phone").description("가게 전화번호"),
+                                fieldWithPath("data.address").description("가게 주소"),
+                                fieldWithPath("data.hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.hours.close").description("가게 마감시간")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -246,7 +200,7 @@ class ShopsControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(multipart("/api/manager/shops/{shopId}", shopId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.fileUpload("/api/manager/shops/{shopId}", shopId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -258,17 +212,28 @@ class ShopsControllerTest {
                 .andDo(document("shops/update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+//                        requestParts(partWithName("file").description("가게 이미지")),
+//                        requestPartFields("request",
+//                                fieldWithPath("name").description("가게 이름"),
+//                                fieldWithPath("category").description("가게 카테고리"),
+//                                fieldWithPath("phone").description("가게 전화번호"),
+//                                fieldWithPath("address").description("가게 주소"),
+//                                fieldWithPath("open").description("가게 오픈시간"),
+//                                fieldWithPath("close").description("가게 마감시간")
+//                        ),
                         responseFields(
-                                fieldWithPath("data").description("shop data"),
-                                fieldWithPath("data.id").description("shop id"),
-                                fieldWithPath("data.name").description("shop name"),
-                                fieldWithPath("data.image").description("shop image"),
-                                fieldWithPath("data.category").description("shop category"),
-                                fieldWithPath("data.phone").description("shop image"),
-                                fieldWithPath("data.address").description("shop address"),
-                                fieldWithPath("data.hours").description("shop hours"),
-                                fieldWithPath("data.hours.open").description("shop open hour"),
-                                fieldWithPath("data.hours.close").description("shop close hour")
+                                fieldWithPath("data.id").description("가게 고유번호"),
+                                fieldWithPath("data.name").description("가게 이름"),
+                                fieldWithPath("data.image").description("가게 이미지"),
+                                fieldWithPath("data.category").description("가게 카테고리"),
+                                fieldWithPath("data.phone").description("가게 전화번호"),
+                                fieldWithPath("data.address").description("가게 주소"),
+                                fieldWithPath("data.hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.hours.close").description("가게 마감시간")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -277,16 +242,17 @@ class ShopsControllerTest {
     @Test
     public void deleteShop() throws Exception {
         //then
-        mockMvc.perform(delete("/api/manager/shops/{shopId}", shopId)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/manager/shops/{shopId}", shopId)
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("shops/delete",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("data").description("success message")
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
                         )
                 ))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

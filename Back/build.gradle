@@ -1,10 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.5.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-//    id 'org.asciidoctor.convert' version '1.5.9.2' // Asciidoctor 플러그인 적용
     id 'org.asciidoctor.jvm.convert' version '3.2.0'
-//    id 'org.asciidoctor.jvm.pdf' version "3.2.0"
-//    id 'org.asciidoctor.jvm.gems' version "3.2.0"
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
 }
@@ -41,7 +38,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation "javax.xml.bind:jaxb-api"
     // 프로젝트에서 .adoc파일들을 읽어 build/generated-snippets 에 파일읽어 HTML문서로 export
-//    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     // Maven 과 같이 test Scope 에 대한 mockMvc 의존성을 추가 (WebClient, Assured 사용가능)
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -49,6 +45,7 @@ dependencies {
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
     // Json을 결과로 매핑하기 위한 의존성
     implementation 'com.google.code.gson:gson:2.8.8'
+    // p6spy
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
     //queryDSL
     implementation 'com.querydsl:querydsl-jpa'
@@ -70,14 +67,10 @@ test {
 }
 
 asciidoctor { //asciidoctor task 설정
-    configurations 'asciidoctorExt'
     inputs.dir snippetsDir // Snippets 디렉토리를 Input 디렉토리로 설정
+    configurations 'asciidoctorExt'
     dependsOn test // 문서 생성 전 테스트가 실행되도록 test가 실행되도록 설정, gradle build 시 test → asciidoctor 순으로 수행
 }
-
-//asciidoctor.doFirst {
-//    delete file('src/main/resources/static/docs') //기존에 존재하는 docs를 삭제
-//}
 
 //bootJar {
 //    dependsOn asciidoctor //jar 생성전에 asciidoctor 테스크가 실행되도록 설정, gradle build 시 asciidoctor → bootJar 순으로 수행
@@ -95,7 +88,6 @@ asciidoctor.doFirst {
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
 
-//    from file("build/asciidoc/html5/")
     from file("build/docs/asciidoc/")
     into file("src/main/resources/static/docs")
 }

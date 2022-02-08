@@ -112,7 +112,7 @@ public class ShopService implements ShopUseCase {
 
     @Override
     @Transactional
-    public String deleteShop(Long managerId, Long shopId) {
+    public void deleteShop(Long managerId, Long shopId) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if(!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         // 삭제할 shop
@@ -128,6 +128,5 @@ public class ShopService implements ShopUseCase {
         displayProductRepository.deleteByShopId(deleteShop.getId());
         choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
-        return "success";
     }
 }

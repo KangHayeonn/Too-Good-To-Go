@@ -8,6 +8,7 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +26,19 @@ public class ProductsController {
     private final ProductUseCase productUseCase;
 
     @GetMapping("/products/all")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findAllProducts() {
         return new ApiResponse<>(productUseCase.findAllProducts());
     }
 
     @GetMapping("/shops/{shopId}/products/all")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findProducts(@PathVariable @Positive Long shopId) {
         return new ApiResponse<>(productUseCase.findProducts(shopId));
     }
 
     @PostMapping("/manager/shops/{shopId}/products")
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ProductDto> addProduct
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -47,6 +51,7 @@ public class ProductsController {
 
 //    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
     @PostMapping("/manager/shops/{shopId}/products/{productId}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -59,6 +64,7 @@ public class ProductsController {
     }
 
     @PatchMapping("/manager/shops/{shopId}/products/{productId}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -68,14 +74,16 @@ public class ProductsController {
     }
 
     @DeleteMapping("/manager/shops/{shopId}/products/{productId}")
-    public ApiResponse<String> deleteProduct(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(
              @CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId,
              @PathVariable @Positive(message = "path 오류") Long productId) {
-        return new ApiResponse<>(productUseCase.deleteProduct(user.getId(), shopId, productId));
+        productUseCase.deleteProduct(user.getId(), shopId, productId);
     }
 
     @GetMapping("/manager/shops/{shopId}/products/{productId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ProductDto> choiceProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
@@ -83,22 +91,20 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.choiceProduct(user.getId(), shopId, productId));
     }
 
-//    @GetMapping("/shop/{shopId}/products/sort/{method}")
-//    public ApiResponse<List<ProductCard>> sortProductsPerShop(@PathVariable @Positive Long shopId, @PathVariable String method) {
-//        return new ApiResponse<>(productUseCase.sortProductsPerShop(shopId, method));
-//    }
-
     @GetMapping("/products/recommend")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> recommendProducts() {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 
     @GetMapping("/category/{category}/products{method}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> productsPerCategory(@PathVariable String category, @PathVariable String method) {
         return new ApiResponse<>(productUseCase.productsPerCategory(category, method));
     }
 
     @GetMapping("/shops/{shopId}/products")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findProductsPerShopSortByPriority(@PathVariable Long shopId) {
         return new ApiResponse<>(productUseCase.findProductsPerShopSortByPriority(shopId));
     }

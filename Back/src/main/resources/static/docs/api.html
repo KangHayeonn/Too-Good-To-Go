@@ -563,9 +563,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_shop_전체_조회_get_response_fields">Response fields</a></li>
 </ul>
 </li>
+<li><a href="#_매니저_소유_shop_전체_조회_get">매니저 소유 SHOP 전체 조회 [GET]</a>
+<ul class="sectlevel3">
+<li><a href="#_매니저_소유_shop_전체_조회_get_http_request">Example Request</a></li>
+<li><a href="#_매니저_소유_shop_전체_조회_get_http_response">Example Response</a></li>
+<li><a href="#_매니저_소유_shop_전체_조회_get_response_fields">Response fields</a></li>
+</ul>
+</li>
 <li><a href="#_shop_조회_get">SHOP 조회 [GET]</a>
 <ul class="sectlevel3">
 <li><a href="#_shop_조회_get_http_request">Example Request</a></li>
+<li><a href="#_shop_조회_get_path_parameters">Path parameters</a></li>
 <li><a href="#_shop_조회_get_http_response">Example Response</a></li>
 <li><a href="#_shop_조회_get_response_fields">Response fields</a></li>
 </ul>
@@ -582,6 +590,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel3">
 <li><a href="#_shop_업데이트_post_http_request">Example Request</a></li>
 <li><a href="#_shop_업데이트_post_request_headers">Request headers</a></li>
+<li><a href="#_shop_업데이트_post_path_parameters">Path parameters</a></li>
 <li><a href="#_shop_업데이트_post_http_response">Example Response</a></li>
 <li><a href="#_shop_업데이트_post_response_fields">Response fields</a></li>
 </ul>
@@ -590,7 +599,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel3">
 <li><a href="#_shop_삭제_delete_http_request">Example Request</a></li>
 <li><a href="#_shop_삭제_delete_request_headers">Request headers</a></li>
+<li><a href="#_shop_삭제_delete_path_parameters">Path parameters</a></li>
 <li><a href="#_shop_삭제_delete_http_response">Example Response</a></li>
+</ul>
+</li>
+<li><a href="#_shop_검색_get">SHOP 검색 [GET]</a>
+<ul class="sectlevel3">
+<li><a href="#_shop_검색_get_http_request">Example Request</a></li>
+<li><a href="#_shop_검색_get_path_parameters">Path parameters</a></li>
+<li><a href="#_shop_검색_get_http_response">Example Response</a></li>
+<li><a href="#_shop_검색_get_response_fields">Response fields</a></li>
 </ul>
 </li>
 </ul>
@@ -607,6 +625,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_조회_get">PRODUCT 조회 [GET]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_조회_get_http_request">Example Request</a></li>
+<li><a href="#_product_조회_get_path_parameters">Path parameters</a></li>
 <li><a href="#_product_조회_get_http_response">Example Response</a></li>
 <li><a href="#_product_조회_get_response_fields">Response fields</a></li>
 </ul>
@@ -615,6 +634,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel3">
 <li><a href="#_product_추가_post_http_request">Example Request</a></li>
 <li><a href="#_product_추가_post_request_headers">Request headers</a></li>
+<li><a href="#_product_추가_post_path_parameters">Path parameters</a></li>
 <li><a href="#_product_추가_post_http_response">Example Response</a></li>
 <li><a href="#_product_추가_post_response_fields">Response fields</a></li>
 </ul>
@@ -623,6 +643,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel3">
 <li><a href="#_product_업데이트_post_http_request">Example Request</a></li>
 <li><a href="#_product_업데이트_post_request_headers">Request headers</a></li>
+<li><a href="#_product_업데이트_post_path_parameters">Path parameters</a></li>
 <li><a href="#_product_업데이트_post_http_response">Example Response</a></li>
 <li><a href="#_product_업데이트_post_response_fields">Response fields</a></li>
 </ul>
@@ -630,6 +651,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_우선순위_업데이트_patch">PRODUCT 우선순위 업데이트 [PATCH]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_우선순위_업데이트_patch_http_request">Example Request</a></li>
+<li><a href="#_product_우선순위_업데이트_patch_path_parameters">Path parameters</a></li>
 <li><a href="#_product_우선순위_업데이트_patch_request_headers">Request headers</a></li>
 <li><a href="#_product_우선순위_업데이트_patch_http_response">Example Response</a></li>
 <li><a href="#_product_우선순위_업데이트_patch_response_fields">Response fields</a></li>
@@ -638,6 +660,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_삭제_delete">PRODUCT 삭제 [DELETE]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_삭제_delete_http_request">Example Request</a></li>
+<li><a href="#_product_삭제_delete_path_parameters">Path parameters</a></li>
 <li><a href="#_product_삭제_delete_request_headers">Request headers</a></li>
 <li><a href="#_product_삭제_delete_http_response">Example Response</a></li>
 </ul>
@@ -660,6 +683,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_카테고리_조회_get">PRODUCT 카테고리 조회 [GET]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_카테고리_조회_get_http_request">Example Request</a></li>
+<li><a href="#_product_카테고리_조회_get_path_parameters">Path parameters</a></li>
 <li><a href="#_product_카테고리_조회_get_http_response">Example Response</a></li>
 <li><a href="#_product_카테고리_조회_get_response_fields">Response fields</a></li>
 </ul>
@@ -667,8 +691,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_shop_별_우선순위_조회_get">PRODUCT Shop 별 우선순위 조회 [GET]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_shop_별_우선순위_조회_get_http_request">Example Request</a></li>
+<li><a href="#_product_shop_별_우선순위_조회_get_path_parameters">Path parameters</a></li>
 <li><a href="#_product_shop_별_우선순위_조회_get_http_response">Example Response</a></li>
 <li><a href="#_product_shop_별_우선순위_조회_get_response_fields">Response fields</a></li>
+</ul>
+</li>
+<li><a href="#_product_검색_get">PRODUCT 검색 [GET]</a>
+<ul class="sectlevel3">
+<li><a href="#_product_검색_get_http_request">Example Request</a></li>
+<li><a href="#_product_검색_get_path_parameters">Path parameters</a></li>
+<li><a href="#_product_검색_get_http_response">Example Response</a></li>
+<li><a href="#_product_검색_get_response_fields">Response fields</a></li>
 </ul>
 </li>
 </ul>
@@ -872,7 +905,7 @@ Content-Length: 42
 
 {
   "data" : {
-    "userId" : 34
+    "userId" : 37
   }
 }</code></pre>
 </div>
@@ -1108,7 +1141,7 @@ Content-Length: 42
 
 {
   "data" : {
-    "userId" : 37
+    "userId" : 40
   }
 }</code></pre>
 </div>
@@ -1327,8 +1360,8 @@ Content-Length: 416
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNiIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc0LCJleHAiOjE2NDQzMDU0NzR9.mUEzPCh9QEDtsyelS6yBP481eq7r3tUWvJwhejn-XL4",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU1MTE0NzR9.bjciTYIRklWWSdxS6e6eDiX1rBNzSL0Wh1PIjejePvk",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI4LCJleHAiOjE2NDQ0MDAyMjh9.IflR22MuNHNJ1aQsmUWH4p0Pd94HhLHZkKY1nwnAilQ",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2MDYyMjh9.FHO0_UXYybaDBYgfQteSPozHQRtmL1wHBP_-3d2nNFU",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1545,8 +1578,8 @@ Content-Length: 420
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODc0LCJleHAiOjE2NDQzMDU0NzR9.HnaRpMzR5iDTWS2Q4GB9sMCStn45V4KlcphO8_iH_Mo",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU1MTE0NzR9.bjciTYIRklWWSdxS6e6eDiX1rBNzSL0Wh1PIjejePvk",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI4LCJleHAiOjE2NDQ0MDAyMjh9.fPISudPdMS3kCzgRvVmMDfuY5_zXWNzrgmoBVLuYZJU",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2MDYyMjh9.FHO0_UXYybaDBYgfQteSPozHQRtmL1wHBP_-3d2nNFU",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1703,7 +1736,7 @@ Content-Length: 92
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODczLCJleHAiOjE2NDQzMDU0NzN9.w4oh3DIqM-7sdZsAgDlpD2Ln6oj_sPGkvmkBfKAskMU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI3LCJleHAiOjE2NDQ0MDAyMjd9.OA5ImF4ew4furXbov0Lg7C6yBObjDp05Bxl-SwHywkg
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -1756,14 +1789,14 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/reissue HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc0LCJleHAiOjE2NDQzMDU0NzR9.SicrZaEM2KqKuuefn9QNSJU0GMA3einn4_JgAcNTPtA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI4LCJleHAiOjE2NDQ0MDAyMjh9.9_RZmh1SrsJhqx1QEeIh8CyY9d-iKvqEWwyk5N2dBoI
 Accept: application/json
 Content-Length: 324
 Host: localhost:8080
 
 {
-  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc0LCJleHAiOjE2NDQzMDU0NzR9.SicrZaEM2KqKuuefn9QNSJU0GMA3einn4_JgAcNTPtA",
-  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU1MTE0NzR9.bjciTYIRklWWSdxS6e6eDiX1rBNzSL0Wh1PIjejePvk"
+  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI4LCJleHAiOjE2NDQ0MDAyMjh9.9_RZmh1SrsJhqx1QEeIh8CyY9d-iKvqEWwyk5N2dBoI",
+  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2MDYyMjh9.FHO0_UXYybaDBYgfQteSPozHQRtmL1wHBP_-3d2nNFU"
 }</code></pre>
 </div>
 </div>
@@ -1838,8 +1871,8 @@ Content-Length: 416
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc0LCJleHAiOjE2NDQzMDU0NzR9.SicrZaEM2KqKuuefn9QNSJU0GMA3einn4_JgAcNTPtA",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU1MTE0NzR9.bjciTYIRklWWSdxS6e6eDiX1rBNzSL0Wh1PIjejePvk",
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI4LCJleHAiOjE2NDQ0MDAyMjh9.9_RZmh1SrsJhqx1QEeIh8CyY9d-iKvqEWwyk5N2dBoI",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2MDYyMjh9.FHO0_UXYybaDBYgfQteSPozHQRtmL1wHBP_-3d2nNFU",
     "accessTokenExpireDate" : 3600000
   }
 }</code></pre>
@@ -1898,7 +1931,7 @@ Content-Length: 416
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/me?lang=ko HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzOSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc1LCJleHAiOjE2NDQzMDU0NzV9.aiYKt9ODoC6ploSCwxqyXR6SECDmLB-Y1BQTFzqHUjg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MiIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI5LCJleHAiOjE2NDQ0MDAyMjl9.CIxPBfEWCmxIlBJhrksqqCWN1K8HTZfAoRryP3vwimg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1943,7 +1976,7 @@ Content-Length: 151
 
 {
   "data" : {
-    "id" : 39,
+    "id" : 42,
     "email" : "email@email.com",
     "name" : "name",
     "phone" : "01000000000",
@@ -2006,7 +2039,7 @@ Content-Length: 151
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/me HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzOCIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0MzAxODc1LCJleHAiOjE2NDQzMDU0NzV9.gDvJItpeppolfztMySQznqXyzQGbwhp_aPNWopGjoGI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0Mzk2NjI5LCJleHAiOjE2NDQ0MDAyMjl9.ki3ebk5JKWf9TXDgTZ24OjrDIebaWb6PNbAWbkz1sTI
 Accept: application/json
 Content-Length: 63
 Host: localhost:8080
@@ -2058,7 +2091,7 @@ Content-Length: 151
 
 {
   "data" : {
-    "id" : 38,
+    "id" : 41,
     "email" : "email@email.com",
     "name" : "name",
     "phone" : "01012345678",
@@ -2148,7 +2181,7 @@ Content-Length: 555
 
 {
   "data" : [ {
-    "id" : 20,
+    "id" : 25,
     "name" : "shop1",
     "image" : "test1",
     "category" : [ "한식" ],
@@ -2159,7 +2192,7 @@ Content-Length: 555
       "close" : "22:00"
     }
   }, {
-    "id" : 21,
+    "id" : 26,
     "name" : "shop2",
     "image" : "test2",
     "category" : [ "중식" ],
@@ -2235,19 +2268,19 @@ Content-Length: 555
 </div>
 </div>
 <div class="sect2">
-<h3 id="_shop_조회_get"><a class="link" href="#_shop_조회_get">SHOP 조회 [GET]</a></h3>
+<h3 id="_매니저_소유_shop_전체_조회_get"><a class="link" href="#_매니저_소유_shop_전체_조회_get">매니저 소유 SHOP 전체 조회 [GET]</a></h3>
 <div class="sect3">
-<h4 id="_shop_조회_get_http_request"><a class="link" href="#_shop_조회_get_http_request">Example Request</a></h4>
+<h4 id="_매니저_소유_shop_전체_조회_get_http_request"><a class="link" href="#_매니저_소유_shop_전체_조회_get_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/manager/shops HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODcxLCJleHAiOjE2NDQzMDU0NzF9.UzF-4JWC8mhnJ9AMCvCes3e1LVvARJ-ytUl30gtRMJY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI1LCJleHAiOjE2NDQ0MDAyMjV9.kC5wapYwJoqfTEuCqc5s0bDyg85BNx8VcWlZl0gn4FA
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_shop_조회_get_http_response"><a class="link" href="#_shop_조회_get_http_response">Example Response</a></h4>
+<h4 id="_매니저_소유_shop_전체_조회_get_http_response"><a class="link" href="#_매니저_소유_shop_전체_조회_get_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -2265,7 +2298,7 @@ Content-Length: 555
 
 {
   "data" : [ {
-    "id" : 16,
+    "id" : 19,
     "name" : "shop1",
     "image" : "test1",
     "category" : [ "한식" ],
@@ -2276,7 +2309,7 @@ Content-Length: 555
       "close" : "22:00"
     }
   }, {
-    "id" : 17,
+    "id" : 20,
     "name" : "shop2",
     "image" : "test2",
     "category" : [ "중식" ],
@@ -2292,7 +2325,7 @@ Content-Length: 555
 </div>
 </div>
 <div class="sect3">
-<h4 id="_shop_조회_get_response_fields"><a class="link" href="#_shop_조회_get_response_fields">Response fields</a></h4>
+<h4 id="_매니저_소유_shop_전체_조회_get_response_fields"><a class="link" href="#_매니저_소유_shop_전체_조회_get_response_fields">Response fields</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2352,6 +2385,133 @@ Content-Length: 555
 </div>
 </div>
 <div class="sect2">
+<h3 id="_shop_조회_get"><a class="link" href="#_shop_조회_get">SHOP 조회 [GET]</a></h3>
+<div class="sect3">
+<h4 id="_shop_조회_get_http_request"><a class="link" href="#_shop_조회_get_http_request">Example Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/shops/15 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shop_조회_get_path_parameters"><a class="link" href="#_shop_조회_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/shops/{shopId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_shop_조회_get_http_response"><a class="link" href="#_shop_조회_get_http_response">Example Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 283
+
+{
+  "data" : {
+    "id" : 15,
+    "name" : "shop1",
+    "image" : "test1",
+    "category" : [ "한식" ],
+    "phone" : "01012345678",
+    "address" : "서울특별시 양천구 목동 1번지",
+    "hours" : {
+      "open" : "10:00",
+      "close" : "22:00"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shop_조회_get_response_fields"><a class="link" href="#_shop_조회_get_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.phone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 전화번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.hours.open</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 오픈시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.hours.close</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 마감시간</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_shop_추가_post"><a class="link" href="#_shop_추가_post">SHOP 추가 [POST]</a></h3>
 <div class="sect3">
 <h4 id="_shop_추가_post_http_request"><a class="link" href="#_shop_추가_post_http_request">Example Request</a></h4>
@@ -2360,7 +2520,7 @@ Content-Length: 555
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODcxLCJleHAiOjE2NDQzMDU0NzF9._Twtk_NNQpMiSnPiHe4oj9BZnGRAwilbRrNDWyfENBM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI0LCJleHAiOjE2NDQ0MDAyMjR9.Y-NKSkcblxQ8jslGVIIVvtbvXMciOw03E6v92Eq6z-Y
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2416,7 +2576,7 @@ Content-Length: 258
 
 {
   "data" : {
-    "id" : 13,
+    "id" : 14,
     "name" : "shop4",
     "image" : "default.png",
     "category" : [ "category" ],
@@ -2497,10 +2657,10 @@ Content-Length: 258
 <h4 id="_shop_업데이트_post_http_request"><a class="link" href="#_shop_업데이트_post_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/14 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/17 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODcxLCJleHAiOjE2NDQzMDU0NzF9.ICi49xOnwgPYhU10L4SlIhDHhh_FPcX3kwpwS5xJ_iA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI1LCJleHAiOjE2NDQ0MDAyMjV9.nj8IKc9uwobEt50_tkS65Uwp3erjK-FvmFZGZ_wWy08
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2538,6 +2698,28 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
+<h4 id="_shop_업데이트_post_path_parameters"><a class="link" href="#_shop_업데이트_post_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="_shop_업데이트_post_http_response"><a class="link" href="#_shop_업데이트_post_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -2556,7 +2738,7 @@ Content-Length: 251
 
 {
   "data" : {
-    "id" : 14,
+    "id" : 17,
     "name" : "shop3",
     "image" : "test1",
     "category" : [ "category2" ],
@@ -2637,8 +2819,8 @@ Content-Length: 251
 <h4 id="_shop_삭제_delete_http_request"><a class="link" href="#_shop_삭제_delete_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/18 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODcyLCJleHAiOjE2NDQzMDU0NzJ9.4RoQ-JVO_MzPpbyTVpi-yTtLzQ2-dtl8JLOKvQtNn9M
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/23 HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI2LCJleHAiOjE2NDQ0MDAyMjZ9.6z3MfJ1yLFICMxKWK04BkDgFLj1o3V2FKgNH83ui2tI
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2665,6 +2847,28 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
+<h4 id="_shop_삭제_delete_path_parameters"><a class="link" href="#_shop_삭제_delete_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="_shop_삭제_delete_http_response"><a class="link" href="#_shop_삭제_delete_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -2680,6 +2884,133 @@ Expires: 0
 X-Frame-Options: DENY</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_shop_검색_get"><a class="link" href="#_shop_검색_get">SHOP 검색 [GET]</a></h3>
+<div class="sect3">
+<h4 id="_shop_검색_get_http_request"><a class="link" href="#_shop_검색_get_http_request">Example Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/search/shops/shop2 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shop_검색_get_path_parameters"><a class="link" href="#_shop_검색_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/search/shops/{keyword}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색 키워드</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_shop_검색_get_http_response"><a class="link" href="#_shop_검색_get_http_response">Example Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 287
+
+{
+  "data" : [ {
+    "id" : 22,
+    "name" : "shop2",
+    "image" : "test2",
+    "category" : [ "중식" ],
+    "phone" : "01056789012",
+    "address" : "서울특별시 양천구 목동 2번지",
+    "hours" : {
+      "open" : "11:00",
+      "close" : "23:00"
+    }
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shop_검색_get_response_fields"><a class="link" href="#_shop_검색_get_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].phone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 전화번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].hours.open</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 오픈시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].hours.close</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 마감시간</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -2717,41 +3048,41 @@ Content-Length: 894
 
 {
   "data" : [ {
-    "shopId" : 8,
+    "shopId" : 9,
     "shopName" : "shop1",
-    "id" : 36,
+    "id" : 41,
     "name" : "김치찌개",
     "price" : 10000,
     "discountedPrice" : 9000,
     "image" : "test1"
   }, {
-    "shopId" : 8,
+    "shopId" : 9,
     "shopName" : "shop1",
-    "id" : 37,
+    "id" : 42,
     "name" : "된장찌개",
     "price" : 11000,
     "discountedPrice" : 10000,
     "image" : "test2"
   }, {
-    "shopId" : 8,
+    "shopId" : 9,
     "shopName" : "shop1",
-    "id" : 38,
+    "id" : 43,
     "name" : "마라탕",
     "price" : 12000,
     "discountedPrice" : 11000,
     "image" : "test3"
   }, {
-    "shopId" : 8,
+    "shopId" : 9,
     "shopName" : "shop1",
-    "id" : 39,
+    "id" : 44,
     "name" : "짜글이",
     "price" : 13000,
     "discountedPrice" : 12000,
     "image" : "test4"
   }, {
-    "shopId" : 8,
+    "shopId" : 9,
     "shopName" : "shop1",
-    "id" : 40,
+    "id" : 45,
     "name" : "오뎅탕",
     "price" : 14000,
     "discountedPrice" : 13000,
@@ -2826,6 +3157,28 @@ Content-Length: 894
 Host: localhost:8080</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_product_조회_get_path_parameters"><a class="link" href="#_product_조회_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/shops/{shopId}/products/all</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_product_조회_get_http_response"><a class="link" href="#_product_조회_get_http_response">Example Response</a></h4>
@@ -2951,10 +3304,10 @@ Content-Length: 894
 <h4 id="_product_추가_post_http_request"><a class="link" href="#_product_추가_post_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/9/products HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/10/products HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzMDE4NzAsImV4cCI6MTY0NDMwNTQ3MH0.4R-_7CmglDLlxRWV3czqTS3K58S7_oQDb_NTD-MVBFU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI0LCJleHAiOjE2NDQ0MDAyMjR9.xzrauNgs1LtSwXjYDNgB6KEohHRNW1sZtSZyHFcuAww
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2992,6 +3345,28 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
+<h4 id="_product_추가_post_path_parameters"><a class="link" href="#_product_추가_post_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}/products</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="_product_추가_post_http_response"><a class="link" href="#_product_추가_post_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -3006,13 +3381,13 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 188
+Content-Length: 189
 
 {
   "data" : {
-    "shopId" : 9,
+    "shopId" : 10,
     "shopName" : "shop1",
-    "id" : 46,
+    "id" : 51,
     "name" : "food",
     "price" : 9000,
     "discountedPrice" : 8000,
@@ -3086,7 +3461,7 @@ Content-Length: 188
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/2/products/6 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzMDE4NjgsImV4cCI6MTY0NDMwNTQ2OH0.UKQ5lm_eAFRW2A8QFnWq36au7fy0r-5DOBq1t-KMrfQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzOTY2MjIsImV4cCI6MTY0NDQwMDIyMn0.skpmSKEpC75kFnE54cNQhjd2T7_rZYNsObMdVvQmzGQ
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3119,6 +3494,32 @@ Content-Type: application/json
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">매니저의 Access Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_product_업데이트_post_path_parameters"><a class="link" href="#_product_업데이트_post_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}/products/{productId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 고유 번호</p></td>
 </tr>
 </tbody>
 </table>
@@ -3215,9 +3616,9 @@ Content-Length: 184
 <h4 id="_product_우선순위_업데이트_patch_http_request"><a class="link" href="#_product_우선순위_업데이트_patch_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/manager/shops/10/products/47 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/manager/shops/11/products/52 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0MzAxODcxLCJleHAiOjE2NDQzMDU0NzF9.Q22z0gEqCZzLkffAhJyRx-J3dyPF8gEs2zXm_DZSJkA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0Mzk2NjI0LCJleHAiOjE2NDQ0MDAyMjR9.knVb-cMCfOIDH4A4XQ5cbnOzt7tnzvn9N4wm2gXsh5s
 Accept: application/json
 Content-Length: 50
 Host: localhost:8080
@@ -3227,6 +3628,32 @@ Host: localhost:8080
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_product_우선순위_업데이트_patch_path_parameters"><a class="link" href="#_product_우선순위_업데이트_patch_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}/products/{productId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_product_우선순위_업데이트_patch_request_headers"><a class="link" href="#_product_우선순위_업데이트_patch_request_headers">Request headers</a></h4>
@@ -3304,10 +3731,36 @@ Content-Length: 44
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/6/products/26 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzMDE4NzAsImV4cCI6MTY0NDMwNTQ3MH0.Ry2yEdkL3rg79D4jI3uQ8vM4U2ZLRuiO54AydXg5YEs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzOTY2MjMsImV4cCI6MTY0NDQwMDIyM30.ZGLJFo7yEu-BJmayX0dTRKJx19jhaduvz9azqzCtDrk
 Host: localhost:8080</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_product_삭제_delete_path_parameters"><a class="link" href="#_product_삭제_delete_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/manager/shops/{shopId}/products/{productId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_product_삭제_delete_request_headers"><a class="link" href="#_product_삭제_delete_request_headers">Request headers</a></h4>
@@ -3355,7 +3808,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/manager/shops/3/products/11 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzMDE4NjksImV4cCI6MTY0NDMwNTQ2OX0.esJnH9f7SpiVOpuL_cg6fhj7rBVbwEi0dma5uKCrhMw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQzOTY2MjIsImV4cCI6MTY0NDQwMDIyMn0.y-OeTarb2uXZqwXUVOnf-3W8fPrbaQPrMk3tOiKmc_A
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3576,6 +4029,28 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="_product_카테고리_조회_get_path_parameters"><a class="link" href="#_product_카테고리_조회_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/category/{category}/products</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 카테고리</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="_product_카테고리_조회_get_http_response"><a class="link" href="#_product_카테고리_조회_get_http_response">Example Response</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -3667,10 +4142,32 @@ Content-Length: 194
 <h4 id="_product_shop_별_우선순위_조회_get_http_request"><a class="link" href="#_product_shop_별_우선순위_조회_get_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/shops/7/products HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/shops/8/products HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_product_shop_별_우선순위_조회_get_path_parameters"><a class="link" href="#_product_shop_별_우선순위_조회_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/shops/{shopId}/products</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">가게 고유 번호</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_product_shop_별_우선순위_조회_get_http_response"><a class="link" href="#_product_shop_별_우선순위_조회_get_http_response">Example Response</a></h4>
@@ -3691,41 +4188,41 @@ Content-Length: 894
 
 {
   "data" : [ {
-    "shopId" : 7,
+    "shopId" : 8,
     "shopName" : "shop1",
-    "id" : 31,
+    "id" : 36,
     "name" : "김치찌개",
     "price" : 10000,
     "discountedPrice" : 9000,
     "image" : "test1"
   }, {
-    "shopId" : 7,
+    "shopId" : 8,
     "shopName" : "shop1",
-    "id" : 32,
+    "id" : 37,
     "name" : "된장찌개",
     "price" : 11000,
     "discountedPrice" : 10000,
     "image" : "test2"
   }, {
-    "shopId" : 7,
+    "shopId" : 8,
     "shopName" : "shop1",
-    "id" : 33,
+    "id" : 38,
     "name" : "마라탕",
     "price" : 12000,
     "discountedPrice" : 11000,
     "image" : "test3"
   }, {
-    "shopId" : 7,
+    "shopId" : 8,
     "shopName" : "shop1",
-    "id" : 34,
+    "id" : 39,
     "name" : "짜글이",
     "price" : 13000,
     "discountedPrice" : 12000,
     "image" : "test4"
   }, {
-    "shopId" : 7,
+    "shopId" : 8,
     "shopName" : "shop1",
-    "id" : 35,
+    "id" : 40,
     "name" : "오뎅탕",
     "price" : 14000,
     "discountedPrice" : 13000,
@@ -3790,13 +4287,132 @@ Content-Length: 894
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_product_검색_get"><a class="link" href="#_product_검색_get">PRODUCT 검색 [GET]</a></h3>
+<div class="sect3">
+<h4 id="_product_검색_get_http_request"><a class="link" href="#_product_검색_get_http_request">Example Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/search/products/%EA%B9%80%EC%B9%98 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_product_검색_get_path_parameters"><a class="link" href="#_product_검색_get_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/search/products/{keyword}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색 키워드</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_product_검색_get_http_response"><a class="link" href="#_product_검색_get_http_response">Example Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 195
+
+{
+  "data" : [ {
+    "shopId" : 7,
+    "shopName" : "shop1",
+    "id" : 31,
+    "name" : "김치찌개",
+    "price" : 10000,
+    "discountedPrice" : 9000,
+    "image" : "test1"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_product_검색_get_response_fields"><a class="link" href="#_product_검색_get_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].shopId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가게 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].shopName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가게 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 고유 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].discountedPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-02-08 15:30:45 +0900
+Last updated 2022-02-09 17:47:32 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

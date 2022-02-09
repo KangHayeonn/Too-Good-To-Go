@@ -9,7 +9,6 @@ import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,11 +38,11 @@ public class ProductsController {
 
     @PostMapping("/manager/shops/{shopId}/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<ProductDto> addProduct
-            (@CurrentUser User user,
-             @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestPart(required = false) MultipartFile file,
-             @RequestPart @Validated(ValidationSequence.class) AddProductRequest request) throws IOException {
+    public ApiResponse<ProductDto> addProduct(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart @Validated(ValidationSequence.class) AddProductRequest request) throws IOException {
         if (request.getDiscountedPrice() > request.getPrice())
             throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
         return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, file, request/*.toServiceDto()*/));
@@ -76,9 +75,9 @@ public class ProductsController {
     @DeleteMapping("/manager/shops/{shopId}/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(
-             @CurrentUser User user,
-             @PathVariable @Positive(message = "path 오류") Long shopId,
-             @PathVariable @Positive(message = "path 오류") Long productId) {
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @PathVariable @Positive(message = "path 오류") Long productId) {
         productUseCase.deleteProduct(user.getId(), shopId, productId);
     }
 
@@ -107,5 +106,11 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findProductsPerShopSortByPriority(@PathVariable Long shopId) {
         return new ApiResponse<>(productUseCase.findProductsPerShopSortByPriority(shopId));
+    }
+
+    @GetMapping("/search/products/{keyword}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ProductDto>> findProductsBySearch(@PathVariable String keyword) {
+        return new ApiResponse<>(productUseCase.findProductsBySearch(keyword));
     }
 }

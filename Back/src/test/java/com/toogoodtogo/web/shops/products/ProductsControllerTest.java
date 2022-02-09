@@ -373,6 +373,34 @@ class ProductsControllerTest extends ControllerTest {
                 .andDo(document("products/shop",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.[].name").description("상품 이름"),
+                                fieldWithPath("data.[].price").description("상품 가격"),
+                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.[].image").description("상품 이미지")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findProductsBySearch() throws Exception {
+        String keyword = "김치";
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search/products/{keyword}", keyword))
+                .andDo(print())
+                .andDo(document("products/search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("keyword").description("검색 키워드")
+                        ),
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
                                 fieldWithPath("data.[].shopName").description("상품 가게 이름"),

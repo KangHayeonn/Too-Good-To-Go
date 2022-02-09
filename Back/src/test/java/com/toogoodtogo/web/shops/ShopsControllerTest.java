@@ -111,7 +111,7 @@ class ShopsControllerTest extends ControllerTest {
         mockMvc.perform(get("/api/manager/shops")
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
-                .andDo(document("shops/find",
+                .andDo(document("shops/findManager",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -123,6 +123,31 @@ class ShopsControllerTest extends ControllerTest {
                                 fieldWithPath("data.[].address").description("가게 주소"),
                                 fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
                                 fieldWithPath("data.[].hours.close").description("가게 마감시간")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findShop() throws Exception {
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/shops/{shopId}", shopId))
+                .andDo(print())
+                .andDo(document("shops/find",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.id").description("가게 고유번호"),
+                                fieldWithPath("data.name").description("가게 이름"),
+                                fieldWithPath("data.image").description("가게 이미지"),
+                                fieldWithPath("data.category").description("가게 카테고리"),
+                                fieldWithPath("data.phone").description("가게 전화번호"),
+                                fieldWithPath("data.address").description("가게 주소"),
+                                fieldWithPath("data.hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.hours.close").description("가게 마감시간")
                         )
                 ))
                 .andExpect(status().isOk());
@@ -200,7 +225,8 @@ class ShopsControllerTest extends ControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept(MediaType.APPLICATION_JSON));
 
-        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.fileUpload("/api/manager/shops/{shopId}", shopId)
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+                .fileUpload("/api/manager/shops/{shopId}", shopId)
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
                 .file(request).accept(MediaType.APPLICATION_JSON)
@@ -254,5 +280,31 @@ class ShopsControllerTest extends ControllerTest {
                         )
                 ))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void findShopsBySearch() throws Exception {
+        String keyword = "shop2";
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search/shops/{keyword}", keyword))
+                .andDo(print())
+                .andDo(document("shops/search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("keyword").description("검색 키워드")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.[].id").description("가게 고유번호"),
+                                fieldWithPath("data.[].name").description("가게 이름"),
+                                fieldWithPath("data.[].image").description("가게 이미지"),
+                                fieldWithPath("data.[].category").description("가게 카테고리"),
+                                fieldWithPath("data.[].phone").description("가게 전화번호"),
+                                fieldWithPath("data.[].address").description("가게 주소"),
+                                fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.[].hours.close").description("가게 마감시간")
+                        )
+                ))
+                .andExpect(status().isOk());
     }
 }

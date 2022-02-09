@@ -18,4 +18,6 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
 
     @Query("select s from Shop s where s.address = ?1 and s.name = ?2")
     Optional<Shop> findByAddressAndName(String address, String name);
+
+    List<Shop> findByNameContaining(String keyword);
 }

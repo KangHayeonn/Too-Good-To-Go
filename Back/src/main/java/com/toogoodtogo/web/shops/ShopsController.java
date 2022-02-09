@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +37,12 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
+    @GetMapping("/shops/{shopId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<ShopDto> findShop(@PathVariable Long shopId) {
+        return new ApiResponse<>(shopUseCase.findShop(shopId));
+    }
+
     @PostMapping("/manager/shops")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ShopDto> addShop(
@@ -50,11 +55,11 @@ public class ShopsController {
 //    @PatchMapping("/manager/shop/{shopId}")
     @PostMapping("/manager/shops/{shopId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ShopDto> updateShop
-            (@CurrentUser User user,
-             @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestPart(required = false) MultipartFile file,
-             @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
+    public ApiResponse<ShopDto> updateShop(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, file, request));
     }
 
@@ -64,5 +69,11 @@ public class ShopsController {
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {
         shopUseCase.deleteShop(user.getId(), shopId);
+    }
+
+    @GetMapping("/search/shops/{keyword}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<ShopDto>> findProductsBySearch(@PathVariable String keyword) {
+        return new ApiResponse<>(shopUseCase.findShopsBySearch(keyword));
     }
 }

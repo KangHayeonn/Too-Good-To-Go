@@ -17,4 +17,5 @@ public interface ProductUseCase {
     List<ProductDto> recommendProducts();
     List<ProductDto> productsPerCategory(String category, String method);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);
+    List<ProductDto> findProductsBySearch(String keyword);
 }

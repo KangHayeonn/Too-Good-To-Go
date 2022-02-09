@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 더 손봐야 함!!
                 .antMatchers("/api/signup", "/api/login", "/", "/exception/**").permitAll()
                 .antMatchers("/api/shop/**", "/api/shops/**", "/api/product/**", "/api/products/**", "/api/category/**").permitAll()
+                .antMatchers("/api/search/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
 //                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능

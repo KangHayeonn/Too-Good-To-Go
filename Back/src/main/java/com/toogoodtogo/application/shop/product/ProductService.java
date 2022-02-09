@@ -40,7 +40,7 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> findAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
+                .map(ProductDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class ProductService implements ProductUseCase {
     public List<ProductDto> findProducts(Long shopId) {
         return productRepository.findAllByShopId(shopId)
                 .stream()
-                .map(product -> new ProductDto(product.getShop().getId(), product.getShop().getName(), product))
+                .map(ProductDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -175,6 +175,8 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> findProductsPerShopSortByPriority(Long shopId) {
+        if (shopRepository.findById(shopId).isEmpty()) throw new CShopNotFoundException();
+
         // 해당 shop 의 모든 product 들
         List<Product> products = productRepository.findAllByShopId(shopId);
 
@@ -182,6 +184,7 @@ public class ProductService implements ProductUseCase {
         List<String> priority = displayProductRepository.findByShopId(shopId).getPriority();
 
         List<ProductDto> display = new ArrayList<>();
+        // 여기서 product 없으면 에러 발생
         priority.forEach(num -> {
             products.forEach(product -> {
                 if(product.getId().equals(Long.valueOf(num))) {
@@ -190,5 +193,13 @@ public class ProductService implements ProductUseCase {
             });
         });
         return display;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDto> findProductsBySearch(String keyword) {
+        // 검색량 저장하는 기능 추가...?
+        return productRepository.findByNameContaining(keyword).stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
     }
 }

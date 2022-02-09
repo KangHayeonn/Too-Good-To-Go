@@ -102,11 +102,12 @@ const ShopCard: React.FC<shopCardType> = ({
 		// console.log(width);
 	}, []);
 
-	// console.log("ShopCard -> id : ", shopId);
 	return (
 		<ShopCardStyle id="shopCardDiv">
 			<Link
-				to="/shop"
+				to={{
+					pathname: `/shop/${shopId}`,
+				}}
 				css={css`
 					height: ${width}px;
 					overflow: hidden;

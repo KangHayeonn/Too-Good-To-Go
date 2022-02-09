@@ -154,26 +154,23 @@ type shopsDataType = {
 	data?: Array<string | number>;
 };
 
-// 상품 조회
-// const PRODUCT_BASE_URL = "http://54.180.134.20/api/shop";
 // 가게 조회
 const SHOP_BASE_URL = "http://54.180.134.20/api/shops";
 
 interface shopMatchId {
-	shopMatchId?: number;
+	shopMatchId?: string;
 }
 const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
 	const BoardService = () => {
-		// 상품 조회
-		// return axios.get(`${PRODUCT_BASE_URL}/${9}/products`);
 		// 가게 조회
 		return axios.get(`${SHOP_BASE_URL}`);
 	};
-	console.log(shopMatchId);
+	console.log("sT : ", shopMatchId);
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
+				console.log("res : ", res.data.data);
 				setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
 			() => {
@@ -199,7 +196,7 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 };
 
 ShopTitles.defaultProps = {
-	shopMatchId: 0,
+	shopMatchId: "",
 };
 
 export default ShopTitles;

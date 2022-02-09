@@ -1,4 +1,5 @@
 import React from "react";
+import { RouteComponentProps } from "react-router-dom";
 import PageTemplate from "../../components/templates/PageTemplate";
 import ShopTemplate from "../../components/templates/ShopTemplate";
 import Categories from "../../components/organisms/Categories/Categories";
@@ -7,12 +8,17 @@ import ShopTitles from "../../components/organisms/Shop/ShopTitles";
 import CartContainer from "../../components/molecules/Shop/CartContainer";
 import MenuCards from "../../components/molecules/Shop/MenuCards";
 
-const Shop: React.FC = () => {
+interface matchParams {
+	shopId: string;
+}
+
+const Shop: React.FC<RouteComponentProps<matchParams>> = ({ match }) => {
+	const { shopId } = match.params;
 	return (
 		<PageTemplate
 			header={<Categories />}
 			isHeader
-			section={<ShopTitles />}
+			section={<ShopTitles shopMatchId={shopId} />}
 			isSection
 			isFooter={false}
 		>
@@ -20,7 +26,7 @@ const Shop: React.FC = () => {
 			<ShopTemplate
 				menu={
 					<div>
-						<MenuCards />
+						<MenuCards shopMatchId={shopId} />
 					</div>
 				}
 				sidebar={<CartContainer>장바구니에 담기</CartContainer>}

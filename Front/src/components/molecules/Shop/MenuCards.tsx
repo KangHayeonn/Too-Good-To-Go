@@ -1,16 +1,15 @@
-import React from "react";
-// Styles
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "@emotion/styled";
-// redux
 import { useDispatch, useSelector } from "react-redux";
-// rtk
 import {
 	selectCartCardByID,
 	initialCartCardType,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
 import { RootState } from "../../../app/store";
-// images
 import fighting from "../../../../public/image/화이팅도치.jpg";
+
+const SHOP_BASE_URL = "http://54.180.134.20/api/shops";
 
 // Emotion theme
 type theme = {
@@ -23,11 +22,39 @@ const calculatedDiscount = (price: number, discountedPrice: number): number => {
 };
 
 interface shopMatchId {
-	shopMatchId?: number;
+	shopMatchId?: string;
 }
+
+type productsDataType = {
+	id: number;
+	name: string;
+	image: string;
+	discountedPrice: number;
+	price: number;
+	shopId: number;
+	shopName: string;
+};
+
 const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
+	const [products, setProducts] = useState<productsDataType[]>([]);
 	const dispatch = useDispatch();
-	console.log(shopMatchId);
+
+	const BoardService = () => {
+		// 상품 조회
+		return axios.get(`${SHOP_BASE_URL}/${shopMatchId}/products`);
+	};
+
+	useEffect(() => {
+		BoardService().then(
+			(res) => {
+				console.log("products : ", res.data.data);
+				setProducts(res.data.data);
+			},
+			() => {
+				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
+			}
+		);
+	}, []);
 
 	// logic to display cards
 	const displayCardArr = useSelector((state: RootState) => {
@@ -35,6 +62,7 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	});
 
 	if (displayCardArr.length) {
+		console.log("p: ", products);
 		return (
 			<Wrapper>
 				{displayCardArr.map((card: initialCartCardType) => {
@@ -92,7 +120,7 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 };
 
 MenuCards.defaultProps = {
-	shopMatchId: 0,
+	shopMatchId: "",
 };
 
 export default MenuCards;

@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { deleteAccessToken, getAccessToken } from "../../helpers/tokenControl";
-import {
-	deleteUserID,
-	deleteEmail,
-	deleteName,
-	deletePhone,
-	deleteRole,
-} from "../../helpers/userInfoControl";
+import { deleteUserLocalStorage } from "../../helpers/userInfoControl";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 
@@ -25,17 +19,13 @@ function LOGOUT() {
 
 		// localStorage에서 user 정보 제거
 		deleteAccessToken();
-		deleteUserID();
-		deleteEmail();
-		deleteName();
-		deletePhone();
-		deleteRole();
+		deleteUserLocalStorage();
 	} catch (e) {
 		console.log("localStorage is not working");
 	}
 }
 
-export interface State {
+export interface UserI {
 	id: string;
 	email: string | null;
 	name: string | null;
@@ -43,7 +33,7 @@ export interface State {
 	role: string | null;
 }
 
-const initialState: State = {
+const initialState: UserI = {
 	id: "",
 	email: "",
 	phone: "",
@@ -57,7 +47,7 @@ const userSlice = createSlice({
 	initialState, // The initial state for the reducer
 	reducers: {
 		// reducer
-		tempSetUser: (state, action: PayloadAction<State>) => {
+		tempSetUser: (state, action: PayloadAction<UserI>) => {
 			return action.payload;
 		},
 		/*
@@ -79,8 +69,5 @@ const userSlice = createSlice({
 	},
 });
 
-export const {
-	tempSetUser,
-	logout,
-} = userSlice.actions;
+export const { tempSetUser, logout } = userSlice.actions;
 export default userSlice.reducer;

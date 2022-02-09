@@ -38,7 +38,6 @@ public class ShopService implements ShopUseCase {
     private final ChoiceProductRepository choiceProductRepository;
     private final DisplayProductRepository displayProductRepository;
 
-    @Override
     @Transactional(readOnly = true)
     public List<ShopDto> findAllShops() {
         return shopRepository.findAll()
@@ -47,13 +46,18 @@ public class ShopService implements ShopUseCase {
                 .collect(Collectors.toList());
     }
 
-    @Override
     @Transactional(readOnly = true)
     public List<ShopDto> findShops(Long managerId) {
         User manager = userRepository.findById(managerId).orElseThrow(CUserNotFoundException::new);
         return shopRepository.findByUser(manager)
                 .stream().map(ShopDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ShopDto findShop(Long shopId) {
+        Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
+        return new ShopDto(shop);
     }
 
     @Override

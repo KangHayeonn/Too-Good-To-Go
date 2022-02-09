@@ -111,7 +111,7 @@ class ShopsControllerTest extends ControllerTest {
         mockMvc.perform(get("/api/manager/shops")
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
-                .andDo(document("shops/find",
+                .andDo(document("shops/findManager",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -123,6 +123,31 @@ class ShopsControllerTest extends ControllerTest {
                                 fieldWithPath("data.[].address").description("가게 주소"),
                                 fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
                                 fieldWithPath("data.[].hours.close").description("가게 마감시간")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findShop() throws Exception {
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/shops/{shopId}", shopId))
+                .andDo(print())
+                .andDo(document("shops/find",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.id").description("가게 고유번호"),
+                                fieldWithPath("data.name").description("가게 이름"),
+                                fieldWithPath("data.image").description("가게 이미지"),
+                                fieldWithPath("data.category").description("가게 카테고리"),
+                                fieldWithPath("data.phone").description("가게 전화번호"),
+                                fieldWithPath("data.address").description("가게 주소"),
+                                fieldWithPath("data.hours.open").description("가게 오픈시간"),
+                                fieldWithPath("data.hours.close").description("가게 마감시간")
                         )
                 ))
                 .andExpect(status().isOk());

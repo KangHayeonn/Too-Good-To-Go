@@ -12,6 +12,7 @@ import java.util.List;
 public interface ShopUseCase {
     List<ShopDto> findAllShops();
     List<ShopDto> findShops(Long managerId);
+    ShopDto findShop(Long shopId);
     ShopDto addShop(Long managerId, MultipartFile file, AddShopRequest request) throws IOException;
     ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException;
     void deleteShop(Long managerId, Long shopId);

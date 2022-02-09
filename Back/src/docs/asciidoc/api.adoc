@@ -99,8 +99,11 @@ operation::users/update[snippets='http-request,request-headers,http-response,res
 === SHOP 전체 조회 [GET]
 operation::shops/findAll[snippets='http-request,http-response,response-fields']
 
+=== 매니저 소유 SHOP 전체 조회 [GET]
+operation::shops/findManager[snippets='http-request,http-response,response-fields']
+
 === SHOP 조회 [GET]
-operation::shops/find[snippets='http-request,http-response,response-fields']
+operation::shops/find[snippets='http-request,path-parameters,http-response,response-fields']
 
 === SHOP 추가 [POST]
 operation::shops/add[snippets='http-request,request-headers,http-response,response-fields']

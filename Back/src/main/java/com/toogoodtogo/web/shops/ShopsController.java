@@ -37,6 +37,12 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.findShops(user.getId()));
     }
 
+    @GetMapping("/shops/{shopId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<ShopDto> findShop(@PathVariable Long shopId) {
+        return new ApiResponse<>(shopUseCase.findShop(shopId));
+    }
+
     @PostMapping("/manager/shops")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ShopDto> addShop(
@@ -49,11 +55,11 @@ public class ShopsController {
 //    @PatchMapping("/manager/shop/{shopId}")
     @PostMapping("/manager/shops/{shopId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<ShopDto> updateShop
-            (@CurrentUser User user,
-             @PathVariable @Positive(message = "path 오류") Long shopId,
-             @RequestPart(required = false) MultipartFile file,
-             @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
+    public ApiResponse<ShopDto> updateShop(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
         return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, file, request));
     }
 

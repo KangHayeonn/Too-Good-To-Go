@@ -175,6 +175,8 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> findProductsPerShopSortByPriority(Long shopId) {
+        if (shopRepository.findById(shopId).isEmpty()) throw new CShopNotFoundException();
+
         // 해당 shop 의 모든 product 들
         List<Product> products = productRepository.findAllByShopId(shopId);
 
@@ -182,6 +184,7 @@ public class ProductService implements ProductUseCase {
         List<String> priority = displayProductRepository.findByShopId(shopId).getPriority();
 
         List<ProductDto> display = new ArrayList<>();
+        // 여기서 product 없으면 에러 발생
         priority.forEach(num -> {
             products.forEach(product -> {
                 if(product.getId().equals(Long.valueOf(num))) {

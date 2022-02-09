@@ -5,9 +5,9 @@ export const setUserLocalStorage = (info: string): void => {
 	localStorage.setItem("user", info);
 };
 
-export const getUserLocalStorage = (): UserI | null => {
+export const getUserLocalStorage = (): UserI => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	return JSON.parse(localStorage.getItem("user")!);
+	return JSON.parse(localStorage.getItem("user") || "{}");
 };
 
 export const deleteUserLocalStorage = (): void => {

@@ -62,7 +62,7 @@ public class ProductService implements ProductUseCase {
         String filePath = uploadFileConverter.parseFileInfo(file, "productsImage", shopId);
         
         String fileName;
-        if (filePath.equals("default.png")) fileName = "default.png"; // 기본 이미지
+        if (filePath.equals("default.png")) fileName = s3Uploader.get("productDefault.png"); // 기본 이미지
         else fileName = s3Uploader.upload(file, filePath); // 최종 파일 경로 및 파일 업로드
 
         Product new_product = Product.builder()
@@ -131,7 +131,7 @@ public class ProductService implements ProductUseCase {
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         // 기본 이미지가 아니면 S3에서 이미지 삭제
-        if (!deleteProduct.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
+        if (!deleteProduct.getImage().contains("productDefault.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
 
         choiceProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);

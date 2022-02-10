@@ -62,7 +62,8 @@ class ShopsControllerTest extends ControllerTest {
         token = signService.login(LoginUserRequest.builder().email("shopTest@email.com").password("password").build());
 
         Shop shop1 = Shop.builder()
-                .user(manager).name("shop1").image("test1").category(Arrays.asList("한식")).phone("01012345678")
+                .user(manager).name("shop1").image("https://diefqsnmvol80.cloudfront.net/shopDefault.png")
+                .category(Arrays.asList("한식")).phone("01012345678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
         shopRepository.save(shop1);
         shopRepository.save(Shop.builder()
@@ -209,7 +210,6 @@ class ShopsControllerTest extends ControllerTest {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
                 .name("shop3")
-                .image("test3")
                 .category(new ArrayList<>(Arrays.asList("category2")))
                 .phone("01087654321")
                 .address("test3")

@@ -40,7 +40,7 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	return (
 		<div>
 			{shop === undefined ? (
-				<div>안녕</div>
+				<div>api 연결 실패</div>
 			) : (
 				<TitleTemplate
 					key={shop.id}

@@ -12,6 +12,7 @@ export type CartCardType = {
 	shopBeforeCost: number;
 };
 
+// CartCardType -> productsDataType
 export type initialCartCardType = CartCardType & {
 	isChecked: boolean;
 	cartItemQuantity: number;

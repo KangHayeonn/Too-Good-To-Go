@@ -47,7 +47,6 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
-				console.log("products : ", res.data.data);
 				setProducts(res.data.data);
 			},
 			() => {
@@ -62,33 +61,32 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	});
 
 	if (displayCardArr.length) {
-		console.log("p: ", products);
 		return (
 			<Wrapper>
-				{displayCardArr.map((card: initialCartCardType) => {
+				{products.map((card) => {
 					return (
 						// emotion conditional css
-						<CartCard key={card.shopId} checked={card.isChecked}>
+						<CartCard key={card.id} checked>
 							<div className="card-img-ctn">
-								<img src={card.shopFoodImg} alt="Food" />
+								<img src={card.image} alt="Food" />
 							</div>
 							<div className="cardInfo">
 								<p className="cardInfo-shopName">
 									{card.shopName}
 								</p>
 								<p className="cardInfo-shopFoodName">
-									{card.shopFoodName}
+									{card.name}
 								</p>
 								<div className="cardInfo-price">
 									<p>
 										{calculatedDiscount(
-											card.shopBeforeCost,
-											card.shopFoodCost
+											card.price,
+											card.discountedPrice
 										)}
 										%
 									</p>
-									<p>{card.shopFoodCost}원</p>
-									<s>({card.shopBeforeCost}원)</s>
+									<p>{card.discountedPrice}원</p>
+									<s>({card.price}원)</s>
 								</div>
 							</div>
 							<div className="right-wrapper">
@@ -174,10 +172,13 @@ const CartCard = styled.div<theme>`
 
 	.card-img-ctn {
 		width: 134px;
+		margin-right: 9px;
+		margin-left: 10px;
 	}
 
 	img {
-		width: 100%;
+		width: 129px;
+		height: 127px;
 		overflow: hidden;
 		margin-left: 14px;
 		border-radius: 12px;
@@ -221,7 +222,7 @@ const CartCard = styled.div<theme>`
 	}
 
 	.right-wrapper {
-		margin-left: 160px;
+		margin-left: 140px;
 	}
 
 	.btn-ctn {

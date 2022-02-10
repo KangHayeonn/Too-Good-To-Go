@@ -71,7 +71,7 @@ public class ShopService implements ShopUseCase {
         String filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", managerId);
 
         String fileName;
-        if (filePath.equals("default.png")) fileName = "default.png"; // 기본 이미지
+        if (filePath.equals("default.png")) fileName = s3Uploader.get("shopDefault.png"); // 기본 이미지
         else fileName = s3Uploader.upload(file, filePath); // 최종 파일 경로 및 파일 업로드
 
         Shop newShop = Shop.builder()
@@ -105,7 +105,7 @@ public class ShopService implements ShopUseCase {
             fileName = modifiedShop.getImage(); // 기존 이미지
         }
         else { // 넘어온 사진이 있으면
-            filePath = uploadFileConverter.parseFileInfo(file, "productsImage", modifiedShop.getId());
+            filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", modifiedShop.getId());
             fileName = s3Uploader.updateS3(file, modifiedShop.getImage(), filePath);
         }
         
@@ -124,12 +124,11 @@ public class ShopService implements ShopUseCase {
         Shop deleteShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
 
         // 해당 shop 의 product 들 이미지 삭제
-        s3Uploader.deleteFolderS3("productsImage/" + deleteShop.getId() + "/");
+        s3Uploader.deleteFolderS3("shopsImage/" + deleteShop.getId() + "/");
         productRepository.deleteByShopId(deleteShop.getId());
 
         // 기본 이미지가 아니면 S3에서 이미지 삭제
-        if (!deleteShop.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
-
+        if (!deleteShop.getImage().contains("shopDefault.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
         displayProductRepository.deleteByShopId(deleteShop.getId());
         choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());

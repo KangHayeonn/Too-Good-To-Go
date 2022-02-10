@@ -26,6 +26,10 @@ server:
       force: true
 
 cloud:
+  minio:
+    access-key: admin
+    secret-key: password
+    endpoint: http://127.0.0.1:9000
   aws:
     s3:
       bucket: toogoodtogobucket

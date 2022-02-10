@@ -18,8 +18,6 @@ import java.util.List;
 public class UpdateShopRequest {
     @NotBlank(message = "이름은 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     private String name;
-    @NotBlank(message = "이미지는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-    private String image;
     @NotEmpty(message = "카테고리는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     private List<String> category;
     @NotBlank(message = "전화번호는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)

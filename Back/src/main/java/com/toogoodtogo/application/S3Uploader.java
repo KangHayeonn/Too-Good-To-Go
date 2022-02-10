@@ -31,8 +31,7 @@ public class S3Uploader {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
         upload(uploadFile, fileName);
-        return fileName;
-//        return "https://" + CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
+        return CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
     }
 
     // S3로 파일 업로드하기
@@ -49,14 +48,19 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    // get file
-    private String getS3(String fileName) {
-        log.info("get file : " + fileName);
-        return amazonS3Client.getUrl(CLOUD_FRONT_DOMAIN_NAME, fileName).toString();
+    public String get(String fileName) {
+        return CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
     }
+
+    // get file
+//    private String getS3(String fileName) {
+//        log.info("get file : " + fileName);
+//        return amazonS3Client.getUrl(CLOUD_FRONT_DOMAIN_NAME, fileName).toString();
+//    }
 
     // delete file
     public void deleteFileS3(String fileName) {
+        fileName = fileName.substring(CLOUD_FRONT_DOMAIN_NAME.length() + 1);
         log.info("delete file : " + fileName);
         if (amazonS3Client.doesObjectExist(bucket, fileName)) amazonS3Client.deleteObject(bucket, fileName);
     }
@@ -86,6 +90,7 @@ public class S3Uploader {
 
     // update file
     public String updateS3(MultipartFile multipartFile, String oldFileName, String newFileName) throws IOException {
+        log.info("oldFile : {}, newFile : {}", oldFileName, newFileName);
         deleteFileS3(oldFileName);
         return upload(multipartFile, newFileName);
     }

@@ -62,7 +62,7 @@ public class ProductService implements ProductUseCase {
         String filePath = uploadFileConverter.parseFileInfo(file, "productsImage", shopId);
         
         String fileName;
-        if (filePath.equals("default.png")) fileName = "default.png"; // 기본 이미지
+        if (filePath.equals("default.png")) fileName = s3Uploader.get("productDefault.png"); // 기본 이미지
         else fileName = s3Uploader.upload(file, filePath); // 최종 파일 경로 및 파일 업로드
 
         Product new_product = Product.builder()
@@ -75,7 +75,6 @@ public class ProductService implements ProductUseCase {
         productRepository.save(new_product);
 
         // product 순서
-        DisplayProduct dp = displayProductRepository.findByShopId(shopId);
         if(displayProductRepository.findByShopId(shopId) == null) { // 만약 displayProduct 가 없으면
             displayProductRepository.save(
                     DisplayProduct.builder().shop(shop)
@@ -132,7 +131,7 @@ public class ProductService implements ProductUseCase {
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         // 기본 이미지가 아니면 S3에서 이미지 삭제
-        if (!deleteProduct.getImage().equals("default.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
+        if (!deleteProduct.getImage().contains("productDefault.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
 
         choiceProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
@@ -170,7 +169,6 @@ public class ProductService implements ProductUseCase {
             }
         });
         return data;
-//        return productRepositorySupport.productsPerCategory2(category, method);
     }
 
     @Transactional(readOnly = true)
@@ -180,11 +178,14 @@ public class ProductService implements ProductUseCase {
         // 해당 shop 의 모든 product 들
         List<Product> products = productRepository.findAllByShopId(shopId);
 
+        // 아직 가게에 등록된 상품이 없으면 빈값 return
+        if (products.isEmpty()) return new ArrayList<>();
+
         // product 순서
         List<String> priority = displayProductRepository.findByShopId(shopId).getPriority();
 
         List<ProductDto> display = new ArrayList<>();
-        // 여기서 product 없으면 에러 발생
+
         priority.forEach(num -> {
             products.forEach(product -> {
                 if(product.getId().equals(Long.valueOf(num))) {

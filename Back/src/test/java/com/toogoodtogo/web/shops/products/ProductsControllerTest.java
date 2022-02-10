@@ -61,12 +61,14 @@ class ProductsControllerTest extends ControllerTest {
         token = signService.login(LoginUserRequest.builder().email("productTest@email.com").password("password").build());
 
         Shop shop = Shop.builder()
-                .user(manager).name("shop1").image("test1").category(Arrays.asList("한식", "중식")).build();
+                .user(manager).name("shop1").image("https://diefqsnmvol80.cloudfront.net/shopDefault.png")
+                .category(Arrays.asList("한식", "중식")).build();
         shopRepository.save(shop);
         shopId = shop.getId();
 
         Product product1 = Product.builder()
-                .shop(shop).name("김치찌개").price(10000L).discountedPrice(9000L).image("test1").build();
+                .shop(shop).name("김치찌개").price(10000L).discountedPrice(9000L)
+                .image("https://diefqsnmvol80.cloudfront.net/productDefault.png").build();
         Product product2 = Product.builder()
                 .shop(shop).name("된장찌개").price(11000L).discountedPrice(10000L).image("test2").build();
         Product product3 = Product.builder()

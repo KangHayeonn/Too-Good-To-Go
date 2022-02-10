@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: row; // 세로방향
-	width: 100%;
+	width: 1115px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: center;
@@ -14,8 +14,8 @@ const Wrapper = styled.div`
 `;
 
 const ShopImage = styled.img`
-	width: 14%;
-	height: 100%;
+	width: 165px;
+	height: 170px;
 	background-color: green;
 	display: flex;
 	justify-content: center;
@@ -25,21 +25,70 @@ const ShopImage = styled.img`
 
 const ShopTitle = styled.div`
 	width: 300px;
-	height: 50px;
+	height: 40px;
+	font-size: 29px;
+	font-weight: 600;
+	display: flex;
+	align-items: flex-end;
+	margin-top: -3px;
+`;
+
+const ShopAddress = styled.div`
+	width: 300px;
+	height: 30px;
+	font-size: 27px;
+	font-weight: 600;
+	display: flex;
+	align-items: flex-end;
+	margin-top: 20px;
+`;
+const ItemCard = styled.div`
+	width: 300px;
+	height: 30px;
+	font-size: 27px;
+	font-weight: 600;
+	display: flex;
+	align-items: flex-end;
+`;
+const ItemsCard = styled.div`
+	width: 300px;
+	height: 30px;
 	font-size: 27px;
 	font-weight: 600;
 	display: flex;
 	align-items: flex-end;
 `;
 
-const ShopTime = styled.div`
-	width: 200px;
+const ItemTitle = styled.div`
+	width: 120px;
 	height: 30px;
-	font-size: 15px;
+	font-size: 16px;
+	display: flex;
+	align-items: flex-end;
+	font-weight: 500;
+	color: #747474;
+`;
+
+const ItemContent = styled.div`
+	width: 400px;
+	height: 30px;
+	font-size: 16px;
 	display: flex;
 	align-items: flex-end;
 	font-weight: 500;
 	color: #b4b4b4;
+`;
+
+const ItemTime = styled.div`
+	width: 110px;
+	height: 30px;
+	font-size: 16px;
+	display: flex;
+	align-items: flex-end;
+	font-weight: 500;
+	color: #b4b4b4;
+	margin-left: -50px;
+	margin-right: 30px;
 `;
 
 const Content = styled.section`
@@ -55,15 +104,37 @@ type Props = {
 	image: string; // string 이나 이미지는 어떻게 넣지,,,
 	title: string;
 	time: string;
+	address: string;
+	phone: string;
 };
 
-const TitleTemplate: React.FC<Props> = ({ image, title, time, ...props }) => {
+const TitleTemplate: React.FC<Props> = ({
+	image,
+	title,
+	time,
+	address,
+	phone,
+	...props
+}) => {
 	return (
 		<Wrapper {...props}>
 			<ShopImage src={image} alt="ShopImage" />
 			<Content>
 				<ShopTitle>{title}</ShopTitle>
-				<ShopTime>{time}</ShopTime>
+				<ShopAddress>
+					<ItemTitle>주소</ItemTitle>
+					<ItemContent>{address}</ItemContent>
+				</ShopAddress>
+				<ItemsCard>
+					<ItemCard>
+						<ItemTitle>영업시간</ItemTitle>
+						<ItemTime>{time}</ItemTime>
+					</ItemCard>
+					<ItemCard>
+						<ItemTitle>전화번호</ItemTitle>
+						<ItemContent>{phone}</ItemContent>
+					</ItemCard>
+				</ItemsCard>
 			</Content>
 		</Wrapper>
 	);

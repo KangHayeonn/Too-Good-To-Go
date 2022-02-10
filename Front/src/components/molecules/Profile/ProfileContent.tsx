@@ -23,10 +23,10 @@ const ProfileContent: React.FC = () => {
 	const location = useLocation();
 	const history = useHistory();
 	useEffect(() => {
-
 		// Checking wheter getAccessToken is valid, if not, false will be returned.
 		// Must be updated, getAccessToken is not created for this usage.
-		if (logChecker) { // 이전에는 logchekcer.length 였음
+		if (logChecker) {
+			// 이전에는 logchekcer.length 였음
 			setIsLoggedIn(true);
 		} else {
 			setIsLoggedIn(false);

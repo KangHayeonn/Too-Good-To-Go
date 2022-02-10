@@ -15,12 +15,12 @@ function LOGOUT() {
 	try {
 		/* logout api 호출 */
 		axios
-			.get(`${LOGIN_URL}/logout`, {
+			.delete(`${LOGIN_URL}/logout`, {
 				headers: {
 					Authorization: `Bearer ${getAccessToken()}`,
 				},
 			})
-			.then((res) => console.log(res))
+			.then(() => console.log("로그아웃 성공"))
 			.catch((e) => console.error(e));
 
 		// localStorage에서 user 정보 제거
@@ -79,8 +79,5 @@ const userSlice = createSlice({
 	},
 });
 
-export const {
-	tempSetUser,
-	logout,
-} = userSlice.actions;
+export const { tempSetUser, logout } = userSlice.actions;
 export default userSlice.reducer;

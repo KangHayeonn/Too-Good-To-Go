@@ -2,6 +2,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { shopData } from "../../components/molecules/ShopDummyData";
 
+export const shopMenu = (displayMenu: productsDataType) => {
+	const shopData = displayMenu;
+	console.log("check: ", shopData);
+};
+
+type productsDataType = {
+	id: number;
+	name: string;
+	image: string;
+	discountedPrice: number;
+	price: number;
+	shopId: number;
+	shopName: string;
+};
+
 export type CartCardType = {
 	shopId: number;
 	shopFoodImg: string;

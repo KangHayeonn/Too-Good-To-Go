@@ -62,7 +62,7 @@ const ItemsCard = styled.div`
 const ItemTitle = styled.div`
 	width: 120px;
 	height: 30px;
-	font-size: 15px;
+	font-size: 16px;
 	display: flex;
 	align-items: flex-end;
 	font-weight: 500;
@@ -72,7 +72,7 @@ const ItemTitle = styled.div`
 const ItemContent = styled.div`
 	width: 400px;
 	height: 30px;
-	font-size: 15px;
+	font-size: 16px;
 	display: flex;
 	align-items: flex-end;
 	font-weight: 500;
@@ -80,9 +80,9 @@ const ItemContent = styled.div`
 `;
 
 const ItemTime = styled.div`
-	width: 100px;
+	width: 110px;
 	height: 30px;
-	font-size: 15px;
+	font-size: 16px;
 	display: flex;
 	align-items: flex-end;
 	font-weight: 500;

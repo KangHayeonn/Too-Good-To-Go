@@ -4,8 +4,9 @@ import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	selectCartCardByID,
-	initialCartCardType,
+	shopMenu,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
+import { updateMenuItems } from "../../../features/shopFeatures/updateMenuItemsSlice";
 import { RootState } from "../../../app/store";
 import fighting from "../../../../public/image/화이팅도치.jpg";
 
@@ -48,6 +49,8 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 		BoardService().then(
 			(res) => {
 				setProducts(res.data.data);
+				dispatch(updateMenuItems(res.data.data));
+				shopMenu(res.data.data);
 			},
 			() => {
 				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
@@ -56,11 +59,11 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	}, []);
 
 	// logic to display cards
-	const displayCardArr = useSelector((state: RootState) => {
-		return state.selectMenuItems;
+	const displayMenu = useSelector((state: RootState) => {
+		return state.updateMenuItems;
 	});
 
-	if (displayCardArr.length) {
+	if (displayMenu.length) {
 		return (
 			<Wrapper>
 				{products.map((card) => {

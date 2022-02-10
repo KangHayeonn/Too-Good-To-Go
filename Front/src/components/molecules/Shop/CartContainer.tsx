@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,7 +17,22 @@ type buttonType = {
 };
 
 const CartContainer: React.FC<buttonType> = ({ children }) => {
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 	const dispatch = useDispatch();
+	const history = useHistory();
+
+	// login check
+	const logChecker = useSelector((state: RootState) => {
+		return state.user.email;
+	});
+
+	useEffect(() => {
+		if (logChecker) {
+			setIsLoggedIn(true);
+		} else {
+			setIsLoggedIn(false);
+		}
+	}, []);
 
 	const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectMenuItems.filter((e) => {
@@ -100,7 +116,13 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 				<button
 					type="button"
 					onClick={() => {
-						dispatch(addItemsToCart(isCheckedArr));
+						if (isLoggedIn) {
+							dispatch(addItemsToCart(isCheckedArr));
+						} else {
+							// eslint-disable-next-line no-alert
+							alert("로그인이 필요합니다.");
+							history.push("/login");
+						}
 					}}
 				>
 					{children}

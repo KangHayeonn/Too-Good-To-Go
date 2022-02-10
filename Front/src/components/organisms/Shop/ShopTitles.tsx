@@ -29,7 +29,6 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
-				console.log(res.data.data);
 				setShop(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
 			() => {

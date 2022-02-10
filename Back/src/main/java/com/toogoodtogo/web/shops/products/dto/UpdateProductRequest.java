@@ -23,7 +23,4 @@ public class UpdateProductRequest {
     @NotNull(message = "할인가격은 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     @Positive(message = "가격은 0보다 커야 합니다.", groups = ValidationGroups.PatternCheckGroup.class)
     private Long discountedPrice;
-//    @NotNull(message = "우선순위는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-//    @Positive(message = "우선순위는 0보다 커야 합니다.", groups = ValidationGroups.PatternCheckGroup.class)
-//    private Long priority;
 }

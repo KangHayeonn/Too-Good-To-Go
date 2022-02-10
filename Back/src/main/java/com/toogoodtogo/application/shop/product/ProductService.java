@@ -75,7 +75,6 @@ public class ProductService implements ProductUseCase {
         productRepository.save(new_product);
 
         // product 순서
-        DisplayProduct dp = displayProductRepository.findByShopId(shopId);
         if(displayProductRepository.findByShopId(shopId) == null) { // 만약 displayProduct 가 없으면
             displayProductRepository.save(
                     DisplayProduct.builder().shop(shop)
@@ -170,7 +169,6 @@ public class ProductService implements ProductUseCase {
             }
         });
         return data;
-//        return productRepositorySupport.productsPerCategory2(category, method);
     }
 
     @Transactional(readOnly = true)
@@ -180,11 +178,14 @@ public class ProductService implements ProductUseCase {
         // 해당 shop 의 모든 product 들
         List<Product> products = productRepository.findAllByShopId(shopId);
 
+        // 아직 가게에 등록된 상품이 없으면 빈값 return
+        if (products.isEmpty()) return new ArrayList<>();
+
         // product 순서
         List<String> priority = displayProductRepository.findByShopId(shopId).getPriority();
 
         List<ProductDto> display = new ArrayList<>();
-        // 여기서 product 없으면 에러 발생
+
         priority.forEach(num -> {
             products.forEach(product -> {
                 if(product.getId().equals(Long.valueOf(num))) {

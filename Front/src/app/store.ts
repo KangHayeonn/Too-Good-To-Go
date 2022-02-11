@@ -5,6 +5,8 @@ import menuItemsSelectorReducer from "../features/shopFeatures/selectMenuItemsSl
 import updateMenuItemsReducer from "../features/shopFeatures/updateMenuItemsSlice";
 import authReducer from "../features/auth/authSlice";
 import userReducer from "../features/user/userSlice";
+import orderInfoReducer from "../features/order/orderInfoSlice";
+import priceInfoReducer from "../features/order/priceInfoSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
 		updateMenuItems: updateMenuItemsReducer,
 		auth: authReducer,
 		user: userReducer,
+		orderInfo: orderInfoReducer,
+		priceInfo: priceInfoReducer,
 	},
 });
 

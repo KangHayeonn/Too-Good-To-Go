@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
 
 const DropButton = styled.div<{ displayType: boolean }>`
 	width: 95%;
@@ -89,8 +91,14 @@ const Total = styled.div`
 `;
 
 const PayInfo: React.FC = () => {
+	const price = useSelector((state: RootState) => {
+		return state.priceInfo;
+	});
 	const [hidden, setHidden] = useState(true);
-	const show = () => setHidden((current) => !current);
+
+	const show = () => {
+		setHidden((current) => !current);
+	};
 
 	return (
 		<DropButton displayType={hidden}>
@@ -103,7 +111,7 @@ const PayInfo: React.FC = () => {
 			<ul className="dropbox">
 				<li>
 					<div>주문금액</div>
-					<div>59,000원</div>
+					<div>{price.cost}원</div>
 				</li>
 				<li>
 					<div>할인/부가결제</div>
@@ -111,12 +119,12 @@ const PayInfo: React.FC = () => {
 				</li>
 				<li>
 					<div>배송비</div>
-					<div>2,500원</div>
+					<div>{price.deliveryCost}원</div>
 				</li>
 			</ul>
 			<Total>
 				<div>총 결제금액</div>
-				<div>61,500원</div>
+				<div>{price.totalCost}원</div>
 			</Total>
 		</DropButton>
 	);

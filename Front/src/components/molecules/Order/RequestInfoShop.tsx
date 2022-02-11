@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useDispatch } from "react-redux";
+import { setRequirement } from "../../../features/order/orderInfoSlice";
 
 const RequestShop = styled.div`
 	display: flex;
@@ -59,6 +61,23 @@ const Label = styled.label`
 `;
 
 const RequestInfoShop: React.FC = () => {
+	const [text, setText] = useState<string>("");
+	const [check, setCheck] = useState<boolean>(false);
+	const dispatch = useDispatch();
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setText(event.target.value);
+	};
+
+	useEffect(() => {
+		dispatch(
+			setRequirement({
+				requirement: text,
+				cacheRequirement: check,
+			})
+		);
+	}, [text, check]);
+
 	return (
 		<div>
 			<RequestShop>
@@ -66,9 +85,15 @@ const RequestInfoShop: React.FC = () => {
 				<Input
 					placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요."
 					type="text"
+					name="requirement"
+					onChange={handleChange}
 				/>
 				<Button>
-					<Input1 type="checkbox" id="nextuseshop" />
+					<Input1
+						type="checkbox"
+						id="nextuseshop"
+						onClick={() => setCheck(!check)}
+					/>
 					<Label htmlFor="nextuseshop">다음에도 사용</Label>
 				</Button>
 			</RequestShop>

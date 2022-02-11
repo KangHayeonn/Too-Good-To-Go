@@ -102,6 +102,11 @@ const Login: React.FC = () => {
 	return (
 		<Wrapper>
 			<Container>
+				<TitleCtn>
+					<h4>로그인</h4>
+					<img src="image/Line 13.png" alt="" />
+					<h4>SIGN IN</h4>
+				</TitleCtn>
 				<InputCtn>
 					<input
 						className="id input"

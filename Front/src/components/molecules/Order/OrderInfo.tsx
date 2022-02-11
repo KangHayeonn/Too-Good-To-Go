@@ -1,6 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import { tempSetPhone } from "../../../features/order/orderInfoSlice";
 
 const Bar = styled.div`
 	padding: 3em;
@@ -8,6 +12,7 @@ const Bar = styled.div`
 
 const CustomerName = styled.div`
 	display: flex;
+	padding-top: 10px;
 `;
 
 const Text = styled.div`
@@ -24,7 +29,7 @@ const Input = styled.input`
 	width: 23%;
 	height: 27px;
 	padding-left: 15px;
-	margin-bottom: 19px;
+	margin-bottom: 15px;
 	border: solid 1px #c4c4c4;
 
 	&:focus {
@@ -36,21 +41,92 @@ const Sign = styled.h4`
 	margin: 5px 1em 1em;
 `;
 
+type User = {
+	first?: string | undefined;
+	second?: string | undefined;
+	third?: string | undefined;
+};
+
 const OrderInfo: React.FC = () => {
+	const [phoneNum, setPhoneNum] = useState<string[]>();
+	const [state, setState] = useState<User>();
+	const dispatch = useDispatch();
+	const logChecker = useSelector((state: RootState) => {
+		return state.user.phone;
+	});
+	const orderInfoCheck = useSelector((state: RootState) => {
+		return state.orderInfo.orderInfoCheck;
+	});
+	const history = useHistory();
+
+	useEffect(() => {
+		if (logChecker) {
+			dispatch(tempSetPhone(logChecker));
+			const phone = logChecker.split("-");
+			setPhoneNum(phone);
+		} else {
+			// eslint-disable-next-line no-alert
+			alert("먼저 로그인이 필요합니다.");
+			history.push("/login");
+		}
+	}, []);
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setState({
+			...state,
+			// Dynamic state changing.
+			[event.target.name]: event.target.value,
+		});
+	};
+
+	useEffect(() => {
+		if (state)
+			dispatch(
+				tempSetPhone(`${state.first}-${state.second}-${state.third}`)
+			);
+	}, [state]);
+
 	return (
 		<div>
-			<CustomerName>
-				<Text>주문자 *</Text>
-				<Input placeholder="이름을 입력하세요." type="text" />
-			</CustomerName>
-			<CustomerName>
-				<Text>휴대전화 *</Text>
-				<Input placeholder="" type="text" className="phone" />
-				<Sign> - </Sign>
-				<Input placeholder="" type="text" />
-				<Sign> - </Sign>
-				<Input placeholder="" type="text" />
-			</CustomerName>
+			{orderInfoCheck === "USER" && phoneNum ? (
+				<CustomerName>
+					<Text>휴대전화 *</Text>
+					<Input
+						placeholder={phoneNum[0]}
+						type="text"
+						className="phone"
+						disabled
+					/>
+					<Sign> - </Sign>
+					<Input placeholder={phoneNum[1]} type="text" disabled />
+					<Sign> - </Sign>
+					<Input placeholder={phoneNum[2]} type="text" disabled />
+				</CustomerName>
+			) : (
+				<CustomerName>
+					<Text>휴대전화 *</Text>
+					<Input
+						placeholder=""
+						type="text"
+						name="first"
+						onChange={handleChange}
+					/>
+					<Sign> - </Sign>
+					<Input
+						placeholder=""
+						type="text"
+						name="second"
+						onChange={handleChange}
+					/>
+					<Sign> - </Sign>
+					<Input
+						placeholder=""
+						type="text"
+						name="third"
+						onChange={handleChange}
+					/>
+				</CustomerName>
+			)}
 			<Bar />
 		</div>
 	);

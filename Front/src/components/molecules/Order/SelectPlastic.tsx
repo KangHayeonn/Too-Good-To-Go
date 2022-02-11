@@ -1,10 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import styled from "@emotion/styled/macro";
+import { useDispatch } from "react-redux";
+import { setPlasticUse } from "../../../features/order/orderInfoSlice";
 
 const Select = [
-	{ name: "일회용 수저, 포크 안주셔도 돼요. 🌱", hex: "#54b689" },
-	{ name: "일회용 수저, 포크 넣어주세요.", hex: "#646464" },
+	{
+		name: "일회용 수저, 포크 안주셔도 돼요. 🌱",
+		hex: "#54b689",
+		check: false,
+		default: true,
+	},
+	{ name: "일회용 수저, 포크 넣어주세요.", hex: "#646464", check: true },
 ];
 
 const ColorSelectorContainer = styled.div`
@@ -48,6 +55,7 @@ const RadioButton = styled.input`
 `;
 
 const SelectPlastic: React.FC = () => {
+	const dispatch = useDispatch();
 	return (
 		<>
 			<ColorSelectorContainer>
@@ -58,6 +66,8 @@ const SelectPlastic: React.FC = () => {
 							type="radio"
 							name="select-plastic-info"
 							value={row.name}
+							defaultChecked={row.default}
+							onClick={() => dispatch(setPlasticUse(row.check))}
 						/>
 						<Label htmlFor={row.name} color={row.hex}>
 							{row.name}

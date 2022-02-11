@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
 import styled from "@emotion/styled";
+import { useDispatch } from "react-redux";
+import { setPaymentMethod } from "../../../features/order/orderInfoSlice";
 
 const dropdownItems = [
 	{ id: 1, name: "무통장 입금" },
@@ -68,6 +70,7 @@ type Type = {
 const DropDown: React.FC<Type> = ({ children }) => {
 	const [isActive, setIsActive] = useState(false);
 	const [item, setItem] = useState(null);
+	const dispatch = useDispatch();
 
 	const onActiveToggle = useCallback(() => {
 		setIsActive((prev) => !prev);
@@ -79,6 +82,7 @@ const DropDown: React.FC<Type> = ({ children }) => {
 			setItem(e.target.parentElement.innerText);
 		} else if (targetId === "item") {
 			setItem(e.target.innerText);
+			dispatch(setPaymentMethod(e.target.innerText));
 		}
 		setIsActive((prev) => !prev);
 	}, []);

@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { deleteAccessToken, getAccessToken } from "../../helpers/tokenControl";
+import {
+	deleteAccessToken,
+	deleteRefreshToken,
+	getAccessToken,
+} from "../../helpers/tokenControl";
 import { deleteUserLocalStorage } from "../../helpers/userInfoControl";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
@@ -20,6 +24,7 @@ function LOGOUT() {
 		// localStorage에서 user 정보 제거
 		deleteAccessToken();
 		deleteUserLocalStorage();
+		deleteRefreshToken();
 	} catch (e) {
 		console.log("localStorage is not working");
 	}

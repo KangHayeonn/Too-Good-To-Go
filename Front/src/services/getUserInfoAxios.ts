@@ -57,12 +57,19 @@ axiosApiMeGetInstance.interceptors.response.use(
 			if (error.response.status === 401 && !originalConfig.retry) {
 				originalConfig.retry = true;
 				try {
-					const responseFromRefreshToken = await refreshToken();
-					const { accessToken } = responseFromRefreshToken.data.data;
+					const responseFromRefreshToken =
+						await getNewRefreshTokenPost();
+					console.log(
+						"response from refresh token: ",
+						responseFromRefreshToken
+					);
+					const { accessToken, refreshToken } =
+						responseFromRefreshToken.data.data;
 					setAccessToken(accessToken);
 					axiosApiMeGetInstance.defaults.headers.common.Authorization =
 						accessToken;
 					return axiosApiMeGetInstance(originalConfig);
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
 					if (error.response && error.response.data) {
 						return Promise.reject(error.response.data);
@@ -76,7 +83,7 @@ axiosApiMeGetInstance.interceptors.response.use(
 	}
 );
 
-function refreshToken() {
+function getNewRefreshTokenPost() {
 	return axios.post("/api/reissue", {
 		method: "post",
 		headers: { Authorization: `Bearer ${getAccessToken()}` },

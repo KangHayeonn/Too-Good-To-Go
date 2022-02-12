@@ -17,6 +17,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -227,6 +228,16 @@ public class ExceptionAdvice {
 
     /**
      * -1009
+     * 틀린 접근방식 (GET, POST, ..) 으로 접근했을 경우 발생 시키는 예외
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    protected ErrorResponse wrongMethodException(HttpServletRequest request, HttpRequestMethodNotSupportedException e) {
+        return new ErrorResponse("Wrong Method", getMessage("wrongMethod.msg"));
+    }
+
+    /**
+     * -1010
      * 전달한 Jwt 이 정상적이지 않은 경우 발생 시키는 예외
      */
     @ExceptionHandler(CAuthenticationEntryPointException.class)
@@ -236,7 +247,7 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1010
+     * -1011
      * 권한이 없는 리소스를 요청한 경우 발생 시키는 예외
      */
     @ExceptionHandler(CAccessDeniedException.class)
@@ -246,7 +257,7 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1011
+     * -1012
      * refresh token 에러시 발생 시키는 에러
      */
     @ExceptionHandler(CRefreshTokenException.class)
@@ -256,7 +267,7 @@ public class ExceptionAdvice {
     }
 
     /**
-     * -1012
+     * -1013
      * 액세스 토큰 만료시 발생하는 에러
      */
     @ExceptionHandler(CExpiredAccessTokenException.class)
@@ -266,7 +277,7 @@ public class ExceptionAdvice {
     }
 
 //    /***
-//     * -1013
+//     * -1014
 //     * Social 인증 과정에서 문제 발생하는 에러
 //     */
 //    @ExceptionHandler(CCommunicationException.class)
@@ -278,7 +289,7 @@ public class ExceptionAdvice {
 //    }
 
     /***
-     * -1014
+     * -1015
      * 기 가입자 에러
      */
     @ExceptionHandler(CUserExistException.class)
@@ -288,7 +299,7 @@ public class ExceptionAdvice {
     }
 
 //    /***
-//     * -1015
+//     * -1016
 //     * 소셜 로그인 시 필수 동의항목 미동의시 에러
 //     */
 //    @ExceptionHandler(CSocialAgreementException.class)
@@ -300,7 +311,7 @@ public class ExceptionAdvice {
 //    }
 
     /***
-     * -1016
+     * -1017
      * 유효성 검사 실패
      */
     @ExceptionHandler(CValidCheckException.class)

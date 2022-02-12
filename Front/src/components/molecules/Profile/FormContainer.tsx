@@ -1,41 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-// MUI
 import TextField from "@mui/material/TextField";
+import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Line13 from "../../../../public/image/Line 13.png";
+import patchUserInfoUpdateAxios from "../../../services/patchUserInfoUpdateAxios";
+import { RootState } from "../../../app/store";
 
-type User = {
-	name: string;
-	email: string;
-	password: number;
-	phoneNumber: string;
+export type UserT = {
+	password: string;
+	cpassword: string | undefined;
+	phone: string | null;
 };
 
 const initialState = {
-	name: "최지훈",
-	email: "akdlsz21@gmail.com",
-	password: 555132574,
-	phoneNumber: "01055453287",
+	password: "",
+	cpassword: "",
+	phone: "01055453287",
 };
 
 const FormContainer: React.FC = () => {
-	const [state, setState] = useState<User>(initialState);
+	const [formValue, setFormValue] = useState<UserT>(initialState);
+	const [validation, setValidation] = useState("");
+
+	// input default value, bring in user's data from global
+	const userInfo = useSelector((state: RootState) => {
+		return state.user;
+	});
+
+	// logic for validating patch password
+	useEffect(() => {
+		if (formValue.password.length < 8) {
+			setValidation("비밀번호는 최소 8자 이상이여야 합니다.");
+		} else {
+			setValidation("");
+		}
+
+		if (
+			!(formValue.password === formValue.cpassword) &&
+			formValue.password.length > 7
+		) {
+			setValidation("비밀번호가 일치하지 않습니다.");
+		} else if (
+			formValue.password === formValue.cpassword &&
+			formValue.password.length > 7
+		) {
+			setValidation("");
+		}
+	}, [formValue]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
+		setFormValue({
+			...formValue,
 			// Dynamic state changing.
 			[event.target.name]: event.target.value,
 		});
+
+		console.log(formValue);
 	};
 
-	const handleSubmit = (event: { preventDefault: () => void }) => {
+	const handleSubmit = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
-		// eslint-disable-next-line no-alert
-		alert(
-			`이름: ${state.name}, 이메일: ${state.email}, 비번M: ${state.password}, 전번M: ${state.phoneNumber}`
-		);
+		try {
+			// modifiy formValue to have no cpassword property
+			delete formValue.cpassword;
+
+			// eslint-disable-next-line no-alert
+			await patchUserInfoUpdateAxios.patchUserInfo(formValue);
+			console.log(formValue);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -53,7 +88,7 @@ const FormContainer: React.FC = () => {
 							id="outlined-helperText"
 							name="name"
 							disabled
-							defaultValue={state.name}
+							defaultValue={userInfo.name}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -64,7 +99,7 @@ const FormContainer: React.FC = () => {
 							id="outlined-helperText"
 							name="email"
 							disabled
-							defaultValue={state.email}
+							defaultValue={userInfo.email}
 							onChange={handleChange}
 							margin="normal"
 						/>
@@ -74,18 +109,28 @@ const FormContainer: React.FC = () => {
 						<div className="profile-info">비밀번호</div>
 						<TextField
 							name="password"
-							defaultValue={state.password}
+							defaultValue={formValue.password}
 							onChange={handleChange}
 							margin="normal"
 						/>
 					</div>
+					<div className="section-wrapper">
+						<div className="profile-info">비밀번호 확인</div>
+						<TextField
+							name="cpassword"
+							defaultValue={formValue.cpassword}
+							onChange={handleChange}
+							margin="normal"
+						/>
+					</div>
+					<span>{validation}</span>
 
 					<div className="section-wrapper">
 						<div className="profile-info">핸드폰번호</div>
 						<TextField
 							id="outlined-helperText"
-							name="phoneNumber"
-							defaultValue={state.phoneNumber}
+							name="phone"
+							defaultValue={formValue.phone}
 							onChange={handleChange}
 							margin="normal"
 						/>

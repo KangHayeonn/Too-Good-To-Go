@@ -53,6 +53,7 @@ const Register: React.FC = () => {
 		});
 
 		// If passwords are different, send a message
+		console.log(formValue);
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +61,7 @@ const Register: React.FC = () => {
 		// join phone number values to one
 		formValue.phone =
 			formValue.phone1 + formValue.phone2 + formValue.phone3;
-			
+
 		const stringifiedFormValue = JSON.stringify(formValue);
 		if (validation) {
 			alert("비밀번호 확인 바람");
@@ -117,9 +118,6 @@ const Register: React.FC = () => {
 								id=""
 								placeholder="이메일을 입력하세요."
 							/>
-							{/* <Confirm type="button" className="confirm-btn">
-						//중복 확인 논리가 들어가야함
-						</Confirm> */}
 						</div>
 						<div className="input-row">
 							<input

@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/orders")
 @RequiredArgsConstructor
+@RequestMapping("/api/orders")
 public class OrdersController {
 
     private final OrderUseCase orderUseCase;

@@ -46,7 +46,7 @@ public class OrderService implements OrderUseCase {
                 .requirement(addOrderDto.getRequirement())
                 .paymentMethod(addOrderDto.getPaymentMethod())
                 .orderProducts(new ArrayList<>())
-                .status(OrderStatus.ORDER_COMPLETED)
+                .status(OrderStatus.WAITING_FOR_ACCEPTANCE)
                 .build();
         for (Product product : products) {
             order.addProduct(

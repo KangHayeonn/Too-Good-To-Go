@@ -3,6 +3,7 @@ import {
 	getAccessToken,
 	getRefreshToken,
 	setAccessToken,
+	setRefreshToken,
 } from "../helpers/tokenControl";
 
 const BASE_URL = "http://54.180.134.20";
@@ -66,6 +67,7 @@ axiosApiMeGetInstance.interceptors.response.use(
 					const { accessToken, refreshToken } =
 						responseFromRefreshToken.data.data;
 					setAccessToken(accessToken);
+					setRefreshToken(refreshToken);
 					axiosApiMeGetInstance.defaults.headers.common.Authorization =
 						accessToken;
 					return axiosApiMeGetInstance(originalConfig);
@@ -84,12 +86,14 @@ axiosApiMeGetInstance.interceptors.response.use(
 );
 
 function getNewRefreshTokenPost() {
-	return axios.post("/api/reissue", {
-		method: "post",
-		headers: { Authorization: `Bearer ${getAccessToken()}` },
-		data: {
-			accessToken: getAccessToken(),
-			refreshToken: getRefreshToken(),
+	return axios.post(
+		"/api/reissue",
+		{
+			data: {
+				accessToken: getAccessToken(),
+				refreshToken: getRefreshToken(),
+			},
 		},
-	});
+		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
+	);
 }

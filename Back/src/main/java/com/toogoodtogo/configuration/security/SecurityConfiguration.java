@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // 메인 화면, 로그인 및 가입 접근은 누구나 가능
                         // 더 손봐야 함!!
                 .antMatchers("/api/signup", "/api/login", "/api/reissue", "/", "/exception/**").permitAll()
-                .antMatchers("/api/shop/**", "/api/shops/**", "/api/product/**", "/api/products/**", "/api/category/**").permitAll()
+                .antMatchers("/api/shop/**", "/api/shops/**", "/api/product/**", "/api/products/**").permitAll()
                 .antMatchers("/api/search/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()

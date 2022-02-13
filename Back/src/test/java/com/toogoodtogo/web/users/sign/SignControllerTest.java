@@ -207,7 +207,6 @@ class SignControllerTest extends ControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post("/api/reissue")
                 .content(object)
-                .header("Authorization", "Bearer " + userToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -217,7 +216,6 @@ class SignControllerTest extends ControllerTest {
                 .andDo(document("join/reissue",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        requestHeaders(headerWithName("Authorization").description("유저의 Access Token")),
                         requestFields(
                                 fieldWithPath("accessToken").description("accessToken"),
                                 fieldWithPath("refreshToken").description("refreshToken")

@@ -83,7 +83,7 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
-
+        choiceProductRepository.save(ChoiceProduct.builder().shop(newShop).product(null).build());
         return new ShopDto(shopRepository.save(newShop));
     }
 

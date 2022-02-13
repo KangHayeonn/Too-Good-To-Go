@@ -7,6 +7,7 @@ const ShopCards: React.FC = () => {
 			image="image/shoptitle.png"
 			title="강여사 김치찜"
 			time="영업시간 10:00 ~ 22:00"
+			isEdit
 		/>
 	);
 };

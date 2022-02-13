@@ -23,6 +23,7 @@ const CartPage: React.FC = () => {
 						<CartCards />
 					</div>
 				}
+				isSide
 				sidebar={<PaymentContainer>선택 결제하기</PaymentContainer>}
 			/>
 		</PageTemplate>

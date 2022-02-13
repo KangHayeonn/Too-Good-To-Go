@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
+import { Link } from "react-router-dom";
 import FormContainer from "./FormContainer";
 import ProfileOrderList from "./ProfileOrderList";
+import ProfileAddShop from "./ProfileAddShop";
 
 type theme = {
 	checked: boolean;
@@ -11,6 +13,7 @@ const ProfileContent: React.FC = () => {
 	const [showProfileEdit, setShowProfileEdit] = useState<boolean>(true);
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
 	const [showManager, setShowManager] = useState<boolean>(false);
+	const [dropmenuShow, setDropmenuShow] = useState<boolean>(false);
 
 	function handleShowProfileEdit(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -59,16 +62,49 @@ const ProfileContent: React.FC = () => {
 					</ProfileSelectButton>
 					<ProfileSelectButton
 						type="button"
-						onClick={(e) => handleShowManager(e)}
+						onClick={(e) => {
+							handleShowManager(e);
+						}}
 						checked={showManager}
 					>
 						매점 관리
 					</ProfileSelectButton>
+					{showManager && (
+						<>
+							<DropContent>
+								<Link to="manager">
+									<ProfileSelectButton
+										type="button"
+										checked={dropmenuShow}
+									>
+										교촌치킨 산본점
+									</ProfileSelectButton>
+								</Link>
+								<Link to="shopedit" id="editBtn">
+									수정
+								</Link>
+							</DropContent>
+							<DropContent>
+								<Link to="manager">
+									<ProfileSelectButton
+										type="button"
+										checked={dropmenuShow}
+									>
+										강여사 김치찌개
+									</ProfileSelectButton>
+								</Link>
+								<Link to="shopedit" id="editBtn">
+									수정
+								</Link>
+							</DropContent>
+						</>
+					)}
 				</div>
 			</SelectionContainer>
 			<ProfileEditContainer>
 				{showProfileEdit && <FormContainer />}
 				{showOrderList && <ProfileOrderList />}
+				{showManager && <ProfileAddShop />}
 			</ProfileEditContainer>
 		</Content>
 	);
@@ -93,6 +129,23 @@ const ProfileSelectButton = styled.button<theme>`
 
 	:hover {
 		color: #6e6b6b;
+	}
+`;
+
+const DropContent = styled.div`
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+
+	#editBtn {
+		margin-left: 40px;
+		font-size: 15px;
+		color: #000;
+	}
+	button {
+		font-size: 18px;
+		height: 100%;
 	}
 `;
 

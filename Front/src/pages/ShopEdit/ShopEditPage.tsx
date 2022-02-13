@@ -4,9 +4,7 @@ import ShopTemplate from "../../components/templates/ShopTemplate";
 import Categories from "../../components/organisms/Categories/Categories";
 import ShopMenuHeader from "../../components/molecules/Shop/ShopMenuHeader";
 import ShopTitles from "../../components/organisms/Shop/ShopTitles";
-import CartSelectionButtons from "../../components/molecules/Cart/CartSelectionButtons";
-import PaymentContainer from "../../components/molecules/Cart/PaymentContainer";
-import CartCards from "../../components/molecules/Cart/CartCards";
+import CartCardsEdit from "../../components/molecules/Shop/CartCardsEdit";
 
 const Shop: React.FC = () => {
 	return (
@@ -21,12 +19,10 @@ const Shop: React.FC = () => {
 			<ShopTemplate
 				menu={
 					<div>
-						<CartSelectionButtons />
-						<CartCards />
+						<CartCardsEdit />
 					</div>
 				}
-				isSide
-				sidebar={<PaymentContainer>장바구니에 담기</PaymentContainer>}
+				isSide={false}
 			/>
 		</PageTemplate>
 	);

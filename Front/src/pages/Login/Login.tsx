@@ -62,8 +62,7 @@ const Login: React.FC = () => {
 				password: inputPw,
 			})
 			.then((res) => {
-				const { accessToken, refreshToken, accessTokenExpireDate } =
-					res.data.data;
+				const { accessToken, refreshToken } = res.data.data;
 				// Storing accessToken to default request header
 				axios.defaults.headers.common.Authorization = accessToken
 					? `${accessToken}`

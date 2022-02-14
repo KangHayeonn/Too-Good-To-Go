@@ -129,11 +129,8 @@ const ProfileEditContainer = styled.div`
 	border-left: 1px solid black;
 	display: flex;
 	flex-direction: column;
-	/* width: 907px; */
 	min-height: 650px;
 	max-height: auto;
-	/* background: #ffffff; */
-	/* border: 1px solid red; */
 `;
 
 const Content = styled.div`
@@ -148,13 +145,12 @@ const Content = styled.div`
 	width: 907px;
 	min-height: 660px;
 	background: #ffffff;
-	/* border: 1px solid #646464; */
+	margin-bottom: 80px;
 `;
 
 const SelectionContainer = styled.div`
 	margin: 0;
 	padding: 0;
-	/* border: 1px dashed red; */
 	display: flex;
 	flex-direction: column;
 	width: 229px;

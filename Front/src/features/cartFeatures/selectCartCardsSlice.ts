@@ -23,8 +23,6 @@ const initialCards: initialCartCardType[] = shopData.map((e: CartCardType) => {
 	return { ...e, isChecked: false, cartItemQuantity: 1 };
 });
 
-console.log("reducer");
-
 export const selectCartCardsSlice = createSlice({
 	name: "selectCartCards",
 	initialState: initialCards,
@@ -112,8 +110,6 @@ export const selectCartCardsSlice = createSlice({
 			state,
 			action: PayloadAction<initialCartCardType[]>
 		) => {
-			console.log("addItemsToCart:", action.payload);
-
 			// set localstorage with state.selectCartCards
 			setLocalStorageCart(JSON.stringify(action.payload));
 

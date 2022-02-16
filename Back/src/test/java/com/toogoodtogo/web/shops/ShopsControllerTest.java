@@ -8,6 +8,7 @@ import com.toogoodtogo.web.shops.dto.AddShopRequest;
 import com.toogoodtogo.web.shops.dto.UpdateShopRequest;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,6 @@ class ShopsControllerTest extends ControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
-        refreshTokenRepository.deleteAllInBatch();
 
         manager = userRepository.save(User.builder()
                 .email("shopTest@email.com")
@@ -74,7 +74,7 @@ class ShopsControllerTest extends ControllerTest {
 
     @AfterEach
     public void setDown() {
-        signService.logout(manager.getId());
+        signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
         displayProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
@@ -280,31 +280,5 @@ class ShopsControllerTest extends ControllerTest {
                         )
                 ))
                 .andExpect(status().isNoContent());
-    }
-
-    @Test
-    void findShopsBySearch() throws Exception {
-        String keyword = "shop2";
-        //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search/shops/{keyword}", keyword))
-                .andDo(print())
-                .andDo(document("shops/search",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("keyword").description("검색 키워드")
-                        ),
-                        responseFields(
-                                fieldWithPath("data.[].id").description("가게 고유번호"),
-                                fieldWithPath("data.[].name").description("가게 이름"),
-                                fieldWithPath("data.[].image").description("가게 이미지"),
-                                fieldWithPath("data.[].category").description("가게 카테고리"),
-                                fieldWithPath("data.[].phone").description("가게 전화번호"),
-                                fieldWithPath("data.[].address").description("가게 주소"),
-                                fieldWithPath("data.[].hours.open").description("가게 오픈시간"),
-                                fieldWithPath("data.[].hours.close").description("가게 마감시간")
-                        )
-                ))
-                .andExpect(status().isOk());
     }
 }

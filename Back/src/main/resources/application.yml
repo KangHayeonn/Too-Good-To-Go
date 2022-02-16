@@ -18,6 +18,9 @@ spring:
       add-mappings: false
   datasource:
     url: jdbc:h2:mem:toogoodtogo
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   servlet:

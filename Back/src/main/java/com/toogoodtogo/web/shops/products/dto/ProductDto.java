@@ -17,17 +17,6 @@ public class ProductDto {
     private String image;
 
     @Builder
-    public ProductDto(Long shopId, String shopName, Product product) {
-        this.shopId = shopId;
-        this.shopName = shopName;
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.discountedPrice = product.getDiscountedPrice();
-        this.image = product.getImage();
-    }
-
-    @Builder
     public ProductDto(Product product) {
         this.shopId = product.getShop().getId();
         this.shopName = product.getShop().getName();

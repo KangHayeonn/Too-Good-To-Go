@@ -14,6 +14,7 @@ const ProfileContent: React.FC = () => {
 	const [showProfileEdit, setShowProfileEdit] = useState<boolean>(true);
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
 	const [showManager, setShowManager] = useState<boolean>(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const logChecker = useSelector((state: RootState) => {
@@ -75,7 +76,7 @@ const ProfileContent: React.FC = () => {
 						onClick={(e) => handleShowProfileEdit(e)}
 						checked={showProfileEdit}
 					>
-						개인정보 수정{`${isLoggedIn}`}
+						개인정보 수정
 					</ProfileSelectButton>
 					<ProfileSelectButton
 						type="button"

@@ -1,36 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Styles
 import styled from "@emotion/styled";
-// redux
-import { useSelector } from "react-redux";
-// rtk
-import { initialCartCardType } from "../../../features/cartFeatures/selectCartCardsSlice";
-import { RootState } from "../../../app/store";
+// Axios
+import axios from "axios";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
 import CartCardEdit from "./CartCardEdit";
 
-const CartCardsEdit: React.FC = () => {
-	// logic to display cards
-	const displayCardArr = useSelector((state: RootState) => {
-		// Will return cards only with cartItemQuantity >= 1
-		return state.selectCartCards.filter((e) => {
-			return e.cartItemQuantity;
-		});
-	});
+interface shopMatchId {
+	shopMatchId: string;
+}
 
-	if (displayCardArr.length) {
+type productsDataType = {
+	id: number;
+	name: string;
+	image: string;
+	discountedPrice: number;
+	price: number;
+	shopId: number;
+	shopName: string;
+};
+
+const BASE_URL = "http://54.180.134.20/api/shops";
+
+const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
+	const [products, setProducts] = useState<productsDataType[]>([]);
+	const UpdateProduct = () => {
+		return axios.get(`${BASE_URL}/${shopMatchId}/products/all`);
+	};
+
+	useEffect(() => {
+		UpdateProduct().then(
+			(res) => {
+				setProducts(res.data.data);
+			},
+			() => {
+				console.log("product update fail");
+			}
+		);
+	}, []);
+	if (products.length) {
 		return (
 			<Wrapper>
-				{displayCardArr.map((card: initialCartCardType) => {
+				{products.map((card) => {
 					return (
 						<CartCardEdit
-							id={card.shopId}
-							shopFoodImg={card.shopFoodImg}
+							id={card.id}
+							shopFoodImg={card.image}
 							shopName={card.shopName}
-							shopFoodName={card.shopFoodName}
-							shopBeforeCost={card.shopBeforeCost}
-							shopFoodCost={card.shopFoodCost}
+							shopFoodName={card.name}
+							shopBeforeCost={card.price}
+							shopFoodCost={card.discountedPrice}
+							shopMatchId={shopMatchId}
 						/>
 					);
 				})}
@@ -43,7 +64,6 @@ const CartCardsEdit: React.FC = () => {
 		</Wrapper>
 	);
 };
-
 export default CartCardsEdit;
 
 const Wrapper = styled.div`

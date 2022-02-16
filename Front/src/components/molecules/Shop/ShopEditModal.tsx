@@ -121,35 +121,54 @@ const InfoBox = styled.div`
 
 type modal = {
 	modal: () => void;
-	shopFoodName: string;
-	shopBeforeCost: number;
-	shopFoodCost: number;
+	shopName: string;
+	shopAddress: string;
+	shopTel: string;
+	shopCategory: string;
+	shopOpen: string;
+	shopClose: string;
+	shopImage: string;
 };
 
 const ShopEditModal: React.FC<modal> = ({
 	modal,
-	shopFoodName,
-	shopBeforeCost,
-	shopFoodCost,
+	shopName,
+	shopAddress,
+	shopTel,
+	shopCategory,
+	shopOpen,
+	shopClose,
+	shopImage,
 }) => {
-	const [changeFoodName, setChangeFoodName] = useState<string>(shopFoodName);
-	const [changeFoodBeforeCost, setChangeFoodBeforeCost] =
-		useState<number>(shopBeforeCost);
-	const [changeFoodCost, setChangeFoodCost] = useState<number>(shopFoodCost);
-
-	const foodNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
+	const [changeName, setChangeName] = useState<string>(shopName);
+	const shopNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
-		setChangeFoodName(target.value);
+		setChangeName(target.value);
 	};
-	const foodBeforeCostChange = (
-		e: React.FormEvent<HTMLInputElement>
-	): void => {
+	const [changeAddress, setChangeAddress] = useState<string>(shopAddress);
+	const shopAddressChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
-		setChangeFoodBeforeCost(+target.value);
+		setChangeAddress(target.value);
 	};
-	const foodCostChange = (e: React.FormEvent<HTMLInputElement>): void => {
+	const [changeTel, setChangeTel] = useState<string>(shopTel);
+	const shopTelChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
-		setChangeFoodCost(+target.value);
+		setChangeTel(target.value);
+	};
+	const [changeCategory, setChangeCategory] = useState<string>(shopCategory);
+	const shopCategoryChange = (e: React.FormEvent<HTMLInputElement>): void => {
+		const target = e.target as HTMLTextAreaElement;
+		setChangeCategory(target.value);
+	};
+	const [changeOpen, setChangeOpen] = useState<string>(shopOpen);
+	const shopOpenChange = (e: React.FormEvent<HTMLInputElement>): void => {
+		const target = e.target as HTMLTextAreaElement;
+		setChangeOpen(target.value);
+	};
+	const [changeClose, setChangeClose] = useState<string>(shopClose);
+	const shopCloseChange = (e: React.FormEvent<HTMLInputElement>): void => {
+		const target = e.target as HTMLTextAreaElement;
+		setChangeClose(target.value);
 	};
 
 	return (
@@ -167,9 +186,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="text"
-								onChange={foodNameChange}
+								onChange={shopNameChange}
 								placeholder="가게 이름"
-								defaultValue={changeFoodName}
+								defaultValue={changeName}
 							/>
 						</Detail>
 					</InfoBox>
@@ -180,8 +199,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="text"
-								onChange={foodNameChange}
+								onChange={shopAddressChange}
 								placeholder="가게 주소"
+								defaultValue={changeAddress}
 							/>
 						</Detail>
 						<Detail>
@@ -189,8 +209,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="text"
-								onChange={foodNameChange}
+								onChange={shopTelChange}
 								placeholder="가게 전화번호"
+								defaultValue={changeTel}
 							/>
 						</Detail>
 						<Detail>
@@ -198,8 +219,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="text"
-								onChange={foodNameChange}
+								onChange={shopCategoryChange}
 								placeholder="가게 카테고리"
+								defaultValue={changeCategory}
 							/>
 						</Detail>
 					</InfoBox>
@@ -210,8 +232,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="time"
-								onChange={foodBeforeCostChange}
+								onChange={shopOpenChange}
 								placeholder="상품 가격"
+								value={changeOpen}
 							/>
 						</Detail>
 						<Detail>
@@ -219,8 +242,9 @@ const ShopEditModal: React.FC<modal> = ({
 							<InputStyle
 								name="productName"
 								type="time"
-								onChange={foodCostChange}
+								onChange={shopCloseChange}
 								placeholder="상품 할인 가격"
+								value={changeClose}
 							/>
 						</Detail>
 					</InfoBox>

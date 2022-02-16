@@ -2,9 +2,9 @@ package com.toogoodtogo.application.user;
 
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.domain.user.UserRepository;
-import com.toogoodtogo.advice.exception.CUserNotFoundException;
-import com.toogoodtogo.web.users.UserDto;
-import com.toogoodtogo.web.users.UserUpdateReq;
+import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
+import com.toogoodtogo.web.users.dto.UserDto;
+import com.toogoodtogo.web.users.dto.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,9 +23,9 @@ public class UserService implements UserUseCase{
     }
 
     @Transactional
-    public UserDto update(Long userId, UserUpdateReq userUpdateReq) {
+    public UserDto update(Long userId, UpdateUserRequest updateUserRequest) {
         User modifiedUser = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-        modifiedUser.update(passwordEncoder.encode(userUpdateReq.getPassword()), userUpdateReq.getPhone());
+        modifiedUser.update(passwordEncoder.encode(updateUserRequest.getPassword()), updateUserRequest.getPhone());
         return new UserDto(modifiedUser);
     }
 }

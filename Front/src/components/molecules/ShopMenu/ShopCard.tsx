@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -77,6 +78,7 @@ const beforeSaleValueStyle = css`
 `;
 
 type shopCardType = {
+	shopId: number;
 	shopName: string;
 	shopFoodImg: string;
 	shopFoodName: string;
@@ -86,6 +88,7 @@ type shopCardType = {
 };
 
 const ShopCard: React.FC<shopCardType> = ({
+	shopId,
 	shopName,
 	shopFoodImg,
 	shopFoodName,
@@ -96,12 +99,15 @@ const ShopCard: React.FC<shopCardType> = ({
 	const [width, setWidth] = useState(imgWidth);
 	useEffect(() => {
 		setWidth(document.querySelector("#shopCardDiv")?.clientWidth);
-		console.log(width);
+		// console.log(width);
 	}, []);
+
 	return (
 		<ShopCardStyle id="shopCardDiv">
 			<Link
-				to="/shop"
+				to={{
+					pathname: `/shop/${shopId}`,
+				}}
 				css={css`
 					height: ${width}px;
 					overflow: hidden;

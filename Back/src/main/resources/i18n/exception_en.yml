@@ -47,24 +47,39 @@ emailSignupFailed:
 noHandlerFound:
   code: "-1008"
   msg: "Wrong URL."
-authenticationEntrypoint:
+wrongMethod:
   code: "-1009"
+  msg: "Wrong method."
+authenticationEntrypoint:
+  code: "-1010"
   msg: "JWT is wrong."
 accessDenied:
-  code: "-1010"
+  code: "-1011"
   msg: "Permission not accessible to this resource."
 refreshTokenInValid:
-  code: "-1011"
+  code: "-1012"
   msg: "Refresh Token is Wrong."
 expiredAccessToken:
-  code: "-1012"
+  code: "-1013"
   msg: "AccessToken is Expired"
 communicationException:
-  code: "-1013"
+  code: "-1014"
   msg: "An error occurred during the social authentication process."
 userExistException:
-  code: "-1014"
+  code: "-1015"
   msg: "Already signed account, please login."
 agreementException:
-  code: "-1015"
+  code: "-1016"
   msg: "A consent is required for the required consent item."
+validCheckException:
+  code: "-1017"
+  msg: "It's not a valid value."
+orderNotFoundException:
+  code: "-1018"
+  msg: "Order not found."
+orderCancelException:
+  code: "-1019"
+  msg: "Order cannot be canceled"
+uploadImageInvalidException:
+  code: "-1020"
+  msg: "Upload Image is Invalid"

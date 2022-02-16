@@ -127,3 +127,22 @@
 	background-color: #fff;
 	color: #54b689;
 }
+
+.logoutState button {
+	display: block;
+	height: 35px;
+	width: 95px;
+	line-height: 30px;
+	border: 2px solid #ffffff;
+	border-radius: 4px;
+	margin-left: 10px;
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: #54b689;
+}
+
+.logoutState button:hover {
+	background-color: #fff;
+	color: #54b689;
+}

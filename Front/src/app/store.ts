@@ -1,11 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartCardSelectorReducer from "../features/cartFeatures/selectCartCardsSlice";
 import managerOrderCountReducer from "../features/manager/ManagerOrderCountSlice";
+import menuItemsSelectorReducer from "../features/shopFeatures/selectMenuItemsSlice";
+import updateMenuItemsReducer from "../features/shopFeatures/updateMenuItemsSlice";
+import authReducer from "../features/auth/authSlice";
+import userReducer from "../features/user/userSlice";
+import orderInfoReducer from "../features/order/orderInfoSlice";
+import priceInfoReducer from "../features/order/priceInfoSlice";
 
 export const store = configureStore({
 	reducer: {
 		selectCartCards: cartCardSelectorReducer,
 		managerOrderCount: managerOrderCountReducer,
+		selectMenuItems: menuItemsSelectorReducer,
+		updateMenuItems: updateMenuItemsReducer,
+		auth: authReducer,
+		user: userReducer,
+		orderInfo: orderInfoReducer,
+		priceInfo: priceInfoReducer,
 	},
 });
 

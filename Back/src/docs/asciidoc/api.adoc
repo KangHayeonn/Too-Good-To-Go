@@ -1,0 +1,153 @@
+= REST API Guide
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:site-url: /build/asciidoc/html5/
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+:roots: ./build/generated-snippets
+endif::[]
+
+== Verb
+|===
+| Verb | Usage
+| `GET`
+| Used to retrieve a resource
+| `POST`
+| Used to create a new resource
+| `PATCH`
+| Used to update an existing resource, including partial updates
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+== Status
+|===
+| Status code | Usage
+| `200 OK`
+| The request completed successfully
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+== Host
+|===
+|환경|Host
+|LOCAL|http://localhost:8080
+|PROD|http://54.180.134.20
+|===
+
+== APIs
+모든 URL 은 `/api/` 로 시작한다.
+
+== Join API
+회원가입, 로그인, 로그아웃, 토큰 재발급 API
+
+=== User 회원가입 성공 [POST]
+operation::join/signup/user/success[snippets='http-request,request-fields,http-response,response-fields']
+
+=== User 회원가입 실패 [POST]
+operation::join/signup/user/fail[snippets='http-request,request-fields,http-response,response-fields']
+
+=== MANAGER 회원가입 성공 [POST]
+operation::join/signup/manager/success[snippets='http-request,request-fields,http-response,response-fields']
+
+=== MANAGER 회원가입 실패 [POST]
+operation::join/signup/manager/fail[snippets='http-request,request-fields,http-response,response-fields']
+
+=== USER 로그인 성공 [POST]
+operation::join/login/user/success[snippets='http-request,request-fields,http-response,response-fields']
+
+=== USER 로그인 실패 [POST]
+operation::join/login/user/fail[snippets='http-request,request-fields,http-response,response-fields']
+
+=== MANAGER 로그인 성공 [POST]
+operation::join/login/manager/success[snippets='http-request,request-fields,http-response,response-fields']
+
+=== MANAGER 로그인 실패 [POST]
+operation::join/login/manager/fail[snippets='http-request,request-fields,http-response,response-fields']
+
+=== User 로그아웃 [DELETE]
+operation::join/logout[snippets='http-request,request-headers,http-response']
+
+=== 토큰 재발급 [POST]
+operation::join/reissue[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+
+== User Api
+
+=== USER 조회 [GET]
+operation::users/me[snippets='http-request,request-headers,http-response,response-fields']
+
+=== USER 업데이트 [PATCH]
+operation::users/update[snippets='http-request,request-headers,http-response,response-fields']
+
+== Shop Api
+
+=== SHOP 전체 조회 [GET]
+operation::shops/findAll[snippets='http-request,http-response,response-fields']
+
+=== 매니저 소유 SHOP 전체 조회 [GET]
+operation::shops/findManager[snippets='http-request,http-response,response-fields']
+
+=== SHOP 조회 [GET]
+operation::shops/find[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== SHOP 추가 [POST]
+operation::shops/add[snippets='http-request,request-headers,http-response,response-fields']
+
+=== SHOP 업데이트 [POST]
+operation::shops/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== SHOP 삭제 [DELETE]
+operation::shops/delete[snippets='http-request,request-headers,path-parameters,http-response']
+
+=== SHOP 검색 [GET]
+operation::shops/search[snippets='http-request,path-parameters,http-response,response-fields']
+
+== Product Api
+
+=== PRODUCT 전체 조회 [GET]
+operation::products/findAll[snippets='http-request,http-response,response-fields']
+
+=== PRODUCT 조회 [GET]
+operation::products/find[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== PRODUCT 추가 [POST]
+operation::products/add[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== PRODUCT 업데이트 [POST]
+operation::products/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== PRODUCT 우선순위 업데이트 [PATCH]
+operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+=== PRODUCT 삭제 [DELETE]
+operation::products/delete[snippets='http-request,path-parameters,request-headers,http-response']
+
+=== PRODUCT 추천 [GET]
+operation::products/choice[snippets='http-request,request-headers,http-response,response-fields']
+
+=== PRODUCT 추천 조회 [GET]
+operation::products/recommend[snippets='http-request,http-response,response-fields']
+
+=== PRODUCT 카테고리 조회 [GET]
+operation::products/category[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== PRODUCT Shop 별 우선순위 조회 [GET]
+operation::products/shop[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== PRODUCT 검색 [GET]
+operation::products/search[snippets='http-request,path-parameters,http-response,response-fields']

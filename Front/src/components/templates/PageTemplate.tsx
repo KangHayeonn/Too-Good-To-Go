@@ -33,6 +33,7 @@ const Content = styled.section`
 	width: 100%;
 	box-sizing: border-box; /* box사이즈를 기준으로 요소의 너비와 높이를 계산 */
 	margin: 2rem auto;
+	padding-bottom: 7rem;
 `;
 
 const Footer = styled.footer`

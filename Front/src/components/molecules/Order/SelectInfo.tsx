@@ -1,10 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled/macro";
+import { useDispatch } from "react-redux";
+import { setOrderInfoCheck } from "../../../features/order/orderInfoSlice";
 
 const Select = [
-	{ name: "주문자 정보와 동일", hex: "#ffb598" },
-	{ name: "새로운 배송지", hex: "#c2dbff" },
+	{
+		name: "주문자 정보와 동일",
+		value: "USER",
+		default: true,
+		hex: "#ffb598",
+	},
+	{ name: "새로운 정보 입력", value: "NEW", hex: "#c2dbff" },
 ];
 
 const ColorSelectorContainer = styled.div`
@@ -46,6 +53,12 @@ const RadioButton = styled.input`
 `;
 
 const SelectInfo: React.FC = () => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(setOrderInfoCheck("USER"));
+	}, []);
+
 	return (
 		<>
 			<ColorSelectorContainer>
@@ -55,7 +68,11 @@ const SelectInfo: React.FC = () => {
 							id={row.name}
 							type="radio"
 							name="select-info"
-							value={row.name}
+							value={row.value}
+							defaultChecked={row.default}
+							onClick={() =>
+								dispatch(setOrderInfoCheck(row.value))
+							}
 						/>
 						<Label htmlFor={row.name} color={row.hex}>
 							{row.name}

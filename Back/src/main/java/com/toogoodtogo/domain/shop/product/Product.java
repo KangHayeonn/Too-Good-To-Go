@@ -19,13 +19,12 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
-
+    @Column(nullable = false)
     private String name;
-
+    @Column(nullable = false)
     private Long price;
-
+    @Column(nullable = false)
     private Long discountedPrice;
-
     private String image;
 
     public void update(String name, Long price, Long discountedPrice, String image) {

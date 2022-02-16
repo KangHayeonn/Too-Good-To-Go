@@ -1,9 +1,13 @@
 package com.toogoodtogo.domain.shop;
 
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
+import com.toogoodtogo.domain.ListToStringConverter;
 import com.toogoodtogo.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
@@ -24,7 +28,9 @@ public class Shop {
 
     private String image;
 
-    private String[] category;
+//    @QueryType(PropertyType.STRING)
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> category;
 
     private String phone;
 
@@ -33,7 +39,7 @@ public class Shop {
     @Embedded
     private Hours hours;
 
-    public void update(String name, String image, String[] category, String phone, String address, Hours hours) {
+    public void update(String name, String image, List<String> category, String phone, String address, Hours hours) {
         this.name = name;
         this.image = image;
         this.category = category;

@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
+import { initializeForm } from "../../features/auth/authSlice";
+import { setAccessToken } from "../../helpers/tokenControl";
+import { userAPI } from "../../lib/api/userAPI";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
-const JWT_EXPIREY_TIME = 24 * 3600 * 1000; // 만료시간 (24시간 밀리 초로 표현)
 
 const Login: React.FC = () => {
-	const [inputId, setInputId] = useState("");
-	const [inputPw, setInputPw] = useState("");
+	const [inputId, setInputId] = useState<string>("");
+	const [inputPw, setInputPw] = useState<string>("");
 	const [errorModal, setErrorModal] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 	const history = useHistory();
+
+	const dispatch = useDispatch();
+
+	// 최적화를 위해선 각각의 원소가 변경되었을 경우만 리렌더링 하도록 설정해야 함
+	/*
+	const user = useSelector((state: RootState) => ({
+		inputId: state.auth.email,
+		inputPw: state.auth.password,
+	}));
+	*/
 
 	const handleInputId = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
@@ -30,6 +45,11 @@ const Login: React.FC = () => {
 		);
 	};
 
+	// 컴포넌트가 처음 렌더링될 때 form 을 초기화
+	useEffect(() => {
+		dispatch(initializeForm());
+	}, [dispatch]);
+
 	const onClickLogin = () => {
 		console.log("click login");
 		console.log("ID : ", inputId);
@@ -42,21 +62,24 @@ const Login: React.FC = () => {
 				password: inputPw,
 			})
 			.then((res) => {
-				console.log(res);
 				const { accessToken } = res.data.data;
 				axios.defaults.headers.common.Authorization = accessToken
 					? `${accessToken}`
 					: "";
-				console.log("로그인 성공");
-				// accessToken 만료하기 1분 전에 로그인 연장
-				setTimeout(onSlientRefresh, JWT_EXPIREY_TIME - 60000);
+
+				// localStorage에 저장
+				try {
+					setAccessToken(accessToken);
+					userAPI(dispatch);
+				} catch (e) {
+					console.log("Login login is not working");
+				}
+
 				history.push("/");
 			})
 			.catch((e) => {
 				const { status } = e.response;
 				const { reason } = e.response.data;
-				console.log(reason);
-				console.log(status);
 				if (status === 409) {
 					if (reason === "Login Email Wrong") {
 						setErrorModal(true);
@@ -67,22 +90,12 @@ const Login: React.FC = () => {
 					} else
 						console.log("원인을 알 수 없는 에러가 발생하였습니다.");
 				}
-			});
-	};
-
-	const onSlientRefresh = () => {
-		axios
-			.post("/slient-refresh", {
-				email: inputId,
-				password: inputPw,
-			})
-			.then((res) => {
-				console.log(res);
-				console.log("로그인 성공");
-			})
-			.catch((e) => {
-				console.log("실패");
-				console.error(e);
+				if (status === 400) {
+					setErrorModal(true);
+					setErrorMessage(
+						"로그인 형식 오류 (ID : 이메일, PW : 8자 이상)"
+					);
+				}
 			});
 	};
 
@@ -150,6 +163,7 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TitleCtn = styled.div`
 	font-weight: bold;
 	color: #646464;

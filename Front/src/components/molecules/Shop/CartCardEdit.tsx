@@ -12,6 +12,7 @@ type cardType = {
 	shopFoodName: string;
 	shopBeforeCost: number;
 	shopFoodCost: number;
+	shopMatchId: string;
 };
 
 const CartCardEdit: React.FC<cardType> = ({
@@ -21,6 +22,7 @@ const CartCardEdit: React.FC<cardType> = ({
 	shopFoodCost,
 	shopBeforeCost,
 	shopFoodName,
+	shopMatchId,
 }) => {
 	const [isModal, setIsModal] = useState(false);
 	const handleModal = () => {
@@ -57,6 +59,8 @@ const CartCardEdit: React.FC<cardType> = ({
 			{!!isModal && (
 				<ProductEditModal
 					modal={handleModal}
+					id={id}
+					shopMatchId={shopMatchId}
 					shopFoodName={shopFoodName}
 					shopBeforeCost={shopBeforeCost}
 					shopFoodCost={shopFoodCost}

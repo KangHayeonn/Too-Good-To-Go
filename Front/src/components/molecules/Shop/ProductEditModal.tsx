@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -124,6 +126,14 @@ type modal = {
 	shopFoodName: string;
 	shopBeforeCost: number;
 	shopFoodCost: number;
+	shopMatchId: string;
+	id: number;
+};
+
+type productType = {
+	name: string;
+	price: number;
+	discountedPrice: number;
 };
 
 const OrderModal: React.FC<modal> = ({
@@ -131,27 +141,91 @@ const OrderModal: React.FC<modal> = ({
 	shopFoodName,
 	shopBeforeCost,
 	shopFoodCost,
+	shopMatchId,
+	id,
 }) => {
 	const [changeFoodName, setChangeFoodName] = useState<string>(shopFoodName);
 	const [changeFoodBeforeCost, setChangeFoodBeforeCost] =
 		useState<number>(shopBeforeCost);
 	const [changeFoodCost, setChangeFoodCost] = useState<number>(shopFoodCost);
+	const [imageState, setImageState] = useState<File>();
+
+	const [productInfo, setProductInfo] = useState<productType>({
+		name: changeFoodName,
+		price: changeFoodBeforeCost,
+		discountedPrice: changeFoodCost,
+	});
+
+	const formData = new FormData();
 
 	const foodNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodName(target.value);
+		console.log(changeFoodName);
+		setProductInfo({
+			...productInfo,
+			name: target.value,
+		});
 	};
 	const foodBeforeCostChange = (
 		e: React.FormEvent<HTMLInputElement>
 	): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodBeforeCost(+target.value);
+		console.log(changeFoodBeforeCost);
+		setProductInfo({
+			...productInfo,
+			price: +target.value,
+		});
 	};
 	const foodCostChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodCost(+target.value);
+		console.log(changeFoodCost);
+		setProductInfo({
+			...productInfo,
+			discountedPrice: +target.value,
+		});
+	};
+	const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			const file: FileList = e.target.files;
+			const uploadFile = file[0];
+			setImageState(uploadFile);
+			formData.append("file", imageState || "");
+		}
 	};
 
+	const EditPost = () => {
+		const dtoObj = new Blob([JSON.stringify(productInfo)], {
+			type: "application/json",
+		});
+		formData.append("request", dtoObj);
+
+		console.log(productInfo);
+		console.log(...formData);
+
+		PostProductInfo().then(
+			() => {
+				console.log("post success");
+				console.log(productInfo);
+			},
+			(err) => {
+				console.log("post fail");
+				console.log(err);
+			}
+		);
+	};
+	const PRODUCT_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products/${id}`;
+	const PostProductInfo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+				"Content-Type": "multipart/form-data",
+			},
+		};
+		return axios.post(PRODUCT_API_URL, formData, config);
+	};
 	return (
 		<ModalMain aria-hidden>
 			<ModalWrap onClick={(e) => e.stopPropagation()} aria-hidden>
@@ -165,7 +239,7 @@ const OrderModal: React.FC<modal> = ({
 						<Detail>
 							<Text>상품 이름</Text>
 							<InputStyle
-								name="productName"
+								name="name"
 								type="text"
 								onChange={foodNameChange}
 								placeholder="상품 이름"
@@ -178,7 +252,7 @@ const OrderModal: React.FC<modal> = ({
 						<Detail>
 							<Text>상품 가격</Text>
 							<InputStyle
-								name="productName"
+								name="price"
 								type="number"
 								onChange={foodBeforeCostChange}
 								placeholder="상품 가격"
@@ -188,7 +262,7 @@ const OrderModal: React.FC<modal> = ({
 						<Detail>
 							<Text>상품 할인 가격</Text>
 							<InputStyle
-								name="productName"
+								name="discountedPrice"
 								type="number"
 								onChange={foodCostChange}
 								placeholder="상품 할인 가격"
@@ -200,15 +274,16 @@ const OrderModal: React.FC<modal> = ({
 						<BoldText>상품 이미지</BoldText>
 						<Detail>
 							<InputStyle
-								name="productName"
+								name="image"
 								type="file"
 								accept="image/*"
-								placeholder="상품 이름"
+								placeholder="상품 이미지"
+								onChange={onSaveFiles}
 							/>
 						</Detail>
 					</InfoBox>
 					<ButtonWrap>
-						<Button>수정</Button>
+						<Button onClick={EditPost}>수정</Button>
 					</ButtonWrap>
 					<RefuseWrap>
 						<RefuseBtn>상품 삭제</RefuseBtn>

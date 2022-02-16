@@ -1,10 +1,8 @@
 plugins {
     id 'org.springframework.boot' version '2.5.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    //id 'org.asciidoctor.convert' version '1.5.9.2' // Asciidoctor 플러그인 적용
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    //id 'org.asciidoctor.jvm.pdf' version "3.2.0"
-    //id 'org.asciidoctor.jvm.gems' version "3.2.0"
+    id 'org.asciidoctor.jvm.convert' version '3.2.0'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
 }
 
@@ -13,12 +11,14 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
+    asciidoctorExt
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
 
 repositories {
+    maven { url 'https://repo.spring.io/release' }
     mavenCentral()
 }
 
@@ -38,14 +38,23 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation "javax.xml.bind:jaxb-api"
     // 프로젝트에서 .adoc파일들을 읽어 build/generated-snippets 에 파일읽어 HTML문서로 export
-    //asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     // Maven 과 같이 test Scope 에 대한 mockMvc 의존성을 추가 (WebClient, Assured 사용가능)
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     // 언어 요청에 맞게 다국어 처리 위한 i18n 세팅. yml에서 다국화 하기 위해
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
     // Json을 결과로 매핑하기 위한 의존성
     implementation 'com.google.code.gson:gson:2.8.8'
+    // p6spy
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+    //queryDSL
+    implementation 'com.querydsl:querydsl-jpa'
+    //AWS S3
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+    // Minio
+    implementation 'io.minio:minio:8.3.3'
+    // mock3S
+    testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
 ext {
@@ -59,27 +68,45 @@ test {
 
 asciidoctor { //asciidoctor task 설정
     inputs.dir snippetsDir // Snippets 디렉토리를 Input 디렉토리로 설정
+    configurations 'asciidoctorExt'
     dependsOn test // 문서 생성 전 테스트가 실행되도록 test가 실행되도록 설정, gradle build 시 test → asciidoctor 순으로 수행
 }
 
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs') //기존에 존재하는 docs를 삭제
-}
+//bootJar {
+//    dependsOn asciidoctor //jar 생성전에 asciidoctor 테스크가 실행되도록 설정, gradle build 시 asciidoctor → bootJar 순으로 수행
+//    // jar static 폴더에 rest docs가 HTML로 생성되면 넣어준다., gradle build 시 ./build/asciidoc/html5/ 에 html 파일 생성
+//    copy {
+//        from "${asciidoctor.outputDir}"
+//        into 'BOOT-INF/classes/static/docs'
+//    }
+//}
 
-bootJar {
-    dependsOn asciidoctor //jar 생성전에 asciidoctor 테스크가 실행되도록 설정, gradle build 시 asciidoctor → bootJar 순으로 수행
-    // jar static 폴더에 rest docs가 HTML로 생성되면 넣어준다., gradle build 시 ./build/asciidoc/html5/ 에 html 파일 생성
-    from ("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
-    }
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
 
-    from file("build/asciidoc/html5/")
+    from file("build/docs/asciidoc/")
     into file("src/main/resources/static/docs")
 }
 build {
     dependsOn copyDocument
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }

@@ -75,7 +75,7 @@ const ProfileContent: React.FC = () => {
 						onClick={(e) => handleShowProfileEdit(e)}
 						checked={showProfileEdit}
 					>
-						개인정보 수정{`${isLoggedIn}`}
+						개인정보 수정
 					</ProfileSelectButton>
 					<ProfileSelectButton
 						type="button"

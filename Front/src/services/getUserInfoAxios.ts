@@ -89,10 +89,8 @@ function getNewRefreshTokenPost() {
 	return axios.post(
 		"/api/reissue",
 		{
-			data: {
-				accessToken: getAccessToken(),
-				refreshToken: getRefreshToken(),
-			},
+			accessToken: getAccessToken(),
+			refreshToken: getRefreshToken(),
 		},
 		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
 	);

@@ -14,6 +14,7 @@ const ProfileContent: React.FC = () => {
 	const [showProfileEdit, setShowProfileEdit] = useState<boolean>(true);
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
 	const [showManager, setShowManager] = useState<boolean>(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const logChecker = useSelector((state: RootState) => {

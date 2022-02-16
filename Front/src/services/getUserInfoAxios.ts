@@ -55,6 +55,11 @@ axiosApiMeGetInstance.interceptors.response.use(
 		const originalConfig = error.config;
 		if (error.response) {
 			// Access Token was expired
+			console.log(
+				"error.response.status and originalConfig.retry",
+				error.response.status,
+				originalConfig.retry
+			);
 			if (error.response.status === 401 && !originalConfig.retry) {
 				originalConfig.retry = true;
 				try {
@@ -66,6 +71,9 @@ axiosApiMeGetInstance.interceptors.response.use(
 					);
 					const { accessToken, refreshToken } =
 						responseFromRefreshToken.data.data;
+					console.log(
+						"setting tokens and Authorization header to accessToken"
+					);
 					setAccessToken(accessToken);
 					setRefreshToken(refreshToken);
 					axiosApiMeGetInstance.defaults.headers.common.Authorization =

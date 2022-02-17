@@ -22,23 +22,22 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class SearchService {
-//    @Autowired
     private final StringRedisTemplate redisTemplate;
     private final ShopUseCase shopUseCase;
     private final ShopRepository shopRepository;
     private final ChoiceProductRepository choiceProductRepository;
     private final ProductRepositorySupport productRepositorySupport;
 
-    private ZSetOperations<String, String> redisRecentSearch; //TODO
     private String REDIS_KEY = "recentKeywords:";
 
     public List<ProductDto> searchProductsByShop(Long userId, String keyword) {
-        redisRecentSearch = redisTemplate.opsForZSet();
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSSSS"));
-        redisRecentSearch.add(REDIS_KEY + userId, keyword, Double.parseDouble(time));
-        redisRecentSearch.removeRange(REDIS_KEY + userId, -(10 + 1), -(10 + 1));
-        //DONE : 해당 Shop의 choice 혹은 가장 할인율 높은 ProductDto를 보여줘야....
-        //TODO : 보여준 것들은 뭐가 filter?
+        if(userId != null) {
+            ZSetOperations<String, String> redisRecentSearch = redisTemplate.opsForZSet();
+            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSSSS")); // timestamp로!!
+            redisRecentSearch.add(REDIS_KEY + userId, keyword, Double.parseDouble(time));
+            redisRecentSearch.removeRange(REDIS_KEY + userId, -(10 + 1), -(10 + 1));
+        }
+
         List<Shop> all = shopRepository.findAll(); // 이게 맞나....
         List<ProductDto> data = new ArrayList<>();
         List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
@@ -58,18 +57,15 @@ public class SearchService {
     }
 
     public List<String> recentKeywords(Long userId) {
-        redisRecentSearch = redisTemplate.opsForZSet();
         return new ArrayList<>(Objects.requireNonNull(
-                redisRecentSearch.reverseRange(REDIS_KEY + userId, 0, -1)));
+                redisTemplate.opsForZSet().reverseRange(REDIS_KEY + userId, 0, -1)));
     }
 
     public void deleteRecentKeyword(Long userId, String keyword) {
-        redisRecentSearch = redisTemplate.opsForZSet();
-        redisRecentSearch.remove(REDIS_KEY + userId, keyword);
+        redisTemplate.opsForZSet().remove(REDIS_KEY + userId, keyword);
     }
 
     public void deleteRecentKeywordAll(Long userId) {
-        redisRecentSearch = redisTemplate.opsForZSet();
         redisTemplate.delete(REDIS_KEY + userId);
     }
 }

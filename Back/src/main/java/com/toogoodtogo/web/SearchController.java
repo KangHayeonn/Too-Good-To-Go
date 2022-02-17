@@ -20,15 +20,12 @@ import java.util.List;
 public class SearchController {
     private final SearchService searchService;
 
-    //TODO : 비회원, 회원 검색
-    //TODO : 최근 검색어 로그아웃하면 지워짐??
-    //TODO : 잘못된 단어 검색 시 비슷한 단어 매칭 검색....음....
     //TODO : 검색어 저장 기능? search:keyword ?
     //DONE : 검색어 Shop 카테고리에도 매칭 --> 카테고리는 정확히 일치해야 가능, 구현 방식 저게 맞는지..
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> searchProductsByShop(@CurrentUser User user, @RequestParam String keyword) {
-        return new ApiResponse<>(searchService.searchProductsByShop(user.getId(), keyword));
+        return new ApiResponse<>(searchService.searchProductsByShop(user != null ? user.getId() : null, keyword));
     }
 
     @GetMapping("/search/keywords")
@@ -43,7 +40,7 @@ public class SearchController {
         searchService.deleteRecentKeyword(user.getId(), keyword);
     }
 
-    @DeleteMapping("/search/keywordsAll")
+    @DeleteMapping("/search/keywords/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRecentKeywordAll(@CurrentUser User user) {
         searchService.deleteRecentKeywordAll(user.getId());

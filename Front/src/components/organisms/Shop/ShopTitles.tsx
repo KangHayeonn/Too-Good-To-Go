@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TitleTemplate from "../../templates/TitleTemplate";
-import ShopEditModal from "../../molecules/Shop/ShopEditModal";
 
 type shopsDataType = {
 	id: number;

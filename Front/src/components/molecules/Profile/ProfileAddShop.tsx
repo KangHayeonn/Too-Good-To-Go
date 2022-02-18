@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 // MUI
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Line13 from "../../../../public/image/Line 13.png";
 import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
@@ -22,14 +21,6 @@ const initialState = {
 
 const ProfileAddShop: React.FC = () => {
 	const [state, setState] = useState<User>(initialState);
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			// Dynamic state changing.
-			[event.target.name]: event.target.value,
-		});
-	};
 
 	const handleSubmit = (event: { preventDefault: () => void }) => {
 		event.preventDefault();

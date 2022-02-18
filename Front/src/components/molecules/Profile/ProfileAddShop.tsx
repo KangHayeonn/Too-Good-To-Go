@@ -1,35 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 // MUI
 import Button from "@mui/material/Button";
 import Line13 from "../../../../public/image/Line 13.png";
 import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
 
-type User = {
-	name: string;
-	email: string;
-	password: number;
-	phoneNumber: string;
-};
-
-const initialState = {
-	name: "",
-	email: "",
-	password: 0,
-	phoneNumber: "",
-};
-
 const ProfileAddShop: React.FC = () => {
-	const [state, setState] = useState<User>(initialState);
-
-	const handleSubmit = (event: { preventDefault: () => void }) => {
-		event.preventDefault();
-		// eslint-disable-next-line no-alert
-		alert(
-			`이름: ${state.name}, 이메일: ${state.email}, 비번M: ${state.password}, 전번M: ${state.phoneNumber}`
-		);
-	};
-
 	return (
 		<FormWrapper>
 			<EditTitle className="edit-title">
@@ -38,7 +14,7 @@ const ProfileAddShop: React.FC = () => {
 				<p>SHOP</p>
 			</EditTitle>
 			<Wrapper>
-				<form onSubmit={handleSubmit}>
+				<form>
 					<div className="section-wrapper">
 						<div className="profile-info">가게 이름</div>
 						<InputStyle

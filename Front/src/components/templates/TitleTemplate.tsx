@@ -1,16 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
+import ShopEditModal from "../molecules/Shop/ShopEditModal";
 
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: row; // 세로방향
 	width: 1115px;
 	margin: 0 auto;
-	display: flex;
-	justify-content: center;
+	align-items: center;
+	justify-content: flex-start;
 	box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
 	padding: 1.7em;
+	.select-btn {
+		width: 64px;
+		height: 27px;
+		border-radius: 8px;
+		background-color: #cfcfcf;
+		color: black;
+		font-weight: 600;
+		font-size: 13px;
+		margin-left: 20px;
+	}
 `;
 
 const ShopImage = styled.img`
@@ -24,7 +35,6 @@ const ShopImage = styled.img`
 `;
 
 const ShopTitle = styled.div`
-	width: 300px;
 	height: 40px;
 	font-size: 29px;
 	font-weight: 600;
@@ -34,7 +44,6 @@ const ShopTitle = styled.div`
 `;
 
 const ShopAddress = styled.div`
-	width: 300px;
 	height: 30px;
 	font-size: 27px;
 	font-weight: 600;
@@ -43,24 +52,22 @@ const ShopAddress = styled.div`
 	margin-top: 20px;
 `;
 const ItemCard = styled.div`
-	width: 300px;
 	height: 30px;
 	font-size: 27px;
 	font-weight: 600;
 	display: flex;
 	align-items: flex-end;
+	margin-right: 10px;
 `;
 const ItemsCard = styled.div`
-	width: 300px;
 	height: 30px;
 	font-size: 27px;
 	font-weight: 600;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 `;
 
 const ItemTitle = styled.div`
-	width: 120px;
 	height: 30px;
 	font-size: 16px;
 	display: flex;
@@ -70,34 +77,27 @@ const ItemTitle = styled.div`
 `;
 
 const ItemContent = styled.div`
-	width: 400px;
 	height: 30px;
 	font-size: 16px;
 	display: flex;
 	align-items: flex-end;
 	font-weight: 500;
 	color: #b4b4b4;
-`;
-
-const ItemTime = styled.div`
-	width: 110px;
-	height: 30px;
-	font-size: 16px;
-	display: flex;
-	align-items: flex-end;
-	font-weight: 500;
-	color: #b4b4b4;
-	margin-left: -50px;
-	margin-right: 30px;
+	margin: 0 10px;
 `;
 
 const Content = styled.section`
-	width: 80%;
+	width: auto;
 	//box-sizing: border-box; /* box사이즈를 기준으로 요소의 너비와 높이를 계산 */
-	margin: 1px auto;
+	//margin: 1px auto;
 	padding: 1.5em;
 	display: flex;
 	flex-direction: column;
+`;
+
+const TitleWrap = styled.div`
+	display: flex;
+	align-items: center;
 `;
 
 type Props = {
@@ -105,7 +105,13 @@ type Props = {
 	title: string;
 	time: string;
 	address: string;
+	category: Array<string>;
+	hours: {
+		open: string;
+		close: string;
+	};
 	phone: string;
+	isEdit: boolean;
 };
 
 const TitleTemplate: React.FC<Props> = ({
@@ -113,14 +119,46 @@ const TitleTemplate: React.FC<Props> = ({
 	title,
 	time,
 	address,
+	category,
+	hours,
 	phone,
+	isEdit,
 	...props
 }) => {
+	const [isModal, setIsModal] = useState(false);
+	const handleModal = () => {
+		setIsModal(!isModal);
+	};
 	return (
 		<Wrapper {...props}>
 			<ShopImage src={image} alt="ShopImage" />
 			<Content>
-				<ShopTitle>{title}</ShopTitle>
+				<TitleWrap>
+					<ShopTitle>{title}</ShopTitle>
+					{isEdit ? (
+						<>
+							<button
+								className="select-btn"
+								type="button"
+								onClick={handleModal}
+							>
+								수정
+							</button>
+							{!!isModal && (
+								<ShopEditModal
+									modal={handleModal}
+									shopName={title}
+									shopAddress={address}
+									shopCategory={category.toString()}
+									shopTel={phone}
+									shopOpen={hours.open}
+									shopClose={hours.close}
+									shopImage={image}
+								/>
+							)}
+						</>
+					) : null}
+				</TitleWrap>
 				<ShopAddress>
 					<ItemTitle>주소</ItemTitle>
 					<ItemContent>{address}</ItemContent>
@@ -128,7 +166,7 @@ const TitleTemplate: React.FC<Props> = ({
 				<ItemsCard>
 					<ItemCard>
 						<ItemTitle>영업시간</ItemTitle>
-						<ItemTime>{time}</ItemTime>
+						<ItemContent>{time}</ItemContent>
 					</ItemCard>
 					<ItemCard>
 						<ItemTitle>전화번호</ItemTitle>

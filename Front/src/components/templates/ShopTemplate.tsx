@@ -18,6 +18,10 @@ const Menu = styled.div`
 	width: 70%;
 `;
 
+const EditMenu = styled.div`
+	width: 100%;
+`;
+
 const Sidebar = styled.div`
 	//box-sizing: border-box; /* box사이즈를 기준으로 요소의 너비와 높이를 계산 */
 	margin: 1px auto;
@@ -26,16 +30,32 @@ const Sidebar = styled.div`
 
 type Props = {
 	menu: React.ReactNode;
-	sidebar: React.ReactNode;
+	sidebar?: React.ReactNode;
+	isSide: boolean;
 };
 
-const TitleTemplate: React.FC<Props> = ({ menu, sidebar, ...props }) => {
+const TitleTemplate: React.FC<Props> = ({
+	menu,
+	sidebar,
+	isSide,
+	...props
+}) => {
 	return (
 		<Wrapper {...props}>
-			<Menu>{menu}</Menu>
-			<Sidebar>{sidebar}</Sidebar>
+			{isSide ? (
+				<>
+					<Menu>{menu}</Menu>
+					<Sidebar>{sidebar}</Sidebar>
+				</>
+			) : (
+				<EditMenu>{menu}</EditMenu>
+			)}
 		</Wrapper>
 	);
+};
+
+TitleTemplate.defaultProps = {
+	sidebar: null,
 };
 
 export default TitleTemplate;

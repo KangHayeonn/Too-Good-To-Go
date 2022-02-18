@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TitleTemplate from "../../templates/TitleTemplate";
+import ShopEditModal from "../../molecules/Shop/ShopEditModal";
 
 type shopsDataType = {
 	id: number;
@@ -19,8 +20,9 @@ const SHOP_BASE_URL = "http://54.180.134.20/api/shops";
 
 interface shopMatchId {
 	shopMatchId?: string;
+	isEdit: boolean;
 }
-const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
+const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId, isEdit }) => {
 	const [shop, setShop] = useState<shopsDataType>();
 	const BoardService = () => {
 		// 가게 조회
@@ -36,6 +38,7 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 			}
 		);
 	}, []);
+
 	return (
 		<div>
 			{shop === undefined ? (
@@ -48,6 +51,9 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId }) => {
 					time={`${shop.hours.open} ~ ${shop.hours.close}`}
 					address={shop.address}
 					phone={shop.phone}
+					isEdit={isEdit}
+					category={shop.category}
+					hours={shop.hours}
 				/>
 			)}
 		</div>

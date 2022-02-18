@@ -138,7 +138,6 @@ type shopsDataType = {
 	shop: { id: number; name: string; image: string; category: Array<string> };
 	data?: Array<string | number>;
 };
-
 const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboards";
 const BoardService = () => {
 	return axios.get(SHOP_BOARD_API_BASE_URL);

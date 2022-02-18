@@ -5,37 +5,37 @@ import ShopTemplate from "../../components/templates/ShopTemplate";
 import Categories from "../../components/organisms/Categories/Categories";
 import ShopMenuHeader from "../../components/molecules/Shop/ShopMenuHeader";
 import ShopTitles from "../../components/organisms/Shop/ShopTitles";
-import CartContainer from "../../components/molecules/Shop/CartContainer";
-import MenuCards from "../../components/molecules/Shop/MenuCards";
+import CartCardsEdit from "../../components/molecules/Shop/CartCardsEdit";
 
 interface matchParams {
 	shopId: string;
 }
 
-const Shop: React.FC<RouteComponentProps<matchParams>> = ({ match }) => {
+const ShopEditPage: React.FC<RouteComponentProps<matchParams>> = ({
+	match,
+}) => {
 	const { shopId } = match.params;
 	return (
 		<PageTemplate
 			header={<Categories />}
 			isHeader
-			section={<ShopTitles shopMatchId={shopId} isEdit={false} />}
+			section={<ShopTitles shopMatchId={shopId} isEdit />}
 			isSection
 			isFooter={false}
 		>
-			<ShopMenuHeader isEdit={false} shopMatchId={shopId}>
+			<ShopMenuHeader isEdit shopMatchId={shopId}>
 				메뉴
 			</ShopMenuHeader>
 			<ShopTemplate
 				menu={
 					<div>
-						<MenuCards shopMatchId={shopId} />
+						<CartCardsEdit shopMatchId={shopId} />
 					</div>
 				}
-				isSide
-				sidebar={<CartContainer>장바구니에 담기</CartContainer>}
+				isSide={false}
 			/>
 		</PageTemplate>
 	);
 };
 
-export default Shop;
+export default ShopEditPage;

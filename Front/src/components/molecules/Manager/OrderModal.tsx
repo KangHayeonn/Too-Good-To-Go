@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import TimeSelectBtnAtom from "../../atoms/MenuButton/TimeSelectBtnAtom";
 
@@ -165,6 +166,30 @@ const OrderModal: React.FC<modal> = ({
 		"#999",
 		"#999",
 	]);
+	const orderInfo = {
+		shop: [],
+		products: [],
+		status: "",
+		createdAt: "",
+		accept: "",
+		pictupAt: "",
+	};
+
+	const OrderAccept = () => {
+		return axios.post("/", orderInfo);
+	};
+
+	const post = () => {
+		OrderAccept().then(
+			() => {
+				console.log("성공");
+			},
+			() => {
+				console.log("실패");
+			}
+		);
+	};
+
 	const clickSelectTime = (numb: string) => {
 		setSelectTime(numb);
 		// eslint-disable-next-line prefer-const
@@ -364,7 +389,7 @@ const OrderModal: React.FC<modal> = ({
 								onChange={onchange}
 								value={selectTime}
 							/>
-							<Button>주문접수</Button>
+							<Button onClick={post}>주문접수</Button>
 						</ButtonWrap>
 					</InfoBox>
 					<RefuseWrap>

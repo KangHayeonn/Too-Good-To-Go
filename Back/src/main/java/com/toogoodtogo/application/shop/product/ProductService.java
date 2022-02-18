@@ -12,15 +12,15 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -143,9 +143,7 @@ public class ProductService implements ProductUseCase {
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product choiceProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
-        if(choiceProductRepository.findByShopId(shop.getId()) == null) { // 고른게 없었으면 추가
-            choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
-        } else choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct); // 있었으면 기존 product 교체
+        choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct);
         return new ProductDto(choiceProduct);
     }
 
@@ -156,19 +154,48 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> productsPerCategory(String category, String method) {
-        List<ChoiceProduct> all = choiceProductRepository.findAll();
+        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
         List<ProductDto> data = new ArrayList<>();
-        all.forEach(choiceProduct -> {
-            if (choiceProduct.getShop().getCategory().contains(category)) { // 해당 shop 의 category 가 적합할 때
-                if (choiceProduct.getProduct() == null) { // 만약 선택한 product 가 없으면
+        if (StringUtils.hasText(category)) { // 카테고리가 있으면
+            choiceProductList.forEach(row -> {
+                if (row.getShop().getCategory().contains(category)) { // 해당 shop category 에 해당하면
+                    if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
+                        //가게에서 가장 할인율 높은거
+                        data.add(new ProductDto(
+                                productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+                    }
+                    else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
+                }
+            });
+        }
+        else { // 카테고리가 없는 전체 보기면
+            choiceProductList.forEach(row -> {
+                if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
                     //가게에서 가장 할인율 높은거
                     data.add(new ProductDto(
-                            productRepositorySupport.choiceHighestRateProductPerShop(choiceProduct.getShop().getId())));
+                            productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
                 }
-                else data.add(new ProductDto(choiceProduct.getProduct())); // 선택한 product 가 있으면
-            }
-        });
-        return data;
+                else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
+            });
+        }
+        log.info("data : " + data.get(0).getName());
+        List<ProductDto> sortData;
+        if (!StringUtils.hasText(method)) { // method 가 없는 기본 값이면 최신순 (id 높은 순으로)
+            log.info("method : null");
+            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getId).reversed()).collect(Collectors.toList());
+        }
+        else if (method.equals("rate")) {
+            log.info("method : " + method);
+            sortData = data.stream()
+                    .sorted((a, b) -> (int) (((a.getPrice() - a.getDiscountedPrice()) / a.getPrice().doubleValue() * 100) -
+                            ((b.getPrice() - b.getDiscountedPrice()) / b.getPrice().doubleValue() * 100))).collect(Collectors.toList());
+
+        }
+        else if (method.equals("discount")) {
+            log.info("method : " + method);
+            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getDiscountedPrice)).collect(Collectors.toList());
+        } else throw new CValidCheckException("method 가 잘못 되었습니다.");
+        return sortData;
     }
 
     @Transactional(readOnly = true)

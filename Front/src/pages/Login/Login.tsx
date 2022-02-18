@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import ErrorModal from "../../components/atoms/Modal/LoginErrorModal";
 import { initializeForm } from "../../features/auth/authSlice";
-import { setAccessToken } from "../../helpers/tokenControl";
+import { setAccessToken, setRefreshToken } from "../../helpers/tokenControl";
 import { userAPI } from "../../lib/api/userAPI";
 
 const LOGIN_URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
@@ -62,7 +62,8 @@ const Login: React.FC = () => {
 				password: inputPw,
 			})
 			.then((res) => {
-				const { accessToken } = res.data.data;
+				const { accessToken, refreshToken } = res.data.data;
+				// Storing accessToken to default request header
 				axios.defaults.headers.common.Authorization = accessToken
 					? `${accessToken}`
 					: "";
@@ -70,6 +71,7 @@ const Login: React.FC = () => {
 				// localStorage에 저장
 				try {
 					setAccessToken(accessToken);
+					setRefreshToken(refreshToken);
 					userAPI(dispatch);
 				} catch (e) {
 					console.log("Login login is not working");

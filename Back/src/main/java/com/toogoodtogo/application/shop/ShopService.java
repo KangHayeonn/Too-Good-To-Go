@@ -83,7 +83,7 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
-
+        choiceProductRepository.save(ChoiceProduct.builder().shop(newShop).product(null).build());
         return new ShopDto(shopRepository.save(newShop));
     }
 
@@ -124,7 +124,7 @@ public class ShopService implements ShopUseCase {
         Shop deleteShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
 
         // 해당 shop 의 product 들 이미지 삭제
-        s3Uploader.deleteFolderS3("shopsImage/" + deleteShop.getId() + "/");
+        s3Uploader.deleteFolderS3("productsImage/" + deleteShop.getId() + "/");
         productRepository.deleteByShopId(deleteShop.getId());
 
         // 기본 이미지가 아니면 S3에서 이미지 삭제

@@ -30,6 +30,7 @@ const ProfileContent: React.FC = () => {
 	const [showOrderList, setShowOrderList] = useState<boolean>(false);
 	const [showManager, setShowManager] = useState<boolean>(false);
 	const [dropmenuShow, setDropmenuShow] = useState<boolean>(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const logChecker = useSelector((state: RootState) => {
@@ -114,7 +115,7 @@ const ProfileContent: React.FC = () => {
 						onClick={(e) => handleShowProfileEdit(e)}
 						checked={showProfileEdit}
 					>
-						개인정보 수정{`${isLoggedIn}`}
+						개인정보 수정
 					</ProfileSelectButton>
 					<ProfileSelectButton
 						type="button"
@@ -220,16 +221,14 @@ const DropContent = styled.li`
 `;
 
 const ProfileEditContainer = styled.div`
+	width: 100%;
 	margin: 0;
 	padding: 0;
 	border-left: 1px solid black;
 	display: flex;
 	flex-direction: column;
-	/* width: 907px; */
 	min-height: 650px;
 	max-height: auto;
-	/* background: #ffffff; */
-	/* border: 1px solid red; */
 `;
 
 const Content = styled.div`
@@ -244,13 +243,12 @@ const Content = styled.div`
 	width: 907px;
 	min-height: 660px;
 	background: #ffffff;
-	/* border: 1px solid #646464; */
+	margin-bottom: 80px;
 `;
 
 const SelectionContainer = styled.div`
 	margin: 0;
 	padding: 0;
-	/* border: 1px dashed red; */
 	display: flex;
 	flex-direction: column;
 	width: 229px;

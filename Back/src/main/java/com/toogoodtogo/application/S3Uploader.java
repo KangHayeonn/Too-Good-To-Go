@@ -60,7 +60,7 @@ public class S3Uploader {
 
     // delete file
     public void deleteFileS3(String fileName) {
-        fileName = fileName.substring(CLOUD_FRONT_DOMAIN_NAME.length() + 1);
+        fileName = fileName.replace(CLOUD_FRONT_DOMAIN_NAME + "/", "");
         log.info("delete file : " + fileName);
         if (amazonS3Client.doesObjectExist(bucket, fileName)) amazonS3Client.deleteObject(bucket, fileName);
     }
@@ -68,7 +68,7 @@ public class S3Uploader {
     // delete file
     public void deleteFolderS3(String folderName) {
         log.info("delete folder : " + folderName);
-        if(amazonS3Client.doesObjectExist(bucket, folderName)) {
+        if(amazonS3Client.listObjectsV2(bucket, folderName).getKeyCount() > 0) {
             //        ObjectListing objects = amazonS3Client.listObjects(bucket, folderName);
             ListObjectsRequest listObject = new ListObjectsRequest();
             listObject.setBucketName(bucket);
@@ -80,6 +80,7 @@ public class S3Uploader {
                 //1000개 단위로 읽음
                 for (S3ObjectSummary objectSummary : objects.getObjectSummaries())
                 {
+                    log.info("key : " + objectSummary.getKey());
                     amazonS3Client.deleteObject(bucket, objectSummary.getKey());
                 }
                 //objects = s3.listNextBatchOfObjects(objects); <--이녀석은 1000개 단위로만 가져옴..

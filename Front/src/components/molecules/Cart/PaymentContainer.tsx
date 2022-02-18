@@ -3,10 +3,6 @@ import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 
-// type accumulatedAmountType = {
-// 	cost: number;
-// };
-
 type buttonType = {
 	children: React.ReactNode;
 };
@@ -21,7 +17,7 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 	// Accumulate money for display
 	const accumulatedAmount: number = isCheckedArr.reduce((accu, curr) => {
 		// eslint-disable-next-line no-param-reassign
-		accu += curr.shopFoodCost;
+		accu += curr.shopFoodCost * curr.cartItemQuantity;
 		return accu;
 	}, 0);
 

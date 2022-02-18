@@ -35,18 +35,19 @@ const CartCards: React.FC = () => {
 	const reduxStateCollector = useSelector((state: RootState) => {
 		return state.selectCartCards;
 	});
+	const state = useSelector((state: RootState) => {
+		// Will return cards only with cartItemQuantity >= 1
+		const cards = state.selectCartCards.filter((e) => {
+			return e.cartItemQuantity;
+		});
 
+		return cards;
+	});
+
+	// Error fixed, invalid hook call.
 	useEffect(() => {
 		console.log(location);
 		if (!getLocalStorageCart()) {
-			const state = useSelector((state: RootState) => {
-				// Will return cards only with cartItemQuantity >= 1
-				const cards = state.selectCartCards.filter((e) => {
-					return e.cartItemQuantity;
-				});
-
-				return cards;
-			});
 			setDisplayCardArr(state);
 		} else {
 			const state = JSON.parse(getLocalStorageCart() || "{}");

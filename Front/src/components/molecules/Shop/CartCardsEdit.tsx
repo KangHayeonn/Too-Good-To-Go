@@ -28,8 +28,7 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const UpdateProduct = () => {
 		return axios.get(`${BASE_URL}/${shopMatchId}/products/all`);
 	};
-
-	useEffect(() => {
+	const update = () => {
 		UpdateProduct().then(
 			(res) => {
 				setProducts(res.data.data);
@@ -38,6 +37,10 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 				console.log("product update fail");
 			}
 		);
+	};
+
+	useEffect(() => {
+		update();
 	}, []);
 	if (products.length) {
 		return (

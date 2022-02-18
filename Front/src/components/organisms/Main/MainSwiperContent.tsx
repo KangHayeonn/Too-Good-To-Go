@@ -36,7 +36,12 @@ type shopsDataType = {
 	data?: Array<string | number>;
 };
 
-const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboardsa";
+// Uncomment when PRODUCT 추천조회 GET is completed.
+// const SHOP_BOARD_API_BASE_URL =
+// 	"http://54.180.134.20/api/products/recommend";
+
+const SHOP_BOARD_API_BASE_URL =
+	"http://54.180.134.20/api/manager/shops/3/products";
 const BoardService = () => {
 	return axios.get(SHOP_BOARD_API_BASE_URL);
 };

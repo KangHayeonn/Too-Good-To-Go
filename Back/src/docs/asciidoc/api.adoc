@@ -144,7 +144,7 @@ operation::products/choice[snippets='http-request,request-headers,http-response,
 operation::products/recommend[snippets='http-request,http-response,response-fields']
 
 === PRODUCT 카테고리 조회 [GET]
-operation::products/category[snippets='http-request,path-parameters,http-response,response-fields']
+operation::products/category[snippets='http-request,request-parameters,http-response,response-fields']
 
 === PRODUCT Shop 별 우선순위 조회 [GET]
 operation::products/shop[snippets='http-request,path-parameters,http-response,response-fields']

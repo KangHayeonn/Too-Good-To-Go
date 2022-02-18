@@ -18,5 +18,5 @@
 		"jsxImportSource": "@emotion/react",
 		"downlevelIteration": true
 	},
-	"include": ["src", "modules"]
+	"include": ["src", "modules", "src/services/getUserInfoAxios.ts"]
 }

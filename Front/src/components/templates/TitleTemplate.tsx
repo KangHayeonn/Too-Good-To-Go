@@ -153,7 +153,6 @@ const TitleTemplate: React.FC<Props> = ({
 									shopTel={phone}
 									shopOpen={hours.open}
 									shopClose={hours.close}
-									shopImage={image}
 								/>
 							)}
 						</>

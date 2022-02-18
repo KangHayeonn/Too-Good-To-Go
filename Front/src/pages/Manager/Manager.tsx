@@ -3,7 +3,6 @@ import { RouteComponentProps } from "react-router-dom";
 import ManagerMenu from "../../components/molecules/Manager/ManagerMenu";
 import ManagerMain from "../../components/organisms/Manager/ManagerMain";
 import ManagerTemplate from "../../components/templates/ManagerTemplate";
-import TitleTemplate from "../../components/templates/TitleTemplate";
 import ShopTitles from "../../components/organisms/Shop/ShopTitles";
 
 type matchParams = {

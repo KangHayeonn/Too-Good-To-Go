@@ -127,7 +127,6 @@ type modal = {
 	shopCategory: string;
 	shopOpen: string;
 	shopClose: string;
-	shopImage: string;
 };
 
 const ShopEditModal: React.FC<modal> = ({
@@ -138,7 +137,6 @@ const ShopEditModal: React.FC<modal> = ({
 	shopCategory,
 	shopOpen,
 	shopClose,
-	shopImage,
 }) => {
 	const [changeName, setChangeName] = useState<string>(shopName);
 	const shopNameChange = (e: React.FormEvent<HTMLInputElement>): void => {

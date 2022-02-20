@@ -683,7 +683,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_product_카테고리_조회_get">PRODUCT 카테고리 조회 [GET]</a>
 <ul class="sectlevel3">
 <li><a href="#_product_카테고리_조회_get_http_request">Example Request</a></li>
-<li><a href="#_product_카테고리_조회_get_path_parameters">Path parameters</a></li>
+<li><a href="#_product_카테고리_조회_get_request_parameters">Request parameters</a></li>
 <li><a href="#_product_카테고리_조회_get_http_response">Example Response</a></li>
 <li><a href="#_product_카테고리_조회_get_response_fields">Response fields</a></li>
 </ul>
@@ -1355,14 +1355,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 416
+Content-Length: 415
 
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY0LCJleHAiOjE2NDQ0NzgzNjR9.WBkYT1sUv2B0ktRjOPM6e1vj_uXvN7nR3BiDnQYEgBk",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2ODQzNjR9.8ATR4CYEgaRPPxxqi-S1PgVe8afhMochdiMsqBaJRV8",
-    "accessTokenExpireDate" : 3600000
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyOSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDUyLCJleHAiOjE2NDQ4MzA2MzJ9.yK9076FStpYT2MAr5zVaKaXVwohLZlfuBmX8n4J3rqo",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDYwNDAwNTJ9.c5CgTAvH9JxQEZHlW4zdlXzao2scbWZJxc6nrE8yNAQ",
+    "accessTokenExpireDate" : 180000
   }
 }</code></pre>
 </div>
@@ -1573,14 +1573,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 420
+Content-Length: 419
 
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzY1LCJleHAiOjE2NDQ0NzgzNjV9.Wfe0uWoKnAe5CCYPM4f3eCXaeXvtqxdGSDua7CiNUn4",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2ODQzNjV9.mwPRuHg1pq4Kh1wCSJTHA3FlOBbVeTMRyYYZO8ZWwiI",
-    "accessTokenExpireDate" : 3600000
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDUyLCJleHAiOjE2NDQ4MzA2MzJ9.s9cG9Fw3ZPn99yf7yshF6MrNvGJbTOCvDWInbtOXg5g",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDYwNDAwNTJ9.c5CgTAvH9JxQEZHlW4zdlXzao2scbWZJxc6nrE8yNAQ",
+    "accessTokenExpireDate" : 180000
   }
 }</code></pre>
 </div>
@@ -1736,7 +1736,7 @@ Content-Length: 92
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY0LCJleHAiOjE2NDQ0NzgzNjR9.8trOBIx3fI7YhkeSt_UsSda2MWMl5rSsYnv_cTyQ6l0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDUyLCJleHAiOjE2NDQ4MzA2MzJ9.46-Lf1XrI30UrFN1DtuwhmlfaVX8hEhtuGkCaJlmEAM
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -1789,38 +1789,22 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/reissue HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY1LCJleHAiOjE2NDQ0NzgzNjV9.oqTL4yilSNv29FOwAzFaD1WknNc_ZxRNvctRiflK57E
 Accept: application/json
 Content-Length: 324
 Host: localhost:8080
 
 {
-  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY1LCJleHAiOjE2NDQ0NzgzNjV9.oqTL4yilSNv29FOwAzFaD1WknNc_ZxRNvctRiflK57E",
-  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2ODQzNjV9.mwPRuHg1pq4Kh1wCSJTHA3FlOBbVeTMRyYYZO8ZWwiI"
+  "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDUyLCJleHAiOjE2NDQ4MzA2MzJ9.y8hKw-2McyONDsexMq-tSoQaRE4gDDdqAUpGI2IFzD4",
+  "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDYwNDAwNTJ9.c5CgTAvH9JxQEZHlW4zdlXzao2scbWZJxc6nrE8yNAQ"
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_토큰_재발급_post_request_headers"><a class="link" href="#_토큰_재발급_post_request_headers">Request headers</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저의 Access Token</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Snippet request-headers not found for operation::join/reissue</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_토큰_재발급_post_request_fields"><a class="link" href="#_토큰_재발급_post_request_fields">Request fields</a></h4>
@@ -1866,14 +1850,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 416
+Content-Length: 415
 
 {
   "data" : {
     "grantType" : "Bearer",
-    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY1LCJleHAiOjE2NDQ0NzgzNjV9.oqTL4yilSNv29FOwAzFaD1WknNc_ZxRNvctRiflK57E",
-    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU2ODQzNjV9.mwPRuHg1pq4Kh1wCSJTHA3FlOBbVeTMRyYYZO8ZWwiI",
-    "accessTokenExpireDate" : 3600000
+    "accessToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDUzLCJleHAiOjE2NDQ4MzA2MzN9.Gy6G1HkN-nqx4Hz9mHsfEE1TCqtcmJPbcY0zWUISEds",
+    "refreshToken" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDYwNDAwNTN9.SjHbWpj21OswQtDcojaEusL4J7hkSx3S3bHKKebY35A",
+    "accessTokenExpireDate" : 180000
   }
 }</code></pre>
 </div>
@@ -1931,7 +1915,7 @@ Content-Length: 416
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/me?lang=ko HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MiIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY2LCJleHAiOjE2NDQ0NzgzNjZ9.VxLvB2GLaqu4m9Cv6TLkjjMIsulEAv8LDaT5q_g34dE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MiIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDU0LCJleHAiOjE2NDQ4MzA2MzR9.Vkwu48lFIF1AjUQArBjMyjHo9Kq-aROxwxp6KoB9rBE
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2039,7 +2023,7 @@ Content-Length: 151
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/me HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0NDc0NzY2LCJleHAiOjE2NDQ0NzgzNjZ9.No7sdVYkmfBs4HRV2KQCWcedKue2MBBVJGP3EvVG4U0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjQ0ODMwNDUzLCJleHAiOjE2NDQ4MzA2MzN9.SdJKVOmGh3SulGQ8h5FPfH1EnNzLYw2nQzlpNOJ_91E
 Accept: application/json
 Content-Length: 63
 Host: localhost:8080
@@ -2274,7 +2258,7 @@ Content-Length: 602
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/manager/shops HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYyLCJleHAiOjE2NDQ0NzgzNjJ9.T89UMVTU4jYhTYhvYTFQ31eSen-70q6QNX7iICm2vwo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDQ5LCJleHAiOjE2NDQ4MzA2Mjl9.PEgSFqgsFojy_VusHimj2xWMCofTyTWPc9n4COqlAn8
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2520,7 +2504,7 @@ Content-Length: 330
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYxLCJleHAiOjE2NDQ0NzgzNjF9.oL4dL0EU8lifJJ2NVWC08vu017JSlDyHimU3NVTVDU4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDQ5LCJleHAiOjE2NDQ4MzA2Mjl9.Bjzwh5eFX4nok_n9GrUDsnUfYLl02znqTScr8t0fIPI
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2660,7 +2644,7 @@ Content-Length: 299
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/17 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYxLCJleHAiOjE2NDQ0NzgzNjF9.MLnE2Xd1Vqs8Ht5E5cMvbBFNOI9ZT0141Dhbmf0Sz24
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDQ5LCJleHAiOjE2NDQ4MzA2Mjl9.339bm1_bHpE5j-luvGjNiWOdQf_6xUDw_rEQE4OrpJM
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2820,7 +2804,7 @@ Content-Length: 298
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/23 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYyLCJleHAiOjE2NDQ0NzgzNjJ9.yj5zHFVu45LWBJOX65JQ-_geQkpg7BuxCG4KUL646KQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNyIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDUwLCJleHAiOjE2NDQ4MzA2MzB9._pWVWap3uUIrwTKEmK399pTv57w_Seew3PXVrvLwO_o
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3044,7 +3028,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 944
+Content-Length: 943
 
 {
   "data" : [ {
@@ -3084,8 +3068,8 @@ Content-Length: 944
     "shopName" : "shop1",
     "id" : 45,
     "name" : "오뎅탕",
-    "price" : 14000,
-    "discountedPrice" : 13000,
+    "price" : 50000,
+    "discountedPrice" : 1000,
     "image" : "test5"
   } ]
 }</code></pre>
@@ -3195,7 +3179,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 944
+Content-Length: 943
 
 {
   "data" : [ {
@@ -3235,8 +3219,8 @@ Content-Length: 944
     "shopName" : "shop1",
     "id" : 20,
     "name" : "오뎅탕",
-    "price" : 14000,
-    "discountedPrice" : 13000,
+    "price" : 50000,
+    "discountedPrice" : 1000,
     "image" : "test5"
   } ]
 }</code></pre>
@@ -3307,7 +3291,7 @@ Content-Length: 944
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/10/products HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYwLCJleHAiOjE2NDQ0NzgzNjB9.DMYsouSmY6YHwZLbje5Su7Eof3zdCNJva1OKYTB4nNc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDQ4LCJleHAiOjE2NDQ4MzA2Mjh9.kieEFEcB-17fu5W3to5v-MEPO4bVE9bzwND0b-zjgAA
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3461,7 +3445,7 @@ Content-Length: 233
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/manager/shops/2/products/6 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ0NzQ3NTgsImV4cCI6MTY0NDQ3ODM1OH0.lO1-gjg68m6sknzPOgb6AHR-A-bYuGYgYxO54Vpp3lg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ4MzA0NDYsImV4cCI6MTY0NDgzMDYyNn0.u_LOgFOZnDMG0Aaf7M_iRp1Fv-TaWhG4v-23LINtiL4
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3618,7 +3602,7 @@ Content-Length: 234
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/manager/shops/11/products/52 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0NDc0NzYxLCJleHAiOjE2NDQ0NzgzNjF9.AMFNS-VZssm18rm1zftzFyW19jEauOhXAWBqkTAXCyQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNjQ0ODMwNDQ4LCJleHAiOjE2NDQ4MzA2Mjh9.gx7xGMqlLd7YKKV7drr_qGe_w4hGXSYXU_sW6UWPAVM
 Accept: application/json
 Content-Length: 50
 Host: localhost:8080
@@ -3731,7 +3715,7 @@ Content-Length: 44
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/manager/shops/6/products/26 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ0NzQ3NTksImV4cCI6MTY0NDQ3ODM1OX0.LlTg8UUceKfzA5ECHPW0KMirr1ufr5UUP9BGFk_0S5Y
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Iiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ4MzA0NDcsImV4cCI6MTY0NDgzMDYyN30.O-3XdmLS3rA_SIVRzdq-IzICq81QnSTsreMe9di5Mg4
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3808,7 +3792,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/manager/shops/3/products/11 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ0NzQ3NTksImV4cCI6MTY0NDQ3ODM1OX0.1kUpfN5C_DEIzn3HI_9vO6wFj7ZEsUjtWX2Zi2lc3ZU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwicm9sZXMiOiJST0xFX01BTkFHRVIiLCJpYXQiOjE2NDQ4MzA0NDYsImV4cCI6MTY0NDgzMDYyNn0.R7Y051n7avbrrz2-erIPXVsE3HjeMfUcYrBDXpGqSR8
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3946,17 +3930,17 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 245
+Content-Length: 192
 
 {
   "data" : [ {
     "shopId" : 5,
     "shopName" : "shop1",
-    "id" : 21,
-    "name" : "김치찌개",
-    "price" : 10000,
-    "discountedPrice" : 9000,
-    "image" : "https://diefqsnmvol80.cloudfront.net/productDefault.png"
+    "id" : 25,
+    "name" : "오뎅탕",
+    "price" : 50000,
+    "discountedPrice" : 1000,
+    "image" : "test5"
   } ]
 }</code></pre>
 </div>
@@ -4023,15 +4007,14 @@ Content-Length: 245
 <h4 id="_product_카테고리_조회_get_http_request"><a class="link" href="#_product_카테고리_조회_get_http_request">Example Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/category/%ED%95%9C%EC%8B%9D/products HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/products?category=%ED%95%9C%EC%8B%9D&amp;method=rate HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_product_카테고리_조회_get_path_parameters"><a class="link" href="#_product_카테고리_조회_get_path_parameters">Path parameters</a></h4>
+<h4 id="_product_카테고리_조회_get_request_parameters"><a class="link" href="#_product_카테고리_조회_get_request_parameters">Request parameters</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/category/{category}/products</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -4046,6 +4029,10 @@ Host: localhost:8080</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">가게 카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정렬 방법</p></td>
 </tr>
 </tbody>
 </table>
@@ -4065,17 +4052,17 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 244
+Content-Length: 191
 
 {
   "data" : [ {
     "shopId" : 1,
     "shopName" : "shop1",
-    "id" : 1,
-    "name" : "김치찌개",
-    "price" : 10000,
-    "discountedPrice" : 9000,
-    "image" : "https://diefqsnmvol80.cloudfront.net/productDefault.png"
+    "id" : 5,
+    "name" : "오뎅탕",
+    "price" : 50000,
+    "discountedPrice" : 1000,
+    "image" : "test5"
   } ]
 }</code></pre>
 </div>
@@ -4184,7 +4171,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 944
+Content-Length: 943
 
 {
   "data" : [ {
@@ -4224,8 +4211,8 @@ Content-Length: 944
     "shopName" : "shop1",
     "id" : 40,
     "name" : "오뎅탕",
-    "price" : 14000,
-    "discountedPrice" : 13000,
+    "price" : 50000,
+    "discountedPrice" : 1000,
     "image" : "test5"
   } ]
 }</code></pre>
@@ -4412,7 +4399,7 @@ Content-Length: 245
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-02-10 11:08:29 +0900
+Last updated 2022-02-14 18:20:24 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

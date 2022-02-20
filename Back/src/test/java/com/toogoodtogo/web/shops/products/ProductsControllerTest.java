@@ -1,6 +1,7 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.toogoodtogo.domain.shop.Shop;
+import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.ControllerTest;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -28,8 +30,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -76,7 +77,7 @@ class ProductsControllerTest extends ControllerTest {
         Product product4 = Product.builder()
                 .shop(shop).name("짜글이").price(13000L).discountedPrice(12000L).image("test4").build();
         Product product5 = Product.builder()
-                .shop(shop).name("오뎅탕").price(14000L).discountedPrice(13000L).image("test5").build();
+                .shop(shop).name("오뎅탕").price(50000L).discountedPrice(1000L).image("test5").build();
         Product save = productRepository.save(product1);
         Product save1 = productRepository.save(product2);
         Product save2 = productRepository.save(product3);
@@ -88,7 +89,7 @@ class ProductsControllerTest extends ControllerTest {
                 .shop(shop).priority(new ArrayList<String>(Arrays.asList(
                         String.valueOf(save.getId()), String.valueOf(save1.getId()),
                         String.valueOf(save2.getId()), String.valueOf(save3.getId()), String.valueOf(save4.getId())))).build());
-        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
+        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product5).build());
     }
 
     @AfterEach
@@ -343,16 +344,15 @@ class ProductsControllerTest extends ControllerTest {
 
     @Test
     void productsPerCategory() throws Exception {
-        String category = "한식";
-        String method = "/rate";
         //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/category/{category}/products", category, method))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/products?category=한식&method=rate"))
                 .andDo(print())
                 .andDo(document("products/category",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("category").description("가게 카테고리")
+                        requestParameters(
+                                parameterWithName("category").description("가게 카테고리"),
+                                parameterWithName("method").description("정렬 방법")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),

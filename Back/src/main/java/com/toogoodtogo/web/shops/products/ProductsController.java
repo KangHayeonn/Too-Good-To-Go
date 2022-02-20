@@ -96,9 +96,10 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.recommendProducts());
     }
 
-    @GetMapping("/category/{category}/products{method}")
+    @GetMapping("/products")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ProductDto>> productsPerCategory(@PathVariable String category, @PathVariable String method) {
+    public ApiResponse<List<ProductDto>> productsPerCategory(
+            @RequestParam(required = false) String category, @RequestParam(required = false) String method) {
         return new ApiResponse<>(productUseCase.productsPerCategory(category, method));
     }
 

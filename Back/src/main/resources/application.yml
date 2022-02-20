@@ -10,6 +10,7 @@ spring:
     encoding: UTF-8
   jpa:
     hibernate:
+      ddl-auto: create
       use-new-id-generator-mappings: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 #    show-sql: true
@@ -24,8 +25,8 @@ spring:
   datasource:
 #    url: jdbc:h2:mem:toogoodtogo
     url: jdbc:mysql://localhost:3306/toogoodtogo?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
-    username: tgtg
-    password: 1234
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: localhost

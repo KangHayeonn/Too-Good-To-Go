@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
-@Slf4j
 public class AmazonS3MockConfig {
     @Value("${cloud.aws.region.static}")
     String region;
@@ -43,7 +42,6 @@ public class AmazonS3MockConfig {
                 .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
                 .build();
         client.createBucket(bucket);
-        log.info("Connect to Mock S3");
         return (AmazonS3Client) client;
     }
 }

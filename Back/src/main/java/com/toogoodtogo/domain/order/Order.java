@@ -1,14 +1,14 @@
 package com.toogoodtogo.domain.order;
 
 import com.toogoodtogo.domain.BaseTimeEntity;
-import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
+import com.toogoodtogo.domain.order.exceptions.OrderStatusException;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.user.User;
 import lombok.*;
 
-import javax.jdo.annotations.Join;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +38,12 @@ public class Order extends BaseTimeEntity {
 
     private String paymentMethod;
 
+    private Boolean needDisposables;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    private LocalDateTime eta;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -55,9 +59,17 @@ public class Order extends BaseTimeEntity {
         orderProducts.add(orderProduct);
     }
 
-    public void cancelOrder() throws OrderCancelException {
+    public void accept(LocalDateTime eta) throws OrderStatusException {
+        if (!status.canAccept())
+            throw new OrderStatusException(
+                    "cannot accept order in status: " + status);
+        this.eta = eta;
+        this.status = OrderStatus.ACCEPTED;
+    }
+
+    public void cancel() throws OrderStatusException {
         if (!status.canCancel())
-            throw new OrderCancelException(
+            throw new OrderStatusException(
                     "cannot cancel order in status: " + status);
         status = OrderStatus.CANCELED;
     }

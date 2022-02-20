@@ -3,7 +3,7 @@ package com.toogoodtogo.web.orders.dto;
 import com.toogoodtogo.domain.order.Order;
 import com.toogoodtogo.domain.order.OrderProduct;
 import com.toogoodtogo.domain.order.OrderStatus;
-import com.toogoodtogo.domain.shop.Shop;
+import com.toogoodtogo.domain.user.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class GetOrdersResponse {
+public class GetShopOrdersResponse {
     private final Long id;
-    private final ShopDto shop;
-    private final List<ProductDto> products;
+    private final GetShopOrdersResponse.UserDto user;
+    private final List<GetShopOrdersResponse.ProductDto> products;
     private final OrderStatus status;
     private final String requirement;
     private final String paymentMethod;
@@ -23,19 +23,13 @@ public class GetOrdersResponse {
     private final LocalDateTime createdAt;
 
     @Getter
-    public static class ShopDto {
+    public static class UserDto {
         private final Long id;
-        private final String name;
-        private final List<String> categories;
         private final String phone;
-        private final String image;
 
-        public ShopDto(Shop shop) {
-            id = shop.getId();
-            name = shop.getName();
-            categories = shop.getCategory();
-            phone = shop.getPhone();
-            image = shop.getImage();
+        public UserDto(User user) {
+            id = user.getId();
+            phone = user.getPhone();
         }
     }
 
@@ -56,11 +50,11 @@ public class GetOrdersResponse {
         }
     }
 
-    public GetOrdersResponse(Order order) {
+    public GetShopOrdersResponse(Order order) {
         id = order.getId();
-        shop = new ShopDto(order.getShop());
+        user = new GetShopOrdersResponse.UserDto(order.getUser());
         products = order.getOrderProducts().stream()
-                .map(ProductDto::new)
+                .map(GetShopOrdersResponse.ProductDto::new)
                 .collect(Collectors.toList());
         status = order.getStatus();
         requirement = order.getRequirement();

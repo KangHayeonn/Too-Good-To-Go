@@ -1,13 +1,15 @@
 package com.toogoodtogo.domain.order;
 
 public enum OrderStatus {
-    ORDER_COMPLETED,
+    WAITING_FOR_ACCEPTANCE,
     CANCELED,
-    PREPARING,
-    WAITING_PICKUP,
-    PICKUP_COMPLETED;
+    ACCEPTED;
+
+    public Boolean canAccept() {
+        return this.equals(WAITING_FOR_ACCEPTANCE);
+    }
 
     public Boolean canCancel() {
-        return this.equals(ORDER_COMPLETED);
+        return this.equals(WAITING_FOR_ACCEPTANCE);
     }
 }

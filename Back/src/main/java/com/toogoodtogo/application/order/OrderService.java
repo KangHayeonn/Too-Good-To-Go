@@ -1,10 +1,8 @@
 package com.toogoodtogo.application.order;
 
 import com.toogoodtogo.domain.order.*;
-import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
-import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.order.exceptions.ProductPriceMismatchException;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
@@ -15,8 +13,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,10 +29,11 @@ public class OrderService implements OrderUseCase {
                 addOrderDto.getProducts().stream()
                         .map(AddOrderDto.AddOrderProductDto::getProductId)
                         .collect(Collectors.toList()));
-        Map<Long, Integer> productQuantityMap = addOrderDto.getProducts()
-                .stream().collect(Collectors.toMap(
-                        AddOrderDto.AddOrderProductDto::getProductId,
-                        AddOrderDto.AddOrderProductDto::getQuantity));
+        Map<Long, AddOrderDto.AddOrderProductDto> productDtoMap =
+                addOrderDto.getProducts()
+                        .stream().collect(Collectors.toMap(
+                                AddOrderDto.AddOrderProductDto::getProductId,
+                                x -> x));
 
         // TODO: product 없는 거에 대한 예외 처리
         Order order = Order.builder()
@@ -46,13 +43,16 @@ public class OrderService implements OrderUseCase {
                 .requirement(addOrderDto.getRequirement())
                 .paymentMethod(addOrderDto.getPaymentMethod())
                 .orderProducts(new ArrayList<>())
-                .status(OrderStatus.ORDER_COMPLETED)
+                .needDisposables(addOrderDto.getNeedDisposables())
+                .status(OrderStatus.WAITING_FOR_ACCEPTANCE)
                 .build();
         for (Product product : products) {
-            order.addProduct(
-                    product,
-                    productQuantityMap.get(product.getId())
-            );
+            AddOrderDto.AddOrderProductDto dto = productDtoMap.get(product.getId());
+            if (!product.getDiscountedPrice().equals(dto.getPrice())) {
+                throw new ProductPriceMismatchException();
+            }
+
+            order.addProduct(product, dto.getQuantity());
         }
 
         if (Boolean.TRUE.equals(addOrderDto.getCacheRequirement())
@@ -88,7 +88,7 @@ public class OrderService implements OrderUseCase {
         Order order = orderRepository
                 .findByIdAndUserId(orderId, user.getId())
                 .orElseThrow(OrderNotFoundException::new);
-        order.cancelOrder();
+        order.cancel();
         orderRepository.save(order);
     }
 

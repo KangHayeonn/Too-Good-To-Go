@@ -11,8 +11,19 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "join fetch o.shop " +
             "join fetch o.user " +
             "join fetch o.orderProducts op " +
-            "join fetch op.product")
+            "join fetch op.product " +
+            "where o.user.id = :userId " +
+            "order by o.id desc")
     List<Order> findAllByUserId(Long userId);
 
     Optional<Order> findByIdAndUserId(Long id, Long userId);
+
+    @Query("SELECT distinct o FROM Order o " +
+            "join fetch o.shop s " +
+            "join fetch o.user " +
+            "join fetch o.orderProducts op " +
+            "join fetch op.product " +
+            "where s.id = :shopId " +
+            "order by o.id desc")
+    List<Order> findAllByShopId(Long shopId);
 }

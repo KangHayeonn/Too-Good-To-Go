@@ -2,7 +2,7 @@ package com.toogoodtogo.advice;
 
 import com.toogoodtogo.advice.exception.*;
 import com.toogoodtogo.domain.exceptions.CUploadImageInvalidException;
-import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
+import com.toogoodtogo.domain.order.exceptions.OrderStatusException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
 import com.toogoodtogo.domain.security.exceptions.*;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
@@ -327,9 +327,9 @@ public class ExceptionAdvice {
         return new ErrorResponse("OrderNotFoundException", getMessage("orderNotFoundException.msg"));
     }
 
-    @ExceptionHandler(OrderCancelException.class)
+    @ExceptionHandler(OrderStatusException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ErrorResponse orderCancelException(HttpServletRequest request, OrderCancelException e) {
+    protected ErrorResponse orderCancelException(HttpServletRequest request, OrderStatusException e) {
         return new ErrorResponse("OrderCancelException", getMessage("orderCancelException.msg"));
     }
 

@@ -1,10 +1,7 @@
 package com.toogoodtogo.application.order;
 
 import com.toogoodtogo.domain.order.*;
-import com.toogoodtogo.domain.order.exceptions.OrderCancelException;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
-import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.user.User;
@@ -15,8 +12,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,7 +83,7 @@ public class OrderService implements OrderUseCase {
         Order order = orderRepository
                 .findByIdAndUserId(orderId, user.getId())
                 .orElseThrow(OrderNotFoundException::new);
-        order.cancelOrder();
+        order.cancel();
         orderRepository.save(order);
     }
 

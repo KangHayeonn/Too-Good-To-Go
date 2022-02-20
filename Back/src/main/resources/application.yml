@@ -52,4 +52,3 @@ cloud:
       auto: false
     cloudFront:
       distributionDomain: https://diefqsnmvol80.cloudfront.net
-      

@@ -8,7 +8,6 @@ import com.toogoodtogo.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,8 @@ public class Order extends BaseTimeEntity {
     private String requirement;
 
     private String paymentMethod;
+
+    private Boolean needDisposables;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

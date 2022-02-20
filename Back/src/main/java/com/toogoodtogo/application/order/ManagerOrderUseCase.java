@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ManagerOrderUseCase {
-    List<Order> findOrdersByShopId(User user, Long userId) throws AccessDeniedException;
+    List<Order> findShopOrders(User user, Long userId) throws AccessDeniedException;
 
     void acceptOrder(User user, Long orderId, LocalDateTime eta) throws Exception;
 

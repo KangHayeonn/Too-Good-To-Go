@@ -6,7 +6,7 @@ import com.toogoodtogo.domain.order.Order;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.orders.dto.AcceptOrderRequest;
-import com.toogoodtogo.web.orders.dto.GetOrdersResponse;
+import com.toogoodtogo.web.orders.dto.GetShopOrdersResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +21,13 @@ public class ManagerOrdersController {
     private final ManagerOrderUseCase managerOrderUseCase;
 
     @GetMapping("/shops/{shopId}/orders")
-    public ApiResponse<List<GetOrdersResponse>> findOrdersByShopId(
+    public ApiResponse<List<GetShopOrdersResponse>> findShopOrders(
             @CurrentUser User user,
             @PathVariable Long shopId) throws AccessDeniedException {
         List<Order> orders = managerOrderUseCase
-                .findOrdersByShopId(user, shopId);
+                .findShopOrders(user, shopId);
         return new ApiResponse<>(orders.stream()
-                .map(GetOrdersResponse::new)
+                .map(GetShopOrdersResponse::new)
                 .collect(Collectors.toList()));
     }
 
@@ -40,7 +40,6 @@ public class ManagerOrdersController {
         return new ApiResponse<>("success");
     }
 
-
     @DeleteMapping("/orders/{orderId}")
     public ApiResponse<String> cancelOrder(
             @CurrentUser User user,
@@ -48,5 +47,4 @@ public class ManagerOrdersController {
         managerOrderUseCase.cancelOrder(user, orderId);
         return new ApiResponse<>("success");
     }
-
 }

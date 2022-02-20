@@ -1,5 +1,6 @@
 package com.toogoodtogo.application.order;
 
+import com.toogoodtogo.advice.exception.ForbiddenException;
 import com.toogoodtogo.domain.order.Order;
 import com.toogoodtogo.domain.order.OrderRepository;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
@@ -21,23 +22,23 @@ public class ManagerOrderService implements ManagerOrderUseCase {
     private final OrderRepository orderRepository;
     private final ShopRepository shopRepository;
 
-    private Order findOrder(User user, Long orderId) throws AccessDeniedException {
+    private Order findOrder(User user, Long orderId) {
         Order order = orderRepository
                 .findById(orderId)
                 .orElseThrow(OrderNotFoundException::new);
         if (!order.getShop().getUser().getId().equals(user.getId()))
-            throw new AccessDeniedException("access denied");
+            throw new ForbiddenException();
         return order;
     }
 
     @Override
-    public List<Order> findOrdersByShopId(User user, Long shopId) throws AccessDeniedException {
+    public List<Order> findShopOrders(User user, Long shopId) {
         // TODO: Apply QueryDSL
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(CShopNotFoundException::new);
 
         if (!shop.getUser().getId().equals(user.getId()))
-            throw new AccessDeniedException("access denied");
+            throw new ForbiddenException();
 
         return orderRepository.findAllByShopId(shopId);
     }

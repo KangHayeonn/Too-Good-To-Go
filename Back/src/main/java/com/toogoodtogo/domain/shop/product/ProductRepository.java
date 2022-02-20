@@ -11,8 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findAllByShopId(Long ShopId);
-    List<Product> findAll();
+    List<Product> findAllByShopId(Long shopId);
 
     @Query("select p from Product p where p.shop.id = ?1 and p.id = ?2") // 수정 해야 할듯? join
     Optional<Product> findByShopIdAndId(Long shopId, Long productId);
@@ -28,4 +27,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Long countProductByShopId(Long shopId);
 
     List<Product> findByNameContaining(String keyword);
+
+    boolean existsByShopId(Long shopId);
 }

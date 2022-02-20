@@ -1,6 +1,7 @@
 package com.toogoodtogo.application.shop.product;
 
 import com.toogoodtogo.web.shops.products.dto.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public interface ProductUseCase {
     void deleteProduct(Long managerId, Long shopId, Long productId);
     ProductDto choiceProduct(Long managerId, Long shopId, Long productId);
     List<ProductDto> recommendProducts();
-    List<ProductDto> productsPerCategory(String category, String method);
+    List<ProductDto> productsPerCategory(String category, String method, Pageable pageable);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);
     List<ProductDto> findProductsBySearch(String keyword);
 }

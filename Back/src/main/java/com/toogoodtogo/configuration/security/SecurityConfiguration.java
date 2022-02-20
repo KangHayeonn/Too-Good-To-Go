@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,10 +23,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
     private final JwtTokenProvider jwtProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final StringRedisTemplate redisTemplate;
 
     @Bean
     @Override
@@ -43,17 +45,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests() // URL별 권한 관리 설정하는 옵션의 시작점
-                        // 권한 관리 대상 지정 옵션
-                        // 메인 화면, 로그인 및 가입 접근은 누구나 가능
-                        // 더 손봐야 함!!
                 .antMatchers("/api/signup", "/api/login", "/api/reissue", "/", "/exception/**").permitAll()
-                .antMatchers("/api/shop/**", "/api/shops/**", "/api/product/**", "/api/products/**").permitAll()
-                .antMatchers("/api/search/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permitAll()
+                .antMatchers("/api/shops/**", "/api/products/**", "/api/search").permitAll()
+//                .antMatchers(HttpMethod.GET, "/oauth/kakao/**").permi
+//                tAll()
 //                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
 //                .anyRequest().hasRole("USER") // 그 외 나머지 요청은 인증된 회원만 가능
 //                .anyRequest().permitAll()
-                .antMatchers("/api/user/**", "/api/users/**", "/api/orders/**").hasRole("USER")
+                .antMatchers("/api/user/**", "/api/users/**", "/api/orders/**", "/api/search/keywords/**").hasRole("USER")
                 .antMatchers("/api/manager/**").hasRole("MANAGER")
                 .antMatchers("/api/me", "/api/logout").hasAnyRole("USER", "MANAGER")
                 .antMatchers("/h2-console/**", "/favicon.ico").permitAll()
@@ -66,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                     // jwt 인증 필터를 UsernamePasswordAuthenticationFilter.class 전에 넣는다.
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

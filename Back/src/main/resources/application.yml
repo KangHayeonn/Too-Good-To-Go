@@ -10,14 +10,27 @@ spring:
     encoding: UTF-8
   jpa:
     hibernate:
+      ddl-auto: create
       use-new-id-generator-mappings: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
   mvc:
     throw-exception-if-no-handler-found: true
   web:
     resources:
       add-mappings: false
   datasource:
-    url: jdbc:h2:mem:toogoodtogo
+#    url: jdbc:h2:mem:toogoodtogo
+    url: jdbc:mysql://localhost:3306/toogoodtogo?serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    username: tgtg
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   servlet:
@@ -39,3 +52,4 @@ cloud:
       auto: false
     cloudFront:
       distributionDomain: https://diefqsnmvol80.cloudfront.net
+      

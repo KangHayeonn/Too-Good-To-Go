@@ -12,6 +12,8 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -153,32 +155,56 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> productsPerCategory(String category, String method) {
-        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
+    public List<ProductDto> productsPerCategory(String category, String method, Pageable pageable) {
         List<ProductDto> data = new ArrayList<>();
+//        if (StringUtils.hasText(category)) { // 카테고리가 있으면
+//            choiceProductList.forEach(row -> {
+//                if (row.getShop().getCategory().contains(category)) { // 해당 shop category 에 해당하면
+//                    if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
+//                        //가게에서 가장 할인율 높은거
+//                        data.add(new ProductDto(
+//                                productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+//                    }
+//                    else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
+//                }
+//            });
+//        }
+//        else { // 카테고리가 없는 전체 보기면
+//            choiceProductList.forEach(row -> {
+//                if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
+//                    //가게에서 가장 할인율 높은거
+//                    data.add(new ProductDto(
+//                            productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+//                }
+//                else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
+//            });
+//        }
         if (StringUtils.hasText(category)) { // 카테고리가 있으면
-            choiceProductList.forEach(row -> {
-                if (row.getShop().getCategory().contains(category)) { // 해당 shop category 에 해당하면
-                    if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
-                        //가게에서 가장 할인율 높은거
-                        data.add(new ProductDto(
-                                productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+            List<ChoiceProduct> all = choiceProductRepository.findProductsByShopCategory(category);
+            all.forEach(row -> {
+                if (row.getProduct() != null) // 추천 상품 있으면
+                    data.add(new ProductDto(row.getProduct()));
+                else // 추천 상품이 없다면
+                {
+                    if (productRepository.existsByShopId(row.getShop().getId())) { // 상품이 있으면
+                        data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
                     }
-                    else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
                 }
             });
         }
         else { // 카테고리가 없는 전체 보기면
+            Page<ChoiceProduct> choiceProductList = choiceProductRepository.findAll(pageable);
             choiceProductList.forEach(row -> {
-                if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
-                    //가게에서 가장 할인율 높은거
-                    data.add(new ProductDto(
-                            productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+                if (row.getProduct() != null) // 추천 상품 있으면
+                    data.add(new ProductDto(row.getProduct()));
+                else // 추천 상품이 없다면
+                {
+                    if (productRepository.existsByShopId(row.getShop().getId())) { // 상품이 있으면
+                        data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
+                    }
                 }
-                else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
             });
         }
-        log.info("data : " + data.get(0).getName());
         List<ProductDto> sortData;
         if (!StringUtils.hasText(method)) { // method 가 없는 기본 값이면 최신순 (id 높은 순으로)
             log.info("method : null");

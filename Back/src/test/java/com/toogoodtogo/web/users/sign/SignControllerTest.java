@@ -32,7 +32,6 @@ class SignControllerTest extends ControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
-        refreshTokenRepository.deleteAllInBatch();
 
         signService.signup(SignupUserRequest.builder()
                 .email("user@email.com").password("user_password")
@@ -47,7 +46,6 @@ class SignControllerTest extends ControllerTest {
         productRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
-        refreshTokenRepository.deleteAllInBatch();
     }
 
     @ParameterizedTest
@@ -234,9 +232,14 @@ class SignControllerTest extends ControllerTest {
     public void logout() throws Exception {
         //given
         TokenDto userToken = signService.login(LoginUserRequest.builder().email("user@email.com").password("user_password").build());
+        String object = objectMapper.writeValueAsString(TokenRequest.builder()
+                .accessToken(userToken.getAccessToken())
+                .refreshToken(userToken.getRefreshToken())
+                .build());
 
-        ResultActions actions = mockMvc.perform(delete("/api/logout")
+        ResultActions actions = mockMvc.perform(post("/api/logout")
                 .header("Authorization", "Bearer " + userToken.getAccessToken())
+                .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         //then
@@ -245,7 +248,11 @@ class SignControllerTest extends ControllerTest {
                 .andDo(document("join/logout",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        requestHeaders(headerWithName("Authorization").description("유저의 Access Token"))
+                        requestHeaders(headerWithName("Authorization").description("유저의 Access Token")),
+                        requestFields(
+                                fieldWithPath("accessToken").description("accessToken"),
+                                fieldWithPath("refreshToken").description("refreshToken")
+                        )
                 ))
                 .andExpect(status().isNoContent());
     }

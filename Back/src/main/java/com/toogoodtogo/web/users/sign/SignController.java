@@ -38,9 +38,9 @@ public class SignController {
         return new ApiResponse<>(signService.reissue(request));
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@CurrentUser User user) {
-        signService.logout(user.getId());
+    public void logout(@RequestBody @Valid TokenRequest request) {
+        signService.logout(request);
     }
 }

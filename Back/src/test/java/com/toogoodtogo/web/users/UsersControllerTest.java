@@ -5,6 +5,7 @@ import com.toogoodtogo.web.ControllerTest;
 import com.toogoodtogo.web.users.dto.UpdateUserRequest;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,6 @@ class UsersControllerTest extends ControllerTest {
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();
-        refreshTokenRepository.deleteAllInBatch();
 
         user = userRepository.save(User.builder()
                 .email("email@email.com")
@@ -46,7 +46,7 @@ class UsersControllerTest extends ControllerTest {
 
     @AfterEach
     public void setDown() {
-        signService.logout(user.getId());
+        signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();

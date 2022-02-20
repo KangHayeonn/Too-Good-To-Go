@@ -70,10 +70,4 @@ public class ShopsController {
              @PathVariable @Positive(message = "path 오류") Long shopId) {
         shopUseCase.deleteShop(user.getId(), shopId);
     }
-
-    @GetMapping("/search/shops/{keyword}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ShopDto>> findProductsBySearch(@PathVariable String keyword) {
-        return new ApiResponse<>(shopUseCase.findShopsBySearch(keyword));
-    }
 }

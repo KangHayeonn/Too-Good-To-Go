@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductRepositorySupport {
+    private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
     public Product choiceHighestRateProductPerShop(Long shopId) {
@@ -30,6 +32,14 @@ public class ProductRepositorySupport {
                 .where(product.shop.id.eq(shopId))
                 .orderBy(orderType("rate"))
                 .fetchFirst();
+    }
+
+    public Product findProductsByShopCategory(String category) {
+//        em.createQuery("select product_id from ChoiceProduct o " +
+//                "inner join o.product product inner join o.shop shop" +
+//                " where find_in_set(?1, shop.category)")
+//                .getResultList();
+        return null;
     }
 
     public List<ProductDto> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개

@@ -11,7 +11,7 @@ spring:
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
-      dialect: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 #    show-sql: true
 #    properties:
 #      hibernate:

@@ -3,6 +3,9 @@ package com.toogoodtogo.application.order;
 import com.toogoodtogo.domain.order.Order;
 import com.toogoodtogo.domain.order.OrderRepository;
 import com.toogoodtogo.domain.order.exceptions.OrderNotFoundException;
+import com.toogoodtogo.domain.shop.Shop;
+import com.toogoodtogo.domain.shop.ShopRepository;
+import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerOrderService implements ManagerOrderUseCase {
     private final OrderRepository orderRepository;
+    private final ShopRepository shopRepository;
 
     private Order findOrder(User user, Long orderId) throws AccessDeniedException {
         Order order = orderRepository
@@ -27,9 +31,15 @@ public class ManagerOrderService implements ManagerOrderUseCase {
     }
 
     @Override
-    public List<Order> findOrdersByUserId(Long userId) {
+    public List<Order> findOrdersByShopId(User user, Long shopId) throws AccessDeniedException {
         // TODO: Apply QueryDSL
-        return orderRepository.findAllByManagerId(userId);
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(CShopNotFoundException::new);
+
+        if (!shop.getUser().getId().equals(user.getId()))
+            throw new AccessDeniedException("access denied");
+
+        return orderRepository.findAllByShopId(shopId);
     }
 
     @Override

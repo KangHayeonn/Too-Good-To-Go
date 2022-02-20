@@ -23,7 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "join fetch o.user " +
             "join fetch o.orderProducts op " +
             "join fetch op.product " +
-            "where s.user.id = :userId " +
+            "where s.id = :shopId " +
             "order by o.id desc")
-    List<Order> findAllByManagerId(Long userId);
+    List<Order> findAllByShopId(Long shopId);
 }

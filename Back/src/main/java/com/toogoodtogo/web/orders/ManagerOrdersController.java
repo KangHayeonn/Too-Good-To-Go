@@ -10,24 +10,28 @@ import com.toogoodtogo.web.orders.dto.GetOrdersResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/manager/orders")
+@RequestMapping("/api/manager")
 public class ManagerOrdersController {
     private final ManagerOrderUseCase managerOrderUseCase;
 
-    @GetMapping
-    public ApiResponse<List<GetOrdersResponse>> findOrders(@CurrentUser User user) {
-        List<Order> orders = managerOrderUseCase.findOrdersByUserId(user.getId());
+    @GetMapping("/shops/{shopId}/orders")
+    public ApiResponse<List<GetOrdersResponse>> findOrdersByShopId(
+            @CurrentUser User user,
+            @PathVariable Long shopId) throws AccessDeniedException {
+        List<Order> orders = managerOrderUseCase
+                .findOrdersByShopId(user, shopId);
         return new ApiResponse<>(orders.stream()
                 .map(GetOrdersResponse::new)
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping("/{orderId}:accept")
+    @PostMapping("/orders/{orderId}:accept")
     public ApiResponse<String> acceptOrder(
             @CurrentUser User user,
             @PathVariable Long orderId,
@@ -37,7 +41,7 @@ public class ManagerOrdersController {
     }
 
 
-    @DeleteMapping("/{orderId}")
+    @DeleteMapping("/orders/{orderId}")
     public ApiResponse<String> cancelOrder(
             @CurrentUser User user,
             @PathVariable Long orderId) throws Exception {

@@ -30,3 +30,6 @@ cloud:
     cloudFront:
       distributionDomain: https://diefqsnmvol80.cloudfront.net
 
+logging:
+  level:
+    root: error

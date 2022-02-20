@@ -343,14 +343,15 @@ class ProductsControllerTest extends ControllerTest {
     @Test
     void productsPerCategory() throws Exception {
         //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/products?category=한식&method=rate"))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/products?category=한식&method=rate&page=0"))
                 .andDo(print())
                 .andDo(document("products/category",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestParameters(
                                 parameterWithName("category").description("가게 카테고리"),
-                                parameterWithName("method").description("정렬 방법")
+                                parameterWithName("method").description("정렬 방법"),
+                                parameterWithName("page").description("페이지 숫자")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),

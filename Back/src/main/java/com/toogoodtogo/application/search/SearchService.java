@@ -5,6 +5,7 @@ import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.ChoiceProduct;
 import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
+import com.toogoodtogo.domain.shop.product.ProductRepository;
 import com.toogoodtogo.domain.shop.product.ProductRepositorySupport;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
@@ -27,6 +28,7 @@ public class SearchService {
     private final ShopRepository shopRepository;
     private final ChoiceProductRepository choiceProductRepository;
     private final ProductRepositorySupport productRepositorySupport;
+    private final ProductRepository productRepository;
 
     private String REDIS_KEY = "recentKeywords:";
 
@@ -37,21 +39,30 @@ public class SearchService {
             redisRecentSearch.add(REDIS_KEY + userId, keyword, Double.parseDouble(time));
             redisRecentSearch.removeRange(REDIS_KEY + userId, -(10 + 1), -(10 + 1));
         }
-
-        List<Shop> all = shopRepository.findAll(); // 이게 맞나....
+        List<ChoiceProduct> all = choiceProductRepository.findProductsByShopCategory(keyword);
         List<ProductDto> data = new ArrayList<>();
-        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
         all.forEach(s -> {
-            if(s.getName().contains(keyword) || s.getCategory().contains(keyword)) {
-                ChoiceProduct byShopId = choiceProductRepository.findByShopId(s.getId());
-                if(byShopId.getProduct() != null) { // 추천 상품이 있다면
-                    data.add(new ProductDto(byShopId.getProduct()));
+            if (s.getProduct() != null) // 추천 상품 있으면
+                data.add(new ProductDto(s.getProduct()));
+            else // 추천 상품이 없다면
+                if (productRepository.existsByShopId(s.getShop().getId())) { // 상품이 있으면
+                    data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(s.getShop().getId())));
                 }
-                else { // 추천 상품이 없다면
-                    data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(s.getId())));
-                }
-            }
         });
+//        List<Shop> all = shopRepository.findAll(); // 이게 맞나....
+//        List<ProductDto> data = new ArrayList<>();
+//        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
+//        all.forEach(s -> {
+//            if(s.getName().contains(keyword) || s.getCategory().contains(keyword)) {
+//                ChoiceProduct byShopId = choiceProductRepository.findByShopId(s.getId());
+//                if(byShopId.getProduct() != null) { // 추천 상품이 있다면
+//                    data.add(new ProductDto(byShopId.getProduct()));
+//                }
+//                else { // 추천 상품이 없다면
+//                    data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(s.getId())));
+//                }
+//            }
+//        });
         return data;
 //        return shopUseCase.findShopsBySearch(keyword);
     }

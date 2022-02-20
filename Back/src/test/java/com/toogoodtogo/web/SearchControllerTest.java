@@ -67,7 +67,7 @@ class SearchControllerTest extends ControllerTest {
         productRepository.save(product1);
         choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
 
-        searchService.searchProductsByShop(user.getId(), "shop");
+//        searchService.searchProductsByShop(user.getId(), "shop");
     }
 
     @AfterEach
@@ -142,7 +142,7 @@ class SearchControllerTest extends ControllerTest {
     @Test
     void deleteRecentKeywordAll() throws Exception {
         //then
-        mockMvc.perform(delete("/api/search/keywordsAll")
+        mockMvc.perform(delete("/api/search/keywords/all")
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("search/deleteAllKeywords",

@@ -70,7 +70,7 @@ class SearchControllerTest extends ControllerTest {
         highestRateProductRepository.save(HighestRateProduct.builder().shop(shop).product(product1).build());
         choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
 
-//        searchService.searchProductsByShop(user.getId(), "shop");
+        searchService.searchProductsByShop(user.getId(), "shop");
     }
 
     @AfterEach

@@ -12,21 +12,8 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByShopId(Long shopId);
-
-    @Query("select p from Product p where p.shop.id = ?1 and p.id = ?2") // 수정 해야 할듯? join
     Optional<Product> findByShopIdAndId(Long shopId, Long productId);
-
-    @Query("select p from Product p where p.shop.id = ?1 and p.name = ?2") // 수정 해야 할듯?
     Optional<Product> findByShopIdAndName(Long shopId, String name);
-
-    @Modifying
-    @Query("delete from Product p where p.shop.id = ?1") // 수정 해야 할듯?
     void deleteByShopId(Long shopId);
-
-    @Query("select count(p) from Product p where p.shop.id = ?1")
-    Long countProductByShopId(Long shopId);
-
-    List<Product> findByNameContaining(String keyword);
-
-    boolean existsByShopId(Long shopId);
+    Long countByShopId(Long shopId);
 }

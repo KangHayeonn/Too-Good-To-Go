@@ -37,6 +37,7 @@ public class ShopService implements ShopUseCase {
     private final S3Uploader s3Uploader;
     private final ChoiceProductRepository choiceProductRepository;
     private final DisplayProductRepository displayProductRepository;
+    private final HighestRateProductRepository highestRateProductRepository;
 
     @Transactional(readOnly = true)
     public List<ShopDto> findAllShops() {
@@ -83,7 +84,7 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
-        choiceProductRepository.save(ChoiceProduct.builder().shop(newShop).product(null).build());
+        highestRateProductRepository.save(HighestRateProduct.builder().shop(newShop).product(null).build());
         return new ShopDto(shopRepository.save(newShop));
     }
 
@@ -96,7 +97,9 @@ public class ShopService implements ShopUseCase {
     public ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if(!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-        // 수정할 shop
+        if(shopRepository.findByAddressAndName(request.getAddress(), request.getName()).isPresent() &&
+                !shopRepository.findByAddressAndName(request.getAddress(), request.getName()).get().getId().equals(shopId))
+            throw new CValidCheckException("이미 있는 가게 이름입니다."); // 바꾸려는 이름이 중복될 때
         Shop modifiedShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
 
         String filePath;
@@ -125,12 +128,13 @@ public class ShopService implements ShopUseCase {
 
         // 해당 shop 의 product 들 이미지 삭제
         s3Uploader.deleteFolderS3("productsImage/" + deleteShop.getId() + "/");
+        highestRateProductRepository.deleteByShopId(deleteShop.getId());
+        choiceProductRepository.deleteByShopId(deleteShop.getId());
         productRepository.deleteByShopId(deleteShop.getId());
 
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteShop.getImage().contains("shopDefault.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
         displayProductRepository.deleteByShopId(deleteShop.getId());
-        choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
     }
 

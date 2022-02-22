@@ -92,7 +92,7 @@ operation::join/reissue[snippets='http-request,request-fields,http-response,resp
 operation::users/me[snippets='http-request,request-headers,http-response,response-fields']
 
 === USER 업데이트 [PATCH]
-operation::users/update[snippets='http-request,request-headers,http-response,response-fields']
+operation::users/update[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 == Shop Api
 
@@ -129,7 +129,7 @@ operation::products/add[snippets='http-request,request-headers,path-parameters,h
 operation::products/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
 === PRODUCT 우선순위 업데이트 [PATCH]
-operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,request-fields,http-response,response-fields']
 
 === PRODUCT 삭제 [DELETE]
 operation::products/delete[snippets='http-request,path-parameters,request-headers,http-response']

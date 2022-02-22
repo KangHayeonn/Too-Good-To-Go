@@ -2,6 +2,7 @@ package com.toogoodtogo.web;
 
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.product.ChoiceProduct;
+import com.toogoodtogo.domain.shop.product.HighestRateProduct;
 import com.toogoodtogo.domain.shop.product.Product;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
@@ -33,6 +34,7 @@ class SearchControllerTest extends ControllerTest {
 
     @BeforeEach
     public void setUp() {
+        highestRateProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAll();
         shopRepository.deleteAll();
@@ -65,6 +67,7 @@ class SearchControllerTest extends ControllerTest {
                 .shop(shop).name("김치찌개").price(10000L).discountedPrice(9000L)
                 .image("https://diefqsnmvol80.cloudfront.net/productDefault.png").build();
         productRepository.save(product1);
+        highestRateProductRepository.save(HighestRateProduct.builder().shop(shop).product(product1).build());
         choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
 
 //        searchService.searchProductsByShop(user.getId(), "shop");
@@ -73,6 +76,7 @@ class SearchControllerTest extends ControllerTest {
     @AfterEach
     public void setDown() {
         signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
+        highestRateProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAll();
         shopRepository.deleteAll();
@@ -95,6 +99,7 @@ class SearchControllerTest extends ControllerTest {
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
                                 fieldWithPath("data.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.[].shopCategory").description("상품 가게 카테고리"),
                                 fieldWithPath("data.[].id").description("상품 고유 번호"),
                                 fieldWithPath("data.[].name").description("상품 이름"),
                                 fieldWithPath("data.[].price").description("상품 가격"),

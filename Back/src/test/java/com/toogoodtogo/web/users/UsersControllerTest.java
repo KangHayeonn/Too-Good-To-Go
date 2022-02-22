@@ -29,6 +29,7 @@ class UsersControllerTest extends ControllerTest {
 
     @BeforeEach
     public void setUp() {
+        highestRateProductRepository.deleteAllInBatch();
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();
@@ -47,6 +48,7 @@ class UsersControllerTest extends ControllerTest {
     @AfterEach
     public void setDown() {
         signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
+        highestRateProductRepository.deleteAllInBatch();
         productRepository.deleteAll();
         shopRepository.deleteAll();
         userRepository.deleteAllInBatch();

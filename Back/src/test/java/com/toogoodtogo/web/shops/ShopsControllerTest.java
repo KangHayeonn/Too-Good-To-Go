@@ -45,6 +45,7 @@ class ShopsControllerTest extends ControllerTest {
 
     @BeforeEach
     public void setUp() {
+        highestRateProductRepository.deleteAllInBatch();
         displayProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
@@ -75,6 +76,7 @@ class ShopsControllerTest extends ControllerTest {
     @AfterEach
     public void setDown() {
         signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
+        highestRateProductRepository.deleteAllInBatch();
         displayProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();

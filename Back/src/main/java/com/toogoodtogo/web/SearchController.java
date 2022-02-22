@@ -6,6 +6,7 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.ProductSearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,9 @@ public class SearchController {
     private final SearchService searchService;
 
     //TODO : 검색어 저장 기능? search:keyword ?
-    //DONE : 검색어 Shop 카테고리에도 매칭 --> 카테고리는 정확히 일치해야 가능, 구현 방식 저게 맞는지..
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ProductDto>> searchProductsByShop(@CurrentUser User user, @RequestParam String keyword) {
+    public ApiResponse<List<ProductSearchDto>> searchProductsByShop(@CurrentUser User user, @RequestParam String keyword) {
         return new ApiResponse<>(searchService.searchProductsByShop(user != null ? user.getId() : null, keyword));
     }
 

@@ -64,14 +64,13 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.updateProduct(user.getId(), shopId, productId, file, request));
     }
 
-    @PatchMapping("/manager/shops/{shopId}/products/{productId}")
+    @PatchMapping("/manager/shops/{shopId}/products")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
-            @PathVariable @Positive(message = "path 오류") Long productId,
             @RequestBody @Validated(ValidationSequence.class) UpdateProductPriorityRequest request) throws IOException {
-        return new ApiResponse<>(productUseCase.updateProductPriority(user.getId(), shopId, productId, request));
+        return new ApiResponse<>(productUseCase.updateProductPriority(user.getId(), shopId, request));
     }
 
     @DeleteMapping("/manager/shops/{shopId}/products/{productId}")

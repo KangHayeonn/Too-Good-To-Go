@@ -6,9 +6,7 @@ import com.toogoodtogo.application.search.SearchService;
 import com.toogoodtogo.application.security.SignService;
 import com.toogoodtogo.configuration.EmbeddedRedisConfig;
 import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
-import com.toogoodtogo.domain.shop.product.DisplayProductRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
+import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.UserRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,12 @@ public abstract class ControllerTest {
 
     @Autowired
     protected ChoiceProductRepository choiceProductRepository;
+
+    @Autowired
+    protected HighestRateProductRepository highestRateProductRepository;
+
+    @Autowired
+    protected ProductRepositorySupport productRepositorySupport;
 
     @Autowired
     protected SignService signService;

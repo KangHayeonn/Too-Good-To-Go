@@ -12,11 +12,10 @@ public interface ProductUseCase {
     List<ProductDto> findProducts(Long shopId);
     ProductDto addProduct(Long managerId, Long shopId, MultipartFile file, AddProductRequest request) throws IOException;
     ProductDto updateProduct(Long managerId, Long shopId, Long productId, MultipartFile file, UpdateProductRequest request) throws IOException;
-    List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request);
+    List<String> updateProductPriority(Long managerId, Long shopId, UpdateProductPriorityRequest request);
     void deleteProduct(Long managerId, Long shopId, Long productId);
     ProductDto choiceProduct(Long managerId, Long shopId, Long productId);
     List<ProductDto> recommendProducts();
     List<ProductDto> productsPerCategory(String category, String method, Pageable pageable);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);
-    List<ProductDto> findProductsBySearch(String keyword);
 }

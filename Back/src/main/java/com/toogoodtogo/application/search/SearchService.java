@@ -3,12 +3,10 @@ package com.toogoodtogo.application.search;
 import com.toogoodtogo.application.shop.ShopUseCase;
 import com.toogoodtogo.domain.shop.Shop;
 import com.toogoodtogo.domain.shop.ShopRepository;
-import com.toogoodtogo.domain.shop.product.ChoiceProduct;
-import com.toogoodtogo.domain.shop.product.ChoiceProductRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepository;
-import com.toogoodtogo.domain.shop.product.ProductRepositorySupport;
+import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
+import com.toogoodtogo.web.shops.products.dto.ProductSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -19,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,42 +28,19 @@ public class SearchService {
     private final ChoiceProductRepository choiceProductRepository;
     private final ProductRepositorySupport productRepositorySupport;
     private final ProductRepository productRepository;
+    private final JdbcTemplateProductRepository jdbcTemplateProductRepository;
 
     private String REDIS_KEY = "recentKeywords:";
 
-    public List<ProductDto> searchProductsByShop(Long userId, String keyword) {
-        if(userId != null) {
+    public List<ProductSearchDto> searchProductsByShop(Long userId, String keyword) {
+        if(userId != null) { // User 면 최근 검색어 저장
             ZSetOperations<String, String> redisRecentSearch = redisTemplate.opsForZSet();
             String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSSSS")); // timestamp로!!
             redisRecentSearch.add(REDIS_KEY + userId, keyword, Double.parseDouble(time));
             redisRecentSearch.removeRange(REDIS_KEY + userId, -(10 + 1), -(10 + 1));
         }
-        List<ChoiceProduct> all = choiceProductRepository.findProductsByShopCategory(keyword);
-        List<ProductDto> data = new ArrayList<>();
-        all.forEach(s -> {
-            if (s.getProduct() != null) // 추천 상품 있으면
-                data.add(new ProductDto(s.getProduct()));
-            else // 추천 상품이 없다면
-                if (productRepository.existsByShopId(s.getShop().getId())) { // 상품이 있으면
-                    data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(s.getShop().getId())));
-                }
-        });
-//        List<Shop> all = shopRepository.findAll(); // 이게 맞나....
-//        List<ProductDto> data = new ArrayList<>();
-//        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
-//        all.forEach(s -> {
-//            if(s.getName().contains(keyword) || s.getCategory().contains(keyword)) {
-//                ChoiceProduct byShopId = choiceProductRepository.findByShopId(s.getId());
-//                if(byShopId.getProduct() != null) { // 추천 상품이 있다면
-//                    data.add(new ProductDto(byShopId.getProduct()));
-//                }
-//                else { // 추천 상품이 없다면
-//                    data.add(new ProductDto(productRepositorySupport.choiceHighestRateProductPerShop(s.getId())));
-//                }
-//            }
-//        });
-        return data;
-//        return shopUseCase.findShopsBySearch(keyword);
+        
+        return jdbcTemplateProductRepository.searchProductsByShopCategoryOrShopName(keyword);
     }
 
     public List<String> recentKeywords(Long userId) {

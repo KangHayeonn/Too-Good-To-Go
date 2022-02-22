@@ -34,14 +34,6 @@ public class ProductRepositorySupport {
                 .fetchFirst();
     }
 
-    public Product findProductsByShopCategory(String category) {
-//        em.createQuery("select product_id from ChoiceProduct o " +
-//                "inner join o.product product inner join o.shop shop" +
-//                " where find_in_set(?1, shop.category)")
-//                .getResultList();
-        return null;
-    }
-
     public List<ProductDto> recommendProducts() { // 가게별 할인율 가장 낮은 1개 구하고 그 중 10개
         return queryFactory.select(Projections.fields(ProductDto.class,
                 shop.id.as("shopId"),

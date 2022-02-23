@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 // Axios
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 // images
 import fighting from "../../../../public/image/화이팅도치.jpg";
 import CartCardEdit from "./CartCardEdit";
+import { RootState } from "../../../app/store";
+import { updateMenuItems } from "../../../features/shopFeatures/updateMenuItemsSlice";
 
 interface shopMatchId {
 	shopMatchId: string;
@@ -28,26 +31,33 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const UpdateProduct = () => {
 		return axios.get(`${BASE_URL}/${shopMatchId}/products/all`);
 	};
+	const dispatch = useDispatch();
 	const update = () => {
 		UpdateProduct().then(
 			(res) => {
 				setProducts(res.data.data);
+				dispatch(updateMenuItems(res.data.data));
 			},
 			() => {
 				console.log("product update fail");
 			}
 		);
 	};
+	const displayMenu = useSelector((state: RootState) => {
+		return state.updateMenuItems;
+	});
 
 	useEffect(() => {
 		update();
-	}, []);
-	if (products.length) {
+	}, [displayMenu]);
+
+	if (displayMenu.length) {
 		return (
 			<Wrapper>
 				{products.map((card) => {
 					return (
 						<CartCardEdit
+							key={card.id}
 							id={card.id}
 							shopFoodImg={card.image}
 							shopName={card.shopName}

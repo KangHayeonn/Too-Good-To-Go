@@ -1,7 +1,6 @@
 package com.toogoodtogo.web.shops.products;
 
 import com.toogoodtogo.domain.shop.Shop;
-import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.ControllerTest;
@@ -10,6 +9,7 @@ import com.toogoodtogo.web.shops.products.dto.UpdateProductPriorityRequest;
 import com.toogoodtogo.web.shops.products.dto.UpdateProductRequest;
 import com.toogoodtogo.web.users.sign.dto.TokenDto;
 import com.toogoodtogo.web.users.sign.dto.LoginUserRequest;
+import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,15 +21,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,19 +37,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductsControllerTest extends ControllerTest {
     private static Long shopId;
     private static Long productId;
-    private static User manager;
+    private static String product1Id;
+    private static String product2Id;
+    private static String product3Id;
+    private static String product4Id;
+    private static String product5Id;
     private TokenDto token;
 
     @BeforeEach
     public void setUp() {
+        highestRateProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         displayProductRepository.deleteAllInBatch();
         shopRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
-        refreshTokenRepository.deleteAllInBatch();
 
-        manager = userRepository.save(User.builder()
+        User manager = userRepository.save(User.builder()
                 .email("productTest@email.com")
                 .password(passwordEncoder.encode("password"))
                 .name("name")
@@ -84,17 +86,26 @@ class ProductsControllerTest extends ControllerTest {
         Product save3 = productRepository.save(product4);
         Product save4 = productRepository.save(product5);
         productId = product1.getId();
+        product1Id = String.valueOf(product1.getId());
+        product2Id = String.valueOf(product2.getId());
+        product3Id = String.valueOf(product3.getId());
+        product4Id = String.valueOf(product4.getId());
+        product5Id = String.valueOf(product5.getId());
 
         displayProductRepository.save(DisplayProduct.builder()
                 .shop(shop).priority(new ArrayList<String>(Arrays.asList(
                         String.valueOf(save.getId()), String.valueOf(save1.getId()),
                         String.valueOf(save2.getId()), String.valueOf(save3.getId()), String.valueOf(save4.getId())))).build());
-        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product5).build());
+
+        highestRateProductRepository.save(HighestRateProduct.builder()
+                .shop(shop).product(productRepositorySupport.choiceHighestRateProductPerShop(shopId)).build());
+        choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product2).build());
     }
 
     @AfterEach
     public void setDown() {
-        signService.logout(manager.getId());
+        signService.logout(new TokenRequest(token.getAccessToken(), token.getRefreshToken()));
+        highestRateProductRepository.deleteAllInBatch();
         choiceProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
     }
@@ -247,12 +258,12 @@ class ProductsControllerTest extends ControllerTest {
     public void updatePriorityProduct() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateProductPriorityRequest.builder()
-                .productsId(new ArrayList<>(Arrays.asList("4", "2", "1", "3", "5")))
+                .productsId(new ArrayList<>(Arrays.asList(product2Id, product3Id, product1Id, product5Id, product4Id)))
                 .build());
 
         //when
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
-                .patch("/api/manager/shops/{shopId}/products/{productId}", shopId, productId)
+                .patch("/api/manager/shops/{shopId}/products", shopId)
                 .header("Authorization", "Bearer " + token.getAccessToken())
                 .content(object)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -266,8 +277,10 @@ class ProductsControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
                         pathParameters(
-                                parameterWithName("shopId").description("가게 고유 번호"),
-                                parameterWithName("productId").description("상품 고유 번호")
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+                        requestFields(
+                                fieldWithPath("productsId").description("가게의 상품 우선순위")
                         ),
                         responseFields(
                                 fieldWithPath("data").description("가게의 상품 우선순위")
@@ -345,14 +358,15 @@ class ProductsControllerTest extends ControllerTest {
     @Test
     void productsPerCategory() throws Exception {
         //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/products?category=한식&method=rate"))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/products?category=한식&method=rate&page=0"))
                 .andDo(print())
                 .andDo(document("products/category",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestParameters(
                                 parameterWithName("category").description("가게 카테고리"),
-                                parameterWithName("method").description("정렬 방법")
+                                parameterWithName("method").description("정렬 방법"),
+                                parameterWithName("page").description("페이지 숫자")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
@@ -377,31 +391,6 @@ class ProductsControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("shopId").description("가게 고유 번호")
-                        ),
-                        responseFields(
-                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
-                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
-                                fieldWithPath("data.[].id").description("상품 고유 번호"),
-                                fieldWithPath("data.[].name").description("상품 이름"),
-                                fieldWithPath("data.[].price").description("상품 가격"),
-                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
-                                fieldWithPath("data.[].image").description("상품 이미지")
-                        )
-                ))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void findProductsBySearch() throws Exception {
-        String keyword = "김치";
-        //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search/products/{keyword}", keyword))
-                .andDo(print())
-                .andDo(document("products/search",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("keyword").description("검색 키워드")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),

@@ -8,6 +8,8 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -62,14 +64,13 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.updateProduct(user.getId(), shopId, productId, file, request));
     }
 
-    @PatchMapping("/manager/shops/{shopId}/products/{productId}")
+    @PatchMapping("/manager/shops/{shopId}/products")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
-            @PathVariable @Positive(message = "path 오류") Long productId,
             @RequestBody @Validated(ValidationSequence.class) UpdateProductPriorityRequest request) throws IOException {
-        return new ApiResponse<>(productUseCase.updateProductPriority(user.getId(), shopId, productId, request));
+        return new ApiResponse<>(productUseCase.updateProductPriority(user.getId(), shopId, request));
     }
 
     @DeleteMapping("/manager/shops/{shopId}/products/{productId}")
@@ -99,19 +100,15 @@ public class ProductsController {
     @GetMapping("/products")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> productsPerCategory(
-            @RequestParam(required = false) String category, @RequestParam(required = false) String method) {
-        return new ApiResponse<>(productUseCase.productsPerCategory(category, method));
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String method,
+            @PageableDefault(size = 10) Pageable pageable) {
+        return new ApiResponse<>(productUseCase.productsPerCategory(category, method, pageable));
     }
 
     @GetMapping("/shops/{shopId}/products")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<ProductDto>> findProductsPerShopSortByPriority(@PathVariable Long shopId) {
         return new ApiResponse<>(productUseCase.findProductsPerShopSortByPriority(shopId));
-    }
-
-    @GetMapping("/search/products/{keyword}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ProductDto>> findProductsBySearch(@PathVariable String keyword) {
-        return new ApiResponse<>(productUseCase.findProductsBySearch(keyword));
     }
 }

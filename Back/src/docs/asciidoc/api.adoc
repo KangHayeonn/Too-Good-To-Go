@@ -84,7 +84,7 @@ operation::join/login/manager/fail[snippets='http-request,request-fields,http-re
 operation::join/logout[snippets='http-request,request-headers,http-response']
 
 === 토큰 재발급 [POST]
-operation::join/reissue[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+operation::join/reissue[snippets='http-request,request-fields,http-response,response-fields']
 
 == User Api
 
@@ -92,7 +92,7 @@ operation::join/reissue[snippets='http-request,request-headers,request-fields,ht
 operation::users/me[snippets='http-request,request-headers,http-response,response-fields']
 
 === USER 업데이트 [PATCH]
-operation::users/update[snippets='http-request,request-headers,http-response,response-fields']
+operation::users/update[snippets='http-request,request-headers,request-fields,http-response,response-fields']
 
 == Shop Api
 
@@ -114,9 +114,6 @@ operation::shops/update[snippets='http-request,request-headers,path-parameters,h
 === SHOP 삭제 [DELETE]
 operation::shops/delete[snippets='http-request,request-headers,path-parameters,http-response']
 
-=== SHOP 검색 [GET]
-operation::shops/search[snippets='http-request,path-parameters,http-response,response-fields']
-
 == Product Api
 
 === PRODUCT 전체 조회 [GET]
@@ -132,7 +129,7 @@ operation::products/add[snippets='http-request,request-headers,path-parameters,h
 operation::products/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
 === PRODUCT 우선순위 업데이트 [PATCH]
-operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,request-fields,http-response,response-fields']
 
 === PRODUCT 삭제 [DELETE]
 operation::products/delete[snippets='http-request,path-parameters,request-headers,http-response']
@@ -149,5 +146,16 @@ operation::products/category[snippets='http-request,request-parameters,http-resp
 === PRODUCT Shop 별 우선순위 조회 [GET]
 operation::products/shop[snippets='http-request,path-parameters,http-response,response-fields']
 
+== Search Api
+
 === PRODUCT 검색 [GET]
-operation::products/search[snippets='http-request,path-parameters,http-response,response-fields']
+operation::search/products[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+=== 최근 검색어 조회 [GET]
+operation::search/recentKeywords[snippets='http-request,request-headers,http-response,response-fields']
+
+=== 최근 검색어 단건 삭제 [DELETE]
+operation::search/deleteKeyword[snippets='http-request,request-headers,request-parameters,http-response']
+
+=== 최근 검색어 전체 삭제 [DELETE]
+operation::search/deleteAllKeywords[snippets='http-request,request-headers,http-response']

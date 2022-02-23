@@ -12,9 +12,22 @@ public class AddOrderRequest {
     private String phone;
     private String requirement;
     private String paymentMethod;
+    private Boolean needDisposables;
     private List<AddOrderRequestProductDto> products;
     private Boolean cacheRequirement;
     private Boolean cachePaymentMethod;
+
+    @Getter
+    public static class AddOrderRequestProductDto {
+        private long productId;
+        private int quantity;
+        private long price;
+
+        public AddOrderDto.AddOrderProductDto convert() {
+            return new AddOrderDto.AddOrderProductDto(
+                    productId, quantity, price);
+        }
+    }
 
     public AddOrderDto convert(User user) {
         return new AddOrderDto(
@@ -22,6 +35,7 @@ public class AddOrderRequest {
                 phone,
                 paymentMethod,
                 requirement,
+                needDisposables,
                 products.stream()
                         .map(AddOrderRequestProductDto::convert)
                         .collect(Collectors.toList()),

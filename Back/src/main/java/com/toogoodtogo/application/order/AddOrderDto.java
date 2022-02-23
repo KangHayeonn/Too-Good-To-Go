@@ -13,6 +13,7 @@ public class AddOrderDto {
     private String phone;
     private String paymentMethod;
     private String requirement;
+    private Boolean needDisposables;
     private List<AddOrderProductDto> products;
     private Boolean cacheRequirement;
     private Boolean cachePaymentMethod;
@@ -22,5 +23,6 @@ public class AddOrderDto {
     public static class AddOrderProductDto {
         private long productId;
         private int quantity;
+        private long price;
     }
 }

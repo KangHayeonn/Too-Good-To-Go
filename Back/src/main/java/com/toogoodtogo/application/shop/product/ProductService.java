@@ -12,6 +12,8 @@ import com.toogoodtogo.domain.shop.ShopRepository;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,6 +37,8 @@ public class ProductService implements ProductUseCase {
     private final S3Uploader s3Uploader;
     private final DisplayProductRepository displayProductRepository;
     private final ChoiceProductRepository choiceProductRepository;
+    private final HighestRateProductRepository highestRateProductRepository;
+    private final JdbcTemplateProductRepository jdbcTemplateProductRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDto> findAllProducts() {
@@ -82,12 +86,9 @@ public class ProductService implements ProductUseCase {
         }
         else displayProductRepository.findByShopId(shopId).addPrior(new_product.getId());
 
+        updateHighestProduct(shopId);
+
         return new ProductDto(new_product);
-//        return ProductDto.builder().product(productRepository.save(new_product)).build();
-//        return ProductDto.builder()
-//                .shopId(shop.getId())
-//                .shopName(shop.getName())
-//                .product(productRepository.save(request.toEntity(shop))).build();
     }
 
     private boolean checkAccessOfShop(Long managerId, Long shopId) {
@@ -98,7 +99,11 @@ public class ProductService implements ProductUseCase {
     public ProductDto updateProduct(Long managerId, Long shopId, Long productId, MultipartFile file, UpdateProductRequest request) throws IOException {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        if(productRepository.findByShopIdAndName(shopId, request.getName()).isPresent() &&
+                !productRepository.findByShopIdAndName(shopId, request.getName()).get().getId().equals(productId))
+            throw new CValidCheckException("이미 있는 상품 이름입니다."); // 바꾸려는 이름이 중복될 때
         Product modifiedProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+
         String filePath;
         String fileName;
         if (file.isEmpty()) { // 넘어온 사진이 없으면
@@ -109,17 +114,22 @@ public class ProductService implements ProductUseCase {
         }
 
         modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), fileName);
+
+        updateHighestProduct(shopId);
+
         return new ProductDto(modifiedProduct);
-//        return ProductDto.builder()
-//                .shopId(modifiedProduct.getShop().getId())
-//                .shopName(modifiedProduct.getShop().getName())
-//                .product(modifiedProduct).build();
     }
 
     @Transactional
-    public List<String> updateProductPriority(Long managerId, Long shopId, Long productId, UpdateProductPriorityRequest request) {
+    public List<String> updateProductPriority(Long managerId, Long shopId, UpdateProductPriorityRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        if(request.getProductsId().size() != productRepository.countByShopId(shopId))
+            throw new CValidCheckException("우선순위 갯수가 틀립니다.");
+        request.getProductsId().forEach(p -> {
+            if(productRepository.findByShopIdAndId(shopId, Long.valueOf(p)).isEmpty())
+                throw new CValidCheckException("해당 가게에 없는 상품 아이디가 포함되있습니다.");
+        });
         DisplayProduct displayProduct = displayProductRepository.findByShopId(shopId);
         displayProduct.update(request.getProductsId());
         return displayProduct.getPriority();
@@ -133,17 +143,30 @@ public class ProductService implements ProductUseCase {
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteProduct.getImage().contains("productDefault.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
 
+        HighestRateProduct byShopIdAndProductId = highestRateProductRepository.findByShopIdAndProductId(shopId, productId);
+        if(byShopIdAndProductId != null) byShopIdAndProductId.deleteProduct();
+
         choiceProductRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
+
+        updateHighestProduct(shopId);
     }
 
-    @Override
+    private void updateHighestProduct(Long shopId) {
+        Product currentHighestRateProduct = productRepositorySupport.choiceHighestRateProductPerShop(shopId);
+        if(currentHighestRateProduct == null) return;
+        highestRateProductRepository.findByShopId(shopId).updateProduct(currentHighestRateProduct);
+    }
+
+    @Transactional
     public ProductDto choiceProduct(Long managerId, Long shopId, Long productId) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Product choiceProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
         Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
-        choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct);
+        if(choiceProductRepository.findByShopId(shop.getId()) == null) //만약 고른게 없었으면 새로 등록
+            choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
+        else choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct); //이미 고른게 있다면 업데이트
         return new ProductDto(choiceProduct);
     }
 
@@ -153,32 +176,15 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> productsPerCategory(String category, String method) {
-        List<ChoiceProduct> choiceProductList = choiceProductRepository.findAll();
-        List<ProductDto> data = new ArrayList<>();
+    public List<ProductDto> productsPerCategory(String category, String method, Pageable pageable) {
+        List<ProductDto> data;
         if (StringUtils.hasText(category)) { // 카테고리가 있으면
-            choiceProductList.forEach(row -> {
-                if (row.getShop().getCategory().contains(category)) { // 해당 shop category 에 해당하면
-                    if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
-                        //가게에서 가장 할인율 높은거
-                        data.add(new ProductDto(
-                                productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
-                    }
-                    else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
-                }
-            });
+            data = jdbcTemplateProductRepository.findProductsByShopCategory(category, pageable);
         }
-        else { // 카테고리가 없는 전체 보기면
-            choiceProductList.forEach(row -> {
-                if (row.getProduct() == null) { // 만약 선택한 product 가 없으면
-                    //가게에서 가장 할인율 높은거
-                    data.add(new ProductDto(
-                            productRepositorySupport.choiceHighestRateProductPerShop(row.getShop().getId())));
-                }
-                else data.add(new ProductDto(row.getProduct())); // 선택한 product 가 있으면
-            });
+        else { // 전체보기면
+            data = jdbcTemplateProductRepository.findProductsByShopCategoryAll(pageable);
         }
-        log.info("data : " + data.get(0).getName());
+
         List<ProductDto> sortData;
         if (!StringUtils.hasText(method)) { // method 가 없는 기본 값이면 최신순 (id 높은 순으로)
             log.info("method : null");
@@ -221,13 +227,5 @@ public class ProductService implements ProductUseCase {
             });
         });
         return display;
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProductDto> findProductsBySearch(String keyword) {
-        // 검색량 저장하는 기능 추가...?
-        return productRepository.findByNameContaining(keyword).stream()
-                .map(ProductDto::new)
-                .collect(Collectors.toList());
     }
 }

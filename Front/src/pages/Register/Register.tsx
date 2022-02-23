@@ -51,9 +51,6 @@ const Register: React.FC = () => {
 			...formValue,
 			[event.target.name]: event.target.value,
 		});
-
-		// If passwords are different, send a message
-		console.log(formValue);
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

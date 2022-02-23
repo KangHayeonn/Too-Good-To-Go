@@ -3,10 +3,9 @@ import axios from "axios";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	selectMenuCard,
 	selectCartCardByID,
-	shopMenu,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
-import { updateMenuItems } from "../../../features/shopFeatures/updateMenuItemsSlice";
 import { RootState } from "../../../app/store";
 import fighting from "../../../../public/image/화이팅도치.jpg";
 
@@ -49,8 +48,7 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 		BoardService().then(
 			(res) => {
 				setProducts(res.data.data);
-				dispatch(updateMenuItems(res.data.data));
-				shopMenu(res.data.data);
+				dispatch(selectMenuCard(res.data.data));
 			},
 			() => {
 				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
@@ -60,7 +58,7 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 
 	// logic to display cards
 	const displayMenu = useSelector((state: RootState) => {
-		return state.updateMenuItems;
+		return state.selectMenuItems;
 	});
 
 	if (displayMenu.length) {
@@ -98,9 +96,7 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 										className="select-btn"
 										type="button"
 										onClick={() => {
-											dispatch(
-												selectCartCardByID(card.shopId)
-											);
+											dispatch(selectCartCardByID(card.id));
 										}}
 									>
 										담기
@@ -192,6 +188,7 @@ const CartCard = styled.div<theme>`
 		align-items: flex-start;
 		flex-direction: column;
 		padding-left: 20px;
+		width: 300px;
 	}
 
 	.cardInfo > * {
@@ -225,7 +222,7 @@ const CartCard = styled.div<theme>`
 	}
 
 	.right-wrapper {
-		margin-left: 140px;
+		margin-left: 20px;
 	}
 
 	.btn-ctn {

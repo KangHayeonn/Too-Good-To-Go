@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/orders")
 @RequiredArgsConstructor
+@RequestMapping("/api/orders")
 public class OrdersController {
 
     private final OrderUseCase orderUseCase;
@@ -30,7 +30,7 @@ public class OrdersController {
     }
 
     @GetMapping
-    public ApiResponse<List<GetOrdersResponse>> orderProducts(@CurrentUser User user) {
+    public ApiResponse<List<GetOrdersResponse>> findOrders(@CurrentUser User user) {
         List<Order> orders = orderUseCase.findOrdersByUserId(user.getId());
         return new ApiResponse<>(orders.stream()
                 .map(GetOrdersResponse::new)

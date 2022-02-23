@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductRepositorySupport {
+    private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
     public Product choiceHighestRateProductPerShop(Long shopId) {

@@ -247,7 +247,7 @@ const OrderModal: React.FC<modal> = ({
 	};
 	const DeletePost = () => {
 		// eslint-disable-next-line no-restricted-globals
-		const res = confirm("정말로 삭제하시겠습니까?");
+		const res = confirm("정말로 삭제하시겠습니까?"); // eslint-disable-line no-alert
 		console.log(image);
 		if (res) {
 			DeleteProduct().then(

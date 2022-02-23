@@ -112,6 +112,7 @@ type Props = {
 	};
 	phone: string;
 	isEdit: boolean;
+	shopMatchId: string;
 };
 
 const TitleTemplate: React.FC<Props> = ({
@@ -123,6 +124,7 @@ const TitleTemplate: React.FC<Props> = ({
 	hours,
 	phone,
 	isEdit,
+	shopMatchId,
 	...props
 }) => {
 	const [isModal, setIsModal] = useState(false);
@@ -149,10 +151,11 @@ const TitleTemplate: React.FC<Props> = ({
 									modal={handleModal}
 									shopName={title}
 									shopAddress={address}
-									shopCategory={category.toString()}
+									shopCategory={[category.toString()]}
 									shopTel={phone}
 									shopOpen={hours.open}
 									shopClose={hours.close}
+									shopMatchId={shopMatchId}
 								/>
 							)}
 						</>

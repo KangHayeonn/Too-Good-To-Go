@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
+import {
+	initialBtnType,
+	selectCategory,
+} from "../../../features/editFeatures/selectCategorySlice";
+import { RootState } from "../../../app/store";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -17,7 +27,7 @@ const ModalMain = styled.div`
 
 const ModalWrap = styled.div`
 	width: 375px;
-	height: 570px;
+	height: 697px;
 	background-color: #fff;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 `;
@@ -119,14 +129,29 @@ const InfoBox = styled.div`
 	align-items: flex-start;
 `;
 
+const CatagoryUl = styled.ul`
+	width: 238px;
+	margin: 10px 0 -10px 0;
+	height: auto;
+	display: flex;
+	flex-wrap: wrap;
+	li {
+		letter-spacing: -0.009em;
+		margin: 0 0.5rem 0.5rem 0;
+		vertical-align: top;
+		display: inline-block;
+	}
+`;
+
 type modal = {
 	modal: () => void;
 	shopName: string;
 	shopAddress: string;
 	shopTel: string;
-	shopCategory: string;
+	shopCategory: Array<string>;
 	shopOpen: string;
 	shopClose: string;
+	shopMatchId: string;
 };
 
 const ShopEditModal: React.FC<modal> = ({
@@ -137,38 +162,180 @@ const ShopEditModal: React.FC<modal> = ({
 	shopCategory,
 	shopOpen,
 	shopClose,
+	shopMatchId,
 }) => {
 	const [changeName, setChangeName] = useState<string>(shopName);
+	const [changeAddress, setChangeAddress] = useState<string>(shopAddress);
+	const [changeTel, setChangeTel] = useState<string>(shopTel);
+	const [changeCategory, setChangeCategory] =
+		useState<Array<string>>(shopCategory);
+	const [changeOpen, setChangeOpen] = useState<string>(shopOpen);
+	const [changeClose, setChangeClose] = useState<string>(shopClose);
+
+	const [shopInfo, setShopInfo] = useState({
+		name: changeName,
+		category: changeCategory,
+		phone: changeTel,
+		address: changeAddress,
+		open: changeOpen,
+		close: changeClose,
+	});
+	const formData = new FormData();
+	const [image, setImage] = useState<File>();
+
 	const shopNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeName(target.value);
+		setShopInfo({
+			...shopInfo,
+			name: target.value,
+		});
 	};
-	const [changeAddress, setChangeAddress] = useState<string>(shopAddress);
+
 	const shopAddressChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeAddress(target.value);
+		setShopInfo({
+			...shopInfo,
+			address: target.value,
+		});
 	};
-	const [changeTel, setChangeTel] = useState<string>(shopTel);
+
 	const shopTelChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeTel(target.value);
+		setShopInfo({
+			...shopInfo,
+			phone: target.value,
+		});
 	};
-	const [changeCategory, setChangeCategory] = useState<string>(shopCategory);
-	const shopCategoryChange = (e: React.FormEvent<HTMLInputElement>): void => {
-		const target = e.target as HTMLTextAreaElement;
-		setChangeCategory(target.value);
+
+	const shopCategoryChange = (): void => {
+		const newCategoryArr = categoryArr.filter((el) => {
+			return el.isChecked === true;
+		});
+		const returnCategory = newCategoryArr.map((el) => {
+			return el.categoryName;
+		});
+		setChangeCategory(returnCategory);
+		setShopInfo({
+			...shopInfo,
+			category: returnCategory,
+		});
+		console.log(returnCategory);
+		console.log(shopInfo);
 	};
-	const [changeOpen, setChangeOpen] = useState<string>(shopOpen);
+
 	const shopOpenChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeOpen(target.value);
+		setShopInfo({
+			...shopInfo,
+			open: target.value,
+		});
 	};
-	const [changeClose, setChangeClose] = useState<string>(shopClose);
+
 	const shopCloseChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeClose(target.value);
+		setShopInfo({
+			...shopInfo,
+			close: target.value,
+		});
 	};
 
+	const [categoryArr, setCategoryArr] = useState<initialBtnType[]>([]);
+	const dispatch = useDispatch();
+	const reduxStateCollector = useSelector((state: RootState) => {
+		return state.selectCategory;
+	});
+
+	const checkCategory = () => {
+		shopCategory.map((el) => {
+			return dispatch(selectCategory(el));
+		});
+	};
+
+	useEffect(() => {
+		setCategoryArr(reduxStateCollector);
+	}, [reduxStateCollector]);
+	useEffect(() => {
+		checkCategory();
+	}, []);
+
+	const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			const file: FileList = e.target.files;
+			const uploadFile = file[0];
+			setImage(uploadFile);
+		}
+	};
+
+	const SHOP_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}`;
+	const PostShopInfo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+				"Content-Type": "multipart/form-data",
+			},
+		};
+		return axios.post(SHOP_API_URL, formData, config);
+	};
+	const appendFormData = () => {
+		const dtoObj = new Blob([JSON.stringify(shopInfo)], {
+			type: "application/json",
+		});
+		formData.set("request", dtoObj);
+
+		if (image) {
+			formData.append("file", image);
+		} else {
+			const imageJson = new File([], "");
+			formData.set("file", imageJson);
+		}
+	};
+	const EditPost = () => {
+		appendFormData();
+
+		PostShopInfo().then(
+			() => {
+				console.log("post success");
+				console.log(shopInfo);
+			},
+			(err) => {
+				console.log("post fail");
+				console.log(err);
+			}
+		);
+	};
+
+	const SHOP_DELETE_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}`;
+	const DeleteShop = () => {
+		return axios({
+			method: "delete",
+			url: `${SHOP_DELETE_API_URL}`,
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		});
+	};
+	const history = useHistory();
+	const DeletePost = () => {
+		// eslint-disable-next-line no-restricted-globals
+		const res = confirm("정말로 삭제하시겠습니까?"); // eslint-disable-line no-alert
+		if (res) {
+			DeleteShop().then(
+				() => {
+					console.log("삭제완료");
+					history.push("/profile");
+					alert("삭제되었습니다."); // eslint-disable-line no-alert
+				},
+				() => {
+					console.log("삭제실패");
+				}
+			);
+		}
+	};
 	return (
 		<ModalMain aria-hidden>
 			<ModalWrap onClick={(e) => e.stopPropagation()} aria-hidden>
@@ -214,13 +381,26 @@ const ShopEditModal: React.FC<modal> = ({
 						</Detail>
 						<Detail>
 							<Text>가게 카테고리</Text>
-							<InputStyle
-								name="productName"
-								type="text"
-								onChange={shopCategoryChange}
-								placeholder="가게 카테고리"
-								defaultValue={changeCategory}
-							/>
+							<CatagoryUl>
+								{categoryArr.map((card: initialBtnType) => {
+									return (
+										<li key={card.categoryName}>
+											<CategoryTag
+												text={card.categoryName}
+												onClick={() => {
+													dispatch(
+														selectCategory(
+															card.categoryName
+														)
+													);
+													shopCategoryChange();
+												}}
+												isCheck={card.isChecked}
+											/>
+										</li>
+									);
+								})}
+							</CatagoryUl>
 						</Detail>
 					</InfoBox>
 					<InfoBox>
@@ -253,15 +433,16 @@ const ShopEditModal: React.FC<modal> = ({
 								name="productName"
 								type="file"
 								accept="image/*"
-								placeholder="상품 이름"
+								placeholder="상품 이미지"
+								onChange={onSaveFiles}
 							/>
 						</Detail>
 					</InfoBox>
 					<ButtonWrap>
-						<Button>수정</Button>
+						<Button onClick={EditPost}>수정</Button>
 					</ButtonWrap>
 					<RefuseWrap>
-						<RefuseBtn>상점 삭제</RefuseBtn>
+						<RefuseBtn onClick={DeletePost}>상점 삭제</RefuseBtn>
 					</RefuseWrap>
 				</ModalInner>
 			</ModalWrap>

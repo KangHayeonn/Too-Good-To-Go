@@ -129,12 +129,13 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 			[name]: valueAsNumber,
 		});
 	};
-
+	let upfile: File;
 	const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const file: FileList = e.target.files;
 			const uploadFile = file[0];
-			formData.append("file", uploadFile);
+			upfile = uploadFile;
+			console.log(upfile);
 		}
 	};
 
@@ -152,7 +153,9 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 		const dtoObj = new Blob([JSON.stringify(productInfo)], {
 			type: "application/json",
 		});
-		formData.append("request", dtoObj);
+		formData.set("request", dtoObj);
+		formData.set("file", upfile);
+		console.log(upfile);
 		console.log(...formData);
 
 		PostProductInfo().then(
@@ -160,8 +163,8 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 				console.log("post success");
 				console.log(productInfo);
 			},
-			() => {
-				console.log("post fail");
+			(err) => {
+				console.log("post fail : ", err);
 			}
 		);
 	};

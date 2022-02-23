@@ -134,3 +134,33 @@ export const ShopData2 = [
 		price: 10000,
 	},
 ];
+
+export const shopData3 = [
+	{
+		shopId: 0,
+		id: 1,
+		image: "image/food2.jpg",
+		shopName: "전주비빔밥",
+		name: "전통 전주비빔밥",
+		discountedPrice: 9000,
+		price: 10000,
+	},
+	{
+		shopId: 1,
+		id: 2,
+		image: "image/food3.jpg",
+		shopName: "전통 부대찌개 맛집",
+		name: "맛있는 부대찌개",
+		discountedPrice: 9500,
+		price: 10000,
+	},
+	{
+		shopId: 3,
+		id: 3,
+		image: "image/고등어.jpeg",
+		shopName: "한밤중에 목이말라",
+		name: "냉장고를 열어보니",
+		discountedPrice: 17000,
+		price: 18000,
+	},
+];

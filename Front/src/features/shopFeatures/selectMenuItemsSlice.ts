@@ -1,13 +1,8 @@
 // rtk
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { shopData } from "../../components/molecules/ShopDummyData";
+import { shopData3 } from "../../components/molecules/ShopDummyData";
 
-export const shopMenu = (displayMenu: productsDataType) => {
-	const shopData = displayMenu;
-	console.log("check: ", shopData);
-};
-
-type productsDataType = {
+export type CartCardType = {
 	id: number;
 	name: string;
 	image: string;
@@ -17,23 +12,13 @@ type productsDataType = {
 	shopName: string;
 };
 
-export type CartCardType = {
-	shopId: number;
-	shopFoodImg: string;
-	shopName: string;
-	shopFoodName: string;
-	shopFoodSale: number;
-	shopFoodCost: number;
-	shopBeforeCost: number;
-};
-
 // CartCardType -> productsDataType
 export type initialCartCardType = CartCardType & {
 	isChecked: boolean;
 	cartItemQuantity: number;
 };
 
-export const initialCards: initialCartCardType[] = shopData.map(
+export const initialCards: initialCartCardType[] = shopData3.map(
 	(e: CartCardType) => {
 		return { ...e, isChecked: false, cartItemQuantity: 1 };
 	}
@@ -43,9 +28,16 @@ export const selectMenuItemsSlice = createSlice({
 	name: "selectMenuItems",
 	initialState: initialCards,
 	reducers: {
+		selectMenuCard: (state, action: PayloadAction<CartCardType[]>) => {
+			return action.payload.map(
+				(e: CartCardType) => {
+					return {...e, isChecked: false, cartItemQuantity: 1};
+				}
+			)
+		},
 		selectCartCardByID: (state, action: PayloadAction<number>) => {
 			return state.map((e) => {
-				if (e.shopId === action.payload) {
+				if (e.id === action.payload) {
 					return { ...e, isChecked: !e.isChecked };
 				}
 				return e;
@@ -53,7 +45,7 @@ export const selectMenuItemsSlice = createSlice({
 		},
 		deleteSelectedItem: (state, action: PayloadAction<number>) => {
 			return state.map((e) => {
-				if (e.shopId === action.payload) {
+				if (e.id === action.payload) {
 					return { ...e, isChecked: !e.isChecked };
 				}
 				return e;
@@ -61,7 +53,7 @@ export const selectMenuItemsSlice = createSlice({
 		},
 		incrementSelectedItems: (state, action: PayloadAction<number>) => {
 			return state.map((e) => {
-				if (e.shopId === action.payload) {
+				if (e.id === action.payload) {
 					return { ...e, cartItemQuantity: e.cartItemQuantity + 1 };
 				}
 				return e;
@@ -70,7 +62,7 @@ export const selectMenuItemsSlice = createSlice({
 		decrementSelectedItems: (state, action: PayloadAction<number>) => {
 			return state
 				.map((e) => {
-					if (e.shopId === action.payload) {
+					if (e.id === action.payload) {
 						return {
 							...e,
 							cartItemQuantity:
@@ -90,6 +82,7 @@ export const selectMenuItemsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+	selectMenuCard,
 	selectCartCardByID,
 	deleteSelectedItem,
 	incrementSelectedItems,

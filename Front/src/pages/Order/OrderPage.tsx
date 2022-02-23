@@ -6,7 +6,7 @@ import RequestForm from "../../components/organisms/Order/RequestForm";
 import OrderList from "../../components/organisms/Order/OrderList";
 import PaymentForm from "../../components/organisms/Order/PaymentForm";
 import PayForm from "../../components/organisms/Order/PayForm";
-import Modal from "../../components/atoms/Modal/PaymentModal";
+import Modal from "../../components/atoms/Modal/OrderedModal";
 
 const Button = styled.div`
 	width: 100%;

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useHistory, useLocation, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getAccessToken } from "../../../helpers/tokenControl";
 import FormContainer from "./FormContainer";
 import ProfileOrderListContainer from "./ProfileOrderListContainer";
 import { RootState } from "../../../app/store";
 import ProfileAddShop from "./ProfileAddShop";
+import { updateManagerShop } from "../../../features/editFeatures/updateManagerShops";
 
 const SHOP_BASE_URL = "http://54.180.134.20/api/manager/shops";
 
@@ -93,17 +94,21 @@ const ProfileContent: React.FC = () => {
 		});
 	};
 	const [manageShop, setManageShop] = useState<shopsDataType[]>([]);
-
+	const dispatch = useDispatch();
+	const displayShops = useSelector((state: RootState) => {
+		return state.updateManagerShops;
+	});
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
 				setManageShop(res.data.data);
+				dispatch(updateManagerShop(res.data.data));
 			},
 			() => {
 				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
-	}, []);
+	}, [displayShops]);
 
 	return (
 		<Content>

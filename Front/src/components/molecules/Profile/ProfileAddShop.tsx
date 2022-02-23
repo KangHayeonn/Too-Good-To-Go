@@ -1,11 +1,98 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 // MUI
 import Button from "@mui/material/Button";
 import Line13 from "../../../../public/image/Line 13.png";
 import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
+import {
+	initialBtnType,
+	selectCategory,
+} from "../../../features/editFeatures/selectCategorySlice";
+import { RootState } from "../../../app/store";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 const ProfileAddShop: React.FC = () => {
+	const [shopInfo, setShopInfo] = useState({});
+	const [image, setImage] = useState<File>();
+	const formData = new FormData();
+
+	const productPost = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setShopInfo({
+			...shopInfo,
+			[name]: value,
+		});
+	};
+
+	const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			const file: FileList = e.target.files;
+			const uploadFile = file[0];
+			setImage(uploadFile);
+		}
+	};
+	const [categoryArr, setCategoryArr] = useState<initialBtnType[]>([]);
+	const dispatch = useDispatch();
+	const reduxStateCollector = useSelector((state: RootState) => {
+		return state.selectCategory;
+	});
+
+	const shopCategoryChange = (): void => {
+		const newCategoryArr = categoryArr.filter((el) => {
+			return el.isChecked === true;
+		});
+		const returnCategory = newCategoryArr.map((el) => {
+			return el.categoryName;
+		});
+		setShopInfo({
+			...shopInfo,
+			category: returnCategory,
+		});
+	};
+
+	useEffect(() => {
+		setCategoryArr(reduxStateCollector);
+	}, [reduxStateCollector]);
+
+	const SHOP_API_URL = `http://54.180.134.20/api/manager/shops`;
+	const PostShopInfo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+				"Content-Type": "multipart/form-data",
+			},
+		};
+		return axios.post(SHOP_API_URL, formData, config);
+	};
+	const appendFormData = () => {
+		const dtoObj = new Blob([JSON.stringify(shopInfo)], {
+			type: "application/json",
+		});
+		formData.set("request", dtoObj);
+
+		if (image) {
+			formData.append("file", image);
+		} else {
+			const imageJson = new File([], "");
+			formData.set("file", imageJson);
+		}
+	};
+	const post = () => {
+		appendFormData();
+
+		PostShopInfo().then(
+			() => {
+				console.log("post success");
+				alert("가게가 등록되었습니다."); // eslint-disable-line no-alert
+				setShopInfo({});
+			},
+			(err) => {
+				console.log("post fail");
+			}
+		);
+	};
 	return (
 		<FormWrapper>
 			<EditTitle className="edit-title">
@@ -14,13 +101,14 @@ const ProfileAddShop: React.FC = () => {
 				<p>SHOP</p>
 			</EditTitle>
 			<Wrapper>
-				<form>
+				<div className="form-wrapper">
 					<div className="section-wrapper">
 						<div className="profile-info">가게 이름</div>
 						<InputStyle
-							name="productName"
+							name="name"
 							type="text"
 							placeholder="가게 이름"
+							onChange={productPost}
 						/>
 					</div>
 					<div className="section-wrapper">
@@ -30,85 +118,74 @@ const ProfileAddShop: React.FC = () => {
 							type="file"
 							accept="image/*"
 							placeholder="상품 이미지"
+							onChange={onSaveFiles}
 						/>
 					</div>
 
 					<div className="section-wrapper category">
 						<div className="profile-info">카테고리</div>
 						<ul className="checkboxDiv">
-							<li>
-								<CategoryTag text="한식" />
-							</li>
-							<li>
-								<CategoryTag text="분식" />
-							</li>
-							<li>
-								<CategoryTag text="야식" />
-							</li>
-							<li>
-								<CategoryTag text="양식" />
-							</li>
-							<li>
-								<CategoryTag text="일식" />
-							</li>
-							<li>
-								<CategoryTag text="중식" />
-							</li>
-							<li>
-								<CategoryTag text="패스트푸드" />
-							</li>
-							<li>
-								<CategoryTag text="치킨" />
-							</li>
-							<li>
-								<CategoryTag text="피자" />
-							</li>
-							<li>
-								<CategoryTag text="찜탕" />
-							</li>
-							<li>
-								<CategoryTag text="디저트" />
-							</li>
+							{categoryArr.map((card: initialBtnType) => {
+								return (
+									<li key={card.categoryName}>
+										<CategoryTag
+											text={card.categoryName}
+											onClick={() => {
+												dispatch(
+													selectCategory(
+														card.categoryName
+													)
+												);
+												shopCategoryChange();
+											}}
+											isCheck={card.isChecked}
+										/>
+									</li>
+								);
+							})}
 						</ul>
 					</div>
-
 					<div className="section-wrapper">
 						<div className="profile-info">전화번호</div>
 						<InputStyle
-							name="productName"
+							name="phone"
 							type="text"
 							placeholder="가게 전화번호"
+							onChange={productPost}
 						/>
 					</div>
 
 					<div className="section-wrapper">
 						<div className="profile-info">주소</div>
 						<InputStyle
-							name="productName"
+							name="address"
 							type="text"
 							placeholder="가게 주소"
+							onChange={productPost}
 						/>
 					</div>
 
 					<div className="section-wrapper">
 						<div className="profile-info">영업 시간</div>
 						<InputStyle
-							name="productName"
+							name="open"
 							type="time"
-							placeholder="상품 가격"
+							placeholder="오픈시간"
+							onChange={productPost}
 						/>
 						~
 						<InputStyle
-							name="productName"
+							name="close"
 							type="time"
-							placeholder="상품 할인 가격"
+							placeholder="마감시간"
+							onChange={productPost}
 						/>
 					</div>
 
-					<Button variant="outlined" type="submit">
+					<Button variant="outlined" onClick={post}>
 						가게 등록하기
 					</Button>
-				</form>
+				</div>
 			</Wrapper>
 		</FormWrapper>
 	);
@@ -162,7 +239,7 @@ const Wrapper = styled.div`
 	align-items: flex-start;
 	justify-content: space-between;
 
-	form {
+	.form-wrapper {
 		margin-top: 30px;
 		display: flex;
 		flex-direction: column;
@@ -191,19 +268,16 @@ const Wrapper = styled.div`
 	}
 	.checkboxDiv {
 		width: 284px;
+		height: auto;
 		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 		li {
 			letter-spacing: -0.009em;
 			margin: 0 0.5rem 0.5rem 0;
 			vertical-align: top;
 			display: inline-block;
 		}
-	}
-
-	button {
-		/* position: relative; */
-		/* top: 289px; */
-		margin-top: 35px;
-		width: 150px;
 	}
 `;

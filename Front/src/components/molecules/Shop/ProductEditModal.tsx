@@ -148,7 +148,6 @@ const OrderModal: React.FC<modal> = ({
 	const [changeFoodBeforeCost, setChangeFoodBeforeCost] =
 		useState<number>(shopBeforeCost);
 	const [changeFoodCost, setChangeFoodCost] = useState<number>(shopFoodCost);
-	const [imageState, setImageState] = useState<File>();
 
 	const [productInfo, setProductInfo] = useState<productType>({
 		name: changeFoodName,
@@ -156,12 +155,13 @@ const OrderModal: React.FC<modal> = ({
 		discountedPrice: changeFoodCost,
 	});
 
+	const [image, setImage] = useState<File>();
+
 	const formData = new FormData();
 
 	const foodNameChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodName(target.value);
-		console.log(changeFoodName);
 		setProductInfo({
 			...productInfo,
 			name: target.value,
@@ -172,7 +172,6 @@ const OrderModal: React.FC<modal> = ({
 	): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodBeforeCost(+target.value);
-		console.log(changeFoodBeforeCost);
 		setProductInfo({
 			...productInfo,
 			price: +target.value,
@@ -181,7 +180,6 @@ const OrderModal: React.FC<modal> = ({
 	const foodCostChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
 		setChangeFoodCost(+target.value);
-		console.log(changeFoodCost);
 		setProductInfo({
 			...productInfo,
 			discountedPrice: +target.value,
@@ -191,19 +189,30 @@ const OrderModal: React.FC<modal> = ({
 		if (e.target.files) {
 			const file: FileList = e.target.files;
 			const uploadFile = file[0];
-			setImageState(uploadFile);
-			formData.append("file", imageState || "");
+			setImage(uploadFile);
 		}
 	};
 
-	const EditPost = () => {
+	const appendFormData = () => {
+		console.log(image);
 		const dtoObj = new Blob([JSON.stringify(productInfo)], {
 			type: "application/json",
 		});
-		formData.append("request", dtoObj);
+		formData.set("request", dtoObj);
+
+		if (image) {
+			formData.append("file", image);
+		} else {
+			const imageJson = new File([], "");
+			formData.set("file", imageJson);
+		}
 
 		console.log(productInfo);
 		console.log(...formData);
+	};
+
+	const EditPost = () => {
+		appendFormData();
 
 		PostProductInfo().then(
 			() => {
@@ -225,6 +234,31 @@ const OrderModal: React.FC<modal> = ({
 			},
 		};
 		return axios.post(PRODUCT_API_URL, formData, config);
+	};
+	const PRODUCT_DELETE_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products/${id}`;
+	const DeleteProduct = () => {
+		return axios({
+			method: "delete",
+			url: `${PRODUCT_DELETE_API_URL}`,
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		});
+	};
+	const DeletePost = () => {
+		// eslint-disable-next-line no-restricted-globals
+		const res = confirm("정말로 삭제하시겠습니까?");
+		console.log(image);
+		if (res) {
+			DeleteProduct().then(
+				() => {
+					console.log("삭제완료");
+				},
+				() => {
+					console.log("삭제실패");
+				}
+			);
+		}
 	};
 	return (
 		<ModalMain aria-hidden>
@@ -286,7 +320,7 @@ const OrderModal: React.FC<modal> = ({
 						<Button onClick={EditPost}>수정</Button>
 					</ButtonWrap>
 					<RefuseWrap>
-						<RefuseBtn>상품 삭제</RefuseBtn>
+						<RefuseBtn onClick={DeletePost}>상품 삭제</RefuseBtn>
 					</RefuseWrap>
 				</ModalInner>
 			</ModalWrap>

@@ -88,7 +88,7 @@ const ProfileAddShop: React.FC = () => {
 				alert("가게가 등록되었습니다."); // eslint-disable-line no-alert
 				setShopInfo({});
 			},
-			(err) => {
+			() => {
 				console.log("post fail");
 			}
 		);

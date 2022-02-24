@@ -64,7 +64,6 @@ const CategoriesAtom: React.FC<menuType> = ({
 					fontSize: "15px",
 					color: "#fff",
 				}}
-				exact
 				to={`/shopmenu/${to}`}
 				css={menuAtomBtn}
 			>

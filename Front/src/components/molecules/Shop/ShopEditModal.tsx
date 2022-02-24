@@ -11,6 +11,7 @@ import {
 } from "../../../features/editFeatures/selectCategorySlice";
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { axiosApiMeGetInstance } from "../../../services/getUserInfoAxios";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -294,9 +295,9 @@ const ShopEditModal: React.FC<modal> = ({
 			formData.set("file", imageJson);
 		}
 	};
-	const EditPost = () => {
+	const EditPost = async () => {
 		appendFormData();
-
+		await axiosApiMeGetInstance.get("/api/me");
 		PostShopInfo().then(
 			() => {
 				console.log("post success");

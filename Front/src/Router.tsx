@@ -32,7 +32,15 @@ const Router: React.FC = () => {
 			<Switch>
 				<Route exact path="/" component={MainPage} />
 				<Route exact path="/shopmenu/" component={ShopMenuPage} />
-				<Route path="/shopmenu/:menuName" component={ShopMenuPage} />
+				<Route
+					exact
+					path="/shopmenu/:menuName"
+					component={ShopMenuPage}
+				/>
+				<Route
+					path="/shopmenu/:menuName/:sorting"
+					component={ShopMenuPage}
+				/>
 				<Route exact path="/shop" component={Shop} />
 				<Route path="/shop/:shopId" component={Shop} />
 				<Route exact path="/login" component={Login} />
@@ -40,7 +48,11 @@ const Router: React.FC = () => {
 				<Route exact path="/cart" component={CartPage} />
 				<Route exact path="/apitest" component={PostTest} />
 				<Route exact path="/manager" component={Manager} />
-				<Route path="/manager/:statusName" component={Manager} />
+				<Route exact path="/manager/:shopId" component={Manager} />
+				<Route
+					path="/manager/:shopId/:statusName"
+					component={Manager}
+				/>
 				<Route exact path="/order" component={OrderPage} />
 				<Route exact path="/pay" component={PayPage} />
 				<Route exact path="/profile" component={ProfilePage} />

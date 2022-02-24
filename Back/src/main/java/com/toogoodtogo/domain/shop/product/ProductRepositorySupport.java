@@ -24,7 +24,6 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductRepositorySupport {
-    private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
     public Product choiceHighestRateProductPerShop(Long shopId) {

@@ -382,7 +382,7 @@ class ProductsControllerTest extends ControllerTest {
     }
 
     @Test
-    void findProductsPerShopSortByCategory() throws Exception {
+    void findProductsPerShopSortByPriority() throws Exception {
         //then
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/shops/{shopId}/products", shopId))
                 .andDo(print())

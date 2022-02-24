@@ -193,8 +193,8 @@ public class ProductService implements ProductUseCase {
         else if (method.equals("rate")) {
             log.info("method : " + method);
             sortData = data.stream()
-                    .sorted((a, b) -> (int) (((a.getPrice() - a.getDiscountedPrice()) / a.getPrice().doubleValue() * 100) -
-                            ((b.getPrice() - b.getDiscountedPrice()) / b.getPrice().doubleValue() * 100))).collect(Collectors.toList());
+                    .sorted((a, b) -> (int) (((b.getPrice() - b.getDiscountedPrice()) / b.getPrice().doubleValue() * 100) -
+                            ((a.getPrice() - a.getDiscountedPrice()) / a.getPrice().doubleValue() * 100))).collect(Collectors.toList());
 
         }
         else if (method.equals("discount")) {

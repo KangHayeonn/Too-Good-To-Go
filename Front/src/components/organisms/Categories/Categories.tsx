@@ -20,7 +20,7 @@ const DropMenu = styled.ul`
 const ShopHeaderMenu: React.FC = () => {
 	return (
 		<HeaderMenu>
-			<CategoriesAtom to="" menuName="전체보기" />
+			<CategoriesAtom to="전체보기" menuName="전체보기" />
 			<CategoriesAtom to="한식" menuName="한식" />
 			<CategoriesAtom to="분식" menuName="분식" />
 			<CategoriesAtom to="야식" menuName="야식" />

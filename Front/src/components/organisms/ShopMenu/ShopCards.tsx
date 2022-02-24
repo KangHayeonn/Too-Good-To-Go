@@ -138,10 +138,6 @@ type shopsDataType = {
 	shop: { id: number; name: string; image: string; category: Array<string> };
 	data?: Array<string | number>;
 };
-const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboards";
-const BoardService = () => {
-	return axios.get(SHOP_BOARD_API_BASE_URL);
-};
 
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
 	return Math.ceil((1 - discountedPrice / price) * 100);
@@ -149,10 +145,17 @@ const calculatedDiscount = (price: number, discountedPrice: number): number => {
 
 interface menuMatchType {
 	menuMatchName?: string;
+	menuSorting?: string;
 }
 
-const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
+const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
+	const SHOP_BOARD_API_BASE_URL = `http://54.180.134.20/api/products?category=${
+		menuMatchName === "전체보기" ? "" : menuMatchName
+	}&method=${menuSorting}`;
+	const BoardService = () => {
+		return axios.get(SHOP_BOARD_API_BASE_URL);
+	};
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
@@ -162,38 +165,37 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 				setShops(shopExam); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
-	}, []);
+		console.log(menuSorting);
+	}, [menuSorting, menuMatchName]);
 	return (
 		<ShopList>
-			{shop.map((row) =>
-				row.shop.category.includes(`${menuMatchName}`) ||
-				menuMatchName === "전체보기" ? (
-					<ShopListLi key={row.id}>
-						<ShopCard
-							shopId={row.shop.id}
-							shopName={row.shop.name}
-							shopFoodImg={
-								row.image
-									? row.image
-									: "http://cdn.onlinewebfonts.com/svg/img_305436.png"
-							}
-							shopFoodName={row.name}
-							shopFoodSale={calculatedDiscount(
-								row.price,
-								row.discountedPrice
-							)}
-							shopFoodCost={row.discountedPrice}
-							shopBeforeCost={row.price}
-						/>
-					</ShopListLi>
-				) : null
-			)}
+			{shop.map((row) => (
+				<ShopListLi key={row.id}>
+					<ShopCard
+						shopId={row.id}
+						shopName={row.name}
+						shopFoodImg={
+							row.image
+								? row.image
+								: "http://cdn.onlinewebfonts.com/svg/img_305436.png"
+						}
+						shopFoodName={row.name}
+						shopFoodSale={calculatedDiscount(
+							row.price,
+							row.discountedPrice
+						)}
+						shopFoodCost={row.discountedPrice}
+						shopBeforeCost={row.price}
+					/>
+				</ShopListLi>
+			))}
 		</ShopList>
 	);
 };
 
 ShopCards.defaultProps = {
-	menuMatchName: "전체보기",
+	menuMatchName: "",
+	menuSorting: "",
 };
 
 export default ShopCards;

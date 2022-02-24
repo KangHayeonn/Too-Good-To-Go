@@ -7,7 +7,7 @@ import OrderList from "../../components/organisms/Order/OrderList";
 import PaymentForm from "../../components/organisms/Order/PaymentForm";
 import PayForm from "../../components/organisms/Order/PayForm";
 import Modal from "../../components/atoms/Modal/OrderedModal";
-import { axiosApiCachedOrderInfoGetInstance } from "../../services/getUserInfoAxios";
+import { axiosApiCachedOrderInfoGetInstance } from "../../services/getCachedOrderInfo";
 
 const Button = styled.div`
 	width: 100%;

@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import moment from "moment";
 import ManagerOrderList from "../../molecules/Manager/ManagerOrderList";
-import { orderData } from "../../molecules/OrderDummyData";
 import { getAccessToken } from "../../../helpers/tokenControl";
 
 const Ul = styled.ul`

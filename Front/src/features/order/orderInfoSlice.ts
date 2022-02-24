@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface State {
 	orderInfoCheck: string;
 	phone: string;
+	products: Array<object>;
 	plasticUse: boolean;
 	requirement: string;
 	paymentMethod: string;
@@ -13,6 +14,7 @@ export interface State {
 const initialState: State = {
 	orderInfoCheck: "",
 	phone: "",
+	products: [{}],
 	plasticUse: false,
 	requirement: "",
 	paymentMethod: "",
@@ -62,6 +64,11 @@ const orderInfoSlice = createSlice({
 			type.cachePaymentMethod = action.payload;
 			return state;
 		},
+		setProducts: (state, action: PayloadAction<Array<object>>) => {
+			const type = state;
+			type.products = action.payload;
+			return state;
+		}
 	},
 });
 
@@ -72,5 +79,6 @@ export const {
 	setRequirement,
 	setPaymentMethod,
 	setcachePaymentMethod,
+	setProducts,
 } = orderInfoSlice.actions;
 export default orderInfoSlice.reducer;

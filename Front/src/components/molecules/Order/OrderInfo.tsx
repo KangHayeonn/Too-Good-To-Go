@@ -72,7 +72,7 @@ const OrderInfo: React.FC = () => {
 			phone[1] = logChecker.substring(3,7);
 			phone[2] = logChecker.substring(7,11);
 			setPhoneNum(phone);
-			dispatch(tempSetPhone(`${phone[0]}-${phone[1]}-${phone[2]}`));
+			dispatch(tempSetPhone(logChecker));
 		} else {
 			// eslint-disable-next-line no-alert
 			alert("먼저 로그인이 필요합니다.");
@@ -91,7 +91,8 @@ const OrderInfo: React.FC = () => {
 	useEffect(() => {
 		if (state)
 			dispatch(
-				tempSetPhone(`${state.first}-${state.second}-${state.third}`)
+				// tempSetPhone(`${state.first}-${state.second}-${state.third}`)
+				tempSetPhone(`${state.first}${state.second}${state.third}`)
 			);
 	}, [state]);
 

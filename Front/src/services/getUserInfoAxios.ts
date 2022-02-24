@@ -103,3 +103,14 @@ function getNewRefreshTokenPost() {
 		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
 	);
 }
+
+// cached_order_info
+export const axiosApiCachedOrderInfoGetInstance = axios.create({
+	baseURL: BASE_URL,
+	url: "/api/cached-order-info",
+	method: "GET",
+	headers: {
+		Authorization: `Bearer ${getAccessToken()}`,
+		"Content-Type": "application/json",
+	},
+});

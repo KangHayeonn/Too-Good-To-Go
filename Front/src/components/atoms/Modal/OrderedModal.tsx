@@ -22,19 +22,18 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 		axios
 			.post(`${URL}/orders`, {
 				phone: orderInfo.phone,
+				products : orderInfo.products,
 				requirement: orderInfo.requirement,
 				paymentMethod: orderInfo.paymentMethod,
 				needDisposables: orderInfo.plasticUse,
 				cacheRequirement: orderInfo.cacheRequirement,
 				cachePaymentMethod: orderInfo.cachePaymentMethod,
-				// products logic 추가 구현 예정
 			}, 
 			{ 
 				headers : { Authorization: `Bearer ${getAccessToken()}`
 			}})
 			.then((res) => {
 				console.log(res, " 주문 완료 성공");
-
 				// eslint-disable-next-line no-alert
 				alert("주문완료 되었습니다.");
 				history.push("/");

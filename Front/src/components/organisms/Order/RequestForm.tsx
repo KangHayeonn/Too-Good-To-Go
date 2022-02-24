@@ -4,11 +4,15 @@ import Titlebar from "../../atoms/Titlebar/Titlebar";
 import RequestInfoShop from "../../molecules/Order/RequestInfoShop";
 import SelectPlastic from "../../molecules/Order/SelectPlastic";
 
-const OrderForm: React.FC = () => {
+type Type = {
+	requirement: string;
+};
+
+const OrderForm: React.FC<Type> = ({ requirement }) => {
 	return (
 		<Wrapper>
 			<Titlebar color="#6EC19B">요청사항</Titlebar>
-			<RequestInfoShop />
+			<RequestInfoShop cachedRequirement={requirement} />
 			<SelectPlastic />
 		</Wrapper>
 	);

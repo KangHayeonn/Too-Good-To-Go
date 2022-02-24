@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
@@ -91,10 +91,27 @@ const Total = styled.div`
 `;
 
 const PayInfo: React.FC = () => {
-	const price = useSelector((state: RootState) => {
-		return state.priceInfo;
-	});
+	const [price, setPrice] = useState<number>(0);
+	const [discountPrice, setdiscountPrice] = useState<number>(0);
+	const [deliveryFee, setDeliveryFee] = useState<number>(0);
 	const [hidden, setHidden] = useState(true);
+
+	const cartItem = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	})
+
+	useEffect(() => {
+		let priceTotal = 0;
+		let discountPriceTotal = 0; 
+		cartItem.map((card) => {
+			priceTotal += card.price;
+			discountPriceTotal += (card.price-card.discountedPrice);
+			return 0;
+		});
+		setPrice(priceTotal);
+		setdiscountPrice(discountPriceTotal);
+		setDeliveryFee(2500);
+	}, []);
 
 	const show = () => {
 		setHidden((current) => !current);
@@ -111,20 +128,20 @@ const PayInfo: React.FC = () => {
 			<ul className="dropbox">
 				<li>
 					<div>주문금액</div>
-					<div>{price.cost}원</div>
+					<div>{price}원</div>
 				</li>
 				<li>
 					<div>할인/부가결제</div>
-					<div>-0원</div>
+					<div>-{discountPrice}원</div>
 				</li>
 				<li>
 					<div>배송비</div>
-					<div>{price.deliveryCost}원</div>
+					<div>{deliveryFee}원</div>
 				</li>
 			</ul>
 			<Total>
 				<div>총 결제금액</div>
-				<div>{price.totalCost}원</div>
+				<div>{price-discountPrice+deliveryFee}원</div>
 			</Total>
 		</DropButton>
 	);

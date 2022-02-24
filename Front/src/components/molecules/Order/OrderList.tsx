@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { setProducts } from "../../../features/order/orderInfoSlice";
 
@@ -96,14 +96,25 @@ const DropTitle = styled.div`
 
 const OrderList: React.FC = () => {
 	const [hidden, setHidden] = useState(true);
-	const dispatch = useDispatch();
-	const show = () => setHidden((current) => !current);
+	const dispatch = useDispatch(); 
 	const cartItem = useSelector((state: RootState) => {
 		return state.selectCartCards;
 	});
 
+	const show = () => setHidden((current) => !current);
+
 	useEffect(() => {
-		dispatch(setProducts(cartItem));
+		const productsArray = new Array<object>();
+		cartItem.map((e) => {
+			const obj = {
+				productId : e.id,
+				quantity : e.cartItemQuantity,
+				price : e.discountedPrice,
+			};
+			productsArray.push(obj);
+			return 0;
+		})
+		dispatch(setProducts(productsArray));
 	}, []);
 
 	return (

@@ -60,7 +60,11 @@ const Label = styled.label`
 	color: #525252;
 `;
 
-const RequestInfoShop: React.FC = () => {
+type Type = {
+	cachedRequirement: string;
+};
+
+const RequestInfoShop: React.FC<Type> = ({ cachedRequirement}) => {
 	const [text, setText] = useState<string>("");
 	const [check, setCheck] = useState<boolean>(false);
 	const dispatch = useDispatch();
@@ -82,12 +86,21 @@ const RequestInfoShop: React.FC = () => {
 		<div>
 			<RequestShop>
 				<Text>가게 사장님께</Text>
-				<Input
-					placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요."
-					type="text"
-					name="requirement"
-					onChange={handleChange}
-				/>
+				{!cachedRequirement ? (
+					<Input
+						placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요."
+						type="text"
+						name="requirement"
+						onChange={handleChange}
+					/>
+				) : (
+					<Input
+						placeholder={cachedRequirement}
+						type="text"
+						name="requirement"
+						onChange={handleChange}
+					/>
+				)}
 				<Button>
 					<Input1
 						type="checkbox"

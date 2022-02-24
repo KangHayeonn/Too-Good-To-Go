@@ -1,5 +1,6 @@
 import React from "react";
 import { css } from "@emotion/react";
+import { Link, NavLink } from "react-router-dom";
 
 const header = css`
 	display: flex;
@@ -26,8 +27,6 @@ const arrayText = css`
 	border-left: 1px solid #999;
 	&:first-of-type {
 		border: none;
-		color: #333;
-		font-weight: 400;
 	}
 `;
 
@@ -37,17 +36,34 @@ const arrayDiv = css`
 
 type shopMenuType = {
 	children: React.ReactNode;
+	menuName: string;
 };
 
-const ShopMenuHeader: React.FC<shopMenuType> = ({ children }) => {
+const ShopMenuHeader: React.FC<shopMenuType> = ({ children, menuName }) => {
 	return (
 		<div css={header}>
 			<h1 css={headerText}>{children}</h1>
 			<div css={arrayDiv}>
-				<p css={arrayText}>최신순</p>
-				<p css={arrayText}>가격낮은순</p>
-				<p css={arrayText}>가격높은순</p>
-				<p css={arrayText}>할인률순</p>
+				<NavLink
+					activeStyle={{
+						fontWeight: "400",
+						color: "#333",
+					}}
+					css={arrayText}
+					to={`/shopmenu/${menuName}/discount`}
+				>
+					가격낮은순
+				</NavLink>
+				<NavLink
+					activeStyle={{
+						fontWeight: "400",
+						color: "#333",
+					}}
+					css={arrayText}
+					to={`/shopmenu/${menuName}/rate`}
+				>
+					할인율순
+				</NavLink>
 			</div>
 		</div>
 	);

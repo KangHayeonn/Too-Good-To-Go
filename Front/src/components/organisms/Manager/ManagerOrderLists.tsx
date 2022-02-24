@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
 import moment from "moment";
 import ManagerOrderList from "../../molecules/Manager/ManagerOrderList";
 import { orderData } from "../../molecules/OrderDummyData";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 const Ul = styled.ul`
 	width: 100%;\
@@ -14,15 +16,11 @@ const Ul = styled.ul`
 
 const checkStatus = (status: string) => {
 	switch (status) {
-		case "ORDER_COMPLETED":
-			return "접수완료";
+		case "WAITING_FOR_ACCEPTANCE":
+			return "접수대기";
 		case "CANCELED":
 			return "취소됨";
-		case "PREPARING":
-			return "준비중";
-		case "WAITING_PICKUP":
-			return "픽업 대기중";
-		case "PICKUP_COMPLETED":
+		case "ACCEPTED":
 			return "완료";
 		default:
 			return "오류";
@@ -31,13 +29,11 @@ const checkStatus = (status: string) => {
 
 const checkStatus2 = (status: string) => {
 	switch (status) {
-		case "ORDER_COMPLETED":
+		case "WAITING_FOR_ACCEPTANCE":
 			return "접수대기";
-		case "PREPARING":
-			return "처리중";
-		case "WAITING_PICKUP":
-			return "처리중";
-		case "PICKUP_COMPLETED":
+		case "CANCELED":
+			return "취소됨";
+		case "ACCEPTED":
 			return "완료";
 		default:
 			return "오류";
@@ -46,10 +42,56 @@ const checkStatus2 = (status: string) => {
 
 interface statusMatchType {
 	statusMatchName: string;
+	shopMatchId: string;
 }
 
-const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
-	const [orderList] = useState(orderData);
+type orderType = {
+	id: number;
+	user: {
+		id: number;
+		phone: string;
+	};
+	products: [
+		{
+			id: number;
+			quantity: number;
+			name: string;
+			price: number;
+			discountedPrice: number;
+		}
+	];
+	status: string;
+	requirement: string;
+	paymentMethod: string;
+	needDisposables: boolean;
+	createdAt: string;
+};
+
+const ManagerOrderLists: React.FC<statusMatchType> = ({
+	statusMatchName,
+	shopMatchId,
+}) => {
+	const [orderList, setOrderList] = useState<orderType[]>([]);
+	const MANAGER_ORDER_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/orders`;
+	const BoardService = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		};
+		return axios.get(MANAGER_ORDER_API_URL, config);
+	};
+	useEffect(() => {
+		BoardService().then(
+			(res) => {
+				setOrderList(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
+				console.log(res.data.data);
+			},
+			() => {
+				console.log("error"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
+			}
+		);
+	}, [statusMatchName]);
 	return (
 		<Ul>
 			{orderList.map((row) =>
@@ -70,9 +112,9 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({ statusMatchName }) => {
 								.toString()
 								.replace(/\B(?=(\d{3})+(?!\d))/g, ",") // 가격 1000단위 콤마
 						}
-						shopTell={row.users.phone}
+						shopTell={row.user.phone}
 						orderDetail={row.requirement}
-						payment={row.payment}
+						payment={row.paymentMethod}
 						status={checkStatus(row.status)}
 					/>
 				) : null

@@ -112,7 +112,7 @@ public class ShopService implements ShopUseCase {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         Shop modifiedImageShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
-        String filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", modifiedImageShop.getId());
+        String filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", managerId);
         if(filePath.equals("default.png")) throw new CUploadImageInvalidException();
         String fileName = s3Uploader.updateS3(file, modifiedImageShop.getImage(), filePath);
         modifiedImageShop.updateImage(fileName);
@@ -126,7 +126,7 @@ public class ShopService implements ShopUseCase {
         Shop deleteImageShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
         if (!deleteImageShop.getImage().contains("shopDefault.png")) { // 기본 이미지가 아니면 상품과 S3에서 이미지 삭제
             s3Uploader.deleteFileS3(deleteImageShop.getImage());
-            deleteImageShop.updateImage(s3Uploader.get("shop    Default.png")); // 기본 이미지로 변경
+            deleteImageShop.updateImage(s3Uploader.get("shopDefault.png")); // 기본 이미지로 변경
         } else throw new CValidCheckException("기본 이미지입니다.");
     }
 

@@ -1,5 +1,6 @@
 package com.toogoodtogo.domain.shop.product;
 
+import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import com.toogoodtogo.web.shops.products.dto.ProductSearchDto;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -57,7 +59,7 @@ public class JdbcTemplateProductRepository {
                 .image(rs.getString("image")).build();
     }
 
-    public List<ProductDto> findProductsByShopCategory(String category, Pageable pageable) {
+    public List<ProductDto> findProductsByShopCategory(String category, Pageable pageable, String method) {
         String sql = "select s.id as shop_id, s.name as shop_name, p.id as product_id, p.name as product_name, p.price, p.discounted_price, p.image\n" +
                 "from product p\n" +
                 "inner join shop s on p.shop_id = s.id\n" +
@@ -73,13 +75,14 @@ public class JdbcTemplateProductRepository {
                         " )\n" +
                     "and not hrp.product_id is null\n" +
                 ")\n" +
-                "order by shop_id desc\n" +
+                "order by "+ sortMethod(method) +", shop_id desc\n" +
                 "limit ? offset ?";
 
-        return jdbcTemplate.query(sql, productDtoRowMapper(), category, pageable.getPageSize(), pageable.getOffset());
+        return jdbcTemplate.query(sql, productDtoRowMapper(),
+                category, pageable.getPageSize(), pageable.getOffset());
     }
 
-    public List<ProductDto> findProductsByShopCategoryAll(Pageable pageable) {
+    public List<ProductDto> findProductsByShopCategoryAll(Pageable pageable, String method) {
         String sql = "select s.id as shop_id, s.name as shop_name, p.id as product_id, p.name as product_name, p.price, p.discounted_price, p.image\n" +
                 "from product p\n" +
                 "inner join shop s on p.shop_id = s.id\n" +
@@ -90,7 +93,7 @@ public class JdbcTemplateProductRepository {
                     "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
                     "where not hrp.shop_id is null\n" +
                 ")\n" +
-                "order by shop_id desc\n" +
+                "order by "+ sortMethod(method) +", shop_id desc\n" +
                 "limit ? offset ?";
 
         return jdbcTemplate.query(sql, productDtoRowMapper(), pageable.getPageSize(), pageable.getOffset());
@@ -105,5 +108,14 @@ public class JdbcTemplateProductRepository {
                 .price(rs.getLong("price"))
                 .discountedPrice(rs.getLong("discounted_price"))
                 .image(rs.getString("image")).build();
+    }
+
+    private String sortMethod(String method) {
+        log.info("category sort method : " + method);
+        if(!StringUtils.hasText(method)) return "shop_id desc";
+        else if(method.equals("rate")) return "(p.price - p.discounted_price)/p.price*100 desc";
+        else if(method.equals("low")) return "p.discounted_price asc";
+        else if(method.equals("high")) return "p.discounted_price desc";
+        else throw new CValidCheckException("sort method 가 잘못 되었습니다.");
     }
 }

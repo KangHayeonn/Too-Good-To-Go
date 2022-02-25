@@ -38,6 +38,7 @@ public class JdbcTemplateProductRepository {
                         " )\n" +
                     "and not hrp.product_id is null\n" +
                 ")\n" +
+                "order by shop_id desc\n" +
                 "limit ? offset ?";
 
         return jdbcTemplate.query(sql, productSearchDtoRowMapper(), keyword, "%" + keyword + "%",
@@ -72,6 +73,7 @@ public class JdbcTemplateProductRepository {
                         " )\n" +
                     "and not hrp.product_id is null\n" +
                 ")\n" +
+                "order by shop_id desc\n" +
                 "limit ? offset ?";
 
         return jdbcTemplate.query(sql, productDtoRowMapper(), category, pageable.getPageSize(), pageable.getOffset());
@@ -88,6 +90,7 @@ public class JdbcTemplateProductRepository {
                     "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
                     "where not hrp.shop_id is null\n" +
                 ")\n" +
+                "order by shop_id desc\n" +
                 "limit ? offset ?";
 
         return jdbcTemplate.query(sql, productDtoRowMapper(), pageable.getPageSize(), pageable.getOffset());

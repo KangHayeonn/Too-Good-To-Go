@@ -39,12 +39,15 @@ public class Shop {
     @Embedded
     private Hours hours;
 
-    public void update(String name, String image, List<String> category, String phone, String address, Hours hours) {
+    public void update(String name, List<String> category, String phone, String address, Hours hours) {
         this.name = name;
-        this.image = image;
         this.category = category;
         this.phone = phone;
         this.address = address;
         this.hours = hours;
+    }
+
+    public void updateImage(String image) {
+        this.image = image;
     }
 }

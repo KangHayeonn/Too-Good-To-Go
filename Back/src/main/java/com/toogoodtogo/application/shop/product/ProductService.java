@@ -2,6 +2,7 @@ package com.toogoodtogo.application.shop.product;
 
 import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
+import com.toogoodtogo.domain.exceptions.CUploadImageInvalidException;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
@@ -64,7 +65,6 @@ public class ProductService implements ProductUseCase {
 
         // 파일 경로
         String filePath = uploadFileConverter.parseFileInfo(file, "productsImage", shopId);
-        
         String fileName;
         if (filePath.equals("default.png")) fileName = s3Uploader.get("productDefault.png"); // 기본 이미지
         else fileName = s3Uploader.upload(file, filePath); // 최종 파일 경로 및 파일 업로드
@@ -87,7 +87,6 @@ public class ProductService implements ProductUseCase {
         else displayProductRepository.findByShopId(shopId).addPrior(new_product.getId());
 
         updateHighestProduct(shopId);
-
         return new ProductDto(new_product);
     }
 
@@ -96,28 +95,57 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto updateProduct(Long managerId, Long shopId, Long productId, MultipartFile file, UpdateProductRequest request) throws IOException {
+    public ProductDto updateProduct(Long managerId, Long shopId, Long productId, UpdateProductRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
         if(productRepository.findByShopIdAndName(shopId, request.getName()).isPresent() &&
                 !productRepository.findByShopIdAndName(shopId, request.getName()).get().getId().equals(productId))
             throw new CValidCheckException("이미 있는 상품 이름입니다."); // 바꾸려는 이름이 중복될 때
         Product modifiedProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
-
-        String filePath;
-        String fileName;
-        if (file.isEmpty()) { // 넘어온 사진이 없으면
-            fileName = modifiedProduct.getImage(); // 기존 이미지
-        } else { // 넘어온 사진이 있으면
-            filePath = uploadFileConverter.parseFileInfo(file, "productsImage", modifiedProduct.getShop().getId());
-            fileName = s3Uploader.updateS3(file, modifiedProduct.getImage(), filePath);
-        }
-
-        modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice(), fileName);
-
+        modifiedProduct.update(request.getName(), request.getPrice(), request.getDiscountedPrice());
         updateHighestProduct(shopId);
-
         return new ProductDto(modifiedProduct);
+    }
+
+    @Transactional
+    public void deleteProduct(Long managerId, Long shopId, Long productId) {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+        // 기본 이미지가 아니면 S3에서 이미지 삭제
+        if (!deleteProduct.getImage().contains("productDefault.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
+
+        HighestRateProduct byShopIdAndProductId = highestRateProductRepository.findByShopIdAndProductId(shopId, productId);
+        if(byShopIdAndProductId != null) byShopIdAndProductId.deleteProduct();
+
+        choiceProductRepository.deleteByProductId(productId);
+        productRepository.deleteById(productId);
+        updateHighestProduct(shopId);
+    }
+
+    @Transactional
+    public String updateProductImage(Long managerId, Long shopId, Long productId, MultipartFile file) throws IOException {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Product updateImageProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+        String filePath = uploadFileConverter.parseFileInfo(file, "productsImage", updateImageProduct.getShop().getId());
+        log.info("filePath : " + filePath);
+        if(filePath.equals("default.png")) throw new CUploadImageInvalidException();
+        String fileName = s3Uploader.updateS3(file, updateImageProduct.getImage(), filePath);
+        updateImageProduct.updateImage(fileName);
+        return fileName;
+    }
+
+    @Transactional
+    public void deleteProductImage(Long managerId, Long shopId, Long productId) {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Product deleteImageProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+
+        if (!deleteImageProduct.getImage().contains("productDefault.png")) { // 기본 이미지가 아니면 상품과 S3에서 이미지 삭제
+            s3Uploader.deleteFileS3(deleteImageProduct.getImage());
+            deleteImageProduct.updateImage(s3Uploader.get("productDefault.png")); // 기본 이미지로 변경
+        } else throw new CValidCheckException("기본 이미지입니다.");
     }
 
     @Transactional
@@ -135,23 +163,6 @@ public class ProductService implements ProductUseCase {
         return displayProduct.getPriority();
     }
 
-    @Transactional
-    public void deleteProduct(Long managerId, Long shopId, Long productId) {
-        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
-        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-        Product deleteProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
-        // 기본 이미지가 아니면 S3에서 이미지 삭제
-        if (!deleteProduct.getImage().contains("productDefault.png")) s3Uploader.deleteFileS3(deleteProduct.getImage());
-
-        HighestRateProduct byShopIdAndProductId = highestRateProductRepository.findByShopIdAndProductId(shopId, productId);
-        if(byShopIdAndProductId != null) byShopIdAndProductId.deleteProduct();
-
-        choiceProductRepository.deleteByProductId(productId);
-        productRepository.deleteById(productId);
-
-        updateHighestProduct(shopId);
-    }
-
     private void updateHighestProduct(Long shopId) {
         Product currentHighestRateProduct = productRepositorySupport.choiceHighestRateProductPerShop(shopId);
         if(currentHighestRateProduct == null) return;
@@ -159,15 +170,24 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional
-    public ProductDto choiceProduct(Long managerId, Long shopId, Long productId) {
+    public ProductDto choiceProduct(Long managerId, Long shopId, AddChoiceProductRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-        Product choiceProduct = productRepository.findByShopIdAndId(shopId, productId).orElseThrow(CProductNotFoundException::new);
+        Product choiceProduct = productRepository.findByShopIdAndId(shopId, request.getProductId()).orElseThrow(CProductNotFoundException::new);
         Shop shop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
         if(choiceProductRepository.findByShopId(shop.getId()) == null) //만약 고른게 없었으면 새로 등록
             choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(choiceProduct).build());
         else choiceProductRepository.findByShopId(shop.getId()).updateProduct(choiceProduct); //이미 고른게 있다면 업데이트
         return new ProductDto(choiceProduct);
+    }
+
+    @Transactional
+    public void deleteChoiceProduct(Long managerId, Long shopId, Long productId) {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        if(choiceProductRepository.findByShopIdAndProductId(shopId, productId) != null)
+            choiceProductRepository.deleteByShopIdAndProductId(shopId, productId);
+        else throw new CValidCheckException("해당 상품은 추천된 상품이 아닙니다.");
     }
 
     @Transactional(readOnly = true)
@@ -186,20 +206,20 @@ public class ProductService implements ProductUseCase {
         }
 
         List<ProductDto> sortData;
+        log.info("category sort method : " + method);
         if (!StringUtils.hasText(method)) { // method 가 없는 기본 값이면 최신순 (id 높은 순으로)
-            log.info("method : null");
             sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getId).reversed()).collect(Collectors.toList());
         }
         else if (method.equals("rate")) {
-            log.info("method : " + method);
             sortData = data.stream()
                     .sorted((a, b) -> (int) (((b.getPrice() - b.getDiscountedPrice()) / b.getPrice().doubleValue() * 100) -
                             ((a.getPrice() - a.getDiscountedPrice()) / a.getPrice().doubleValue() * 100))).collect(Collectors.toList());
-
         }
-        else if (method.equals("discount")) {
-            log.info("method : " + method);
+        else if (method.equals("low")) {
             sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getDiscountedPrice)).collect(Collectors.toList());
+        }
+        else if (method.equals("high")) {
+            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getDiscountedPrice).reversed()).collect(Collectors.toList());
         } else throw new CValidCheckException("method 가 잘못 되었습니다.");
         return sortData;
     }

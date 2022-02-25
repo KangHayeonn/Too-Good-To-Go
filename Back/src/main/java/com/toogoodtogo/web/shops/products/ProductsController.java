@@ -8,6 +8,7 @@ import com.toogoodtogo.domain.user.User;
 import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.products.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductsController {
     private final ProductUseCase productUseCase;
 
@@ -50,21 +52,38 @@ public class ProductsController {
         return new ApiResponse<>(productUseCase.addProduct(user.getId(), shopId, file, request/*.toServiceDto()*/));
     }
 
-//    @PatchMapping("/manager/shop/{shopId}/product/{productId}")
-    @PostMapping("/manager/shops/{shopId}/products/{productId}")
+    @PutMapping("/manager/shops/{shopId}/products/{productId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ProductDto> updateProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
             @PathVariable @Positive(message = "path 오류") Long productId,
-            @RequestPart(required = false) MultipartFile file,
-            @RequestPart @Validated(ValidationSequence.class) UpdateProductRequest request) throws IOException {
+            @RequestBody @Validated(ValidationSequence.class) UpdateProductRequest request) {
         if (request.getDiscountedPrice() > request.getPrice())
             throw new CValidCheckException("할인 가격은 상품가격보다 같거나 낮아야 합니다.");
-        return new ApiResponse<>(productUseCase.updateProduct(user.getId(), shopId, productId, file, request));
+        return new ApiResponse<>(productUseCase.updateProduct(user.getId(), shopId, productId, request));
     }
 
-    @PatchMapping("/manager/shops/{shopId}/products")
+    @PostMapping("/manager/shops/{shopId}/products/{productId}/image")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<String> updateProductImage(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @PathVariable @Positive(message = "path 오류") Long productId,
+            @RequestPart MultipartFile file) throws IOException {
+        return new ApiResponse<>(productUseCase.updateProductImage(user.getId(), shopId, productId, file));
+    }
+
+    @DeleteMapping("/manager/shops/{shopId}/products/{productId}/image")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProductImage(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @PathVariable @Positive(message = "path 오류") Long productId) {
+        productUseCase.deleteProductImage(user.getId(), shopId, productId);
+    }
+
+    @PutMapping("/manager/shops/{shopId}/products")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<String>> updatePriorityProduct(
             @CurrentUser User user,
@@ -82,13 +101,22 @@ public class ProductsController {
         productUseCase.deleteProduct(user.getId(), shopId, productId);
     }
 
-    @GetMapping("/manager/shops/{shopId}/products/{productId}")
+    @PostMapping("/manager/shops/{shopId}/choice") // POST? PUT?
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ProductDto> choiceProduct(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
-            @PathVariable @Positive(message = "path 오류") Long productId) {
-        return new ApiResponse<>(productUseCase.choiceProduct(user.getId(), shopId, productId));
+            @RequestBody @Validated(ValidationSequence.class) AddChoiceProductRequest request) {
+        return new ApiResponse<>(productUseCase.choiceProduct(user.getId(), shopId, request));
+    }
+
+    @DeleteMapping("/manager/shops/{shopId}/choice")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteChoiceProduct(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @RequestParam(name = "product") @Positive(message = "path 오류") Long productId) {
+        productUseCase.deleteChoiceProduct(user.getId(), shopId, productId);
     }
 
     @GetMapping("/products/recommend")

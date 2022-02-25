@@ -106,10 +106,19 @@ operation::shops/findManager[snippets='http-request,http-response,response-field
 operation::shops/find[snippets='http-request,path-parameters,http-response,response-fields']
 
 === SHOP 추가 [POST]
-operation::shops/add[snippets='http-request,request-headers,http-response,response-fields']
+operation::shops/add[snippets='http-request,request-headers,request-parts,request-part-request-fields,http-response,response-fields']
 
-=== SHOP 업데이트 [POST]
-operation::shops/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+=== SHOP 업데이트 [PUT]
+operation::shops/update[snippets='http-request,request-headers,path-parameters,request-fields,http-response,response-fields']
+
+=== SHOP 삭제 [DELETE]
+operation::shops/delete[snippets='http-request,request-headers,path-parameters,http-response']
+
+=== SHOP 이미지 업데이트 [POST]
+operation::shops/updateImage[snippets='http-request,request-headers,path-parameters,request-parts,http-response,response-fields']
+
+=== SHOP 이미지 삭제 [DELETE]
+operation::shops/deleteImage[snippets='http-request,request-headers,path-parameters,http-response']
 
 === SHOP 삭제 [DELETE]
 operation::shops/delete[snippets='http-request,request-headers,path-parameters,http-response']
@@ -123,21 +132,30 @@ operation::products/findAll[snippets='http-request,http-response,response-fields
 operation::products/find[snippets='http-request,path-parameters,http-response,response-fields']
 
 === PRODUCT 추가 [POST]
-operation::products/add[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+operation::products/add[snippets='http-request,request-headers,path-parameters,request-parts,request-part-request-fields,http-response,response-fields']
 
-=== PRODUCT 업데이트 [POST]
-operation::products/update[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
-
-=== PRODUCT 우선순위 업데이트 [PATCH]
-operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,request-fields,http-response,response-fields']
+=== PRODUCT 업데이트 [PUT]
+operation::products/update[snippets='http-request,request-headers,path-parameters,request-fields,http-response,response-fields']
 
 === PRODUCT 삭제 [DELETE]
 operation::products/delete[snippets='http-request,path-parameters,request-headers,http-response']
 
-=== PRODUCT 추천 [GET]
-operation::products/choice[snippets='http-request,request-headers,http-response,response-fields']
+=== PRODUCT 이미지 업데이트 [POST]
+operation::products/updateImage[snippets='http-request,request-headers,path-parameters,request-parts,http-response,response-fields']
 
-=== PRODUCT 추천 조회 [GET]
+=== PRODUCT 이미지 삭제 [DELETE]
+operation::products/deleteImage[snippets='http-request,request-headers,path-parameters,http-response']
+
+=== PRODUCT 우선순위 업데이트 [PUT]
+operation::products/updatePriority[snippets='http-request,path-parameters,request-headers,request-fields,http-response,response-fields']
+
+=== PRODUCT 추천 [POST]
+operation::products/choice[snippets='http-request,request-headers,request-fields,http-response,response-fields']
+
+=== PRODUCT 추천 삭제 [DELETE]
+operation::products/deleteChoice[snippets='http-request,request-headers,path-parameters,request-parameters,http-response']
+
+=== PRODUCT 메인페이지 추천 상품 조회 [GET]
 operation::products/recommend[snippets='http-request,http-response,response-fields']
 
 === PRODUCT 카테고리 조회 [GET]

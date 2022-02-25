@@ -63,7 +63,7 @@ class ShopsControllerTest extends ControllerTest {
         token = signService.login(LoginUserRequest.builder().email("shopTest@email.com").password("password").build());
 
         Shop shop1 = Shop.builder()
-                .user(manager).name("shop1").image("https://diefqsnmvol80.cloudfront.net/shopDefault.png")
+                .user(manager).name("shop1").image("https://diefqsnmvol80.cloudfront.net/test.png")
                 .category(Arrays.asList("한식")).phone("01012345678")
                 .address("서울특별시 양천구 목동 1번지").hours(new Hours("10:00", "22:00")).build();
         shopRepository.save(shop1);
@@ -165,12 +165,6 @@ class ShopsControllerTest extends ControllerTest {
         MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
 
         //when
-//        ResultActions actions = mockMvc.perform(post("/api/manager/shop")
-//                .header("Authorization", "Bearer " + token.getAccessToken())
-//                .content(object)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON));
-
         ResultActions actions = mockMvc.perform(multipart("/api/manager/shops")
                 .file(new MockMultipartFile("file", null, null, (InputStream) null))
 //                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
@@ -184,15 +178,18 @@ class ShopsControllerTest extends ControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
-//                        requestParts(partWithName("file").description("가게 이미지")),
-//                        requestPartFields("request",
-//                                fieldWithPath("name").description("가게 이름"),
-//                                fieldWithPath("category").description("가게 카테고리"),
-//                                fieldWithPath("phone").description("가게 전화번호"),
-//                                fieldWithPath("address").description("가게 주소"),
-//                                fieldWithPath("open").description("가게 오픈시간"),
-//                                fieldWithPath("close").description("가게 마감시간")
-//                        ),
+                        requestParts(
+                                partWithName("file").description("가게 이미지"),
+                                partWithName("request").description("가게 정보")
+                        ),
+                        requestPartFields("request",
+                                fieldWithPath("name").description("가게 이름"),
+                                fieldWithPath("category").description("가게 카테고리"),
+                                fieldWithPath("phone").description("가게 전화번호"),
+                                fieldWithPath("address").description("가게 주소"),
+                                fieldWithPath("open").description("가게 오픈시간"),
+                                fieldWithPath("close").description("가게 마감시간")
+                        ),
                         responseFields(
                                 fieldWithPath("data.id").description("가게 고유번호"),
                                 fieldWithPath("data.name").description("가게 이름"),
@@ -208,31 +205,27 @@ class ShopsControllerTest extends ControllerTest {
     }
 
     @Test
-    public void updateShop() throws Exception {
+    void updateShop() throws Exception {
         //given
         String object = objectMapper.writeValueAsString(UpdateShopRequest.builder()
-                .name("shop3")
-                .category(new ArrayList<>(Arrays.asList("category2")))
-                .phone("01087654321")
-                .address("test3")
-                .open("12:00")
-                .close("21:00")
-                .build());
-        MockMultipartFile request = new MockMultipartFile("request", "", "application/json", object.getBytes());
+                .name("shop3").category(new ArrayList<>(Arrays.asList("category2")))
+                .phone("01087654321").address("test3")
+                .open("12:00").close("21:00").build());
 
         //when
-//        ResultActions actions = mockMvc.perform(patch("/api/manager/shop/{shopId}", shopId)
-//                .header("Authorization", "Bearer " + token.getAccessToken())
-//                .content(object)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON));
-
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
-                .fileUpload("/api/manager/shops/{shopId}", shopId)
-                .file(new MockMultipartFile("file", null, null, (InputStream) null))
-//                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
-                .file(request).accept(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + token.getAccessToken()));
+                .put("/api/manager/shops/{shopId}", shopId)
+                .header("Authorization", "Bearer " + token.getAccessToken())
+                .content(object)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+//        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+//                .fileUpload("/api/manager/shops/{shopId}", shopId)
+//                .file(new MockMultipartFile("file", null, null, (InputStream) null))
+////                .file(new MockMultipartFile("file", "test.png", "image/png", new FileInputStream("C:\\Users\\박수호\\Desktop\\test.png")))
+//                .file(request).accept(MediaType.APPLICATION_JSON)
+//                .header("Authorization", "Bearer " + token.getAccessToken()));
 
         //then
         actions
@@ -244,15 +237,14 @@ class ShopsControllerTest extends ControllerTest {
                         pathParameters(
                                 parameterWithName("shopId").description("가게 고유 번호")
                         ),
-//                        requestParts(partWithName("file").description("가게 이미지")),
-//                        requestPartFields("request",
-//                                fieldWithPath("name").description("가게 이름"),
-//                                fieldWithPath("category").description("가게 카테고리"),
-//                                fieldWithPath("phone").description("가게 전화번호"),
-//                                fieldWithPath("address").description("가게 주소"),
-//                                fieldWithPath("open").description("가게 오픈시간"),
-//                                fieldWithPath("close").description("가게 마감시간")
-//                        ),
+                        requestFields(
+                                fieldWithPath("name").description("가게 이름"),
+                                fieldWithPath("category").description("가게 카테고리"),
+                                fieldWithPath("phone").description("가게 전화번호"),
+                                fieldWithPath("address").description("가게 주소"),
+                                fieldWithPath("open").description("가게 오픈시간"),
+                                fieldWithPath("close").description("가게 마감시간")
+                        ),
                         responseFields(
                                 fieldWithPath("data.id").description("가게 고유번호"),
                                 fieldWithPath("data.name").description("가게 이름"),
@@ -265,6 +257,52 @@ class ShopsControllerTest extends ControllerTest {
                         )
                 ))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateShopImage() throws Exception {
+        //when
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.
+                fileUpload("/api/manager/shops/{shopId}/image", shopId)
+                .file(new MockMultipartFile("file", "test.png", "image/png", "test".getBytes()))
+                .header("Authorization", "Bearer " + token.getAccessToken()));
+
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("shops/updateImage",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        ),
+                        requestParts(partWithName("file").description("가게 이미지")),
+                        responseFields(
+                                fieldWithPath("data").description("가게 이미지")
+                        )
+                ))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteShopImage() throws Exception {
+        //given
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.
+                delete("/api/manager/shops/{shopId}/image", shopId)
+                .header("Authorization", "Bearer " + token.getAccessToken()));
+        //then
+        actions
+                .andDo(print())
+                .andDo(document("shops/deleteImage",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestHeaders(headerWithName("Authorization").description("매니저의 Access Token")),
+                        pathParameters(
+                                parameterWithName("shopId").description("가게 고유 번호")
+                        )
+                ))
+                .andExpect(status().isNoContent());
     }
 
     @Test

@@ -21,7 +21,7 @@ public class JdbcTemplateProductRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<ProductSearchDto> searchProductsByShopCategoryOrShopName(String keyword) {
+    public List<ProductSearchDto> searchProductsByShopCategoryOrShopName(String keyword, Pageable pageable) {
         String sql = "select s.id as shop_id, s.name as shop_name, s.category as shop_category," +
                 "p.id as product_id, p.name as product_name, p.price, p.discounted_price, p.image\n" +
                 "from product p\n" +
@@ -37,9 +37,11 @@ public class JdbcTemplateProductRepository {
                         "  where find_in_set(?, s.category) > 0 or s.name like ?\n" +
                         " )\n" +
                     "and not hrp.product_id is null\n" +
-                " )";
+                ")\n" +
+                "limit ? offset ?";
 
-        return jdbcTemplate.query(sql, productSearchDtoRowMapper(), keyword, "%" + keyword + "%");
+        return jdbcTemplate.query(sql, productSearchDtoRowMapper(), keyword, "%" + keyword + "%",
+                pageable.getPageSize(), pageable.getOffset());
     }
 
     private RowMapper<ProductSearchDto> productSearchDtoRowMapper() {

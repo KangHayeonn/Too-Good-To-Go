@@ -27,10 +27,13 @@ public class Product {
     private Long discountedPrice;
     private String image;
 
-    public void update(String name, Long price, Long discountedPrice, String image) {
+    public void update(String name, Long price, Long discountedPrice) {
         this.name = name;
         this.price = price;
         this.discountedPrice = discountedPrice;
+    }
+
+    public void updateImage(String image) {
         this.image = image;
     }
 }

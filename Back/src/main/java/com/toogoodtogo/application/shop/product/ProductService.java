@@ -197,31 +197,13 @@ public class ProductService implements ProductUseCase {
 
     @Transactional(readOnly = true)
     public List<ProductDto> productsPerCategory(String category, String method, Pageable pageable) {
-        List<ProductDto> data;
+        log.info("category sort method : " + method);
         if (StringUtils.hasText(category)) { // 카테고리가 있으면
-            data = jdbcTemplateProductRepository.findProductsByShopCategory(category, pageable);
+            return jdbcTemplateProductRepository.findProductsByShopCategory(category, pageable, method);
         }
         else { // 전체보기면
-            data = jdbcTemplateProductRepository.findProductsByShopCategoryAll(pageable);
+            return jdbcTemplateProductRepository.findProductsByShopCategoryAll(pageable, method);
         }
-
-        List<ProductDto> sortData;
-        log.info("category sort method : " + method);
-        if (!StringUtils.hasText(method)) { // method 가 없는 기본 값이면 최신순 (id 높은 순으로)
-            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getId).reversed()).collect(Collectors.toList());
-        }
-        else if (method.equals("rate")) {
-            sortData = data.stream()
-                    .sorted((a, b) -> (int) (((b.getPrice() - b.getDiscountedPrice()) / b.getPrice().doubleValue() * 100) -
-                            ((a.getPrice() - a.getDiscountedPrice()) / a.getPrice().doubleValue() * 100))).collect(Collectors.toList());
-        }
-        else if (method.equals("low")) {
-            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getDiscountedPrice)).collect(Collectors.toList());
-        }
-        else if (method.equals("high")) {
-            sortData =  data.stream().sorted(Comparator.comparing(ProductDto::getDiscountedPrice).reversed()).collect(Collectors.toList());
-        } else throw new CValidCheckException("method 가 잘못 되었습니다.");
-        return sortData;
     }
 
     @Transactional(readOnly = true)

@@ -105,7 +105,8 @@ class ProductRepositorySupportTest extends ControllerTest {
         //when
 //        List<ProductDto> test = choiceProductRepository.findProductsByShopCategory("한식").stream()
 //                .map(ProductDto::new).collect(Collectors.toList());
-        List<ProductDto> test = jdbcTemplateProductRepository.findProductsByShopCategory("한식", PageRequest.of(0, 10));
+        List<ProductDto> test = jdbcTemplateProductRepository.findProductsByShopCategory(
+                "한식", PageRequest.of(0, 10), "");
         test.forEach(p -> System.out.println("p_id " + p.getId()));
         //then
         highestRateProductRepository.deleteAllInBatch();

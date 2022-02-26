@@ -47,7 +47,7 @@ const ProfileOrderList: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [orderData, setOrderData] = useGetData(
 		initialState,
-		"http:http://54.180.134.20/api/orders",
+		"http://54.180.134.20/api/orders",
 		(er: unknown) => {
 			console.log(er);
 		}

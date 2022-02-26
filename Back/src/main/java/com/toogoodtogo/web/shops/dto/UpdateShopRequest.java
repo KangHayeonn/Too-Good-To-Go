@@ -21,17 +21,17 @@ public class UpdateShopRequest {
     @NotEmpty(message = "카테고리는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     private List<String> category;
     @NotBlank(message = "전화번호는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-    @Pattern(regexp = "01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})",
+    @Pattern(regexp = "^(01\\d{1}|02|031|032|041|042|043|044|051|052|053|054|055|061|062|0505|0502|0506|0507|0\\d{1,2})(\\d{3,4})(\\d{4})",
             message = "전화번호 양식이 틀렸습니다.", groups = ValidationGroups.PatternCheckGroup.class)
     private String phone;
     @NotBlank(message = "주소는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     private String address;
     @NotBlank(message = "오픈 시간은 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-    @Pattern(regexp = "([01][0-9]|2[0-3]):([0-5][0-9])",
+    @Pattern(regexp = "([01][0-9]|2[0-4]):([0-5][0-9])",
             message = "오픈 시간 양식이 틀렸습니다.", groups = ValidationGroups.PatternCheckGroup.class)
     private String open;
     @NotBlank(message = "마감 시간은 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-    @Pattern(regexp = "([01][0-9]|2[0-3]):([0-5][0-9])",
+    @Pattern(regexp = "([01][0-9]|2[0-4]):([0-5][0-9])",
             message = "마감 시간 양식이 틀렸습니다.", groups = ValidationGroups.PatternCheckGroup.class)
     private String close;
 }

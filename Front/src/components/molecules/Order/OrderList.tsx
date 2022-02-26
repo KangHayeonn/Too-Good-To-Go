@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { setProducts } from "../../../features/order/orderInfoSlice";
 
@@ -96,14 +96,25 @@ const DropTitle = styled.div`
 
 const OrderList: React.FC = () => {
 	const [hidden, setHidden] = useState(true);
-	const dispatch = useDispatch();
-	const show = () => setHidden((current) => !current);
+	const dispatch = useDispatch(); 
 	const cartItem = useSelector((state: RootState) => {
 		return state.selectCartCards;
 	});
 
+	const show = () => setHidden((current) => !current);
+
 	useEffect(() => {
-		dispatch(setProducts(cartItem));
+		const productsArray = new Array<object>();
+		cartItem.map((e) => {
+			const obj = {
+				productId : e.id,
+				quantity : e.cartItemQuantity,
+				price : e.discountedPrice,
+			};
+			productsArray.push(obj);
+			return 0;
+		})
+		dispatch(setProducts(productsArray));
 	}, []);
 
 	return (
@@ -118,20 +129,20 @@ const OrderList: React.FC = () => {
 				<li className="title">
 					<div>{cartItem[0].shopName}</div>
 					<div>
-						{cartItem[0].shopFoodName} 외 {cartItem.length - 1}개
+						{cartItem[0].name} 외 {cartItem.length - 1}개
 					</div>
 				</li>
 				{cartItem.map((e) => {
 					return (
-						<li key={e.shopId}>
+						<li key={e.id}>
 							<div className="menu">
-								{e.shopFoodName} {e.cartItemQuantity}개
+								{e.name} {e.cartItemQuantity}개
 							</div>
 							<div className="beforeCost">
-								· 기본 : <s>{e.shopBeforeCost}원</s>
+								· 기본 : <s>{e.price}원</s>
 							</div>
 							<div className="cost">
-								· 할인 후 가격 : {e.shopFoodCost}원
+								· 할인 후 가격 : {e.discountedPrice}원
 							</div>
 						</li>
 					);

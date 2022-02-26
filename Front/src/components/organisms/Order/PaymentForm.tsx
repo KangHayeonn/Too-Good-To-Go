@@ -3,11 +3,15 @@ import styled from "@emotion/styled";
 import Titlebar from "../../atoms/Titlebar/Titlebar";
 import PaymentInfo from "../../molecules/Order/PaymentInfo";
 
-const PaymentForm: React.FC = () => {
+type Type = {
+	paymentMethod: string;
+};
+
+const PaymentForm: React.FC<Type> = ({ paymentMethod }) => {
 	return (
 		<Wrapper>
 			<Titlebar color="#6EC19B">결제수단</Titlebar>
-			<PaymentInfo />
+			<PaymentInfo cachedPaymentMethod={paymentMethod} />
 		</Wrapper>
 	);
 };

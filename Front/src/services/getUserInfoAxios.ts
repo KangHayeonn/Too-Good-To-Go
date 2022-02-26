@@ -104,3 +104,4 @@ function getNewRefreshTokenPost() {
 		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
 	);
 }
+

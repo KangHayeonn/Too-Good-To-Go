@@ -15,13 +15,20 @@ const Main = styled.div`
 
 type matchParams = {
 	statusMatchName: string;
+	shopMatchId: string;
 };
 
-const ManagerMain: React.FC<matchParams> = ({ statusMatchName }) => {
+const ManagerMain: React.FC<matchParams> = ({
+	statusMatchName,
+	shopMatchId,
+}) => {
 	return (
 		<Main>
 			<ManagerOrderMenu />
-			<ManagerOrderLists statusMatchName={statusMatchName} />
+			<ManagerOrderLists
+				statusMatchName={statusMatchName}
+				shopMatchId={shopMatchId}
+			/>
 		</Main>
 	);
 };

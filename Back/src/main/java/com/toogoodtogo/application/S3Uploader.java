@@ -61,6 +61,7 @@ public class S3Uploader {
     // delete file
     public void deleteFileS3(String fileName) {
         fileName = fileName.replace(CLOUD_FRONT_DOMAIN_NAME + "/", "");
+        if(fileName.equals("productDefault.png") || fileName.equals("shopDefault.png")) return;
         log.info("delete file : " + fileName);
         if (amazonS3Client.doesObjectExist(bucket, fileName)) amazonS3Client.deleteObject(bucket, fileName);
     }

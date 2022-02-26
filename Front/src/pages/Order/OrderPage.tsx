@@ -6,7 +6,8 @@ import RequestForm from "../../components/organisms/Order/RequestForm";
 import OrderList from "../../components/organisms/Order/OrderList";
 import PaymentForm from "../../components/organisms/Order/PaymentForm";
 import PayForm from "../../components/organisms/Order/PayForm";
-import Modal from "../../components/atoms/Modal/PaymentModal";
+import Modal from "../../components/atoms/Modal/OrderedModal";
+import { axiosApiCachedOrderInfoGetInstance } from "../../services/getCachedOrderInfo";
 
 const Button = styled.div`
 	width: 100%;
@@ -36,8 +37,20 @@ const OrderButton = styled.button`
 `;
 
 const OrderPage: React.FC = () => {
+	const [paymentMethod, setPaymentMethod] = useState<string>("");
+	const [requirement, setRequiremnet] = useState<string>("");
 	const [openModal, setOpenModal] = useState(false);
 	const popRef = useRef<HTMLDivElement>(null);
+
+	const cachedOrderInfo = async () => {
+		try {
+			const response = await axiosApiCachedOrderInfoGetInstance.get("/api/cached-order-info");
+			setPaymentMethod(response.data.data.paymentMethod);
+			setRequiremnet(response.data.data.requirement);
+		} catch(error) {
+			console.log(error);
+		}
+	};
 
 	const onClickOutside = useCallback(
 		({ target }) => {
@@ -47,12 +60,18 @@ const OrderPage: React.FC = () => {
 		},
 		[setOpenModal]
 	);
+	
 	useEffect(() => {
 		document.addEventListener("click", onClickOutside);
+
+		/* cached-order-info */
+		cachedOrderInfo();
+
 		return () => {
 			document.removeEventListener("click", onClickOutside);
 		};
 	}, []);
+
 	const onClickToggleModal = useCallback(() => {
 		setOpenModal((prev) => !prev);
 	}, [setOpenModal]);
@@ -64,9 +83,9 @@ const OrderPage: React.FC = () => {
 	return (
 		<PageTemplate isHeader={false} isSection={false} isFooter={false}>
 			<OrderForm />
-			<RequestForm />
+			<RequestForm requirement={requirement} />
 			<OrderList />
-			<PaymentForm />
+			<PaymentForm paymentMethod={paymentMethod} />
 			<PayForm />
 			<Button ref={popRef}>
 				<OrderButton type="button" onClick={onClickToggleModal}>

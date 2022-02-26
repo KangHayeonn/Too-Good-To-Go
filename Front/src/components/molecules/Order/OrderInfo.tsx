@@ -61,9 +61,18 @@ const OrderInfo: React.FC = () => {
 
 	useEffect(() => {
 		if (logChecker) {
+			/* // 010-1111-2222 형식일 경우
 			dispatch(tempSetPhone(logChecker));
 			const phone = logChecker.split("-");
 			setPhoneNum(phone);
+			*/
+			// 01011112222 형식일 경우
+			const phone = new Array<string>();
+			phone[0] = logChecker.substring(0,3);
+			phone[1] = logChecker.substring(3,7);
+			phone[2] = logChecker.substring(7,11);
+			setPhoneNum(phone);
+			dispatch(tempSetPhone(logChecker));
 		} else {
 			// eslint-disable-next-line no-alert
 			alert("먼저 로그인이 필요합니다.");
@@ -82,7 +91,8 @@ const OrderInfo: React.FC = () => {
 	useEffect(() => {
 		if (state)
 			dispatch(
-				tempSetPhone(`${state.first}-${state.second}-${state.third}`)
+				// tempSetPhone(`${state.first}-${state.second}-${state.third}`)
+				tempSetPhone(`${state.first}${state.second}${state.third}`)
 			);
 	}, [state]);
 

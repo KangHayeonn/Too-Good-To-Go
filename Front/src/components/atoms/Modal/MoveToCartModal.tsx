@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -16,7 +17,8 @@ const Container = styled.div`
 `;
 const Popup = styled.div`
 	width: 100%;
-	max-width: 400px;
+	max-width: 380px;
+    max-height: 230px;
 	border-radius: 10px;
 	overflow: hidden;
 	background: #6ec19b;
@@ -34,28 +36,33 @@ const Header = styled.div`
 `;
 const Body = styled.div`
 	width: 100%;
+    height: 70px;
 	background: #ffffff;
 	display: flex;
 	justify-content: center;
-	padding-top: 15px;
-	padding-bottom: 15px;
+    padding-top: 30px;
+	padding-bottom: 5px;
 `;
 const Footer = styled.div`
 	width: 100%;
 	display: inline-flex;
-	height: 40px;
+	height: 42px;
 	justify-content: center;
 	align-tems: center;
 	float: left;
 	color: #ffffff;
 	cursor: pointer;
+    margin-bottom: 9px;
 
 	.pop-btn {
 		width: 50%;
-		height: 100%;
+		height: 20px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+        background: #6ec19b;
+        border-radius: 0px;
+        font-weight: 500;
 	}
 	.pop-btn.confirm {
 		border-right: 1px solid #d6e3dd; //오른쪽 줄
@@ -63,33 +70,33 @@ const Footer = styled.div`
 `;
 const MenuBox = styled.ul`
 	width: 100%;
-	height: 100%;
+	height: 80%;
 	min-height: 100px; //최소 높이
-	max-height: 200px; //최대 높이
+	max-height: 100px; //최대 높이
 `;
 
 type ModalProps = {
 	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const PaymentModal: React.FC<ModalProps> = ({ setModalOpen }) => {
+const MoveToCartModal: React.FC<ModalProps> = ({ setModalOpen }) => {
+    const history = useHistory();
+
 	const onClickClosed = useCallback(() => {
 		setModalOpen(false);
 	}, []);
+
 	return (
 		<>
 			<Container>
 				<Popup>
 					<Header>
-						<span className="head-title">결제수단선택</span>
+						<span className="head-title">장바구니 담기완료</span>
 					</Header>
 					<Body>
 						<div className="body-contentbox">
 							<MenuBox>
-								<li>무통장 입금</li>
-								<li>신용/체크카드</li>
-								<li>핸드폰 결제</li>
-								<li>카카오페이</li>
-								<li>직접 만나서 결제</li>
+								<li>장바구니에 담았습니다.</li>
+                                <li>장바구니로 이동하시겠습니까?</li>
 							</MenuBox>
 						</div>
 					</Body>
@@ -98,6 +105,9 @@ const PaymentModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 							type="button"
 							className="pop-btn confirm"
 							id="confirm"
+                            onClick={() => {
+                                history.push("/cart");
+                            }}
 						>
 							확인
 						</button>
@@ -107,7 +117,7 @@ const PaymentModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 							id="close"
 							onClick={onClickClosed}
 						>
-							닫기
+							계속 쇼핑
 						</button>
 					</Footer>
 				</Popup>
@@ -116,4 +126,4 @@ const PaymentModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 	);
 };
 
-export default PaymentModal;
+export default MoveToCartModal;

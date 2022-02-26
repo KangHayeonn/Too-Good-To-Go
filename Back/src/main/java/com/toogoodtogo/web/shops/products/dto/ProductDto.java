@@ -17,14 +17,14 @@ public class ProductDto {
     private String image;
 
     @Builder
-    public ProductDto(Long shopId, String shopName, Product product) {
+    public ProductDto(Long shopId, String shopName, Long id, String name, Long price, Long discountedPrice, String image) {
         this.shopId = shopId;
         this.shopName = shopName;
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.discountedPrice = product.getDiscountedPrice();
-        this.image = product.getImage();
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.discountedPrice = discountedPrice;
+        this.image = image;
     }
 
     @Builder

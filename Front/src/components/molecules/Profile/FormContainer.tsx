@@ -149,7 +149,6 @@ export default FormContainer;
 
 const FormWrapper = styled.div`
 	position: relative;
-	left: 100px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

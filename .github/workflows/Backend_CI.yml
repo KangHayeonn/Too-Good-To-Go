@@ -13,6 +13,19 @@ jobs:
     name: CI with Gradle
     # Github action 스크립트가 작동될 OS 환경
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_USER: tgtg
+          MYSQL_PASSWORD: 1234
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: toogoodtogo
+          --character-set-server: utf8mb4
+          --collation-server: utf8mb4_general_ci
+        ports:
+        - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
       working-directory: ./Back
     steps:

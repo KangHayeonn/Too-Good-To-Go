@@ -68,21 +68,21 @@ const CartCards: React.FC = () => {
 			{displayCardArr.map((card: initialCartCardType) => {
 				return (
 					// emotion conditional css
-					<CartCard key={card.shopId} checked={card.isChecked}>
+					<CartCard key={card.id} checked={card.isChecked}>
 						<div className="card-img-ctn">
-							<img src={card.shopFoodImg} alt="Food" />
+							<img src={card.image} alt="Food" />
 						</div>
 						<div className="cardInfo">
 							<p>{card.shopName}</p>
 							<strong>shopType, Pipe, foodType</strong>
-							<p>{card.shopFoodName}</p>
+							<p>{card.name}</p>
 						</div>
 						<div className="right-wrapper">
 							<div className="price-ctn">
 								<p className="price">
-									<s>({card.shopBeforeCost}원)</s>
+									<s>({card.discountedPrice}원)</s>
 									<ArrowRightAltRoundedIcon className="right-arrow" />
-									<strong>{card.shopFoodCost}원</strong>
+									<strong>{card.price}원</strong>
 								</p>
 							</div>
 							<div className="btn-ctn">
@@ -94,7 +94,7 @@ const CartCards: React.FC = () => {
 										onClick={() => {
 											dispatch(
 												decrementSelectedCards(
-													card.shopId
+													card.id
 												)
 											);
 										}}
@@ -107,7 +107,7 @@ const CartCards: React.FC = () => {
 										onClick={() => {
 											dispatch(
 												incrementSelectedCards(
-													card.shopId
+													card.id
 												)
 											);
 										}}
@@ -121,7 +121,7 @@ const CartCards: React.FC = () => {
 									onClick={() => {
 										// console.log(data.shopId);
 										dispatch(
-											selectCartCardByID(card.shopId)
+											selectCartCardByID(card.id)
 										);
 									}}
 								>

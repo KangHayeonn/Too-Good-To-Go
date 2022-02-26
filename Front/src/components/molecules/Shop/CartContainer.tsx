@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,6 +11,7 @@ import {
 	deleteSelectedItem,
 } from "../../../features/shopFeatures/selectMenuItemsSlice";
 import { addItemsToCart } from "../../../features/cartFeatures/selectCartCardsSlice";
+import Modal from "../../atoms/Modal/MoveToCartModal";
 
 type buttonType = {
 	children: React.ReactNode;
@@ -34,6 +35,32 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 		}
 	}, []);
 
+	// modal 
+	const [openModal, setOpenModal] = useState(false);
+	const popRef = useRef<HTMLDivElement>(null);
+
+	const onClickOutside = useCallback(
+		({ target }) => {
+			if (popRef.current && !popRef.current.contains(target)) {
+				setOpenModal(false);
+			}
+		},
+		[setOpenModal]
+	);
+	useEffect(() => {
+		document.addEventListener("click", onClickOutside);
+		return () => {
+			document.removeEventListener("click", onClickOutside);
+		};
+	}, []);
+	const onClickToggleModal = useCallback(() => {
+		setOpenModal((prev) => !prev);
+	}, [setOpenModal]);
+
+	const showModal = useCallback(() => {
+		return <Modal setModalOpen={setOpenModal} />;
+	}, []);
+
 	const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectMenuItems.filter((e) => {
 			return e.isChecked;
@@ -43,7 +70,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 	// Accumulate money for display
 	const accumulatedAmount: number = isCheckedArr.reduce((accu, curr) => {
 		// eslint-disable-next-line no-param-reassign
-		accu += curr.shopFoodCost * curr.cartItemQuantity;
+		accu += curr.discountedPrice * curr.cartItemQuantity;
 		return accu;
 	}, 0);
 
@@ -60,10 +87,10 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 				<div className="menu">
 					{isCheckedArr.map((e) => {
 						return (
-							<div className="menu-item" key={e.shopId}>
+							<div className="menu-item" key={e.id}>
 								<Item>
-									<li key={e.shopId}>
-										{e.shopFoodName}
+									<li key={e.id}>
+										{e.name}
 										{e.cartItemQuantity > 1 &&
 											` x ${e.cartItemQuantity}`}
 									</li>
@@ -72,7 +99,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 										type="button"
 										onClick={() => {
 											dispatch(
-												deleteSelectedItem(e.shopId)
+												deleteSelectedItem(e.id)
 											);
 										}}
 									>
@@ -85,7 +112,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 										type="button"
 										onClick={() => {
 											dispatch(
-												decrementSelectedItems(e.shopId)
+												decrementSelectedItems(e.id)
 											);
 										}}
 									>
@@ -97,7 +124,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 										type="button"
 										onClick={() => {
 											dispatch(
-												incrementSelectedItems(e.shopId)
+												incrementSelectedItems(e.id)
 											);
 										}}
 									>
@@ -118,6 +145,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 					onClick={() => {
 						if (isLoggedIn) {
 							dispatch(addItemsToCart(isCheckedArr));
+							onClickToggleModal();
 						} else {
 							// eslint-disable-next-line no-alert
 							alert("로그인이 필요합니다.");
@@ -128,6 +156,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 					{children}
 				</button>
 			</div>
+			{!!openModal && showModal()}
 		</Wrapper>
 	);
 };
@@ -135,7 +164,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 export default CartContainer;
 
 const Wrapper = styled.div`
-	width: 271px;
+	width: 300px;
 	min-height: 291px;
 	height: auto;
 	border: 1px solid lightgrey;

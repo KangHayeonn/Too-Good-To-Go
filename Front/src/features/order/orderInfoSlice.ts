@@ -68,7 +68,7 @@ const orderInfoSlice = createSlice({
 			const type = state;
 			type.products = action.payload;
 			return state;
-		},
+		}
 	},
 });
 

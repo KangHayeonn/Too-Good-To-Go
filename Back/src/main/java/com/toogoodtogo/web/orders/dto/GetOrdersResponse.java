@@ -17,6 +17,9 @@ public class GetOrdersResponse {
     private final List<ProductDto> products;
     private final OrderStatus status;
     private final String requirement;
+    private final String paymentMethod;
+    private final Boolean needDisposables;
+    private final LocalDateTime eta;
     private final LocalDateTime createdAt;
 
     @Getter
@@ -61,6 +64,9 @@ public class GetOrdersResponse {
                 .collect(Collectors.toList());
         status = order.getStatus();
         requirement = order.getRequirement();
+        paymentMethod = order.getPaymentMethod();
+        needDisposables = order.getNeedDisposables();
+        eta = order.getEta();
         createdAt = order.getCreatedAt();
     }
 }

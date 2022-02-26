@@ -18,17 +18,20 @@ const Shop: React.FC<RouteComponentProps<matchParams>> = ({ match }) => {
 		<PageTemplate
 			header={<Categories />}
 			isHeader
-			section={<ShopTitles shopMatchId={shopId} />}
+			section={<ShopTitles shopMatchId={shopId} isEdit={false} />}
 			isSection
 			isFooter={false}
 		>
-			<ShopMenuHeader>메뉴</ShopMenuHeader>
+			<ShopMenuHeader isEdit={false} shopMatchId={shopId}>
+				메뉴
+			</ShopMenuHeader>
 			<ShopTemplate
 				menu={
 					<div>
 						<MenuCards shopMatchId={shopId} />
 					</div>
 				}
+				isSide
 				sidebar={<CartContainer>장바구니에 담기</CartContainer>}
 			/>
 		</PageTemplate>

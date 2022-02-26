@@ -17,7 +17,7 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 	// Accumulate money for display
 	const accumulatedAmount: number = isCheckedArr.reduce((accu, curr) => {
 		// eslint-disable-next-line no-param-reassign
-		accu += curr.shopFoodCost * curr.cartItemQuantity;
+		accu += curr.discountedPrice * curr.cartItemQuantity;
 		return accu;
 	}, 0);
 
@@ -35,8 +35,8 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 				<p className="menu">
 					{isCheckedArr.map((e) => {
 						return (
-							<li key={e.shopId}>
-								{e.shopFoodName}
+							<li key={e.id}>
+								{e.name}
 								{e.cartItemQuantity > 1 &&
 									` x ${e.cartItemQuantity}`}
 							</li>

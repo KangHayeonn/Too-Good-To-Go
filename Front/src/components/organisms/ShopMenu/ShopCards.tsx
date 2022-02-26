@@ -25,6 +25,7 @@ const ShopListLi = styled.li`
 const shopExam = [
 	{
 		id: 1,
+		shopId: 1,
 		image: "http://www.kns.tv/news/photo/201808/462315_343258_317.jpg",
 		shop: { id: 1, name: "전주비빔밥", image: "", category: ["한식"] },
 		name: "전통 전주비빔밥",
@@ -33,6 +34,7 @@ const shopExam = [
 	},
 	{
 		id: 2,
+		shopId: 2,
 		image: "http://thingool.hgodo.com/gd5replace/thingotr4652/data/editor/goods/210617/285f14f889d5eb44a9e691f9f0ac985f_174805.jpg",
 		shop: {
 			id: 2,
@@ -46,6 +48,7 @@ const shopExam = [
 	},
 	{
 		id: 3,
+		shopId: 3,
 		image: "https://www.hsd.co.kr/assets/images/main/main_img_01.jpg",
 		shop: { id: 3, name: "그냥도시락", image: "", category: ["한식"] },
 		name: "그냥맛있는치킨마요덮밥",
@@ -55,6 +58,7 @@ const shopExam = [
 	},
 	{
 		id: 4,
+		shopId: 4,
 		image: "https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/2AuX/image/B9-0Ny9Bc9a9VcaH3w22h2bubRQ.png",
 		shop: {
 			id: 4,
@@ -68,6 +72,7 @@ const shopExam = [
 	},
 	{
 		id: 5,
+		shopId: 5,
 		image: "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20211005_84%2F1633427100547JYF19_PNG%2F1u1r0WjPhZou6UMzRjVqb6us.png&type=a340",
 		shop: {
 			id: 5,
@@ -82,6 +87,7 @@ const shopExam = [
 	},
 	{
 		id: 6,
+		shopId: 6,
 		image: "https://img.hankyung.com/photo/202108/99.26501439.1-1200x.jpg",
 		shop: {
 			id: 6,
@@ -95,6 +101,7 @@ const shopExam = [
 	},
 	{
 		id: 7,
+		shopId: 7,
 		image: "https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/1200px-Jjajangmyeon.jpg",
 		shop: { id: 7, name: "그냥중국집", image: "", category: ["중식"] },
 		name: "그냥짜장면",
@@ -104,6 +111,7 @@ const shopExam = [
 	},
 	{
 		id: 8,
+		shopId: 8,
 		image: "http://mbcmall.imbc.com/store/__icsFiles/afieldfile/2018/12/27/001_1.jpg",
 		shop: { id: 8, name: "그냥돈까스", image: "", category: ["일식"] },
 		name: "그냥맛있는돈까스",
@@ -112,6 +120,7 @@ const shopExam = [
 	},
 	{
 		id: 9,
+		shopId: 9,
 		image: "https://mblogthumb-phinf.pstatic.net/20160908_177/dew36_1473339333121cJG9V_JPEG/1.jpg?type=w2",
 		shop: { id: 9, name: "그냥닭발집", image: "", category: ["야식"] },
 		name: "그냥맛있는닭발",
@@ -121,6 +130,7 @@ const shopExam = [
 	},
 	{
 		id: 10,
+		shopId: 10,
 		image: "http://th1.tmon.kr/thumbs/image/949/93e/82a/c7abc881a_700x700_95_FIT.jpg",
 		shop: { id: 10, name: "그냥족발집", image: "", category: ["야식"] },
 		name: "그냥맛있는족발",
@@ -131,6 +141,7 @@ const shopExam = [
 
 type shopsDataType = {
 	id: number;
+	shopId: number;
 	image: string;
 	name: string;
 	discountedPrice: number;
@@ -150,7 +161,12 @@ interface menuMatchType {
 
 const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
-
+	const SHOP_BOARD_API_BASE_URL = `http://54.180.134.20/api/products?category=${
+		menuMatchName === "전체보기" ? "" : menuMatchName
+	}&method=${menuSorting}`;
+	const BoardService = () => {
+		return axios.get(SHOP_BOARD_API_BASE_URL);
+	};
 	useEffect(() => {
 		console.log("menuMatchName: ", menuMatchName);
 		console.log("menuSorting: ", menuSorting);
@@ -164,44 +180,35 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 				setShops(shopExam); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
-	}, [menuMatchName]);
-
-	const BoardService = () => {
-		return axios.get(
-			`http://54.180.134.20/api/products?category=${menuMatchName}&method=rate`
-		);
-	};
-
+	}, [menuSorting, menuMatchName]);
 	return (
 		<ShopList>
-			{shop.map((row) => {
-				return (
-					<ShopListLi key={row.id}>
-						<ShopCard
-							shopId={row.id}
-							shopName={row.name}
-							shopFoodImg={
-								row.image
-									? row.image
-									: "http://cdn.onlinewebfonts.com/svg/img_305436.png"
-							}
-							shopFoodName={row.name}
-							shopFoodSale={calculatedDiscount(
-								row.price,
-								row.discountedPrice
-							)}
-							shopFoodCost={row.discountedPrice}
-							shopBeforeCost={row.price}
-						/>
-					</ShopListLi>
-				);
-			})}
+			{shop.map((row) => (
+				<ShopListLi key={row.shopId}>
+					<ShopCard
+						shopId={row.shopId}
+						shopName={row.name}
+						shopFoodImg={
+							row.image
+								? row.image
+								: "http://cdn.onlinewebfonts.com/svg/img_305436.png"
+						}
+						shopFoodName={row.name}
+						shopFoodSale={calculatedDiscount(
+							row.price,
+							row.discountedPrice
+						)}
+						shopFoodCost={row.discountedPrice}
+						shopBeforeCost={row.price}
+					/>
+				</ShopListLi>
+			))}
 		</ShopList>
 	);
 };
 
 ShopCards.defaultProps = {
-	menuMatchName: "전체보기",
+	menuMatchName: "",
 	menuSorting: "",
 };
 

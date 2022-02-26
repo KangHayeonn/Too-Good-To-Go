@@ -51,7 +51,12 @@ const Label = styled.label`
 	font-weight: 600;
 	color: #525252;
 `;
-const PaymentInfo: React.FC = () => {
+
+type Type = {
+	cachedPaymentMethod : string;
+};
+
+const PaymentInfo: React.FC<Type> = ({ cachedPaymentMethod }) => {
 	const [check, setCheck] = useState<boolean>(false);
 	const dispatch = useDispatch();
 
@@ -62,7 +67,11 @@ const PaymentInfo: React.FC = () => {
 		<>
 			<RequestShop>
 				<Text>결제수단 선택</Text>
-				<Dropdown>결제 수단을 선택해주세요.</Dropdown>
+				{!cachedPaymentMethod ? (
+					<Dropdown>결제 수단을 선택해주세요.</Dropdown>
+				) : (
+					<Dropdown>{cachedPaymentMethod}</Dropdown>
+				)}
 				<Button>
 					<Input1
 						type="checkbox"

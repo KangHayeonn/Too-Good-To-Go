@@ -52,16 +52,32 @@ public class ShopsController {
         return new ApiResponse<>(shopUseCase.addShop(user.getId(), file, request));
     }
     
-//    @PatchMapping("/manager/shop/{shopId}")
-    @PostMapping("/manager/shops/{shopId}")
+    @PutMapping("/manager/shops/{shopId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<ShopDto> updateShop(
             @CurrentUser User user,
             @PathVariable @Positive(message = "path 오류") Long shopId,
-            @RequestPart(required = false) MultipartFile file,
-            @RequestPart @Validated(ValidationSequence.class) UpdateShopRequest request) throws IOException {
-        return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, file, request));
+            @RequestBody @Validated(ValidationSequence.class) UpdateShopRequest request) {
+        return new ApiResponse<>(shopUseCase.updateShop(user.getId(), shopId, request));
     }
+
+    @PostMapping("/manager/shops/{shopId}/image")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<String> updateProductImage(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId,
+            @RequestPart MultipartFile file) throws IOException {
+        return new ApiResponse<>(shopUseCase.updateShopImage(user.getId(), shopId, file));
+    }
+
+    @DeleteMapping("/manager/shops/{shopId}/image")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProductImage(
+            @CurrentUser User user,
+            @PathVariable @Positive(message = "path 오류") Long shopId) {
+        shopUseCase.deleteShopImage(user.getId(), shopId);
+    }
+
 
     @DeleteMapping("/manager/shops/{shopId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -69,11 +85,5 @@ public class ShopsController {
             (@CurrentUser User user,
              @PathVariable @Positive(message = "path 오류") Long shopId) {
         shopUseCase.deleteShop(user.getId(), shopId);
-    }
-
-    @GetMapping("/search/shops/{keyword}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ShopDto>> findProductsBySearch(@PathVariable String keyword) {
-        return new ApiResponse<>(shopUseCase.findShopsBySearch(keyword));
     }
 }

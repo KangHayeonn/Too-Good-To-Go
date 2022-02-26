@@ -2,9 +2,11 @@ package com.toogoodtogo.application.shop;
 
 import com.toogoodtogo.application.S3Uploader;
 import com.toogoodtogo.application.UploadFileConverter;
+import com.toogoodtogo.domain.exceptions.CUploadImageInvalidException;
 import com.toogoodtogo.domain.security.exceptions.CAccessDeniedException;
 import com.toogoodtogo.domain.shop.exceptions.CShopNotFoundException;
 import com.toogoodtogo.domain.shop.product.*;
+import com.toogoodtogo.domain.shop.product.exceptions.CProductNotFoundException;
 import com.toogoodtogo.domain.user.exceptions.CUserNotFoundException;
 import com.toogoodtogo.advice.exception.CValidCheckException;
 import com.toogoodtogo.domain.shop.Hours;
@@ -37,6 +39,7 @@ public class ShopService implements ShopUseCase {
     private final S3Uploader s3Uploader;
     private final ChoiceProductRepository choiceProductRepository;
     private final DisplayProductRepository displayProductRepository;
+    private final HighestRateProductRepository highestRateProductRepository;
 
     @Transactional(readOnly = true)
     public List<ShopDto> findAllShops() {
@@ -83,7 +86,7 @@ public class ShopService implements ShopUseCase {
                 .address(request.getAddress())
                 .hours(new Hours(request.getOpen(), request.getClose()))
                 .build();
-        choiceProductRepository.save(ChoiceProduct.builder().shop(newShop).product(null).build());
+        highestRateProductRepository.save(HighestRateProduct.builder().shop(newShop).product(null).build());
         return new ShopDto(shopRepository.save(newShop));
     }
 
@@ -91,31 +94,42 @@ public class ShopService implements ShopUseCase {
         return shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new).getUser().getId().equals(managerId);
     }
 
-    @Override
     @Transactional
-    public ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException {
+    public ShopDto updateShop(Long managerId, Long shopId, UpdateShopRequest request) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
         if(!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
-        // 수정할 shop
+        if(shopRepository.findByAddressAndName(request.getAddress(), request.getName()).isPresent() &&
+                !shopRepository.findByAddressAndName(request.getAddress(), request.getName()).get().getId().equals(shopId))
+            throw new CValidCheckException("이미 있는 가게 이름입니다."); // 바꾸려는 이름이 중복될 때
         Shop modifiedShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
-
-        String filePath;
-        String fileName;
-        if (file.isEmpty()) { // 넘어온 사진이 없으면
-            fileName = modifiedShop.getImage(); // 기존 이미지
-        }
-        else { // 넘어온 사진이 있으면
-            filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", modifiedShop.getId());
-            fileName = s3Uploader.updateS3(file, modifiedShop.getImage(), filePath);
-        }
-        
-        // update 리팩토링 필요
-        modifiedShop.update(request.getName(), fileName, request.getCategory(),
+        modifiedShop.update(request.getName(), request.getCategory(),
                 request.getPhone(), request.getAddress(), new Hours(request.getOpen(), request.getClose()));
         return new ShopDto(modifiedShop);
     }
 
-    @Override
+    @Transactional
+    public String updateShopImage(Long managerId, Long shopId, MultipartFile file) throws IOException {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Shop modifiedImageShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
+        String filePath = uploadFileConverter.parseFileInfo(file, "shopsImage", managerId);
+        if(filePath.equals("default.png")) throw new CUploadImageInvalidException();
+        String fileName = s3Uploader.updateS3(file, modifiedImageShop.getImage(), filePath);
+        modifiedImageShop.updateImage(fileName);
+        return fileName;
+    }
+
+    @Transactional
+    public void deleteShopImage(Long managerId, Long shopId) {
+        // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
+        if (!checkAccessOfShop(managerId, shopId)) throw new CAccessDeniedException();
+        Shop deleteImageShop = shopRepository.findById(shopId).orElseThrow(CShopNotFoundException::new);
+        if (!deleteImageShop.getImage().contains("shopDefault.png")) { // 기본 이미지가 아니면 상품과 S3에서 이미지 삭제
+            s3Uploader.deleteFileS3(deleteImageShop.getImage());
+            deleteImageShop.updateImage(s3Uploader.get("shopDefault.png")); // 기본 이미지로 변경
+        } else throw new CValidCheckException("기본 이미지입니다.");
+    }
+
     @Transactional
     public void deleteShop(Long managerId, Long shopId) {
         // 로그인한 유저가 해당 shop 에 대해 권한 가졌는지 체크
@@ -125,12 +139,13 @@ public class ShopService implements ShopUseCase {
 
         // 해당 shop 의 product 들 이미지 삭제
         s3Uploader.deleteFolderS3("productsImage/" + deleteShop.getId() + "/");
+        highestRateProductRepository.deleteByShopId(deleteShop.getId());
+        choiceProductRepository.deleteByShopId(deleteShop.getId());
         productRepository.deleteByShopId(deleteShop.getId());
 
         // 기본 이미지가 아니면 S3에서 이미지 삭제
         if (!deleteShop.getImage().contains("shopDefault.png")) s3Uploader.deleteFileS3(deleteShop.getImage());
         displayProductRepository.deleteByShopId(deleteShop.getId());
-        choiceProductRepository.deleteByShopId(deleteShop.getId());
         shopRepository.deleteById(deleteShop.getId());
     }
 

@@ -1,17 +1,17 @@
 // rtk
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { shopData } from "../../components/molecules/ShopDummyData";
+import { shopData3 } from "../../components/molecules/ShopDummyData";
 // localStorage helper function
 import { setLocalStorageCart } from "../../helpers/cartControl";
 
 export type CartCardType = {
+	id: number;
+	name: string;
+	image: string;
+	discountedPrice: number;
+	price: number;
 	shopId: number;
-	shopFoodImg: string;
 	shopName: string;
-	shopFoodName: string;
-	shopFoodSale: number;
-	shopFoodCost: number;
-	shopBeforeCost: number;
 };
 
 export type initialCartCardType = CartCardType & {
@@ -19,7 +19,7 @@ export type initialCartCardType = CartCardType & {
 	cartItemQuantity: number;
 };
 
-const initialCards: initialCartCardType[] = shopData.map((e: CartCardType) => {
+const initialCards: initialCartCardType[] = shopData3.map((e: CartCardType) => {
 	return { ...e, isChecked: false, cartItemQuantity: 1 };
 });
 

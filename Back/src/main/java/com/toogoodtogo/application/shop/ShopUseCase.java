@@ -14,7 +14,9 @@ public interface ShopUseCase {
     List<ShopDto> findShops(Long managerId);
     ShopDto findShop(Long shopId);
     ShopDto addShop(Long managerId, MultipartFile file, AddShopRequest request) throws IOException;
-    ShopDto updateShop(Long managerId, Long shopId, MultipartFile file, UpdateShopRequest request) throws IOException;
+    ShopDto updateShop(Long managerId, Long shopId, UpdateShopRequest request);
+    String updateShopImage(Long managerId, Long shopId, MultipartFile file) throws IOException;
+    void deleteShopImage(Long managerId, Long shopId);
     void deleteShop(Long managerId, Long shopId);
     List<ShopDto> findShopsBySearch(String keyword);
 }

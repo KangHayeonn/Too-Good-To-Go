@@ -21,7 +21,7 @@ public class UpdateShopRequest {
     @NotEmpty(message = "카테고리는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
     private List<String> category;
     @NotBlank(message = "전화번호는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
-    @Pattern(regexp = "^(01\\d{1}|02|031|032|041|042|043|044|051|052|053|054|055|061|062|0505|0502|0506|0\\d{1,2})(\\d{3,4})(\\d{4})",
+    @Pattern(regexp = "^(01\\d{1}|02|031|032|041|042|043|044|051|052|053|054|055|061|062|0505|0502|0506|0507|0\\d{1,2})(\\d{3,4})(\\d{4})",
             message = "전화번호 양식이 틀렸습니다.", groups = ValidationGroups.PatternCheckGroup.class)
     private String phone;
     @NotBlank(message = "주소는 필수 값입니다.", groups = ValidationGroups.NotEmptyGroup.class)

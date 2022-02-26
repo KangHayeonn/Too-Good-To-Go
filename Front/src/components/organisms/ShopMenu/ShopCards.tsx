@@ -135,8 +135,8 @@ type shopsDataType = {
 	name: string;
 	discountedPrice: number;
 	price: number;
-	shop: { id: number; name: string; image: string; category: Array<string> };
-	data?: Array<string | number>;
+	shopId: number;
+	shopName: string;
 };
 
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
@@ -162,18 +162,18 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 				setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
 			() => {
-				setShops(shopExam); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
+				console.log("err");
 			}
 		);
-		console.log(menuSorting);
+		console.log(shop);
 	}, [menuSorting, menuMatchName]);
 	return (
 		<ShopList>
 			{shop.map((row) => (
 				<ShopListLi key={row.id}>
 					<ShopCard
-						shopId={row.id}
-						shopName={row.name}
+						shopId={row.shopId}
+						shopName={row.shopName}
 						shopFoodImg={
 							row.image
 								? row.image

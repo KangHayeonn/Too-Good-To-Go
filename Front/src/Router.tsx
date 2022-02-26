@@ -31,7 +31,15 @@ const Router: React.FC = () => {
 			<Switch>
 				<Route exact path="/" component={MainPage} />
 				<Route exact path="/shopmenu/" component={ShopMenuPage} />
-				<Route path="/shopmenu/:menuName" component={ShopMenuPage} />
+				<Route
+					exact
+					path="/shopmenu/:menuName"
+					component={ShopMenuPage}
+				/>
+				<Route
+					path="/shopmenu/:menuName/:sorting"
+					component={ShopMenuPage}
+				/>
 				<Route exact path="/shop" component={Shop} />
 				<Route path="/shop/:shopId" component={Shop} />
 				<Route exact path="/login" component={Login} />

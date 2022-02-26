@@ -26,6 +26,7 @@ const paginationStyle = css`
 
 type matchParams = {
 	menuName: string;
+	sorting: string;
 };
 
 const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
@@ -44,7 +45,10 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			<ShopMenuHeader>
 				{match.params.menuName || "전체보기"}
 			</ShopMenuHeader>
-			<ShopCards menuMatchName={match.params.menuName || "전체보기"} />
+			<ShopCards
+				menuMatchName={match.params.menuName || "전체보기"}
+				menuSorting={match.params.sorting}
+			/>
 		</PageTemplate>
 	);
 };

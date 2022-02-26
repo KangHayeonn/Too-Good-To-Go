@@ -20,6 +20,7 @@ export const axiosApiMeGetInstance = axios.create({
 	},
 });
 
+// accessToken 가져오기
 axiosApiMeGetInstance.interceptors.request.use(
 	(config) => {
 		const token = getAccessToken();

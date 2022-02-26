@@ -139,40 +139,47 @@ type shopsDataType = {
 	data?: Array<string | number>;
 };
 
-const SHOP_BOARD_API_BASE_URL = "http://localhost:8080/api/shopboards";
-const BoardService = () => {
-	return axios.get(SHOP_BOARD_API_BASE_URL);
-};
-
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
 	return Math.ceil((1 - discountedPrice / price) * 100);
 };
 
 interface menuMatchType {
 	menuMatchName?: string;
+	menuSorting?: string;
 }
 
-const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
+const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
+
 	useEffect(() => {
+		console.log("menuMatchName: ", menuMatchName);
+		console.log("menuSorting: ", menuSorting);
+
 		BoardService().then(
 			(res) => {
 				setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
-			() => {
+			(err) => {
+				console.error(err);
 				setShops(shopExam); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
-	}, []);
+	}, [menuMatchName]);
+
+	const BoardService = () => {
+		return axios.get(
+			`http://54.180.134.20/api/products?category=${menuMatchName}&method=rate`
+		);
+	};
+
 	return (
 		<ShopList>
-			{shop.map((row) =>
-				row.shop.category.includes(`${menuMatchName}`) ||
-				menuMatchName === "전체보기" ? (
+			{shop.map((row) => {
+				return (
 					<ShopListLi key={row.id}>
 						<ShopCard
-							shopId={row.shop.id}
-							shopName={row.shop.name}
+							shopId={row.id}
+							shopName={row.name}
 							shopFoodImg={
 								row.image
 									? row.image
@@ -187,14 +194,15 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName }) => {
 							shopBeforeCost={row.price}
 						/>
 					</ShopListLi>
-				) : null
-			)}
+				);
+			})}
 		</ShopList>
 	);
 };
 
 ShopCards.defaultProps = {
 	menuMatchName: "전체보기",
+	menuSorting: "",
 };
 
 export default ShopCards;

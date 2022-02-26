@@ -156,7 +156,7 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 		formData.set("request", dtoObj);
 		formData.set("file", upfile);
 		console.log(upfile);
-		console.log(...formData);
+		// console.log(...formData);
 
 		PostProductInfo().then(
 			() => {

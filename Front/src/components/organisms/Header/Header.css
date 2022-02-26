@@ -52,18 +52,15 @@
 	padding-right: 50px;
 }
 
-.searchBar .searchBtn {
+#searchIcon {
+	width: 1.2em;
+	height: 1.2em;
 	color: #000;
 	position: absolute;
 	right: 10px;
 	top: 3px;
 	width: 30px;
 	height: 30px;
-}
-
-#searchIcon {
-	width: 1.2em;
-	height: 1.2em;
 }
 
 .account {

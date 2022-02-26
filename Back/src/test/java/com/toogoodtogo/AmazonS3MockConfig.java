@@ -40,6 +40,7 @@ public class AmazonS3MockConfig {
                 .withEndpointConfiguration(endpoint)
                 .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
                 .build();
+        System.out.println("Connect To MockS3");
         client.createBucket(bucket);
         return (AmazonS3Client) client;
     }

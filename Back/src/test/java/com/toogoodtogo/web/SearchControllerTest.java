@@ -11,6 +11,7 @@ import com.toogoodtogo.web.users.sign.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import java.util.Arrays;
@@ -70,7 +71,7 @@ class SearchControllerTest extends ControllerTest {
         highestRateProductRepository.save(HighestRateProduct.builder().shop(shop).product(product1).build());
         choiceProductRepository.save(ChoiceProduct.builder().shop(shop).product(product1).build());
 
-        searchService.searchProductsByShop(user.getId(), "shop");
+        searchService.searchProductsByShop(user.getId(), "shop", PageRequest.of(0, 10));
     }
 
     @AfterEach

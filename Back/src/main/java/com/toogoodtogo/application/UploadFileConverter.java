@@ -17,7 +17,7 @@ public class UploadFileConverter {
         String contentType = multipartFile.getContentType();
         String originalFileExtension;
         if (!StringUtils.hasText(contentType)) throw new CUploadImageInvalidException();
-        if(contentType.contains("image/jpeg")){
+        if(contentType.contains("image/jpeg") || contentType.contains("image/jpg")){
             originalFileExtension = ".jpg";
         }
         else if(contentType.contains("image/png")){

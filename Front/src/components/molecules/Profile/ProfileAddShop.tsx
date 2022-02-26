@@ -39,8 +39,8 @@ const ProfileAddShop: React.FC = () => {
 		return state.selectCategory;
 	});
 
-	const shopCategoryChange = (): void => {
-		const newCategoryArr = categoryArr.filter((el) => {
+	const shopCategoryChange = (ca: initialBtnType[]): void => {
+		const newCategoryArr = ca.filter((el) => {
 			return el.isChecked === true;
 		});
 		const returnCategory = newCategoryArr.map((el) => {
@@ -54,6 +54,7 @@ const ProfileAddShop: React.FC = () => {
 
 	useEffect(() => {
 		setCategoryArr(reduxStateCollector);
+		shopCategoryChange(reduxStateCollector);
 	}, [reduxStateCollector]);
 
 	const SHOP_API_URL = `http://54.180.134.20/api/manager/shops`;
@@ -90,6 +91,7 @@ const ProfileAddShop: React.FC = () => {
 			},
 			() => {
 				console.log("post fail");
+				console.log(shopInfo);
 			}
 		);
 	};
@@ -136,7 +138,6 @@ const ProfileAddShop: React.FC = () => {
 														card.categoryName
 													)
 												);
-												shopCategoryChange();
 											}}
 											isCheck={card.isChecked}
 										/>

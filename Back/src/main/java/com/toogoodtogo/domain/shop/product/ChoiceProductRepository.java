@@ -6,4 +6,6 @@ public interface ChoiceProductRepository  extends JpaRepository<ChoiceProduct, L
     void deleteByProductId(Long productId);
     void deleteByShopId(Long shopId);
     ChoiceProduct findByShopId(Long shopId);
+    ChoiceProduct findByShopIdAndProductId(Long shopId, Long productId);
+    void deleteByShopIdAndProductId(Long shopId, Long productId);
 }

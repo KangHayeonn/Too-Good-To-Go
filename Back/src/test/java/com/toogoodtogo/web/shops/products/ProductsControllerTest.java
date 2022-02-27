@@ -451,13 +451,14 @@ class ProductsControllerTest extends ControllerTest {
                                 parameterWithName("page").description("페이지 숫자")
                         ),
                         responseFields(
-                                fieldWithPath("data.[].shopId").description("상품 가게 고유 번호"),
-                                fieldWithPath("data.[].shopName").description("상품 가게 이름"),
-                                fieldWithPath("data.[].id").description("상품 고유 번호"),
-                                fieldWithPath("data.[].name").description("상품 이름"),
-                                fieldWithPath("data.[].price").description("상품 가격"),
-                                fieldWithPath("data.[].discountedPrice").description("상품 할인가격"),
-                                fieldWithPath("data.[].image").description("상품 이미지")
+                                fieldWithPath("data.products.[].shopId").description("상품 가게 고유 번호"),
+                                fieldWithPath("data.products.[].shopName").description("상품 가게 이름"),
+                                fieldWithPath("data.products.[].id").description("상품 고유 번호"),
+                                fieldWithPath("data.products.[].name").description("상품 이름"),
+                                fieldWithPath("data.products.[].price").description("상품 가격"),
+                                fieldWithPath("data.products.[].discountedPrice").description("상품 할인가격"),
+                                fieldWithPath("data.products.[].image").description("상품 이미지"),
+                                fieldWithPath("data.totalNum").description("상품 개수")
                         )
                 ))
                 .andExpect(status().isOk());

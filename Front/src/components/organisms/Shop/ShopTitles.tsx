@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import TitleTemplate from "../../templates/TitleTemplate";
-import { RootState } from "../../../app/store";
-import { updateMenuTitle } from "../../../features/editFeatures/updateMenuTitleSlice";
 
 type shopsDataType = {
 	id: number;
@@ -30,21 +27,16 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId, isEdit }) => {
 		// 가게 조회
 		return axios.get(`${SHOP_BASE_URL}/${shopMatchId}`);
 	};
-	const dispatch = useDispatch();
-	const displayTitle = useSelector((state: RootState) => {
-		return state.updateMenuTitle;
-	});
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
-				dispatch(updateMenuTitle(res.data.data));
 				setShop(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
 			() => {
 				console.log("api 연결 실패 ");
 			}
 		);
-	}, [displayTitle]);
+	}, []);
 
 	return (
 		<div>

@@ -47,6 +47,19 @@ public class JdbcTemplateProductRepository {
                 pageable.getPageSize(), pageable.getOffset());
     }
 
+    public Long searchProductsCountByShopCategoryOrShopName(String keyword) {
+        String sql = "select count(*)\n" +
+                "from choice_product cp \n" +
+                "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
+                "where hrp.shop_id in\n" +
+                "( select s.id\n" +
+                "  from shop s\n" +
+                "  where find_in_set(?, s.category) > 0 or s.name like ?\n" +
+                " )\n" +
+                "and not hrp.product_id is null";
+        return jdbcTemplate.queryForObject(sql, Long.class, keyword, "%" + keyword + "%");
+    }
+
     private RowMapper<ProductSearchDto> productSearchDtoRowMapper() {
         return (rs, rowNum) -> ProductSearchDto.builder()
                 .shopId(rs.getLong("shop_id"))
@@ -82,6 +95,19 @@ public class JdbcTemplateProductRepository {
                 category, pageable.getPageSize(), pageable.getOffset());
     }
 
+    public Long findProductsCountByShopCategory(String category) {
+        String sql = "select count(*)\n" +
+                "from choice_product cp \n" +
+                "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
+                "where hrp.shop_id in\n" +
+                "( select s.id\n" +
+                "  from shop s\n" +
+                "  where find_in_set(?, s.category) > 0\n" +
+                " )\n" +
+                "and not hrp.product_id is null";
+        return jdbcTemplate.queryForObject(sql, Long.class, category);
+    }
+
     public List<ProductDto> findProductsByShopCategoryAll(Pageable pageable, String method) {
         String sql = "select s.id as shop_id, s.name as shop_name, p.id as product_id, p.name as product_name, p.price, p.discounted_price, p.image\n" +
                 "from product p\n" +
@@ -97,6 +123,14 @@ public class JdbcTemplateProductRepository {
                 "limit ? offset ?";
 
         return jdbcTemplate.query(sql, productDtoRowMapper(), pageable.getPageSize(), pageable.getOffset());
+    }
+
+    public Long findProductsCountByShopCategoryAll() {
+        String sql = "select count(*)\n" +
+                "from choice_product cp \n" +
+                "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
+                "where not hrp.shop_id is null";
+        return jdbcTemplate.queryForObject(sql, Long.class);
     }
 
     private RowMapper<ProductDto> productDtoRowMapper() {

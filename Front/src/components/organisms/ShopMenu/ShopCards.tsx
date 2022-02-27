@@ -94,7 +94,6 @@ const ShopCards: React.FC<menuMatchType> = ({
 					/>
 				</ShopListLi>
 			))}
-			<>{menuPaginationNumber}</>
 		</ShopList>
 	);
 };

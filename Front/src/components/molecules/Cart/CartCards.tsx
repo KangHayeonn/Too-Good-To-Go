@@ -66,6 +66,8 @@ const CartCards: React.FC = () => {
 	return (
 		<Wrapper>
 			{displayCardArr.map((card: initialCartCardType) => {
+				console.log(card);
+				console.log("------------");
 				return (
 					// emotion conditional css
 					<CartCard key={card.id} checked={card.isChecked}>
@@ -93,9 +95,7 @@ const CartCards: React.FC = () => {
 										type="button"
 										onClick={() => {
 											dispatch(
-												decrementSelectedCards(
-													card.id
-												)
+												decrementSelectedCards(card.id)
 											);
 										}}
 									>
@@ -106,9 +106,7 @@ const CartCards: React.FC = () => {
 										type="button"
 										onClick={() => {
 											dispatch(
-												incrementSelectedCards(
-													card.id
-												)
+												incrementSelectedCards(card.id)
 											);
 										}}
 									>
@@ -120,9 +118,7 @@ const CartCards: React.FC = () => {
 									type="button"
 									onClick={() => {
 										// console.log(data.shopId);
-										dispatch(
-											selectCartCardByID(card.id)
-										);
+										dispatch(selectCartCardByID(card.id));
 									}}
 								>
 									선택

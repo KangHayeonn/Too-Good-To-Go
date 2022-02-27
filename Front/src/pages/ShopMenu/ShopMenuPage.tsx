@@ -35,13 +35,12 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 }) => {
 	// For pagination
 	const [page, setPage] = useState<number>(1);
-	const [paginationCount, setPaginationCount] = useState<number>(0);
+	const [paginationCount, setPaginationCount] = useState<number>(7);
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value);
 	};
 
 	// getting api's length from product to determine the count number for pagination
-	// 수호님이 따로 api만들어서, length를 가져올 수 있게 하실거임. 기다리자구~
 	async function getLengthOfProducts() {
 		return axios.get(
 			`http://54.180.134.20/api/products?category=${
@@ -55,14 +54,17 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 	useEffect(() => {
 		getLengthOfProducts()
 			.then((res) => {
-				console.log("lengthOfProductsFunctionResponse:", res);
+				console.log("res in getlength of products:", res.data.data);
+				const productArrayCount = res.data.data.totalNum;
+				const pageCount = Math.ceil(productArrayCount / 10);
+				setPaginationCount(pageCount);
 			})
 			.catch((error) => {
 				console.error(error);
 			});
+		console.log("paginationCount", paginationCount);
 	}, [match]);
 
-	console.log("match: ", match);
 	return (
 		<PageTemplate
 			header={<Categories />}
@@ -71,7 +73,7 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			footer={
 				<Pagination
 					css={paginationStyle}
-					count={10}
+					count={paginationCount}
 					shape="rounded"
 					onChange={handleChange}
 				/>

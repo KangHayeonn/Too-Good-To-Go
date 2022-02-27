@@ -54,14 +54,14 @@ const Header: React.FC = () => {
 					</div>
 					<div className="searchBar">
 						<form>
-							<input
-								className="searchText"
-								type="text"
-								placeholder="원하시는 메뉴를 입력해주세요!"
-							/>
-							<a className="searchBtn" href="/">
+							<Link to="/search">
+								<input
+									className="searchText"
+									type="text"
+									placeholder="원하시는 메뉴를 입력해주세요!"
+								/>
 								<SearchIcon id="searchIcon" />
-							</a>
+							</Link>
 						</form>
 					</div>
 					<div className="account">

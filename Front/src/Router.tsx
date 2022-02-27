@@ -15,6 +15,7 @@ import Manager from "./pages/Manager/Manager";
 import OrderPage from "./pages/Order/OrderPage";
 import PayPage from "./pages/Pay/PayPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
+import SearchPage from "./pages/Search/SearchPage";
 import { getAccessToken } from "./helpers/tokenControl";
 
 const Router: React.FC = () => {
@@ -58,6 +59,7 @@ const Router: React.FC = () => {
 				<Route exact path="/profile" component={ProfilePage} />
 				<Route exact path="/shopedit" component={ShopEditPage} />
 				<Route path="/shopedit/:shopId" component={ShopEditPage} />
+				<Route exact path="/search" component={SearchPage} />
 				<Route render={() => <div>에러페이지</div>} />
 			</Switch>
 			<Footer />

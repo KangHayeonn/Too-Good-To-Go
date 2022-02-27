@@ -196,13 +196,17 @@ public class ProductService implements ProductUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDto> productsPerCategory(String category, String method, Pageable pageable) {
+    public CategoryResult productsPerCategory(String category, String method, Pageable pageable) {
         log.info("category sort method : " + method);
         if (StringUtils.hasText(category)) { // 카테고리가 있으면
-            return jdbcTemplateProductRepository.findProductsByShopCategory(category, pageable, method);
+            return CategoryResult.builder()
+                    .products(jdbcTemplateProductRepository.findProductsByShopCategory(category, pageable, method))
+                    .totalNum(jdbcTemplateProductRepository.findProductsCountByShopCategory(category)).build();
         }
         else { // 전체보기면
-            return jdbcTemplateProductRepository.findProductsByShopCategoryAll(pageable, method);
+            return CategoryResult.builder()
+                    .products(jdbcTemplateProductRepository.findProductsByShopCategoryAll(pageable, method))
+                    .totalNum(jdbcTemplateProductRepository.findProductsCountByShopCategoryAll()).build();
         }
     }
 

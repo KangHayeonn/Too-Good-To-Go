@@ -38,7 +38,7 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			isHeader
 			isSection={false}
 			footer={
-				<Pagination css={paginationStyle} count={1} shape="rounded" />
+				<Pagination css={paginationStyle} count={2} shape="rounded" />
 			}
 			isFooter
 		>

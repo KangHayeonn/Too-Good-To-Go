@@ -104,8 +104,8 @@ const PayInfo: React.FC = () => {
 		let priceTotal = 0;
 		let discountPriceTotal = 0; 
 		cartItem.map((card) => {
-			priceTotal += card.price;
-			discountPriceTotal += (card.price-card.discountedPrice);
+			priceTotal += card.price*card.cartItemQuantity;
+			discountPriceTotal += (card.price-card.discountedPrice)*card.cartItemQuantity;
 			return 0;
 		});
 		setPrice(priceTotal);

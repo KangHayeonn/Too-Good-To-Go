@@ -139,10 +139,10 @@ const OrderList: React.FC = () => {
 								{e.name} {e.cartItemQuantity}개
 							</div>
 							<div className="beforeCost">
-								· 기본 : <s>{e.price}원</s>
+								· 기본 : <s>{e.price * e.cartItemQuantity}원</s>
 							</div>
 							<div className="cost">
-								· 할인 후 가격 : {e.discountedPrice}원
+								· 할인 후 가격 : {e.discountedPrice * e.cartItemQuantity}원
 							</div>
 						</li>
 					);

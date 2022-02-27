@@ -149,7 +149,7 @@ const SearchCard = styled.div`
 
 	img {
 		width: 161px;
-		height: 159px;
+		height: 149px;
 		overflow: hidden;
 		margin-left: 14px;
 		border-radius: 3px;

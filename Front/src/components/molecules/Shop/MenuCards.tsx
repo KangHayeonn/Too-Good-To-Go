@@ -50,8 +50,8 @@ const MenuCards: React.FC<shopMatchId> = ({ shopMatchId }) => {
 				setProducts(res.data.data);
 				dispatch(selectMenuCard(res.data.data));
 			},
-			() => {
-				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
+			(error) => {
+				console.log(error); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
 	}, []);

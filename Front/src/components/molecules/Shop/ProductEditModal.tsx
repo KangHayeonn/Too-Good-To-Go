@@ -208,7 +208,7 @@ const OrderModal: React.FC<modal> = ({
 		}
 
 		console.log(productInfo);
-		console.log(...formData);
+		// console.log(...formData);
 	};
 
 	const EditPost = () => {

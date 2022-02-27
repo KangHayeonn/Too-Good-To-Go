@@ -40,26 +40,38 @@ const calculatedDiscount = (price: number, discountedPrice: number): number => {
 interface menuMatchType {
 	menuMatchName?: string;
 	menuSorting?: string;
+	// eslint-disable-next-line react/require-default-props
+	menuPaginationNumber: number;
 }
 
-const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
+const ShopCards: React.FC<menuMatchType> = ({
+	menuMatchName,
+	menuSorting,
+	menuPaginationNumber,
+}) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
+	console.log("shop", shop);
+
 	const SHOP_BOARD_API_BASE_URL = `http://54.180.134.20/api/products?category=${
 		menuMatchName === "전체보기" ? "" : menuMatchName
-	}&method=${menuSorting}`;
+	}&method=${menuSorting}&page=${menuPaginationNumber - 1}`;
 	const BoardService = () => {
 		return axios.get(SHOP_BOARD_API_BASE_URL);
 	};
 	useEffect(() => {
+		console.log("menuMatchName: ", menuMatchName);
+		console.log("menuSorting: ", menuSorting);
+		console.log("menuPaginationNumber: ", menuPaginationNumber);
+
 		BoardService().then(
 			(res) => {
-				setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
+				setShops(res.data.data.products); // api가 연결 된 경우 -> back에서 데이터 불러옴
 			},
-			() => {
-				console.log("err");
+			(error) => {
+				console.error(error);
 			}
 		);
-	}, [menuSorting, menuMatchName]);
+	}, [menuSorting, menuMatchName, menuPaginationNumber]);
 	return (
 		<ShopList>
 			{shop.map((row) => (
@@ -82,6 +94,7 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 					/>
 				</ShopListLi>
 			))}
+			<>{menuPaginationNumber}</>
 		</ShopList>
 	);
 };
@@ -89,6 +102,8 @@ const ShopCards: React.FC<menuMatchType> = ({ menuMatchName, menuSorting }) => {
 ShopCards.defaultProps = {
 	menuMatchName: "",
 	menuSorting: "",
+	// eslint-disable-next-line react/default-props-match-prop-types
+	menuPaginationNumber: 0,
 };
 
 export default ShopCards;

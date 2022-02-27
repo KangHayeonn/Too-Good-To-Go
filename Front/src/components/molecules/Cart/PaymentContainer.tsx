@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
@@ -52,7 +53,9 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 				<p>총 {numberWithCommas}원</p>
 			</div>
 			<div className="fifth-section">
-				<button type="button">{children}</button>
+				<Link to="order">
+					<button type="button">{children}</button>
+				</Link>
 			</div>
 		</Wrapper>
 	);

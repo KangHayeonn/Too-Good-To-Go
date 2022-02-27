@@ -3,6 +3,7 @@ import Dispatch from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { orderType } from "../molecules/Profile/ProfileOrderListContainer";
+import { getAccessToken } from "../../helpers/tokenControl";
 
 export default function useGetData(
 	state: Map<string, orderType[]>,
@@ -13,6 +14,7 @@ export default function useGetData(
 
 	const api = axios.create({
 		baseURL: url,
+		headers: { Authorization: `Bearer ${getAccessToken()}` },
 	});
 
 	useEffect(() => {

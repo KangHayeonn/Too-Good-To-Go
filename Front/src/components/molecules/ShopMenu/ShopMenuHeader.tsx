@@ -50,7 +50,27 @@ const ShopMenuHeader: React.FC<shopMenuType> = ({ children, menuName }) => {
 						color: "#333",
 					}}
 					css={arrayText}
-					to={`/shopmenu/${menuName}/discount`}
+					to={`/shopmenu/${menuName}/`}
+				>
+					최신순
+				</NavLink>
+				<NavLink
+					activeStyle={{
+						fontWeight: "400",
+						color: "#333",
+					}}
+					css={arrayText}
+					to={`/shopmenu/${menuName}/high`}
+				>
+					가격높은순
+				</NavLink>
+				<NavLink
+					activeStyle={{
+						fontWeight: "400",
+						color: "#333",
+					}}
+					css={arrayText}
+					to={`/shopmenu/${menuName}/low`}
 				>
 					가격낮은순
 				</NavLink>

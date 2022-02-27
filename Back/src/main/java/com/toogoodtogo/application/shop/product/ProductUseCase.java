@@ -19,6 +19,6 @@ public interface ProductUseCase {
     ProductDto choiceProduct(Long managerId, Long shopId, AddChoiceProductRequest request);
     void deleteChoiceProduct(Long managerId, Long shopId, Long productId);
     List<ProductDto> recommendProducts();
-    List<ProductDto> productsPerCategory(String category, String method, Pageable pageable);
+    CategoryResult productsPerCategory(String category, String method, Pageable pageable);
     List<ProductDto> findProductsPerShopSortByPriority(Long shopId);
 }

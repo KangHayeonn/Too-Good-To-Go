@@ -127,7 +127,7 @@ public class ProductsController {
 
     @GetMapping("/products")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ProductDto>> productsPerCategory(
+    public ApiResponse<CategoryResult> productsPerCategory(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String method,
             @PageableDefault(size = 10) Pageable pageable) {

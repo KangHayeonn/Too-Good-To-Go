@@ -7,6 +7,7 @@ import com.toogoodtogo.web.common.ApiResponse;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import com.toogoodtogo.web.shops.products.dto.ProductSearchDto;
+import com.toogoodtogo.web.shops.products.dto.SearchResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class SearchController {
     //TODO : 검색어 저장 기능? search:keyword ?
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<ProductSearchDto>> searchProductsByShop(
+    public ApiResponse<SearchResult> searchProductsByShop(
             @CurrentUser User user, @RequestParam String keyword, @PageableDefault(size = 10) Pageable pageable) {
         return new ApiResponse<>(searchService.searchProductsByShop(user != null ? user.getId() : null, keyword, pageable));
     }

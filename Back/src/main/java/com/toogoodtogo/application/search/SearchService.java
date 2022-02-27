@@ -7,6 +7,7 @@ import com.toogoodtogo.domain.shop.product.*;
 import com.toogoodtogo.web.shops.dto.ShopDto;
 import com.toogoodtogo.web.shops.products.dto.ProductDto;
 import com.toogoodtogo.web.shops.products.dto.ProductSearchDto;
+import com.toogoodtogo.web.shops.products.dto.SearchResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,15 +34,16 @@ public class SearchService {
 
     private String REDIS_KEY = "recentKeywords:";
 
-    public List<ProductSearchDto> searchProductsByShop(Long userId, String keyword, Pageable pageable) {
+    public SearchResult searchProductsByShop(Long userId, String keyword, Pageable pageable) {
         if(userId != null) { // User 면 최근 검색어 저장
             ZSetOperations<String, String> redisRecentSearch = redisTemplate.opsForZSet();
             String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSSSS")); // timestamp로!!
             redisRecentSearch.add(REDIS_KEY + userId, keyword, Double.parseDouble(time));
             redisRecentSearch.removeRange(REDIS_KEY + userId, -(10 + 1), -(10 + 1));
         }
-        
-        return jdbcTemplateProductRepository.searchProductsByShopCategoryOrShopName(keyword, pageable);
+        return SearchResult.builder()
+                .products(jdbcTemplateProductRepository.searchProductsByShopCategoryOrShopName(keyword, pageable))
+                .totalNum(jdbcTemplateProductRepository.searchProductsCountByShopCategoryOrShopName(keyword)).build();
     }
 
     public List<String> recentKeywords(Long userId) {

@@ -76,15 +76,16 @@ const CartCards: React.FC = () => {
 						</div>
 						<div className="cardInfo">
 							<p>{card.shopName}</p>
-							<strong>shopType, Pipe, foodType</strong>
+							{/* 생각해보니, shoptype과 foodType는 존재하지 않음. */}
+							{/* <strong>shopType, Pipe, foodType</strong> */}
 							<p>{card.name}</p>
 						</div>
 						<div className="right-wrapper">
 							<div className="price-ctn">
 								<p className="price">
-									<s>({card.discountedPrice}원)</s>
+									<s>({card.price}원)</s>
 									<ArrowRightAltRoundedIcon className="right-arrow" />
-									<strong>{card.price}원</strong>
+									<strong>{card.discountedPrice}원</strong>
 								</p>
 							</div>
 							<div className="btn-ctn">
@@ -202,7 +203,8 @@ const CartCard = styled.div<theme>`
 	}
 
 	.card-img-ctn {
-		width: 134px;
+		max-width: 119px;
+		margin-right: 20px;
 	}
 
 	img {
@@ -216,7 +218,7 @@ const CartCard = styled.div<theme>`
 		display: flex;
 		align-items: flex-start;
 		flex-direction: column;
-		padding-left: 20px;
+		width: 300px;
 	}
 
 	.cardInfo > * {
@@ -233,7 +235,7 @@ const CartCard = styled.div<theme>`
 	}
 
 	.right-wrapper {
-		margin-left: 160px;
+		margin-left: 30px;
 	}
 
 	.btn-ctn {

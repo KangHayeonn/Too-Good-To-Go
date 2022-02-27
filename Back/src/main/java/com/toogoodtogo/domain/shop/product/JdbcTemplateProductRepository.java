@@ -47,6 +47,19 @@ public class JdbcTemplateProductRepository {
                 pageable.getPageSize(), pageable.getOffset());
     }
 
+    public Long searchProductsCountByShopCategoryOrShopName(String keyword) {
+        String sql = "select count(*)\n" +
+                "from choice_product cp \n" +
+                "right join highest_rate_product hrp on cp.shop_id = hrp.shop_id\n" +
+                "where hrp.shop_id in\n" +
+                "( select s.id\n" +
+                "  from shop s\n" +
+                "  where find_in_set(?, s.category) > 0 or s.name like ?\n" +
+                " )\n" +
+                "and not hrp.product_id is null";
+        return jdbcTemplate.queryForObject(sql, Long.class, keyword, "%" + keyword + "%");
+    }
+
     private RowMapper<ProductSearchDto> productSearchDtoRowMapper() {
         return (rs, rowNum) -> ProductSearchDto.builder()
                 .shopId(rs.getLong("shop_id"))

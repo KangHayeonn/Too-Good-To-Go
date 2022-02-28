@@ -21,9 +21,10 @@ export const axiosApiMeGetInstance = axios.create({
 });
 
 // accessToken 가져오기
-axiosApiMeGetInstance.interceptors.request.use(
+axios.interceptors.request.use(
 	(config) => {
 		const token = getAccessToken();
+		console.log("sadfasdfasdf6666");
 		console.log("interceptor token");
 		console.log("interceptor config: ", config);
 		if (token) {
@@ -43,7 +44,7 @@ axiosApiMeGetInstance.interceptors.request.use(
 );
 
 // 항시 api/me
-axiosApiMeGetInstance.interceptors.response.use(
+axios.interceptors.response.use(
 	(res) => {
 		console.log("this is interceptor.response res: ", res);
 		return res;
@@ -104,4 +105,3 @@ function getNewRefreshTokenPost() {
 		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
 	);
 }
-

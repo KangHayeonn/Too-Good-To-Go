@@ -58,8 +58,12 @@ const OrderList: React.FC<OrderListPropsType> = ({
 	cardNumber,
 }: OrderListPropsType) => {
 	const displayAggregatedPrice = (card: orderType) => {
+		console.log("products", card.products);
+		let priceTimesQuantity: number;
+
 		return card.products.reduce((total, item) => {
-			return total + item.discountedPrice;
+			priceTimesQuantity = item.discountedPrice * item.quantity;
+			return total + priceTimesQuantity;
 		}, 0);
 	};
 

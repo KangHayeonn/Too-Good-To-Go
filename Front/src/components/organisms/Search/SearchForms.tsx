@@ -1,16 +1,30 @@
 import React from 'react';
+import axios from 'axios';
 import styled from '@emotion/styled';
 import SearchForm from '../../atoms/SearchForm/SearchForm';
 import SearchKeywordsTag from '../../atoms/SearchKeywordsTag/SeacrhKeywordsTag';
+import { getAccessToken } from '../../../helpers/tokenControl';
 
-const SearchForms = () => {
+const BASE_URL = "http://54.180.134.20";
+
+const SearchForms:React.FC = () => {
+    
+    const deleteAllKeywords = () => {
+        axios.delete(
+            `${BASE_URL}/api/search/keywords/all`,
+            {
+                headers: { Authorization: `Bearer ${getAccessToken()}`}
+            }
+        );
+    };
+
     return (
         <Wrapper>
             <SearchForm />
             <KeywordTagsForm>
                 <Top>
                     <Title>최근 검색어</Title>
-                    <DeleteAllBtn type="button">전체 삭제</DeleteAllBtn>
+                    <DeleteAllBtn type="button" onClick={() => { deleteAllKeywords() }}>전체 삭제</DeleteAllBtn>
                 </Top>
                 <SearchKeywordsTag /> 
             </KeywordTagsForm>

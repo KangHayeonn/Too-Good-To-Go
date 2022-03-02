@@ -1,8 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from "axios";
+import { useDispatch } from 'react-redux';
 import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
+import { getAccessToken } from '../../../helpers/tokenControl';
+import { updateMenuItems } from '../../../features/shopFeatures/updateMenuItemsSlice';
 
-const SearchForm = () => {
+const BASE_URL = "http://54.180.134.20";
+
+const SearchForm: React.FC = () => {
+    const [word, setWord] = useState<string>("");
+    const [btnOn, setBtnOn] = useState<boolean>(false);
+    const dispatch = useDispatch();
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleOnChange = (e :any) => {
+        setWord(e.target.value);
+        setBtnOn(false);
+    }
+
+    const getProductSearch = () => {
+        axios.get(
+            `${BASE_URL}/api/search`,
+            {
+                params: {keyword: word},
+                headers: { Authorization: `Bearer ${getAccessToken()}`}
+            }).then((res)=> {
+                dispatch(updateMenuItems(res.data.data.products))
+            }).catch((e) => { console.log("search api 실패 ", e)});
+            setBtnOn(true);
+    }
+    
     return (
         <SearchBar>
             <form>
@@ -10,10 +38,12 @@ const SearchForm = () => {
                     className="searchText"
                     type="text"
                     placeholder="검색어를 입력해주세요."
+                    name="keyword"
+                    onChange={handleOnChange}
                 />
-                <SearchIcon id="searchIcon" type="button" onClick={() => { console.log("click") } } />
+                <SearchIcon id="searchIcon" type="button" onClick={() => { getProductSearch() } } />
             </form>
-            <ResultBar><b>bhc</b>(으)로 검색한 결과입니다.</ResultBar>
+            {btnOn? <ResultBar><b>{word}</b>(으)로 검색한 결과입니다.</ResultBar>: <></>}
         </SearchBar>
     );
 };

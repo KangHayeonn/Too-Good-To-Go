@@ -5,6 +5,64 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { setProducts } from "../../../features/order/orderInfoSlice";
 
+const OrderList: React.FC = () => {
+	const [hidden, setHidden] = useState(true);
+	const dispatch = useDispatch(); 
+	const cartItem = useSelector((state: RootState) => {
+		return state.selectCartCards;
+	});
+
+	const show = () => setHidden((current) => !current);
+
+	useEffect(() => {
+		const productsArray = new Array<object>();
+		cartItem.map((e) => {
+			const obj = {
+				productId : e.id,
+				quantity : e.cartItemQuantity,
+				price : e.discountedPrice,
+			};
+			productsArray.push(obj);
+			return 0;
+		})
+		dispatch(setProducts(productsArray));
+	}, []);
+
+	return (
+		<DropButton displayType={hidden}>
+			<DropTitle>
+				<div>주문내역</div>
+				<button type="button" onClick={show}>
+					{hidden ? "▼" : "▲"}
+				</button>
+			</DropTitle>
+			<ul className="dropbox">
+				<li className="title">
+					<div>{cartItem[0].shopName}</div>
+					<div>
+						{cartItem[0].name} 외 {cartItem.length - 1}개
+					</div>
+				</li>
+				{cartItem.map((e) => {
+					return (
+						<li key={e.id}>
+							<div className="menu">
+								{e.name} {e.cartItemQuantity}개
+							</div>
+							<div className="beforeCost">
+								· 기본 : <s>{e.price * e.cartItemQuantity}원</s>
+							</div>
+							<div className="cost">
+								· 할인 후 가격 : {e.discountedPrice * e.cartItemQuantity}원
+							</div>
+						</li>
+					);
+				})}
+			</ul>
+		</DropButton>
+	);
+};
+
 const DropButton = styled.div<{ displayType: boolean }>`
 	width: 95%;
 	position: relative;
@@ -93,63 +151,5 @@ const DropTitle = styled.div`
 		padding-right: 1.7em;
 	}
 `;
-
-const OrderList: React.FC = () => {
-	const [hidden, setHidden] = useState(true);
-	const dispatch = useDispatch(); 
-	const cartItem = useSelector((state: RootState) => {
-		return state.selectCartCards;
-	});
-
-	const show = () => setHidden((current) => !current);
-
-	useEffect(() => {
-		const productsArray = new Array<object>();
-		cartItem.map((e) => {
-			const obj = {
-				productId : e.id,
-				quantity : e.cartItemQuantity,
-				price : e.discountedPrice,
-			};
-			productsArray.push(obj);
-			return 0;
-		})
-		dispatch(setProducts(productsArray));
-	}, []);
-
-	return (
-		<DropButton displayType={hidden}>
-			<DropTitle>
-				<div>주문내역</div>
-				<button type="button" onClick={show}>
-					{hidden ? "▼" : "▲"}
-				</button>
-			</DropTitle>
-			<ul className="dropbox">
-				<li className="title">
-					<div>{cartItem[0].shopName}</div>
-					<div>
-						{cartItem[0].name} 외 {cartItem.length - 1}개
-					</div>
-				</li>
-				{cartItem.map((e) => {
-					return (
-						<li key={e.id}>
-							<div className="menu">
-								{e.name} {e.cartItemQuantity}개
-							</div>
-							<div className="beforeCost">
-								· 기본 : <s>{e.price * e.cartItemQuantity}원</s>
-							</div>
-							<div className="cost">
-								· 할인 후 가격 : {e.discountedPrice * e.cartItemQuantity}원
-							</div>
-						</li>
-					);
-				})}
-			</ul>
-		</DropButton>
-	);
-};
 
 export default OrderList;

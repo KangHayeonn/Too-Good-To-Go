@@ -1,104 +1,58 @@
 import React from 'react';
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import { initialCards } from '../../../features/shopFeatures/updateMenuItemsSlice';
 
 // 할인율 계산
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
 	return Math.ceil((1 - discountedPrice / price) * 100);
 };
 
-const SearchCards = () => {
+const SearchCards:React.FC = () => {
+    const searchItems = useSelector((state: RootState) => {
+        return state.updateMenuItems;
+    })
+    
     return (
         <Wrapper>
-            <SearchCard>
-                <div className="card-img-ctn">
-                    <img src="http://thingool.hgodo.com/gd5replace/thingotr4652/data/editor/goods/210617/285f14f889d5eb44a9e691f9f0ac985f_174805.jpg" alt="Food" />
-                </div>
-                <div className="cardInfo">
-                    <ShopTitle>
-                        <p className="cardInfo-shopName">
-                            강여사 김치찜
-                        </p>
-                        <p className="cardInfo-category">
-                            한식
-                        </p>
-                    </ShopTitle>
-                    <p className="cardInfo-shopFoodName">
-                        등갈비 김치찜
-                    </p>
-                    <div className="cardInfo-price">
-                        <p>
-                            {calculatedDiscount(
-                                10000,
-                                9000
-                            )}
-                            %
-                        </p>
-                        <p>9000원</p>
-                        <s>(10000원)</s>
-                    </div>
-                </div>
-            </SearchCard>
-            <Line />
-            <SearchCard>
-                <div className="card-img-ctn">
-                    <img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20211005_84%2F1633427100547JYF19_PNG%2F1u1r0WjPhZou6UMzRjVqb6us.png&type=a340" alt="Food" />
-                </div>
-                <div className="cardInfo">
-                    <ShopTitle>
-                        <p className="cardInfo-shopName">
-                            맛있는 치킨집
-                        </p>
-                        <p className="cardInfo-category">
-                            치킨, 패스트푸드
-                        </p>
-                    </ShopTitle>
-                    <p className="cardInfo-shopFoodName">
-                        후라이드치킨
-                    </p>
-                    <div className="cardInfo-price">
-                        <p>
-                            {calculatedDiscount(
-                                10000,
-                                9000
-                            )}
-                            %
-                        </p>
-                        <p>9000원</p>
-                        <s>(10000원)</s>
-                    </div>
-                </div>
-            </SearchCard>
-            <Line />
-            <SearchCard>
-                <div className="card-img-ctn">
-                    <img src="https://www.hsd.co.kr/assets/images/main/main_img_01.jpg" alt="Food" />
-                </div>
-                <div className="cardInfo">
-                    <ShopTitle>
-                        <p className="cardInfo-shopName">
-                            치즈퓨전한식 맛집
-                        </p>
-                        <p className="cardInfo-category">
-                            한식
-                        </p>
-                    </ShopTitle>
-                    <p className="cardInfo-shopFoodName">
-                        치즈불닭볶음밥
-                    </p>
-                    <div className="cardInfo-price">
-                        <p>
-                            {calculatedDiscount(
-                                10000,
-                                9000
-                            )}
-                            %
-                        </p>
-                        <p>9000원</p>
-                        <s>(10000원)</s>
-                    </div>
-                </div>
-            </SearchCard>
-            <Line />
+            { (searchItems!==initialCards) ? (
+                searchItems.map((row) => (
+                    <div key={row.shopId}>
+                        <SearchCard>
+                            <div className="card-img-ctn">
+                                <img src={row.image} alt="Food" />
+                            </div>
+                            <div className="cardInfo">
+                                <ShopTitle>
+                                    <p className="cardInfo-shopName">
+                                        {row.shopName}
+                                    </p>
+                                    <p className="cardInfo-category">
+                                        {row.shopCategory.join(", ")}
+                                    </p>
+                                </ShopTitle>
+                                <p className="cardInfo-shopFoodName">
+                                    {row.name}
+                                </p>
+                                <div className="cardInfo-price">
+                                    <p>
+                                        {calculatedDiscount(
+                                            row.price,
+                                            row.discountedPrice
+                                        )}
+                                        %
+                                    </p>
+                                    <p>{row.discountedPrice}원</p>
+                                    <s>({row.price}원)</s>
+                                </div>
+                            </div>
+                        </SearchCard>
+                        <Line /> 
+                    </div>   
+                ))
+            ):(<></>)
+        }
         </Wrapper>
     );
 };

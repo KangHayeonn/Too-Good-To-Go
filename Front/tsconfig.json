@@ -18,5 +18,9 @@
 		"jsxImportSource": "@emotion/react",
 		"downlevelIteration": true
 	},
-	"include": ["src", "modules", "src/services/getUserInfoAxios.ts"]
+	"include": [
+		"src",
+		"modules",
+		"src/services/reissueTokenOnGlobalAxiosObject.ts"
+	]
 }

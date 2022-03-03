@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { getAccessToken } from '../../../helpers/tokenControl';
 import { updateMenuItems } from '../../../features/shopFeatures/updateMenuItemsSlice';
+import { updateKeywords, updatePageTotalNum } from '../../../features/shopFeatures/updateKeywordsSlice';
 
 const BASE_URL = "http://54.180.134.20";
 
@@ -26,9 +27,12 @@ const SearchForm: React.FC = () => {
                 params: {keyword: word},
                 headers: { Authorization: `Bearer ${getAccessToken()}`}
             }).then((res)=> {
-                dispatch(updateMenuItems(res.data.data.products))
+                dispatch(updateMenuItems(res.data.data.products));
+                dispatch(updatePageTotalNum(res.data.data.totalNum));
             }).catch((e) => { console.log("search api 실패 ", e)});
-            setBtnOn(true);
+        
+        setBtnOn(true);
+        dispatch(updateKeywords(true));
     }
     
     return (

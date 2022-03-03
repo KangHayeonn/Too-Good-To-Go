@@ -10,7 +10,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { RootState } from "../../../app/store";
 import { logout } from "../../../features/user/userSlice";
 import { initializeForm } from "../../../features/auth/authSlice";
-import { axiosApiMeGetInstance } from "../../../services/getUserInfoAxios";
 
 const navBar = css`
 	background-color: #54b689;
@@ -27,23 +26,10 @@ const Header: React.FC = () => {
 		dispatch(initializeForm());
 	};
 
-	const userApiMeGet = async () => {
-		console.log("clicked");
-		try {
-			const response = await axiosApiMeGetInstance.get("/api/me");
-			console.log("this is trycatch block response: ", response);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	return (
 		<div>
 			<nav css={navBar}>
 				<div className="wrap">
-					<button onClick={() => userApiMeGet()}>
-						get user api/me
-					</button>
 					<div className="home">
 						<Link to="/">
 							<img

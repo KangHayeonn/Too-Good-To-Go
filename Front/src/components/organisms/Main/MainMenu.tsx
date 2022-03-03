@@ -12,7 +12,7 @@ const MainMenu: React.FC = () => {
 	return (
 		<MainMenuWrap>
 			<MainMenuButton
-				to=""
+				to="전체보기"
 				menuName="전체보기"
 				image="https://cdn-icons-png.flaticon.com/512/1405/1405021.png"
 			/>

@@ -95,6 +95,7 @@ const ProfileContent: React.FC = () => {
 	};
 	const [manageShop, setManageShop] = useState<shopsDataType[]>([]);
 	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const displayShops = useSelector((state: RootState) => {
 		return state.updateManagerShops;
 	});
@@ -108,7 +109,7 @@ const ProfileContent: React.FC = () => {
 				console.log("api 연결 안됨"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
 			}
 		);
-	}, [displayShops]);
+	}, []);
 
 	return (
 		<Content>

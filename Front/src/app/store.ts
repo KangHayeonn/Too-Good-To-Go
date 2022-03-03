@@ -9,6 +9,7 @@ import orderInfoReducer from "../features/order/orderInfoSlice";
 import selectCategoryReducer from "../features/editFeatures/selectCategorySlice";
 import updateMenuTitleReducer from "../features/editFeatures/updateMenuTitleSlice";
 import updateManagerShopsReducer from "../features/editFeatures/updateManagerShops";
+import updateKeywordsReducer from "../features/shopFeatures/updateKeywordsSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
 		selectCategory: selectCategoryReducer,
 		updateMenuTitle: updateMenuTitleReducer,
 		updateManagerShops: updateManagerShopsReducer,
+		updateKeywords : updateKeywordsReducer,
 	},
 });
 

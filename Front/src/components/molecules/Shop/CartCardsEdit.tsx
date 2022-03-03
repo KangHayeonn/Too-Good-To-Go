@@ -49,7 +49,7 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 
 	useEffect(() => {
 		update();
-	}, [displayMenu]);
+	}, []);
 
 	if (displayMenu.length) {
 		return (

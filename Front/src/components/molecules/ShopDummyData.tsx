@@ -136,22 +136,22 @@ export const ShopData2 = [
 ];
 
 export const shopData3 = [
-	{
-		shopId: 3,
-		id: 3,
-		image: "image/food2.jpg",
-		shopName: "전주비빔밥",
-		name: "전통 전주비빔밥",
-		discountedPrice: 22000,
-		price: 28000,
-	},
-	{
-		shopId: 3,
-		id: 4,
-		image: "image/food3.jpg",
-		shopName: "전통 부대찌개 맛집",
-		name: "맛있는 부대찌개",
-		discountedPrice: 24000,
-		price: 30000,
-	},
+	// {
+	// 	shopId: 3,
+	// 	id: 3,
+	// 	image: "image/food2.jpg",
+	// 	shopName: "전주비빔밥",
+	// 	name: "전통 전주비빔밥",
+	// 	discountedPrice: 22000,
+	// 	price: 28000,
+	// },
+	// {
+	// 	shopId: 3,
+	// 	id: 4,
+	// 	image: "image/food3.jpg",
+	// 	shopName: "전통 부대찌개 맛집",
+	// 	name: "맛있는 부대찌개",
+	// 	discountedPrice: 24000,
+	// 	price: 30000,
+	// },
 ];

@@ -11,7 +11,7 @@ import {
 } from "../../../features/editFeatures/selectCategorySlice";
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
-import { axiosApiMeGetInstance } from "../../../services/getUserInfoAxios";
+import { axiosApiMeGetInstance } from "../../../services/reissueTokenOnGlobalAxiosObject";
 
 const ModalMain = styled.div`
 	display: flex;

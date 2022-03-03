@@ -6,6 +6,10 @@ import Button from "@mui/material/Button";
 import Line13 from "../../../../public/image/Line 13.png";
 import patchUserInfoUpdateAxios from "../../../services/patchUserInfoUpdateAxios";
 import { RootState } from "../../../app/store";
+import {
+	getUserLocalStorage,
+	setUserLocalStorage,
+} from "../../../helpers/userInfoControl";
 
 export type UserT = {
 	password: string;
@@ -13,14 +17,14 @@ export type UserT = {
 	phone: string | null;
 };
 
-const initialState = {
+const initialUser = {
 	password: "",
 	cpassword: "",
-	phone: "01055453287",
+	phone: getUserLocalStorage().phone,
 };
 
 const FormContainer: React.FC = () => {
-	const [formValue, setFormValue] = useState<UserT>(initialState);
+	const [formValue, setFormValue] = useState<UserT>(initialUser);
 	const [validation, setValidation] = useState("");
 
 	// input default value, bring in user's data from global
@@ -59,15 +63,23 @@ const FormContainer: React.FC = () => {
 		console.log(formValue);
 	};
 
+	const updateUserPhoneNumberInLocalStorage = (
+		phoneNumber: string | null
+	) => {
+		const newUserInfo = getUserLocalStorage();
+		const newPhoneNumber = phoneNumber;
+		newUserInfo.phone = newPhoneNumber;
+		const stringifiedNewUserInfo = JSON.stringify(newUserInfo);
+		setUserLocalStorage(stringifiedNewUserInfo);
+	};
+
 	const handleSubmit = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		try {
 			// modifiy formValue to have no cpassword property
 			delete formValue.cpassword;
-
-			// eslint-disable-next-line no-alert
 			await patchUserInfoUpdateAxios.patchUserInfo(formValue);
-			console.log(formValue);
+			updateUserPhoneNumberInLocalStorage(formValue.phone);
 		} catch (error) {
 			console.error(error);
 		}

@@ -19,6 +19,7 @@ type orderType = {
 		quantity: number;
 		name: string;
 		price: number;
+		discountedPrice: number;
 	}[];
 	status: string;
 	createdAt: Date;
@@ -56,6 +57,16 @@ const OrderList: React.FC<OrderListPropsType> = ({
 	isModalOpen,
 	cardNumber,
 }: OrderListPropsType) => {
+	const displayAggregatedPrice = (card: orderType) => {
+		console.log("products", card.products);
+		let priceTimesQuantity: number;
+
+		return card.products.reduce((total, item) => {
+			priceTimesQuantity = item.discountedPrice * item.quantity;
+			return total + priceTimesQuantity;
+		}, 0);
+	};
+
 	return orderData ? (
 		<OrderListContainer>
 			{Array.from(orderData.keys())
@@ -100,7 +111,9 @@ const OrderList: React.FC<OrderListPropsType> = ({
 															)}
 													</p>
 													<p className="food-cost">
-														{card.products[0].price}
+														{displayAggregatedPrice(
+															card
+														)}
 														원
 													</p>
 												</div>

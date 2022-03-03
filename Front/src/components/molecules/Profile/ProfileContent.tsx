@@ -95,6 +95,7 @@ const ProfileContent: React.FC = () => {
 	};
 	const [manageShop, setManageShop] = useState<shopsDataType[]>([]);
 	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const displayShops = useSelector((state: RootState) => {
 		return state.updateManagerShops;
 	});

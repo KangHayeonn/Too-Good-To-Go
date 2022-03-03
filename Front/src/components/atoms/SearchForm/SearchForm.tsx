@@ -20,7 +20,8 @@ const SearchForm: React.FC = () => {
         setBtnOn(false);
     }
 
-    const getProductSearch = () => {
+    const getProductSearch = (e : React.FormEvent | React.MouseEvent) => {
+        e.preventDefault();
         axios.get(
             `${BASE_URL}/api/search`,
             {
@@ -37,7 +38,8 @@ const SearchForm: React.FC = () => {
     
     return (
         <SearchBar>
-            <form>
+            <form
+                onSubmit={(e) => { getProductSearch(e) } }>
                 <input
                     className="searchText"
                     type="text"
@@ -45,7 +47,7 @@ const SearchForm: React.FC = () => {
                     name="keyword"
                     onChange={handleOnChange}
                 />
-                <SearchIcon id="searchIcon" type="button" onClick={() => { getProductSearch() } } />
+                <SearchIcon id="searchIcon" type="button" onClick={(e) => { getProductSearch(e) } } />
             </form>
             {btnOn? <ResultBar><b>{word}</b>(으)로 검색한 결과입니다.</ResultBar>: <></>}
         </SearchBar>

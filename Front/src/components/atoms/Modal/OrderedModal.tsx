@@ -130,7 +130,7 @@ const Footer = styled.div`
 	display: inline-flex;
 	height: 40px;
 	justify-content: center;
-	align-tems: center;
+	align-items: center;
 	float: left;
 	color: #ffffff;
 	cursor: pointer;
@@ -144,13 +144,18 @@ const Footer = styled.div`
 	}
 	.pop-btn.confirm {
 		border-right: 1px solid #d6e3dd; //오른쪽 줄
+		width: 14em;
+	}
+
+	.pop-btn.close {
+		width: 14em;
 	}
 `;
 const MenuBox = styled.ul`
 	width: 100%;
 	height: 100%;
-	min-height: 100px; //최소 높이
-	max-height: 200px; //최대 높이
+	min-height: 40px; //최소 높이
+	max-height: 40px; //최대 높이
 `;
 
 export default OrderedModal;

@@ -47,16 +47,14 @@
 | API 통신    | Axios |
 
 ### Back
-* SpringBoot
+* SpringBoot, Spring Data JPA, QueryDSL
 
 | **항목** | **기술 스택**              |
 | -------- | --------------------------- |
-| Server    | AWS |
-| DB    | Amazon RDS |
-| 문서자동화    | REST Docs |
-| 보안    | Spring Security, JWT |
-| 기타    | REST API, JPA, QueryDSL |
-
+| Server    | AWS ECS, AWS EC2, AWS S3, AWS Cloud Front |
+| DB    | Amazon RDS (MySQL) |
+| 문서자동화    | Spring REST Docs |
+| 보안    | Spring Security, JWT, Redis |
 
 ### CI/CD
 * Docker
@@ -71,6 +69,9 @@
 -  Slack
 -  줌(Zoom)
 -  figma
+
+### ERD Diagram
+![readme](./toogoodtogo_ERD.png)
 
 
 ---

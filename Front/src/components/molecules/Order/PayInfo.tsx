@@ -93,7 +93,6 @@ const Total = styled.div`
 const PayInfo: React.FC = () => {
 	const [price, setPrice] = useState<number>(0);
 	const [discountPrice, setdiscountPrice] = useState<number>(0);
-	const [deliveryFee, setDeliveryFee] = useState<number>(0);
 	const [hidden, setHidden] = useState(true);
 
 	const cartItem = useSelector((state: RootState) => {
@@ -110,7 +109,6 @@ const PayInfo: React.FC = () => {
 		});
 		setPrice(priceTotal);
 		setdiscountPrice(discountPriceTotal);
-		setDeliveryFee(2500);
 	}, []);
 
 	const show = () => {
@@ -134,14 +132,10 @@ const PayInfo: React.FC = () => {
 					<div>할인/부가결제</div>
 					<div>-{discountPrice}원</div>
 				</li>
-				<li>
-					<div>배송비</div>
-					<div>{deliveryFee}원</div>
-				</li>
 			</ul>
 			<Total>
 				<div>총 결제금액</div>
-				<div>{price-discountPrice+deliveryFee}원</div>
+				<div>{price-discountPrice}원</div>
 			</Total>
 		</DropButton>
 	);

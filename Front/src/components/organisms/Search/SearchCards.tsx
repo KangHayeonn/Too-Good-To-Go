@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { RootState } from "../../../app/store";
 import { initialCards } from '../../../features/shopFeatures/updateMenuItemsSlice';
 
@@ -19,6 +20,10 @@ const SearchCards:React.FC = () => {
             { (searchItems!==initialCards) ? (
                 searchItems.map((row) => (
                     <div key={row.shopId}>
+						<Link
+							to={{
+								pathname: `/shop/${row.shopId}`,
+							}}>
                         <SearchCard>
                             <div className="card-img-ctn">
                                 <img src={row.image} alt="Food" />
@@ -48,6 +53,7 @@ const SearchCards:React.FC = () => {
                                 </div>
                             </div>
                         </SearchCard>
+						</Link>
                         <Line /> 
                     </div>   
                 ))

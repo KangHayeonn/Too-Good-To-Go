@@ -39,6 +39,22 @@ axios.interceptors.request.use(
 	}
 );
 
+// axios + 2
+
+// axios instance
+
+// JWT를 줘야 하는 모든 axios request는, 이 라이브러리를 import해서, request를 보내라.
+// jwtUsingAxiosRequestMakingFunction("http://xx.xx.xxx.xx/api/me"): axios객체 하나 + interceptors가 붙어있는 채로.
+
+// function wtUsingAxiosRequestMakingFunction(url, method) => {
+// 	return axios.method(
+// 		baseUrl: url,
+// 	)
+
+// }
+
+// axiosMakingInstancesThatDoesNotUseJWT(): axios객체 without Interceptors
+
 // 항시 api/me
 axios.interceptors.response.use(
 	(res) => {
@@ -88,3 +104,7 @@ function getNewRefreshTokenPost() {
 		{ headers: { Authorization: `Bearer ${getAccessToken()}` } }
 	);
 }
+
+// import axios
+// axios.defaultInterceptor
+// asycronous ==> pending, resolved, reject 이 세개가 다 Promise의 instance이다.

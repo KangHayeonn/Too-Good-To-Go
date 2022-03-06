@@ -63,7 +63,6 @@ export const selectCartCardsSlice = createSlice({
 		},
 		deleteSelectedCards: (state) => {
 			let filteredArrOfState: initialCartCardType[] = [];
-			console.log("state", state);
 			filteredArrOfState = state.filter((e) => {
 				return e.isChecked === false;
 			});
@@ -115,6 +114,10 @@ export const selectCartCardsSlice = createSlice({
 
 			return action.payload;
 		},
+		deleteAllItemsInCart: () => {
+			const emptyCartCards: initialCartCardType[] = [];
+			return emptyCartCards;
+		},
 	},
 });
 
@@ -126,6 +129,7 @@ export const {
 	incrementSelectedCards,
 	decrementSelectedCards,
 	addItemsToCart,
+	deleteAllItemsInCart,
 } = selectCartCardsSlice.actions;
 
 export default selectCartCardsSlice.reducer;

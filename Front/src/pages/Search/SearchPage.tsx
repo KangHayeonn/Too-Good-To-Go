@@ -22,9 +22,9 @@ const Search: React.FC = () => {
 	useEffect(() => {
 		const pageCount = Math.ceil(totalNum.totalNum / 10);
 		setPaginationCount(pageCount);
-	}, []);
+	}, [totalNum]);
 
-	console.log(page);
+	console.log("paginationCount", paginationCount);
 
 	return (
 		<>
@@ -35,7 +35,9 @@ const Search: React.FC = () => {
 				isSection={false}
 				isFooter={false}
 			>
-				<SearchCards />
+				<SearchCards
+					menuPaginationNumber={page}
+				/>
 				<Pagination
 					css={paginationStyle}
 					count={paginationCount}

@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
 import { deleteAllItemsInCart } from "../../../features/cartFeatures/selectCartCardsSlice";
-import { deleteUserLocalStorage } from "../../../helpers/userInfoControl";
 import { deleteLocalStorageCart } from "../../../helpers/cartControl";
 
 const URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)

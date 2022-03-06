@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";

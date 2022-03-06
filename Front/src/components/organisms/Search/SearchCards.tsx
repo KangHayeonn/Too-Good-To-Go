@@ -134,6 +134,7 @@ const SearchCard = styled.div`
         margin-bottom: 13px;
         padding-right: 11px;
         border-right : 3px solid #E2E2E2;
+		color: black;
 	}
 
     .cardInfo-category {
@@ -141,17 +142,19 @@ const SearchCard = styled.div`
         margin-bottom: 13px;
         margin-left: 11px;
         color: #58C656;
-        font-weihgt: 400;
+        font-weight: 400;
     }
 
 	.cardInfo-shopFoodName {
 		font-size: 18px;
+		color: black;
 	}
 
 	.cardInfo-price {
 		display: flex;
 		font-size: 17px;
 		font-weight: 500;
+		color: black;
 	}
 
 	.cardInfo-price > p:first-of-type {

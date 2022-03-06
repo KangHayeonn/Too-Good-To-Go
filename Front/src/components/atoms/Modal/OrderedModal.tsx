@@ -20,29 +20,33 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 
 	const onClickOrdered = () => {
 		axios
-			.post(`${URL}/orders`, {
-				phone: orderInfo.phone,
-				products : orderInfo.products,
-				requirement: orderInfo.requirement,
-				paymentMethod: orderInfo.paymentMethod,
-				needDisposables: orderInfo.plasticUse,
-				cacheRequirement: orderInfo.cacheRequirement,
-				cachePaymentMethod: orderInfo.cachePaymentMethod,
-			}, 
-			{ 
-				headers : { Authorization: `Bearer ${getAccessToken()}`
-			}})
+			.post(
+				`${URL}/orders`,
+				{
+					phone: orderInfo.phone,
+					products: orderInfo.products,
+					requirement: orderInfo.requirement,
+					paymentMethod: orderInfo.paymentMethod,
+					needDisposables: orderInfo.plasticUse,
+					cacheRequirement: orderInfo.cacheRequirement,
+					cachePaymentMethod: orderInfo.cachePaymentMethod,
+				},
+				{
+					headers: { Authorization: `Bearer ${getAccessToken()}` },
+				}
+			)
 			.then((res) => {
 				console.log(res, " 주문 완료 성공");
 				// eslint-disable-next-line no-alert
 				alert("주문완료 되었습니다.");
 				history.push("/");
+				// erase cart redux,
 			})
 			.catch((e) => {
 				console.log(e);
 				console.log("주문 완료 실패");
 			});
-	}
+	};
 
 	const onClickClosed = useCallback(() => {
 		setModalOpen(false);
@@ -57,9 +61,7 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 					</Header>
 					<Body>
 						<div className="body-contentbox">
-							<MenuBox>
-								주문하시겠습니까?
-							</MenuBox>
+							<MenuBox>주문하시겠습니까?</MenuBox>
 						</div>
 					</Body>
 					<Footer>

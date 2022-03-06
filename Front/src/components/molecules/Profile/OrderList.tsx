@@ -67,6 +67,14 @@ const OrderList: React.FC<OrderListPropsType> = ({
 		}, 0);
 	};
 
+	// return 0 for month if month is less or equal than 0
+	const appendZeroInfrontOfDate = (month: number) => {
+		if (month < 10) {
+			return `0${month}`;
+		}
+		return month;
+	};
+
 	return orderData ? (
 		<OrderListContainer>
 			{Array.from(orderData.keys())
@@ -80,9 +88,11 @@ const OrderList: React.FC<OrderListPropsType> = ({
 							<DateDivider>
 								<hr />
 								<p className="dateDivider">
-									{`${cards[0].createdAt.getFullYear()} - ${
+									{`${cards[0].createdAt.getFullYear()} - ${appendZeroInfrontOfDate(
 										cards[0].createdAt.getMonth() + 1
-									} - ${cards[0].createdAt.getDate()}`}
+									)} - ${appendZeroInfrontOfDate(
+										cards[0].createdAt.getDate()
+									)}`}
 								</p>
 								<hr />
 							</DateDivider>
@@ -250,6 +260,7 @@ const ProfileCard = styled.div`
 		width: 300px;
 		position: relative;
 		right: 25px;
+		margin-left: 13px;
 
 		.cardInfo-flex {
 			display: flex;
@@ -263,8 +274,8 @@ const ProfileCard = styled.div`
 			}
 			.food-cost {
 				position: relative;
-				left: 90px;
-				font-size: 13px;
+				left: 60px;
+				font-size: 15px;
 				color: #736e6e;
 				width: 65px;
 			}

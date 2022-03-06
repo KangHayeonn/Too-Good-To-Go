@@ -1,10 +1,13 @@
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import styled from "@emotion/styled";
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { deleteAllItemsInCart } from "../../../features/cartFeatures/selectCartCardsSlice";
+import { deleteUserLocalStorage } from "../../../helpers/userInfoControl";
+import { deleteLocalStorageCart } from "../../../helpers/cartControl";
 
 const URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
 
@@ -14,6 +17,7 @@ type ModalProps = {
 
 const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const orderInfo = useSelector((state: RootState) => {
 		return state.orderInfo;
 	});
@@ -40,7 +44,9 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 				// eslint-disable-next-line no-alert
 				alert("주문완료 되었습니다.");
 				history.push("/");
-				// erase cart redux,
+				// erase cart redux and localStorage
+				deleteLocalStorageCart();
+				dispatch(deleteAllItemsInCart());
 			})
 			.catch((e) => {
 				console.log(e);

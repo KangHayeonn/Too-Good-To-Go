@@ -19,24 +19,6 @@ const headerText = css`
 	color: #333;
 `;
 
-const arrayText = css`
-	font-size: 14px;
-	font-weight: 300;
-	color: #999;
-	cursor: pointer;
-	padding: 0 10px;
-	border-left: 1px solid #999;
-	&:first-of-type {
-		border: none;
-		color: #333;
-		font-weight: 500;
-	}
-`;
-
-const arrayDiv = css`
-	display: flex;
-`;
-
 type shopMenuType = {
 	children: React.ReactNode;
 };
@@ -45,12 +27,6 @@ const ShopMenuHeader: React.FC<shopMenuType> = ({ children }) => {
 	return (
 		<div css={header}>
 			<h1 css={headerText}>{children}</h1>
-			<div css={arrayDiv}>
-				<p css={arrayText}>장바구니</p>
-				<p css={arrayText}>주문</p>
-				<p css={arrayText}>결제</p>
-				<p css={arrayText}>완료</p>
-			</div>
 		</div>
 	);
 };

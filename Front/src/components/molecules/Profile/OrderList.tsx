@@ -75,6 +75,13 @@ const OrderList: React.FC<OrderListPropsType> = ({
 		return month;
 	};
 
+	const categoryCommaPlacer = (arr: orderType["shop"]["categories"]) => {
+		return arr.map((category, index) => {
+			if (index === arr.length - 1) return `${category}  `;
+			return `${category}, `;
+		});
+	};
+
 	return orderData ? (
 		<OrderListContainer>
 			{Array.from(orderData.keys())
@@ -129,7 +136,9 @@ const OrderList: React.FC<OrderListPropsType> = ({
 												</div>
 												<p className="card-info-text">
 													<strong>
-														{card.shop.categories}
+														{categoryCommaPlacer(
+															card.shop.categories
+														)}
 													</strong>
 													<span className="grey-text">
 														|
@@ -277,7 +286,7 @@ const ProfileCard = styled.div`
 				left: 60px;
 				font-size: 15px;
 				color: #736e6e;
-				width: 65px;
+				width: 80px;
 			}
 		}
 	}

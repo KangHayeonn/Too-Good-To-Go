@@ -19,24 +19,6 @@ const headerText = css`
 	color: #333;
 `;
 
-const arrayText = css`
-	font-size: 14px;
-	font-weight: 300;
-	color: #999;
-	cursor: pointer;
-	padding: 0 10px;
-	border-left: 1px solid #999;
-	&:first-of-type {
-		border: none;
-		color: #333;
-		font-weight: 500;
-	}
-`;
-
-const arrayDiv = css`
-	display: flex;
-`;
-
 type shopMenuType = {
 	children: React.ReactNode;
 };

@@ -172,7 +172,10 @@ const TitleTemplate: React.FC<Props> = ({
 					</ItemCard>
 					<ItemCard>
 						<ItemTitle>전화번호</ItemTitle>
-						<ItemContent>{phone}</ItemContent>
+						<ItemContent>
+							{phone.substring(0, 3)}-{phone.substring(3, 7)}-
+							{phone.substring(7, 11)}
+						</ItemContent>
 					</ItemCard>
 				</ItemsCard>
 			</Content>

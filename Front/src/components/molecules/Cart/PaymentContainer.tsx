@@ -64,7 +64,7 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 export default PaymentContainer;
 
 const Wrapper = styled.div`
-	width: 271px;
+	width: 330px;
 	min-height: 349px;
 	height: auto;
 	border: 1px solid lightgrey;

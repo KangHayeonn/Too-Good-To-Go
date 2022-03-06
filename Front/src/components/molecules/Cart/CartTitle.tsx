@@ -45,12 +45,6 @@ const ShopMenuHeader: React.FC<shopMenuType> = ({ children }) => {
 	return (
 		<div css={header}>
 			<h1 css={headerText}>{children}</h1>
-			<div css={arrayDiv}>
-				<p css={arrayText}>장바구니</p>
-				<p css={arrayText}>주문</p>
-				<p css={arrayText}>결제</p>
-				<p css={arrayText}>완료</p>
-			</div>
 		</div>
 	);
 };

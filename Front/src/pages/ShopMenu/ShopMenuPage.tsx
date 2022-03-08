@@ -62,7 +62,6 @@ const ShopMenuPage: React.FC<RouteComponentProps<matchParams>> = ({
 			.catch((error) => {
 				console.error(error);
 			});
-		console.log("paginationCount", paginationCount);
 	}, [match]);
 
 	return (

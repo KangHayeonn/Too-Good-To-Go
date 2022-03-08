@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { getAccessToken } from '../../../helpers/tokenControl';
 import { updateMenuItems } from '../../../features/shopFeatures/updateMenuItemsSlice';
-import { updateKeywords, updatePageTotalNum } from '../../../features/shopFeatures/updateKeywordsSlice';
+import { updateKeywords, updatePageTotalNum, updateKeyword, selectSearchPage } from '../../../features/shopFeatures/updateKeywordsSlice';
 
 const BASE_URL = "http://54.180.134.20";
 
@@ -34,6 +34,8 @@ const SearchForm: React.FC = () => {
         
         setBtnOn(true);
         dispatch(updateKeywords(true));
+        dispatch(updateKeyword(word));
+        dispatch(selectSearchPage(false));
     }
     
     return (

@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Pagination } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../app/store";
 import PageTemplate from "../../components/templates/PageTemplate";
 import SearchForms from "../../components/organisms/Search/SearchForms";
 import SearchCards from "../../components/organisms/Search/SearchCards";
+import { selectSearchPage } from "../../features/shopFeatures/updateKeywordsSlice";
 
 const Search: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
@@ -14,6 +15,7 @@ const Search: React.FC = () => {
 	const totalNum = useSelector((state: RootState) => {
 		return state.updateKeywords;
 	})
+	const dispatch = useDispatch();
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value);
@@ -22,9 +24,11 @@ const Search: React.FC = () => {
 	useEffect(() => {
 		const pageCount = Math.ceil(totalNum.totalNum / 10);
 		setPaginationCount(pageCount);
-	}, []);
+	}, [totalNum]);
 
-	console.log(page);
+	useEffect(() => {
+		dispatch(selectSearchPage(true));
+	}, []);
 
 	return (
 		<>
@@ -35,7 +39,9 @@ const Search: React.FC = () => {
 				isSection={false}
 				isFooter={false}
 			>
-				<SearchCards />
+				<SearchCards
+					menuPaginationNumber={page}
+				/>
 				<Pagination
 					css={paginationStyle}
 					count={paginationCount}

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from "@emotion/styled";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../app/store";
-import { initialCards } from '../../../features/shopFeatures/updateMenuItemsSlice';
 import { updateKeyword } from '../../../features/shopFeatures/updateKeywordsSlice';
 
 type shopsDataType = {
@@ -31,11 +30,7 @@ interface menuMatchType {
 const SearchCards:React.FC<menuMatchType> = ({ menuPaginationNumber,}) => {
     const [searchItems, setSearchItems] = useState<shopsDataType[]>([]);
 	const dispatch = useDispatch();
-	/*
-	const searchItems = useSelector((state: RootState) => {
-        return state.updateMenuItems;
-    })
-	*/
+	
 	const Keyword = useSelector((state: RootState) => {
         return state.updateKeywords;
     })
@@ -48,19 +43,22 @@ const SearchCards:React.FC<menuMatchType> = ({ menuPaginationNumber,}) => {
 	};
 
 	useEffect(() => {
-		BoardService().then(
-			(res) => {
-				setSearchItems(res.data.data.products); // api가 연결 된 경우 -> back에서 데이터 불러옴
-			},
-			(error) => {
-				console.error(error);
-			}
-		);
+		if(Keyword.keyword) {
+			BoardService().then(
+				(res) => {
+					setSearchItems(res.data.data.products); // api가 연결 된 경우 -> back에서 데이터 불러옴
+				},
+				(error) => {
+					console.error(error);
+				}
+			);
+		}
+		dispatch(updateKeyword(""));
 	}, [menuPaginationNumber, Keyword]);
   
     return (
         <Wrapper>
-            { (searchItems) ? (
+            { !(Keyword.checkSearchPage) ? (
                 searchItems.map((row) => (
                     <div key={row.shopId}>
 						<Link

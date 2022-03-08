@@ -4,12 +4,14 @@ export type Type = {
 	check: boolean;
 	totalNum: number;
 	keyword: string;
+	checkSearchPage: boolean;
 };
 
 export const initialType: Type = {
 	check: false,
 	totalNum: 0,
 	keyword: "",
+	checkSearchPage: false,
 };
 
 export const updateKeywordsSlice = createSlice({
@@ -30,10 +32,15 @@ export const updateKeywordsSlice = createSlice({
 			const type = state;
 			type.keyword = action.payload;
 			return state;
-		}
+		},
+		selectSearchPage: (state, action: PayloadAction<boolean>) => {
+			const type = state;
+			type.checkSearchPage = action.payload;
+			return state;
+		},
 	},
 });
 
-export const { updateKeywords, updatePageTotalNum, updateKeyword } = updateKeywordsSlice.actions;
+export const { updateKeywords, updatePageTotalNum, updateKeyword, selectSearchPage } = updateKeywordsSlice.actions;
 
 export default updateKeywordsSlice.reducer;

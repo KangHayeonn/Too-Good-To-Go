@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { countOrder } from "../../../features/manager/ManagerOrderCountSlice";
 import ManagerOrderBtnAtom from "../../atoms/MenuButton/ManagerOrderBtnAtom";
 
 const HeaderMenu = styled.ul`

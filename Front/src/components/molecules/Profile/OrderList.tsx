@@ -19,6 +19,7 @@ type orderType = {
 		quantity: number;
 		name: string;
 		price: number;
+		discountedPrice: number;
 	}[];
 	status: string;
 	createdAt: Date;
@@ -56,6 +57,31 @@ const OrderList: React.FC<OrderListPropsType> = ({
 	isModalOpen,
 	cardNumber,
 }: OrderListPropsType) => {
+	const displayAggregatedPrice = (card: orderType) => {
+		console.log("products", card.products);
+		let priceTimesQuantity: number;
+
+		return card.products.reduce((total, item) => {
+			priceTimesQuantity = item.discountedPrice * item.quantity;
+			return total + priceTimesQuantity;
+		}, 0);
+	};
+
+	// return 0 for month if month is less or equal than 0
+	const appendZeroInfrontOfDate = (month: number) => {
+		if (month < 10) {
+			return `0${month}`;
+		}
+		return month;
+	};
+
+	const categoryCommaPlacer = (arr: orderType["shop"]["categories"]) => {
+		return arr.map((category, index) => {
+			if (index === arr.length - 1) return `${category}  `;
+			return `${category}, `;
+		});
+	};
+
 	return orderData ? (
 		<OrderListContainer>
 			{Array.from(orderData.keys())
@@ -69,9 +95,11 @@ const OrderList: React.FC<OrderListPropsType> = ({
 							<DateDivider>
 								<hr />
 								<p className="dateDivider">
-									{`${cards[0].createdAt.getFullYear()} - ${
+									{`${cards[0].createdAt.getFullYear()} - ${appendZeroInfrontOfDate(
 										cards[0].createdAt.getMonth() + 1
-									} - ${cards[0].createdAt.getDate()}`}
+									)} - ${appendZeroInfrontOfDate(
+										cards[0].createdAt.getDate()
+									)}`}
 								</p>
 								<hr />
 							</DateDivider>
@@ -100,13 +128,17 @@ const OrderList: React.FC<OrderListPropsType> = ({
 															)}
 													</p>
 													<p className="food-cost">
-														{card.products[0].price}
+														{displayAggregatedPrice(
+															card
+														)}
 														원
 													</p>
 												</div>
 												<p className="card-info-text">
 													<strong>
-														{card.shop.categories}
+														{categoryCommaPlacer(
+															card.shop.categories
+														)}
 													</strong>
 													<span className="grey-text">
 														|
@@ -237,6 +269,7 @@ const ProfileCard = styled.div`
 		width: 300px;
 		position: relative;
 		right: 25px;
+		margin-left: 13px;
 
 		.cardInfo-flex {
 			display: flex;
@@ -250,10 +283,10 @@ const ProfileCard = styled.div`
 			}
 			.food-cost {
 				position: relative;
-				left: 90px;
-				font-size: 13px;
+				left: 60px;
+				font-size: 15px;
 				color: #736e6e;
-				width: 65px;
+				width: 80px;
 			}
 		}
 	}

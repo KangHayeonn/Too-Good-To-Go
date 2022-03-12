@@ -16,6 +16,7 @@ export default function useGetData(
 		baseURL: url,
 		headers: { Authorization: `Bearer ${getAccessToken()}` },
 	});
+	console.log("useGetData instance", api.interceptors);
 
 	useEffect(() => {
 		let isCancelled = false;

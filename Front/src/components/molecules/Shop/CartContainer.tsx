@@ -164,7 +164,7 @@ const CartContainer: React.FC<buttonType> = ({ children }) => {
 export default CartContainer;
 
 const Wrapper = styled.div`
-	width: 300px;
+	width: 330px;
 	min-height: 291px;
 	height: auto;
 	border: 1px solid lightgrey;
@@ -194,6 +194,7 @@ const Wrapper = styled.div`
 			margin-bottom: 10px;
 			margin-left: 10px;
 			margin-top: 10px;
+			width: 310px;
 
 			li {
 				margin: 10px;
@@ -261,7 +262,7 @@ const QuantityButton = styled.div`
 	overflow: hidden;
 	border-radius: 13px;
 	background-color: #e7e4e4;
-	margin: 10px 0 13px 170px;
+	margin: 10px 0 13px 220px;
 	font-size: 14px;
 
 	.menu-item-button {

@@ -22,6 +22,7 @@ export type orderType = {
 		quantity: number;
 		name: string;
 		price: number;
+		discountedPrice: number;
 	}[];
 	status: string;
 	createdAt: Date;

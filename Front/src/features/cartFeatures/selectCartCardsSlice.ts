@@ -29,7 +29,7 @@ export const selectCartCardsSlice = createSlice({
 	reducers: {
 		selectCartCardByID: (state, action: PayloadAction<number>) => {
 			const cards = state.map((e) => {
-				if (e.shopId === action.payload) {
+				if (e.id === action.payload) {
 					return { ...e, isChecked: !e.isChecked };
 				}
 				return e;
@@ -63,7 +63,6 @@ export const selectCartCardsSlice = createSlice({
 		},
 		deleteSelectedCards: (state) => {
 			let filteredArrOfState: initialCartCardType[] = [];
-
 			filteredArrOfState = state.filter((e) => {
 				return e.isChecked === false;
 			});
@@ -74,7 +73,7 @@ export const selectCartCardsSlice = createSlice({
 		},
 		incrementSelectedCards: (state, action: PayloadAction<number>) => {
 			const cards = state.map((e) => {
-				if (e.shopId === action.payload) {
+				if (e.id === action.payload) {
 					return { ...e, cartItemQuantity: e.cartItemQuantity + 1 };
 				}
 				return e;
@@ -89,7 +88,7 @@ export const selectCartCardsSlice = createSlice({
 			// Deletes card which has cartItemQuantity <= 0
 			const cards = state
 				.map((e) => {
-					if (e.shopId === action.payload) {
+					if (e.id === action.payload) {
 						return {
 							...e,
 							cartItemQuantity: e.cartItemQuantity - 1,
@@ -115,6 +114,10 @@ export const selectCartCardsSlice = createSlice({
 
 			return action.payload;
 		},
+		deleteAllItemsInCart: () => {
+			const emptyCartCards: initialCartCardType[] = [];
+			return emptyCartCards;
+		},
 	},
 });
 
@@ -126,6 +129,7 @@ export const {
 	incrementSelectedCards,
 	decrementSelectedCards,
 	addItemsToCart,
+	deleteAllItemsInCart,
 } = selectCartCardsSlice.actions;
 
 export default selectCartCardsSlice.reducer;

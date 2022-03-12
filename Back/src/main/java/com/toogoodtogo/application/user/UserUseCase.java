@@ -5,7 +5,5 @@ import com.toogoodtogo.web.users.dto.UpdateUserRequest;
 
 public interface UserUseCase {
     UserDto findUser(Long id);
-//    List<UserDetailResponse> findAllUser();
-    UserDto update(Long id, UpdateUserRequest UpdateUserRequest);
-//    void delete(Long id);
+    UserDto update(Long id, UpdateUserRequest request);
 }

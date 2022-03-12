@@ -1,14 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
+import Modal from "./Modal";
 
 type buttonType = {
 	children: React.ReactNode;
 };
 
 const PaymentContainer: React.FC<buttonType> = ({ children }) => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const isCheckedArr = useSelector((state: RootState) => {
 		return state.selectCartCards.filter((e) => {
 			return e.isChecked;
@@ -26,6 +28,10 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 	const numberWithCommas = ((x: number) => {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	})(accumulatedAmount);
+
+	const handleClick = () => {
+		setIsModalOpen(true);
+	};
 
 	return (
 		<Wrapper>
@@ -53,9 +59,10 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 				<p>총 {numberWithCommas}원</p>
 			</div>
 			<div className="fifth-section">
-				<Link to="order">
-					<button type="button">{children}</button>
-				</Link>
+				<button type="button" onClick={() => handleClick()}>
+					{children}
+				</button>
+				{isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} /> : null}
 			</div>
 		</Wrapper>
 	);
@@ -64,7 +71,7 @@ const PaymentContainer: React.FC<buttonType> = ({ children }) => {
 export default PaymentContainer;
 
 const Wrapper = styled.div`
-	width: 271px;
+	width: 330px;
 	min-height: 349px;
 	height: auto;
 	border: 1px solid lightgrey;

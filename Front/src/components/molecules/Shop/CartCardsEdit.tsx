@@ -8,19 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import fighting from "../../../../public/image/화이팅도치.jpg";
 import CartCardEdit from "./CartCardEdit";
 import { RootState } from "../../../app/store";
-import {
-	CartCardType,
-	updateMenuItems,
-} from "../../../features/shopFeatures/updateMenuItemsSlice";
+import { CartCardType } from "../../../features/shopFeatures/updateMenuItemsSlice";
 import { updatePriorities } from "../../../features/editFeatures/updatePriority";
 import { getAccessToken } from "../../../helpers/tokenControl";
 
 interface shopMatchId {
 	shopMatchId: string;
 }
-type priorityType = {
-	productsId: Array<string>;
-};
 
 const BASE_URL = "http://54.180.134.20/api/shops";
 

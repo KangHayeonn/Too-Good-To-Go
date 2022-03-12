@@ -1,13 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
+import { useDispatch } from "react-redux";
 import SearchForm from '../../atoms/SearchForm/SearchForm';
 import SearchKeywordsTag from '../../atoms/SearchKeywordsTag/SeacrhKeywordsTag';
 import { getAccessToken } from '../../../helpers/tokenControl';
+import { updateKeywords } from '../../../features/shopFeatures/updateKeywordsSlice';
 
 const BASE_URL = "http://54.180.134.20";
 
 const SearchForms:React.FC = () => {
+    const dispatch = useDispatch();
     
     const deleteAllKeywords = () => {
         axios.delete(
@@ -16,6 +19,8 @@ const SearchForms:React.FC = () => {
                 headers: { Authorization: `Bearer ${getAccessToken()}`}
             }
         );
+        // eslint-disable-next-line no-unneeded-ternary
+        dispatch(updateKeywords(true));
     };
 
     return (

@@ -1,68 +1,30 @@
-import React, { useCallback } from "react";
+import styled from "@emotion/styled/macro";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import styled from "@emotion/styled";
-import { RootState } from "../../../app/store";
-import { getAccessToken } from "../../../helpers/tokenControl";
-import { deleteAllItemsInCart } from "../../../features/cartFeatures/selectCartCardsSlice";
-import { deleteLocalStorageCart } from "../../../helpers/cartControl";
 
-const URL = "http://54.180.134.20/api"; // http 붙여야함 (404 오류 방지)
-
-type ModalProps = {
-	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+type PaymentContainerModalT = {
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
+const Modal = ({ setIsModalOpen }: PaymentContainerModalT) => {
 	const history = useHistory();
-	const dispatch = useDispatch();
-	const orderInfo = useSelector((state: RootState) => {
-		return state.orderInfo;
-	});
 
-	const onClickOrdered = () => {
-		axios
-			.post(
-				`${URL}/orders`,
-				{
-					phone: orderInfo.phone,
-					products: orderInfo.products,
-					requirement: orderInfo.requirement,
-					paymentMethod: orderInfo.paymentMethod,
-					needDisposables: orderInfo.plasticUse,
-					cacheRequirement: orderInfo.cacheRequirement,
-					cachePaymentMethod: orderInfo.cachePaymentMethod,
-				},
-				{
-					headers: { Authorization: `Bearer ${getAccessToken()}` },
-				}
-			)
-			.then((res) => {
-				console.log(res, " 주문 완료 성공");
-				// eslint-disable-next-line no-alert
-				alert("주문완료 되었습니다.");
-				history.push("/");
-				// erase cart redux and localStorage
-				deleteLocalStorageCart();
-				dispatch(deleteAllItemsInCart());
-			})
-			.catch((e) => {
-				console.log(e);
-				console.log("주문 완료 실패");
-			});
+	// send user to order
+	const handleClickSendUserToOrder = () => {
+		history.push(`order`);
 	};
 
-	const onClickClosed = useCallback(() => {
-		setModalOpen(false);
-	}, []);
+	// close modal
+	const handleClickCloseModal = () => {
+		setIsModalOpen(false);
+	};
 
 	return (
 		<>
 			<Container>
 				<Popup>
 					<Header>
-						<span className="head-title">결제수단선택</span>
+						<span className="head-title">선택 결제하기</span>
 					</Header>
 					<Body>
 						<div className="body-contentbox">
@@ -74,7 +36,7 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 							type="button"
 							className="pop-btn confirm"
 							id="confirm"
-							onClick={onClickOrdered}
+							onClick={() => handleClickSendUserToOrder()}
 						>
 							확인
 						</button>
@@ -82,7 +44,7 @@ const OrderedModal: React.FC<ModalProps> = ({ setModalOpen }) => {
 							type="button"
 							className="pop-btn close"
 							id="close"
-							onClick={onClickClosed}
+							onClick={() => handleClickCloseModal()}
 						>
 							닫기
 						</button>
@@ -113,6 +75,7 @@ const Popup = styled.div`
 	overflow: hidden;
 	background: #6ec19b;
 	box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
+	height: 189px;
 `;
 const Header = styled.div`
 	width: 100%;
@@ -165,4 +128,4 @@ const MenuBox = styled.ul`
 	max-height: 40px; //최대 높이
 `;
 
-export default OrderedModal;
+export default Modal;

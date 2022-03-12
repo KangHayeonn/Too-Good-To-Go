@@ -12,6 +12,7 @@ import updateManagerShopsReducer from "../features/editFeatures/updateManagerSho
 import updateProductBooleanReducer from "../features/editFeatures/updateProductBooelan";
 import updateShopBooleanReducer from "../features/editFeatures/updateShopBoolean";
 import updatePriorityReducer from "../features/editFeatures/updatePriority";
+import updateKeywordsReducer from "../features/shopFeatures/updateKeywordsSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
 		updateProductBooelan: updateProductBooleanReducer,
 		updateShopBoolean: updateShopBooleanReducer,
 		updatePriority: updatePriorityReducer,
+		updateKeywords: updateKeywordsReducer,
 	},
 });
 

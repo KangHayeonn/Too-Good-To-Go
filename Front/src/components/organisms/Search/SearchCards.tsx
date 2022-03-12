@@ -1,24 +1,70 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styled from "@emotion/styled";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { RootState } from "../../../app/store";
-import { initialCards } from '../../../features/shopFeatures/updateMenuItemsSlice';
+import { updateKeyword } from '../../../features/shopFeatures/updateKeywordsSlice';
+
+type shopsDataType = {
+	id: number;
+	name: string;
+	image: string;
+	discountedPrice: number;
+	price: number;
+	shopId: number;
+	shopName: string;
+	shopCategory: Array<string>;
+};
 
 // 할인율 계산
 const calculatedDiscount = (price: number, discountedPrice: number): number => {
 	return Math.ceil((1 - discountedPrice / price) * 100);
 };
 
-const SearchCards:React.FC = () => {
-    const searchItems = useSelector((state: RootState) => {
-        return state.updateMenuItems;
+interface menuMatchType {
+	// eslint-disable-next-line react/require-default-props
+	menuPaginationNumber: number;
+}
+
+const SearchCards:React.FC<menuMatchType> = ({ menuPaginationNumber,}) => {
+    const [searchItems, setSearchItems] = useState<shopsDataType[]>([]);
+	const dispatch = useDispatch();
+	
+	const Keyword = useSelector((state: RootState) => {
+        return state.updateKeywords;
     })
-    
+
+	const SEARCH_BOARD_API_BASE_URL = `http://54.180.134.20/api/search?keyword=${
+		Keyword.keyword}&page=${menuPaginationNumber - 1}`;
+
+	const BoardService = () => {
+		return axios.get(SEARCH_BOARD_API_BASE_URL);
+	};
+
+	useEffect(() => {
+		if(Keyword.keyword) {
+			BoardService().then(
+				(res) => {
+					setSearchItems(res.data.data.products); // api가 연결 된 경우 -> back에서 데이터 불러옴
+				},
+				(error) => {
+					console.error(error);
+				}
+			);
+		}
+		dispatch(updateKeyword(""));
+	}, [menuPaginationNumber, Keyword]);
+  
     return (
         <Wrapper>
-            { (searchItems!==initialCards) ? (
+            { !(Keyword.checkSearchPage) ? (
                 searchItems.map((row) => (
                     <div key={row.shopId}>
+						<Link
+							to={{
+								pathname: `/shop/${row.shopId}`,
+							}}>
                         <SearchCard>
                             <div className="card-img-ctn">
                                 <img src={row.image} alt="Food" />
@@ -48,6 +94,7 @@ const SearchCards:React.FC = () => {
                                 </div>
                             </div>
                         </SearchCard>
+						</Link>
                         <Line /> 
                     </div>   
                 ))
@@ -128,6 +175,7 @@ const SearchCard = styled.div`
         margin-bottom: 13px;
         padding-right: 11px;
         border-right : 3px solid #E2E2E2;
+		color: black;
 	}
 
     .cardInfo-category {
@@ -135,17 +183,19 @@ const SearchCard = styled.div`
         margin-bottom: 13px;
         margin-left: 11px;
         color: #58C656;
-        font-weihgt: 400;
+        font-weight: 400;
     }
 
 	.cardInfo-shopFoodName {
 		font-size: 18px;
+		color: black;
 	}
 
 	.cardInfo-price {
 		display: flex;
 		font-size: 17px;
 		font-weight: 500;
+		color: black;
 	}
 
 	.cardInfo-price > p:first-of-type {

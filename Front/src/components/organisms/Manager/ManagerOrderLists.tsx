@@ -73,7 +73,6 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({
 	statusMatchName,
 	shopMatchId,
 }) => {
-	const [items, setItems] = useState([]);
 	const [orderList, setOrderList] = useState<orderType[]>([]);
 	const dispatch = useDispatch();
 	const orderCountCount = useSelector((state: RootState) => {

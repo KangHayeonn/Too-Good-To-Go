@@ -21,11 +21,9 @@ export const axiosApiMeGetInstance = axios.create({
 });
 
 // accessToken 가져오기
-axiosApiMeGetInstance.interceptors.request.use(
+axios.interceptors.request.use(
 	(config) => {
 		const token = getAccessToken();
-		console.log("interceptor token");
-		console.log("interceptor config: ", config);
 		if (token) {
 			// eslint-disable-next-line no-param-reassign
 			config.headers = {
@@ -36,45 +34,47 @@ axiosApiMeGetInstance.interceptors.request.use(
 		return config;
 	},
 	async (error) => {
-		console.log("this is interceptor request error");
 		console.error(error);
 		return Promise.reject(error);
 	}
 );
 
+// axios + 2
+
+// axios instance
+
+// JWT를 줘야 하는 모든 axios request는, 이 라이브러리를 import해서, request를 보내라.
+// jwtUsingAxiosRequestMakingFunction("http://xx.xx.xxx.xx/api/me"): axios객체 하나 + interceptors가 붙어있는 채로.
+
+// function wtUsingAxiosRequestMakingFunction(url, method) => {
+// 	return axios.method(
+// 		baseUrl: url,
+// 	)
+
+// }
+
+// axiosMakingInstancesThatDoesNotUseJWT(): axios객체 without Interceptors
+
 // 항시 api/me
-axiosApiMeGetInstance.interceptors.response.use(
+axios.interceptors.response.use(
 	(res) => {
-		console.log("this is interceptor.response res: ", res);
 		return res;
 	},
 	async (error) => {
-		console.log("this is interceptor.response.use error");
 		console.error(error);
 
 		// api/me를 얻는데, 실패했다면 실행할 스크립트.. refreshToken을 받아야해
 		const originalConfig = error.config;
 		if (error.response) {
 			// Access Token was expired
-			console.log(
-				"error.response.status and originalConfig.retry",
-				error.response.status,
-				originalConfig.retry
-			);
+			console.log(error.response.status, originalConfig.retry);
 			if (error.response.status === 401 && !originalConfig.retry) {
 				originalConfig.retry = true;
 				try {
 					const responseFromRefreshToken =
 						await getNewRefreshTokenPost();
-					console.log(
-						"response from refresh token: ",
-						responseFromRefreshToken
-					);
 					const { accessToken, refreshToken } =
 						responseFromRefreshToken.data.data;
-					console.log(
-						"setting tokens and Authorization header to accessToken"
-					);
 					setAccessToken(accessToken);
 					setRefreshToken(refreshToken);
 					axiosApiMeGetInstance.defaults.headers.common.Authorization =
@@ -105,3 +105,6 @@ function getNewRefreshTokenPost() {
 	);
 }
 
+// import axios
+// axios.defaultInterceptor
+// asycronous ==> pending, resolved, reject 이 세개가 다 Promise의 instance이다.

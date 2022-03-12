@@ -84,6 +84,7 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.26.1",
 		"prettier": "^2.4.1",
-		"redux-devtools-extension": "^2.13.9"
+		"redux-devtools-extension": "^2.13.9",
+		"typescript-styled-plugin": "^0.18.2"
 	}
 }

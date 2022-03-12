@@ -87,7 +87,7 @@ class SearchControllerTest extends ControllerTest {
     @Test
     void searchProductsByShop() throws Exception {
         //then
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search?keyword=한식")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/search?keyword=한식&page=0")
                 .header("Authorization", "Bearer " + token.getAccessToken()))
                 .andDo(print())
                 .andDo(document("search/products",
@@ -95,7 +95,8 @@ class SearchControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("유저의 Access Token")),
                         requestParameters(
-                                parameterWithName("keyword").description("가게 이름, 카테고리")
+                                parameterWithName("keyword").description("가게 이름, 카테고리"),
+                                parameterWithName("page").description("페이지 숫자")
                         ),
                         responseFields(
                                 fieldWithPath("data.products.[].shopId").description("상품 가게 고유 번호"),

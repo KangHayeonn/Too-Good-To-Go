@@ -68,9 +68,10 @@ export const selectCategorySlice = createSlice({
 			});
 			return cards;
 		},
+		reset: () => initialCategoryBtn,
 	},
 });
 
-export const { selectCategory } = selectCategorySlice.actions;
+export const { selectCategory, reset } = selectCategorySlice.actions;
 
 export default selectCategorySlice.reducer;

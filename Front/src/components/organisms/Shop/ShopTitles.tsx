@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import TitleTemplate from "../../templates/TitleTemplate";
+import { RootState } from "../../../app/store";
 
 type shopsDataType = {
 	id: number;
@@ -27,6 +29,9 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId, isEdit }) => {
 		// 가게 조회
 		return axios.get(`${SHOP_BASE_URL}/${shopMatchId}`);
 	};
+	const updateShopRedux = useSelector((state: RootState) => {
+		return state.updateShopBoolean;
+	});
 	useEffect(() => {
 		BoardService().then(
 			(res) => {
@@ -36,7 +41,7 @@ const ShopTitles: React.FC<shopMatchId> = ({ shopMatchId, isEdit }) => {
 				console.log("api 연결 실패 ");
 			}
 		);
-	}, []);
+	}, [updateShopRedux]);
 
 	return (
 		<div>

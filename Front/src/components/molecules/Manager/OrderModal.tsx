@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
+import moment from "moment";
 import CloseIcon from "@mui/icons-material/Close";
 import TimeSelectBtnAtom from "../../atoms/MenuButton/TimeSelectBtnAtom";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -17,9 +19,14 @@ const ModalMain = styled.div`
 	z-index: 10000;
 `;
 
+interface theme {
+	status: string;
+}
+
 const ModalWrap = styled.div`
 	width: 375px;
-	height: 590px;
+	height: ${(props: theme) =>
+		props.status === "접수대기" ? "607px" : "328px"};
 	background-color: #fff;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 `;
@@ -140,6 +147,14 @@ type modal = {
 	orderDetail: string;
 	payment: string;
 	createdTime: string;
+	orderId: number;
+	status: string;
+	needDisposables: boolean;
+	etaLoad: string;
+};
+
+type etaType = {
+	eta: string;
 };
 
 const OrderModal: React.FC<modal> = ({
@@ -148,8 +163,13 @@ const OrderModal: React.FC<modal> = ({
 	orderDetail,
 	payment,
 	createdTime,
+	orderId,
+	status,
+	needDisposables,
+	etaLoad,
 }) => {
-	const [selectTime, setSelectTime] = useState<string>("");
+	const [selectTime, setSelectTime] = useState<number>(0);
+	const [eta, setEta] = useState<etaType>({ eta: "" });
 	const [timeBtnColor, setTimeBtnColor] = useState<Array<string>>([
 		"#e0e0e0",
 		"#e0e0e0",
@@ -166,17 +186,16 @@ const OrderModal: React.FC<modal> = ({
 		"#999",
 		"#999",
 	]);
-	const orderInfo = {
-		shop: [],
-		products: [],
-		status: "",
-		createdAt: "",
-		accept: "",
-		pictupAt: "",
-	};
 
+	const postOrderUrl = `http://54.180.134.20/api/manager/orders/${orderId}:accept`;
 	const OrderAccept = () => {
-		return axios.post("/", orderInfo);
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		};
+		console.log(eta);
+		return axios.post(postOrderUrl, eta, config);
 	};
 
 	const post = () => {
@@ -191,7 +210,12 @@ const OrderModal: React.FC<modal> = ({
 	};
 
 	const clickSelectTime = (numb: string) => {
-		setSelectTime(numb);
+		setSelectTime(+numb);
+		const orderCheckTime = new Date(createdTime);
+		orderCheckTime.setMinutes(orderCheckTime.getMinutes() + selectTime);
+		const momentTime = moment(orderCheckTime).toISOString().toString();
+		setEta({ eta: momentTime });
+		console.log(momentTime);
 		// eslint-disable-next-line prefer-const
 		let newArr = [...timeBtnColor];
 		// eslint-disable-next-line prefer-const
@@ -293,7 +317,12 @@ const OrderModal: React.FC<modal> = ({
 
 	const onchange = (e: React.FormEvent<HTMLInputElement>): void => {
 		const target = e.target as HTMLTextAreaElement;
-		setSelectTime(target.value);
+		setSelectTime(+target.value);
+		const orderCheckTime = new Date(createdTime);
+		orderCheckTime.setMinutes(orderCheckTime.getMinutes() + selectTime);
+		const momentTime = moment(orderCheckTime).toISOString().toString();
+		setEta({ eta: momentTime });
+		console.log(momentTime);
 		const btn = document.getElementsByClassName(
 			"timeSelectBtn"
 		) as HTMLCollectionOf<HTMLElement>;
@@ -311,11 +340,39 @@ const OrderModal: React.FC<modal> = ({
 		btn[5].style.backgroundColor = "#e0e0e0";
 		btn[5].style.color = "#999";
 	};
+	const deleteUrl = `http://54.180.134.20/api/orders/${orderId}`;
+	const DenyOrder = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		};
+		return axios.delete(deleteUrl, config);
+	};
+
+	const denyPost = () => {
+		DenyOrder().then(() => {
+			console.log("success delete");
+		});
+	};
+
+	const time = moment(createdTime).format("YYYY년 MM월 DD일 hh시 mm분 ss초");
+	const CompleteTime = moment(etaLoad).format(
+		"YYYY년 MM월 DD일 hh시 mm분 ss초"
+	);
 	return (
 		<ModalMain aria-hidden>
-			<ModalWrap onClick={(e) => e.stopPropagation()} aria-hidden>
+			<ModalWrap
+				status={status}
+				onClick={(e) => e.stopPropagation()}
+				aria-hidden
+			>
 				<ModalHead>
-					<p>접수하기</p>
+					<p>
+						{status === "접수대기"
+							? "주문 접수하기"
+							: "주문 상세보기"}
+					</p>
 					<CloseIcon onClick={modal} />
 				</ModalHead>
 				<ModalInner>
@@ -330,8 +387,14 @@ const OrderModal: React.FC<modal> = ({
 						<BoldText>주문 상세정보</BoldText>
 						<Detail>
 							<Text>주문시각</Text>
-							<DetailText>{createdTime}</DetailText>
+							<DetailText>{time}</DetailText>
 						</Detail>
+						{status === "완료" ? (
+							<Detail>
+								<Text>주문 완료 시각</Text>
+								<DetailText>{CompleteTime}</DetailText>
+							</Detail>
+						) : null}
 						<Detail>
 							<Text>결제수단</Text>
 							<DetailText>{payment}</DetailText>
@@ -340,61 +403,73 @@ const OrderModal: React.FC<modal> = ({
 							<Text>요청사항</Text>
 							<DetailText>{orderDetail}</DetailText>
 						</Detail>
+						<Detail>
+							<Text>일회용품 필요 여부</Text>
+							<DetailText>
+								{needDisposables ? "O" : "X"}
+							</DetailText>
+						</Detail>
 					</InfoBox>
-					<InfoBox>
-						<BoldText>포장 예상 시간</BoldText>
-						<TimeList>
-							<TimeSelectBtnAtom
-								text="20분"
-								onClick={() => clickSelectTime("20")}
-								background={timeBtnColor[0]}
-								textColor={timeTextColor[0]}
-							/>
-							<TimeSelectBtnAtom
-								text="30분"
-								onClick={() => clickSelectTime("30")}
-								background={timeBtnColor[1]}
-								textColor={timeTextColor[1]}
-							/>
-							<TimeSelectBtnAtom
-								text="40분"
-								onClick={() => clickSelectTime("40")}
-								background={timeBtnColor[2]}
-								textColor={timeTextColor[2]}
-							/>
-							<TimeSelectBtnAtom
-								text="50분"
-								onClick={() => clickSelectTime("50")}
-								background={timeBtnColor[3]}
-								textColor={timeTextColor[3]}
-							/>
-							<TimeSelectBtnAtom
-								text="60분"
-								onClick={() => clickSelectTime("60")}
-								background={timeBtnColor[4]}
-								textColor={timeTextColor[4]}
-							/>
-							<TimeSelectBtnAtom
-								text="90분"
-								onClick={() => clickSelectTime("90")}
-								background={timeBtnColor[5]}
-								textColor={timeTextColor[5]}
-							/>
-						</TimeList>
-						<ButtonWrap>
-							<TimeInput
-								name="time"
-								type="number"
-								placeholder="조리 완성 예상 시간(분)을 입력해주세요."
-								onChange={onchange}
-								value={selectTime}
-							/>
-							<Button onClick={post}>주문접수</Button>
-						</ButtonWrap>
-					</InfoBox>
-					<RefuseWrap>
-						<RefuseBtn>주문 거부</RefuseBtn>
-					</RefuseWrap>
+					{status === "접수대기" ? (
+						<>
+							<InfoBox>
+								<BoldText>포장 예상 시간</BoldText>
+								<TimeList>
+									<TimeSelectBtnAtom
+										text="20분"
+										onClick={() => clickSelectTime("20")}
+										background={timeBtnColor[0]}
+										textColor={timeTextColor[0]}
+									/>
+									<TimeSelectBtnAtom
+										text="30분"
+										onClick={() => clickSelectTime("30")}
+										background={timeBtnColor[1]}
+										textColor={timeTextColor[1]}
+									/>
+									<TimeSelectBtnAtom
+										text="40분"
+										onClick={() => clickSelectTime("40")}
+										background={timeBtnColor[2]}
+										textColor={timeTextColor[2]}
+									/>
+									<TimeSelectBtnAtom
+										text="50분"
+										onClick={() => clickSelectTime("50")}
+										background={timeBtnColor[3]}
+										textColor={timeTextColor[3]}
+									/>
+									<TimeSelectBtnAtom
+										text="60분"
+										onClick={() => clickSelectTime("60")}
+										background={timeBtnColor[4]}
+										textColor={timeTextColor[4]}
+									/>
+									<TimeSelectBtnAtom
+										text="90분"
+										onClick={() => clickSelectTime("90")}
+										background={timeBtnColor[5]}
+										textColor={timeTextColor[5]}
+									/>
+								</TimeList>
+								<ButtonWrap>
+									<TimeInput
+										name="time"
+										type="number"
+										placeholder="조리 완성 예상 시간(분)을 입력해주세요."
+										onChange={onchange}
+										value={selectTime}
+									/>
+									<Button onClick={post}>주문접수</Button>
+								</ButtonWrap>
+							</InfoBox>
+							<RefuseWrap>
+								<RefuseBtn onClick={denyPost}>
+									주문 거부
+								</RefuseBtn>
+							</RefuseWrap>
+						</>
+					) : null}
 				</ModalInner>
 			</ModalWrap>
 		</ModalMain>

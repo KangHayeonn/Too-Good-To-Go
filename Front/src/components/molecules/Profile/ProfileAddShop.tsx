@@ -8,10 +8,12 @@ import Line13 from "../../../../public/image/Line 13.png";
 import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
 import {
 	initialBtnType,
+	reset,
 	selectCategory,
 } from "../../../features/editFeatures/selectCategorySlice";
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { updateManagerShop } from "../../../features/editFeatures/updateManagerShops";
 
 const ProfileAddShop: React.FC = () => {
 	const [shopInfo, setShopInfo] = useState({});
@@ -57,6 +59,12 @@ const ProfileAddShop: React.FC = () => {
 		shopCategoryChange(reduxStateCollector);
 	}, [reduxStateCollector]);
 
+	useEffect(() => {
+		return () => {
+			dispatch(reset());
+		};
+	}, []);
+
 	const SHOP_API_URL = `http://54.180.134.20/api/manager/shops`;
 	const PostShopInfo = () => {
 		const config = {
@@ -80,6 +88,9 @@ const ProfileAddShop: React.FC = () => {
 			formData.set("file", imageJson);
 		}
 	};
+	const displayShops = useSelector((state: RootState) => {
+		return state.updateManagerShops;
+	});
 	const post = () => {
 		appendFormData();
 
@@ -94,6 +105,12 @@ const ProfileAddShop: React.FC = () => {
 				console.log(shopInfo);
 			}
 		);
+
+		if (displayShops) {
+			dispatch(updateManagerShop(false));
+		} else {
+			dispatch(updateManagerShop(true));
+		}
 	};
 	return (
 		<FormWrapper>
@@ -168,19 +185,21 @@ const ProfileAddShop: React.FC = () => {
 
 					<div className="section-wrapper">
 						<div className="profile-info">영업 시간</div>
-						<InputStyle
-							name="open"
-							type="time"
-							placeholder="오픈시간"
-							onChange={productPost}
-						/>
-						~
-						<InputStyle
-							name="close"
-							type="time"
-							placeholder="마감시간"
-							onChange={productPost}
-						/>
+						<div className="timeWrapper">
+							<InputStyle
+								name="open"
+								type="time"
+								placeholder="오픈시간"
+								onChange={productPost}
+							/>
+							~
+							<InputStyle
+								name="close"
+								type="time"
+								placeholder="마감시간"
+								onChange={productPost}
+							/>
+						</div>
 					</div>
 
 					<Button variant="outlined" onClick={post}>
@@ -224,7 +243,13 @@ const EditTitle = styled.div`
 const InputStyle = styled.input`
 	outline-style: none;
 	border: 1px solid #999;
-	width: auto;
+	border-radius: 4px;
+	width: 200px;
+	font: inherit;
+	padding: 12.5px 14px;
+	font-weight: 400;
+	font-size: 1rem;
+	letter-spacing: 0.00938em;
 `;
 
 const Wrapper = styled.div`
@@ -256,6 +281,13 @@ const Wrapper = styled.div`
 			font-size: 18px;
 			display: flex;
 			flex-direction: row;
+			margin-bottom: 16px;
+			.timeWrapper {
+				width: 220px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
 		}
 		.category {
 			height: 120px;

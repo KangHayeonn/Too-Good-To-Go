@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { updateProductsBoolean } from "../../../features/editFeatures/updateProductBooelan";
+import { RootState } from "../../../app/store";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -138,6 +141,10 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 			console.log(upfile);
 		}
 	};
+	const dispatch = useDispatch();
+	const updateProductChange = useSelector((state: RootState) => {
+		return state.updateProductBooelan;
+	});
 
 	const PRODUCT_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products`;
 	const PostProductInfo = () => {
@@ -154,14 +161,24 @@ const ProductAddModal: React.FC<modal> = ({ modal, shopMatchId }) => {
 			type: "application/json",
 		});
 		formData.set("request", dtoObj);
-		formData.set("file", upfile);
 		console.log(upfile);
+		if (upfile) {
+			formData.append("file", upfile);
+		} else {
+			const imageJson = new File([], "");
+			formData.set("file", imageJson);
+		}
 		// console.log(...formData);
 
 		PostProductInfo().then(
 			() => {
 				console.log("post success");
 				console.log(productInfo);
+				if (updateProductChange) {
+					dispatch(updateProductsBoolean(false));
+				} else {
+					dispatch(updateProductsBoolean(true));
+				}
 			},
 			(err) => {
 				console.log("post fail : ", err);

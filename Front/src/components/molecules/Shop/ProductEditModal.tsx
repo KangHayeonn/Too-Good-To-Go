@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { updateProductsBoolean } from "../../../features/editFeatures/updateProductBooelan";
+import { RootState } from "../../../app/store";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -194,23 +197,19 @@ const OrderModal: React.FC<modal> = ({
 	};
 
 	const appendFormData = () => {
-		console.log(image);
-		const dtoObj = new Blob([JSON.stringify(productInfo)], {
-			type: "application/json",
-		});
-		formData.set("request", dtoObj);
-
 		if (image) {
-			formData.append("file", image);
+			formData.set("file", image);
 		} else {
 			const imageJson = new File([], "");
 			formData.set("file", imageJson);
 		}
-
 		console.log(productInfo);
 		// console.log(...formData);
 	};
-
+	const dispatch = useDispatch();
+	const updateProductChange = useSelector((state: RootState) => {
+		return state.updateProductBooelan;
+	});
 	const EditPost = () => {
 		appendFormData();
 
@@ -218,22 +217,52 @@ const OrderModal: React.FC<modal> = ({
 			() => {
 				console.log("post success");
 				console.log(productInfo);
+				if (updateProductChange) {
+					dispatch(updateProductsBoolean(false));
+				} else {
+					dispatch(updateProductsBoolean(true));
+				}
 			},
-			(err) => {
+			() => {
+				console.log(productInfo);
 				console.log("post fail");
-				console.log(err);
 			}
 		);
+		if (image) {
+			PostProductImageInfo().then(
+				() => {
+					console.log("post success");
+					if (updateProductChange) {
+						dispatch(updateProductsBoolean(false));
+					} else {
+						dispatch(updateProductsBoolean(true));
+					}
+				},
+				() => {
+					console.log("post fail");
+				}
+			);
+		}
 	};
 	const PRODUCT_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products/${id}`;
 	const PostProductInfo = () => {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${getAccessToken()}`,
+				"Content-Type": "application/json",
+			},
+		};
+		return axios.put(PRODUCT_API_URL, productInfo, config);
+	};
+	const PRODUCT_IMG_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products/${id}/image`;
+	const PostProductImageInfo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
 				"Content-Type": "multipart/form-data",
 			},
 		};
-		return axios.post(PRODUCT_API_URL, formData, config);
+		return axios.post(PRODUCT_IMG_API_URL, formData, config);
 	};
 	const PRODUCT_DELETE_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/products/${id}`;
 	const DeleteProduct = () => {
@@ -245,6 +274,7 @@ const OrderModal: React.FC<modal> = ({
 			},
 		});
 	};
+
 	const DeletePost = () => {
 		// eslint-disable-next-line no-restricted-globals
 		const res = confirm("정말로 삭제하시겠습니까?"); // eslint-disable-line no-alert
@@ -253,6 +283,11 @@ const OrderModal: React.FC<modal> = ({
 			DeleteProduct().then(
 				() => {
 					console.log("삭제완료");
+					if (updateProductChange) {
+						dispatch(updateProductsBoolean(false));
+					} else {
+						dispatch(updateProductsBoolean(true));
+					}
 				},
 				() => {
 					console.log("삭제실패");

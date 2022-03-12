@@ -14,7 +14,7 @@ const Search: React.FC = () => {
 	const [paginationCount, setPaginationCount] = useState<number>(0);
 	const totalNum = useSelector((state: RootState) => {
 		return state.updateKeywords;
-	})
+	});
 	const dispatch = useDispatch();
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -39,15 +39,13 @@ const Search: React.FC = () => {
 				isSection={false}
 				isFooter={false}
 			>
-				<SearchCards
-					menuPaginationNumber={page}
-				/>
+				<SearchCards menuPaginationNumber={page} />
 				<Pagination
 					css={paginationStyle}
 					count={paginationCount}
 					shape="rounded"
 					onChange={handleChange}
-				/> 
+				/>
 			</PageTemplate>
 		</>
 	);
@@ -59,15 +57,15 @@ const HeaderHide = styled.div`
 	left: 30%;
 	width: 600px;
 	height: 40px;
-	background: #54B689;
+	background: #54b689;
 	z-index: 100;
 
 	@media (max-width: 900px) {
 		left: 40%;
 		width: 510px;
-		background: #54B689;
+		background: #54b689;
 	}
-`
+`;
 
 const paginationStyle = css`
 	display: flex;

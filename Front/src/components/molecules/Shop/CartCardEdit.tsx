@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 // Styles
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import ProductEditModal from "./ProductEditModal";
+import { RootState } from "../../../app/store";
 
 type cardType = {
 	id: number;
@@ -13,6 +15,9 @@ type cardType = {
 	shopBeforeCost: number;
 	shopFoodCost: number;
 	shopMatchId: string;
+	priorityUpFn(arrNum: number): void;
+	priorityDownFn(arrNum: number): void;
+	cardIndex: number;
 };
 
 const CartCardEdit: React.FC<cardType> = ({
@@ -23,13 +28,39 @@ const CartCardEdit: React.FC<cardType> = ({
 	shopBeforeCost,
 	shopFoodName,
 	shopMatchId,
+	priorityUpFn,
+	priorityDownFn,
+	cardIndex,
 }) => {
 	const [isModal, setIsModal] = useState(false);
 	const handleModal = () => {
 		setIsModal(!isModal);
 	};
+	const reduxPriorityStatus = useSelector((state: RootState) => {
+		return state.updatePriority;
+	});
 	return (
 		<CartCard key={id}>
+			{reduxPriorityStatus && (
+				<div className="arrow-btn">
+					<button
+						type="button"
+						onClick={() => {
+							priorityUpFn(cardIndex);
+						}}
+					>
+						<i className="arrow up" />
+					</button>
+					<button
+						type="button"
+						onClick={() => {
+							priorityDownFn(cardIndex);
+						}}
+					>
+						<i className="arrow up" />
+					</button>
+				</div>
+			)}
 			<div className="card-img-ctn">
 				<img src={shopFoodImg} alt="Food" />
 			</div>
@@ -78,7 +109,7 @@ const CartCard = styled.div`
 	padding: 10px 10px 10px 10px;
 	margin: 25px 20px 20px 20px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	align-items: center;
 	border-radius: 8px;
 	transition: 0.3s;
@@ -155,5 +186,29 @@ const CartCard = styled.div`
 	.right-arrow {
 		/* margin-top: 20px; */
 		/* padding-top */
+	}
+
+	.arrow-btn {
+		display: flex;
+		flex-direction: column;
+		transition: 0.3s;
+	}
+
+	.arrow {
+		border: solid black;
+		border-width: 0 3px 3px 0;
+		display: inline-block;
+		padding: 4px;
+	}
+
+	.up {
+		transform: rotate(-135deg);
+		-webkit-transform: rotate(-135deg);
+		margin-bottom: 20px;
+	}
+
+	.down {
+		transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
 	}
 `;

@@ -24,7 +24,7 @@ const ManagerMain: React.FC<matchParams> = ({
 }) => {
 	return (
 		<Main>
-			<ManagerOrderMenu />
+			<ManagerOrderMenu shopId={shopMatchId} />
 			<ManagerOrderLists
 				statusMatchName={statusMatchName}
 				shopMatchId={shopMatchId}

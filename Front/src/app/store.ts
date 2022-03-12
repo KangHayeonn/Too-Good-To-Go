@@ -9,6 +9,9 @@ import orderInfoReducer from "../features/order/orderInfoSlice";
 import selectCategoryReducer from "../features/editFeatures/selectCategorySlice";
 import updateMenuTitleReducer from "../features/editFeatures/updateMenuTitleSlice";
 import updateManagerShopsReducer from "../features/editFeatures/updateManagerShops";
+import updateProductBooleanReducer from "../features/editFeatures/updateProductBooelan";
+import updateShopBooleanReducer from "../features/editFeatures/updateShopBoolean";
+import updatePriorityReducer from "../features/editFeatures/updatePriority";
 
 export const store = configureStore({
 	reducer: {
@@ -22,6 +25,9 @@ export const store = configureStore({
 		selectCategory: selectCategoryReducer,
 		updateMenuTitle: updateMenuTitleReducer,
 		updateManagerShops: updateManagerShopsReducer,
+		updateProductBooelan: updateProductBooleanReducer,
+		updateShopBoolean: updateShopBooleanReducer,
+		updatePriority: updatePriorityReducer,
 	},
 });
 

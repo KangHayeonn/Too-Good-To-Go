@@ -12,6 +12,7 @@ import {
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
 import { axiosApiMeGetInstance } from "../../../services/getUserInfoAxios";
+import { updateShopsBoolean } from "../../../features/editFeatures/updateShopBoolean";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -295,6 +296,9 @@ const ShopEditModal: React.FC<modal> = ({
 			formData.set("file", imageJson);
 		}
 	};
+	const updateShopRedux = useSelector((state: RootState) => {
+		return state.updateShopBoolean;
+	});
 	const EditPost = async () => {
 		appendFormData();
 		await axiosApiMeGetInstance.get("/api/me");
@@ -302,6 +306,11 @@ const ShopEditModal: React.FC<modal> = ({
 			() => {
 				console.log("post success");
 				console.log(shopInfo);
+				if (updateShopRedux) {
+					dispatch(updateShopsBoolean(false));
+				} else {
+					dispatch(updateShopsBoolean(true));
+				}
 			},
 			(err) => {
 				console.log("post fail");

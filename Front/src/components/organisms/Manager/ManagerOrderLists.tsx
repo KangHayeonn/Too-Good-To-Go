@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
-import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 import ManagerOrderList from "../../molecules/Manager/ManagerOrderList";
 import { getAccessToken } from "../../../helpers/tokenControl";
+import { RootState } from "../../../app/store";
+import { countOrder } from "../../../features/manager/ManagerOrderCountSlice";
 
 const Ul = styled.ul`
-	width: 100%;\
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -18,7 +20,7 @@ const checkStatus = (status: string) => {
 		case "WAITING_FOR_ACCEPTANCE":
 			return "접수대기";
 		case "CANCELED":
-			return "취소됨";
+			return "취소";
 		case "ACCEPTED":
 			return "완료";
 		default:
@@ -31,7 +33,7 @@ const checkStatus2 = (status: string) => {
 		case "WAITING_FOR_ACCEPTANCE":
 			return "접수대기";
 		case "CANCELED":
-			return "취소됨";
+			return "취소";
 		case "ACCEPTED":
 			return "완료";
 		default:
@@ -64,13 +66,41 @@ type orderType = {
 	paymentMethod: string;
 	needDisposables: boolean;
 	createdAt: string;
+	eta: string;
 };
 
 const ManagerOrderLists: React.FC<statusMatchType> = ({
 	statusMatchName,
 	shopMatchId,
 }) => {
+	const [items, setItems] = useState([]);
 	const [orderList, setOrderList] = useState<orderType[]>([]);
+	const dispatch = useDispatch();
+	const orderCountCount = useSelector((state: RootState) => {
+		return state.managerOrderCount;
+	});
+	const orderDivide = () => {
+		const orderCompletedCount = orderList.filter(
+			(r) => r.status === "WAITING_FOR_ACCEPTANCE"
+		).length;
+		const prepareCount = orderList.filter(
+			(r) => r.status === "ACCEPTED"
+		).length;
+		const cancelCount = orderList.filter(
+			(r) => r.status === "CANCELED"
+		).length;
+		const allCount = orderList.length;
+		dispatch(
+			countOrder({
+				order_completed: orderCompletedCount,
+				completed: prepareCount,
+				canceled: cancelCount,
+				showAll: allCount,
+			})
+		);
+		console.log(orderCountCount);
+	};
+
 	const MANAGER_ORDER_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/orders`;
 	const BoardService = () => {
 		const config = {
@@ -85,6 +115,10 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({
 			(res) => {
 				setOrderList(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
 				console.log(res.data.data);
+				if (orderList.length >= 1) {
+					orderDivide();
+				}
+				console.log(statusMatchName);
 			},
 			() => {
 				console.log("error"); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
@@ -98,15 +132,17 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({
 				statusMatchName === "전체조회" ? (
 					<ManagerOrderList
 						key={row.id}
-						orderTime={moment(row.createdAt).format(
-							"YYYY년 MM월 DD일 hh시 mm분 ss초"
-						)}
+						orderId={row.id}
+						orderTime={row.createdAt}
+						// orderTime={moment(row.createdAt).format(
+						// 	"YYYY년 MM월 DD일 hh시 mm분 ss초"
+						// )}
 						orderList={row.products.map(
 							(r) => `${r.name} ${r.quantity.toString()}개 / `
 						)}
 						orderPrice={
 							row.products
-								.map((r) => r.price)
+								.map((r) => r.discountedPrice * r.quantity)
 								.reduce((a, b) => a + b)
 								.toString()
 								.replace(/\B(?=(\d{3})+(?!\d))/g, ",") // 가격 1000단위 콤마
@@ -114,7 +150,9 @@ const ManagerOrderLists: React.FC<statusMatchType> = ({
 						shopTell={row.user.phone}
 						orderDetail={row.requirement}
 						payment={row.paymentMethod}
+						needDisposables={row.needDisposables}
 						status={checkStatus(row.status)}
+						eta={row.eta}
 					/>
 				) : null
 			)}

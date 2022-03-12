@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import moment from "moment";
 import OrderModal from "./OrderModal";
 
 const List = styled.li`
@@ -61,6 +62,7 @@ const PriceText = styled.p`
 `;
 
 type orderType = {
+	orderId: number;
 	orderTime: string;
 	orderList: Array<string>;
 	orderPrice: string;
@@ -68,9 +70,12 @@ type orderType = {
 	orderDetail: string;
 	status: string;
 	payment: string;
+	needDisposables: boolean;
+	eta: string;
 };
 
 const ManagerOrderList: React.FC<orderType> = ({
+	orderId,
 	orderTime,
 	orderList,
 	orderPrice,
@@ -78,15 +83,18 @@ const ManagerOrderList: React.FC<orderType> = ({
 	orderDetail,
 	status,
 	payment,
+	needDisposables,
+	eta,
 }) => {
 	const [isModal, setIsModal] = useState(false);
 	const handleModal = () => {
 		setIsModal(!isModal);
 	};
+	const time = moment(orderTime).format("YYYY년 MM월 DD일 hh시 mm분 ss초");
 	return (
 		<List>
 			<TimeText>
-				<p>{orderTime.substring(14, 21)}</p>
+				<p>{time.substring(14, 21)}</p>
 			</TimeText>
 			<Center>
 				<p>{status}</p>
@@ -94,9 +102,15 @@ const ManagerOrderList: React.FC<orderType> = ({
 				<PriceText>{orderPrice}원</PriceText>
 			</Center>
 			<Confirm>
-				<button type="button" onClick={handleModal}>
-					접수하기
-				</button>
+				{status === "접수대기" ? (
+					<button type="button" onClick={handleModal}>
+						접수하기
+					</button>
+				) : (
+					<button type="button" onClick={handleModal}>
+						상세보기
+					</button>
+				)}
 			</Confirm>
 			{isModal && (
 				<OrderModal
@@ -105,6 +119,10 @@ const ManagerOrderList: React.FC<orderType> = ({
 					orderDetail={orderDetail}
 					payment={payment}
 					createdTime={orderTime}
+					orderId={orderId}
+					status={status}
+					needDisposables={needDisposables}
+					etaLoad={eta}
 				/>
 			)}
 		</List>

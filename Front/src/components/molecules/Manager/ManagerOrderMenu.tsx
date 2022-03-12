@@ -15,38 +15,36 @@ const HeaderMenu = styled.ul`
 		width: auto;
 	}
 `;
+type managerMenuType = {
+	shopId: string;
+};
 
-const ManagerOrderMenu: React.FC = () => {
-	const dispatch = useDispatch();
+const ManagerOrderMenu: React.FC<managerMenuType> = ({ shopId }) => {
 	const orderCountCount = useSelector((state: RootState) => {
 		return state.managerOrderCount;
 	});
 
-	useEffect(() => {
-		dispatch(countOrder());
-	}, []);
-
 	return (
 		<HeaderMenu>
 			<ManagerOrderBtnAtom
-				to="접수대기"
+				to={`${shopId}/접수대기`}
 				menuName="접수대기"
-				orderAmount={orderCountCount[0].order_completed}
+				orderAmount={orderCountCount.order_completed}
 			/>
 			<ManagerOrderBtnAtom
-				to="처리중"
-				menuName="처리중"
-				orderAmount={orderCountCount[0].preparing}
-			/>
-			<ManagerOrderBtnAtom
-				to="완료"
+				to={`${shopId}/완료`}
 				menuName="완료"
-				orderAmount={orderCountCount[0].completed}
+				orderAmount={orderCountCount.completed}
 			/>
 			<ManagerOrderBtnAtom
-				to=""
+				to={`${shopId}/취소`}
+				menuName="취소"
+				orderAmount={orderCountCount.canceled}
+			/>
+			<ManagerOrderBtnAtom
+				to={`${shopId}`}
 				menuName="전체조회"
-				orderAmount={orderCountCount[0].showAll}
+				orderAmount={orderCountCount.showAll}
 			/>
 		</HeaderMenu>
 	);

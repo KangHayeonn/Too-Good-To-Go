@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const updateManagerShops = createSlice({
 	name: "selectMenuTitle",
-	initialState: [],
+	initialState: Boolean,
 	reducers: {
-		updateManagerShop: (state, action: PayloadAction<[]>) => {
+		updateManagerShop: (state, action: PayloadAction<boolean>) => {
 			return action.payload;
 		},
 	},

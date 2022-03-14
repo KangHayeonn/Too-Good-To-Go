@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import { css } from "@emotion/react";
+import axios from "axios";
 import "swiper/css/bundle";
 import "swiper/css";
 import MainSwiperContent from "./MainSwiperContent";
@@ -36,8 +37,35 @@ const textStyle = css`
 		font-weight: 700;
 	}
 `;
-
+const SHOP_BOARD_API_BASE_URL = "http://54.180.134.20/api/products/recommend";
+const BoardService = () => {
+	return axios.get(SHOP_BOARD_API_BASE_URL);
+};
 const MainSwiper: React.FC = () => {
+	const [productCount, setProductCount] = useState<number>(0);
+	useEffect(() => {
+		BoardService().then((res) => {
+			const shops = res.data.data;
+			console.log(shops);
+			const count = Math.ceil(shops.length / 4);
+			setProductCount(count);
+		});
+	}, []);
+
+	function forswiper(): React.ReactNode {
+		const array1 = [];
+		for (let i = 1; i <= productCount; i += 1) {
+			array1.push(
+				<SwiperSlide key={i}>
+					<MainSwiperContent
+						start={0 + (i - 1) * 4}
+						last={4 + (i - 1) * 4}
+					/>
+				</SwiperSlide>
+			);
+		}
+		return array1;
+	}
 	return (
 		<>
 			<h1 css={textStyle}>
@@ -53,15 +81,7 @@ const MainSwiper: React.FC = () => {
 				pagination={{ clickable: true }}
 				autoplay={{ delay: 5000 }}
 			>
-				<SwiperSlide>
-					<MainSwiperContent start={0} last={4} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<MainSwiperContent start={4} last={8} />
-				</SwiperSlide>
-				<SwiperSlide>
-					<MainSwiperContent start={8} last={12} />
-				</SwiperSlide>
+				{forswiper()}
 			</Swiper>
 		</>
 	);

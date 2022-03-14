@@ -2,10 +2,12 @@ import React, { useState } from "react";
 // Styles
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
+import axios from "axios";
 import ArrowRightAltRoundedIcon from "@mui/icons-material/ArrowRightAltRounded";
 // redux
 import ProductEditModal from "./ProductEditModal";
 import { RootState } from "../../../app/store";
+import { getAccessToken } from "../../../helpers/tokenControl";
 
 type cardType = {
 	id: number;
@@ -39,6 +41,26 @@ const CartCardEdit: React.FC<cardType> = ({
 	const reduxPriorityStatus = useSelector((state: RootState) => {
 		return state.updatePriority;
 	});
+	const daepyo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		};
+		return axios.post(
+			`http://54.180.134.20/api/manager/shops/${shopMatchId}/choice`,
+			{
+				productId: id,
+			},
+			config
+		);
+	};
+
+	const daepyo2 = () => {
+		daepyo().then(() => {
+			console.log("설정");
+		});
+	};
 	return (
 		<CartCard key={id}>
 			{reduxPriorityStatus && (
@@ -57,7 +79,10 @@ const CartCardEdit: React.FC<cardType> = ({
 							priorityDownFn(cardIndex);
 						}}
 					>
-						<i className="arrow up" />
+						<i className="arrow down" />
+					</button>
+					<button type="button" onClick={daepyo2}>
+						대표상품
 					</button>
 				</div>
 			)}
@@ -66,7 +91,6 @@ const CartCardEdit: React.FC<cardType> = ({
 			</div>
 			<div className="cardInfo">
 				<p>{shopName}</p>
-				<strong>shopType, Pipe, foodType</strong>
 				<p>{shopFoodName}</p>
 			</div>
 			<div className="right-wrapper">
@@ -191,7 +215,12 @@ const CartCard = styled.div`
 	.arrow-btn {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		transition: 0.3s;
+		button {
+			display: inline-flex;
+			background-color: #fff;
+		}
 	}
 
 	.arrow {
@@ -210,5 +239,6 @@ const CartCard = styled.div`
 	.down {
 		transform: rotate(45deg);
 		-webkit-transform: rotate(45deg);
+		margin-bottom: 10px;
 	}
 `;

@@ -153,8 +153,11 @@ const ProfileContent: React.FC = () => {
 											to={`manager/${row.id}`}
 											id="managerBtn"
 										>
-											<button type="button">
-												{row.name}
+											<button
+												type="button"
+												id="managerNameBtn"
+											>
+												<p>{row.name}</p>
 											</button>
 										</Link>
 										<Link
@@ -205,16 +208,26 @@ const DropContent = styled.li`
 	height: 40px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: center;
 	background-color: #f3f3f3;
-
 	#editBtn {
-		margin-left: 20px;
 		font-size: 15px;
 		color: #000;
 	}
 	#managerBtn {
-		margin-left: 40px;
+		display: inline-block;
+		width: 110px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		display: flex;
+		align-items: center;
+	}
+	#managerNameBtn > p {
+		width: 110px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	button:hover {
 		color: #6e6b6b;

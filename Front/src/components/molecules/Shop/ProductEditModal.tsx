@@ -215,8 +215,6 @@ const OrderModal: React.FC<modal> = ({
 
 		PostProductInfo().then(
 			() => {
-				console.log("post success");
-				console.log(productInfo);
 				if (updateProductChange) {
 					dispatch(updateProductsBoolean(false));
 				} else {
@@ -231,7 +229,6 @@ const OrderModal: React.FC<modal> = ({
 		if (image) {
 			PostProductImageInfo().then(
 				() => {
-					console.log("post success");
 					if (updateProductChange) {
 						dispatch(updateProductsBoolean(false));
 					} else {

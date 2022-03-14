@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "@emotion/styled";
 import ShopCard from "../../molecules/ShopMenu/ShopCard";
-import { ShopData2 } from "../../molecules/ShopDummyData";
 
 const ShopList = styled.ul`
 	width: 100%;
@@ -32,7 +31,8 @@ type shopsDataType = {
 	name: string;
 	discountedPrice: number;
 	price: number;
-	shop: { id: number; name: string; image: string; category: Array<string> };
+	shopId: number;
+	shopName: string;
 	data?: Array<string | number>;
 };
 
@@ -40,8 +40,7 @@ type shopsDataType = {
 // const SHOP_BOARD_API_BASE_URL =
 // 	"http://54.180.134.20/api/products/recommend";
 
-const SHOP_BOARD_API_BASE_URL =
-	"http://54.180.134.20/api/manager/shops/3/products";
+const SHOP_BOARD_API_BASE_URL = "http://54.180.134.20/api/products/recommend";
 const BoardService = () => {
 	return axios.get(SHOP_BOARD_API_BASE_URL);
 };
@@ -58,33 +57,29 @@ type slice = {
 const MainSwiperContent: React.FC<slice> = ({ start, last }) => {
 	const [shop, setShops] = useState<shopsDataType[]>([]);
 	useEffect(() => {
-		BoardService().then(
-			(res) => {
-				setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
-			},
-			() => {
-				setShops(ShopData2); // api가 연결되지 않은 경우 -> 위의 예시 데이터 출력
-			}
-		);
+		BoardService().then((res) => {
+			setShops(res.data.data); // api가 연결 된 경우 -> back에서 데이터 불러옴
+		});
 	}, []);
 	return (
 		<ShopList>
-			{shop.slice(start, last).map((row) => (
-				<ShopListLi key={row.id}>
-					<ShopCard
-						shopId={row.shop.id}
-						shopName={row.shop.name}
-						shopFoodImg={row.image}
-						shopFoodName={row.name}
-						shopFoodSale={calculatedDiscount(
-							row.price,
-							row.discountedPrice
-						)}
-						shopFoodCost={row.discountedPrice}
-						shopBeforeCost={row.price}
-					/>
-				</ShopListLi>
-			))}
+			{shop &&
+				shop.slice(start, last).map((row) => (
+					<ShopListLi key={row.id}>
+						<ShopCard
+							shopId={row.shopId}
+							shopName={row.shopName}
+							shopFoodImg={row.image}
+							shopFoodName={row.name}
+							shopFoodSale={calculatedDiscount(
+								row.price,
+								row.discountedPrice
+							)}
+							shopFoodCost={row.discountedPrice}
+							shopBeforeCost={row.price}
+						/>
+					</ShopListLi>
+				))}
 		</ShopList>
 	);
 };

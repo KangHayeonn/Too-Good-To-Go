@@ -12,7 +12,6 @@ import {
 import { RootState } from "../../../app/store";
 import { getAccessToken } from "../../../helpers/tokenControl";
 import { updateShopsBoolean } from "../../../features/editFeatures/updateShopBoolean";
-import { axiosApiMeGetInstance } from "../../../services/reissueTokenOnGlobalAxiosObject";
 
 const ModalMain = styled.div`
 	display: flex;
@@ -278,17 +277,21 @@ const ShopEditModal: React.FC<modal> = ({
 		const config = {
 			headers: {
 				Authorization: `Bearer ${getAccessToken()}`,
+			},
+		};
+		return axios.put(SHOP_API_URL, shopInfo, config);
+	};
+	const SHOP_IMG_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}/image`;
+	const PostProductImageInfo = () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${getAccessToken()}`,
 				"Content-Type": "multipart/form-data",
 			},
 		};
-		return axios.post(SHOP_API_URL, formData, config);
+		return axios.post(SHOP_IMG_API_URL, formData, config);
 	};
 	const appendFormData = () => {
-		const dtoObj = new Blob([JSON.stringify(shopInfo)], {
-			type: "application/json",
-		});
-		formData.set("request", dtoObj);
-
 		if (image) {
 			formData.append("file", image);
 		} else {
@@ -299,13 +302,10 @@ const ShopEditModal: React.FC<modal> = ({
 	const updateShopRedux = useSelector((state: RootState) => {
 		return state.updateShopBoolean;
 	});
-	const EditPost = async () => {
+	const EditPost = () => {
 		appendFormData();
-		await axiosApiMeGetInstance.get("/api/me");
 		PostShopInfo().then(
 			() => {
-				console.log("post success");
-				console.log(shopInfo);
 				if (updateShopRedux) {
 					dispatch(updateShopsBoolean(false));
 				} else {
@@ -317,6 +317,15 @@ const ShopEditModal: React.FC<modal> = ({
 				console.log(err);
 			}
 		);
+		if (image) {
+			PostProductImageInfo().then(() => {
+				if (updateShopRedux) {
+					dispatch(updateShopsBoolean(false));
+				} else {
+					dispatch(updateShopsBoolean(true));
+				}
+			});
+		}
 	};
 
 	const SHOP_DELETE_API_URL = `http://54.180.134.20/api/manager/shops/${shopMatchId}`;

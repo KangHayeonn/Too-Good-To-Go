@@ -10,8 +10,8 @@ const Wrap = styled.li`
 	display: block;
 	position: relative;
 	cursor: pointer;
-	margin-right: 46.66px;
-	margin-bottom: 46.66px;
+	margin-right: 49.33px;
+	margin-bottom: 49.33px;
 	background-color: #fff;
 	&:nth-of-type(4n) {
 		margin-right: 0;

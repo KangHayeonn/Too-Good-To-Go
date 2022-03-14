@@ -17,6 +17,7 @@ interface shopMatchId {
 }
 
 const BASE_URL = "http://54.180.134.20/api/shops";
+const BASE_URL_PUT = "http://54.180.134.20/api/manager/shops";
 
 const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 	const displayMenu = useSelector((state: RootState) => {
@@ -35,8 +36,10 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 			},
 		};
 		return axios.put(
-			`https://54.180.134.20/api/manager/shops/${shopMatchId}/products`,
-			productsPriority,
+			`${BASE_URL_PUT}/${shopMatchId}/products`,
+			{
+				productsId: productsPriority,
+			},
 			config
 		);
 	};
@@ -108,8 +111,8 @@ const CartCardsEdit: React.FC<shopMatchId> = ({ shopMatchId }) => {
 			newArr.splice(arrNum - 1, 0, item[0]);
 			setProducts(newArr);
 			const priorityNumber = newArr.map((item) => item.id.toString());
-			console.log(priorityNumber);
 			setProductsPriority(priorityNumber);
+			console.log(productsPriority);
 			updatePriority();
 		}
 	};
